@@ -1,0 +1,86 @@
+<br class="page">
+<div class="layui-field-title"></div>
+
+<div class="l" >
+    <form class="layui-form " action="{:url('Userbank/BankList')}">
+        <div class="layui-input-inline" style="width:400px;">
+            <div class="layui-input-block">
+                <input type="text" name="title"  placeholder="请输入用户昵称/联系电话/账户姓名/账户号/预留手机"  class="layui-input" style="width:400px;" value="{$title}">
+            </div>
+        </div>
+
+        <div class="layui-input-inline layui-input-block">
+            <select name="bank_id" lay-verify="require">
+                <option value="0">不限</option>
+                <volist name="banklist" id="val">
+                    <option value="{$val['bank_id']}" <if condition="$bankid eq $val['bank_id']"> selected="selected"</if>>{$val["bank_name"]}</option>
+                </volist>
+            </select>
+        </div>
+
+        <div class="layui-input-inline ">
+           <span class="input-group-btn ">
+                <button type="submit" class="layui-btn"><i class="fa fa-search"></i> 搜索</button>
+            </span>
+        </div>
+
+    </form>
+</div>
+
+<div class="clear"></div>
+
+<!-- 模板样式 -->
+
+<div class="layui-form">
+    <if condition="!empty($data['list'])">
+            <table class="layui-table" lay-skin="line" >
+                <thead>
+                    <tr>
+                        <th >用户昵称</th>
+                        <th >联系电话</th>
+                        <th >所属银行</th>
+                        <th >账户姓名</th>
+                        <th >账户号</th>
+                        <th >预留手机</th>
+                        <th >联行号</th>
+                        <th width="250px;">开户支行名称</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <volist name="$data['list']" id="val">
+                        <tr class="">
+                            <td >{$val['nickname']}</td>
+                            <td >{$val['mobile']}</td>
+                            <td >{$val['bank_name']}</td>
+                            <td >{$val['account_name']}</td>
+                            <td >{$val['account_number']}</td>
+                            <td >{$val['account_tel']}</td>
+                            <td >{$val['union_code']}</td>
+                            <td >{$val['branch_name']}</td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+        <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    暂无数据w(ﾟДﾟ)w
+                </div>
+            </div>
+    </if>
+
+    <div class="tabletool">
+        <!-- 分页工具 -->
+        <div id="limitpage" class="r"></div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+</script>

@@ -1,0 +1,45 @@
+<button class="layui-btn batchUpload"><i class="fa fa-upload"></i>&nbsp; 批量上传图片</button>
+
+<div id="preview" alt="图片预览容器">
+    <volist name="obj.product_carousel" id="val">
+        <div classname="uimgbox" class="uimgbox">
+            <img src="/uploads/{$val}">
+            <a classname="fa fa-trash-o" class="fa fa-trash-o" style="display: none;"></a>
+            <input type="hidden" name="batchimg1[]" value="{$val}">
+        </div>
+    </volist>
+</div>
+<div class="hidden"><img id="resultImage" /></div>
+         
+<script src="/static/js/h5upload.js"></script>
+<script>
+$.fileUpload({ 
+	filebutton: ".batchUpload", 
+	previewZoom: "#preview",
+	multiple:true,
+	filename: "img",   //mvc后台需要对应的名称
+    inputhame: "batchimg1[]",
+    maxSize:2,         //图片最大2 MB
+    startCompress:1.1, //图片大于1MB就启动压缩上传
+    limitCount:23,      //最多10张图片
+    url: "{:url('system/Ajax/uploadSingleImage')}",        //原图上传地址
+    base64strUrl: "{:url('system/Ajax/upload64Image')}",   //压缩上传地址
+});
+
+//删除图片
+$("#preview a.fa-trash-o").live("click", function(){
+	delm = $(this);
+	a = layer.confirm('确定删除该图片？', {icon: 3, title:'系统提示'}, function(index){
+	    post({'filename':$(delm).siblings('input').val()}, "{:url('system/Ajax/deleteimg')}", function(){
+	    	$(delm).parent().remove();
+	        layer.close(a);
+		})
+	});
+});
+$("#preview .uimgbox").live("mouseover", function(){
+   $(this).find('a').show();
+});
+$("#preview .uimgbox").live("mouseout", function(){
+   $(this).find('a').hide();
+});
+</script>

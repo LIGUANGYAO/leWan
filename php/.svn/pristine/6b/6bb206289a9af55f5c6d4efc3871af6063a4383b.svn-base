@@ -1,0 +1,14 @@
+
+<div>
+  <volist name="group_menus" id="val">
+  <a href="{$val.url}" class="mli" title="{$val.title}"><img src="/static/upload/system.png" /> <span>{$val.title}</span></a>
+  </volist>
+</div>
+
+<div class="toggle_left">
+	<if condition="$Think.session.admin.hidemenu eq '0'">
+	<a href="javascript:;" class="mli lockmenu" title="解锁" status="0"><img src="/static/upload/system.png" /> <span>解锁</span></a>
+	<else/>
+	<a href="javascript:;" class="mli lockmenu" title="锁定" status="1"><img src="/static/upload/system.png" /> <span>锁定</span></a>
+	</if>
+</div>

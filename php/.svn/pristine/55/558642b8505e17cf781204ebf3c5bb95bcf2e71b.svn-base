@@ -1,0 +1,41 @@
+<?php
+namespace app\system\model;
+
+use think\Db;
+use think\Config;
+use think\Request;
+use think\Session;
+use think\Cache;
+
+/**
+ * 商家相关
+ * Enter description here ...
+ * @author Administrator
+ *
+ */
+class ProductModel extends BaseModel{
+
+    /**
+     * 查询列表
+     * @param array $Condition
+     * @param int $Page
+     * @param int $PageSize
+     */
+    public function getList($Condition=array(), $Page=1, $PageSize=20){
+        //查询总记录
+        $Count = Db::name('product p')->where($Condition)->count();
+
+        $PageCount = ceil($Count/$PageSize);
+
+        $List = Db::name('product p')
+                ->field('p.*, m.merchant_name')
+                ->join('jay_merchant m', 'm.merchant_id = p.merchant_id', 'left')
+                ->where($Condition)
+                ->page($Page, $PageSize)->order('p.product_uptime desc')->select();
+
+        $PaginaTion = parent::Paging($Count,$Page,$PageCount,$List);
+        return $PaginaTion;
+    }
+   
+    
+}

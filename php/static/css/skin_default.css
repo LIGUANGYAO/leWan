@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+/*顶部导航背景色*/
+#header { background: #293038;}
+#header .aim{color:#fff; font-size:14px; border-right: 1px solid rgba(0,0,0,0.05);}
+#header .aim:hover{color:#f6f6f6; background:#16A98C;}
+#header .aim.cur{color:#f6f6f6; background:#16A98C;}
+
+
+
+.body #rightbox{background: #F1F4F6; }
+.editIcon{background: #18BC9C; padding:0px 8px; border-radius:3px; color:#fff; display:inline-block; height:28px; line-height: 28px;}
+.delIcon{background: #e74c3c; padding:0px 10px; border-radius:3px; color:#fff; display:inline-block; height:28px; line-height: 28px;}
+.authIcon{background: #F7B824; padding:0px 8px; border-radius:3px; color:#fff; font-size: 12px; display:inline-block; height:28px; line-height: 28px;}
+.normalIcon{background: #1E9FFF; padding:0px 8px; border-radius:3px; color:#fff; font-size: 12px; display:inline-block; height:28px; line-height: 28px;}
+.editIcon:hover{background: #11866f; color:#fff;}
+.delIcon:hover{background: #b62516; color:#fff;}
+.authIcon:hover{background: #FF5722; color:#fff;}
+.normalIcon:hover{background: #4BB2FF; color:#fff;}
+
+/**列表输入框改变数据的*/
+.layui-input.write{width: 70px; border: 1px solid #fff; font-size: 14px;}
+.layui-input.write:hover{border: 1px solid #e6e6e6;}
+

@@ -1,0 +1,143 @@
+<?php
+
+namespace app\system\controller;
+
+use app\common\AdminBaseController;
+use think\Request;
+use think\Db;
+use think\Session;
+use app\common\RegExpression;
+use app\common\Md5Help;
+use app\common\SysHelp;
+use app\system\model\PaginationModel;
+use app\system\model\AdminModel;
+use app\system\model\ContentModel;
+
+/**
+ * 订单管理
+ * Enter description here ...
+ * @author Administrator
+ *
+ */
+class OrderController extends AdminBaseController {
+
+    /**
+     * 订单列表
+     * Enter description here ...
+     */
+    public function index() {
+        //获取参数
+        $ps = 15;
+        $pn = $this->get('page', 1);
+        $kws = $this->get('kws', '');
+        $cat_id = $this->get('cat_id', 0);
+        $status = isset($_GET['status'])?$_GET['status']:-2;
+        $starttime = $this->get('starttime', '');
+        $endtime = $this->get('endtime', '');
+        $starttime1 = $this->get('starttime1', '');
+        $endtime1 = $this->get('endtime1', '');
+        //组合where
+        $where['o.del'] = ['eq', 0];
+        if ($kws != '') {
+            $where['r.username|r.mobile'] = array('like', '%' . $kws . '%');
+            $this->assign('kws', $kws);
+        }
+        if ($starttime != '') {
+            $where['o.addtime'] = array('egt', strtotime($starttime));
+            $this->assign('starttime', $starttime);
+        }
+        if ($endtime != '') {
+            $where['o.addtime'] = array('elt', strtotime($endtime));
+            $this->assign('endtime', $endtime);
+        }
+        if ($starttime1 != '') {
+            $where['o.starttime'] = $starttime1;
+            $this->assign('starttime1', $starttime1);
+        }
+        if ($endtime1 != '') {
+            $where['o.endtime'] = $endtime1;
+            $this->assign('endtime1', $endtime1);
+        }
+        if($status != -2){
+            $where['o.status'] = $status;
+            $this->assign('status', $status);
+        }
+        $count = Db::name('order o')->where($where)->count();
+        $list = Db::name('order o')
+            ->field('o.id, o.order_no, o.totalfee, o.payamount, o.`status`, o.starttime, o.endtime, o.addtime, r.username, r.mobile, r.remark, m.title')
+            ->where($where)
+            ->join('order_room r', 'r.order_id = o.id', 'left')
+            ->join('room m', 'm.id = r.room_id', 'left')
+            ->page($pn, $ps)
+            ->order('o.id desc')
+            ->select();
+
+        $return['list'] = $list;
+        $pagination = new PaginationModel();
+        $return['page'] = $pagination->getPage($count, $pn, $ps);
+
+        $this->assign('data', $return);
+        return $this->display('index', true);
+    }
+
+
+    /**
+     * 修改
+     * Enter description here ...
+     */
+    public function view() {
+        if (Request::instance()->isGet()) {
+            $item = Db::name('order o')
+                ->field('o.*, r.username, r.mobile, r.remark, m.title, r.num, r.price, u.nickname')
+                ->where('o.id', Request::instance()->param('id', 0))
+                ->join('order_room r', 'r.order_id = o.id', 'left')
+                ->join('room m', 'm.id = r.room_id', 'left')
+                ->join('member u', 'o.user_id = u.id', 'left')
+                ->order('o.id desc')
+                ->find();
+
+            $service = Db::name('order_service')->where(['order_id'=>$item['id']])->select();
+            $item['services'] = $service;
+
+            $this->assign('obj', $item);
+            return $this->display('view', true);
+        }
+    }
+
+    /**
+     * 删除账号
+     * Enter description here ...
+     */
+    public function delete() {
+        $id = Request::instance()->param('id', 0);
+        $idstr = Request::instance()->post('idstr', '');
+        if ($id > 0) {
+            $obj = Db::name('order')->where('id', $id)->find();
+            $this->log('删除订单：' . $obj['id']);
+            $res = Db::name('order')->where('id='.$id)->update(['del'=>1]);
+        } else {
+            //批量删除
+            $idarray = explode(',', $idstr);
+            foreach ($idarray as $k => $v) {
+                if (!(empty($v))) {
+                    $obj = Db::name('order')->where('id', $v)->find();
+                    $this->log('删除订单：' . $obj['id']);
+                    $res = Db::name('order')->where('id='.$v)->update(['del'=>1]);
+                }
+            }
+        }
+        $this->toSuccess('删除成功');
+    }
+
+
+    public function ruzhu() {
+        $id = Request::instance()->param('id', 0);
+        if ($id > 0) {
+            $obj = Db::name('order')->where('id', $id)->find();
+            $this->log('客人入住：' . $obj['id']);
+            $res = Db::name('order')->where('id='.$id)->update(['status'=>2]);
+        }
+        $this->toSuccess('入住成功');
+    }
+
+}

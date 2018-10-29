@@ -1,0 +1,55 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{$action}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="calendararray" value="{$calendararray}">
+        <input type="hidden" name="product_id" value="{$product.product_id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">提前预约</label>
+            <div class="layui-input-inline" style="width:50px;">
+                <input type="text" name="preday" value="{$reservationday.preday|default=1}" lay-verify="number" class="layui-input">
+            </div>
+            <div class="layui-input-notice">天</div>
+        </div>
+        <volist name="kcdata" id="val">
+            <div class="rqxm">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">属性名称[{$i}]</label>
+                    <div class="layui-input-inline" style="width:140px;">
+                        <input type="text" name="property[]" value="{$val.property}" readonly lay-verify="require"  class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总库存[{$i}]</label>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="totalnum[]" value="{$val.totalnum}" lay-verify="number" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-notice">份</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">已订数量[{$i}]</label>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="usenum[]" value="{$val.usenum}" lay-verify="number" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-notice">份</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">预订价格[{$i}]</label>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="addprice[]" value="{$val.addprice}" lay-verify="money" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-notice" style="line-height: 20px;">大于0表示预订需要支付的具体金额；<br>等于0表示免费预约</div>
+                </div>
+            </div>
+        </volist>
+        <if condition="$status eq '1'">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+        </if>
+    </form>
+
+</div>
+<script>
+
+</script>

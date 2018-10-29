@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>测试样式</title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="https://cdn.bootcss.com/Swiper/4.0.6/css/swiper.min.css" rel="stylesheet">
+		<style>
+			body {
+				padding: 0;
+				margin: 0
+			}
+			.headerDad{
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent; /* 宽度  实线  颜色*/
+      border-right: 50px solid transparent;
+      border-bottom: 100px solid red;
+    
+			}
+			.swiper-slide {
+				width: auto !important;
+				border: 1px solid #CA4040;
+			}
+
+			.topmenu {
+				/*display: none;*/
+				height: 35px;
+				background-color: white;
+				border-bottom: 1px solid #CCCCCC;
+				padding: 0 10px;
+				line-height: 35px;
+				font-family: "微软雅黑";
+				position: fixed;
+				top: 0;
+				left: 0;
+			}
+			.footer {
+				height: 1500px;
+				width: 10px;
+				background-color: #F0AD4E;
+				display: block;
+				word-break: break-all;
+				word-wrap: break-word;
+			}
+			/* 控制文字宽度 */
+			.text2 {
+				width:100%;
+				word-break:break-all;
+				display:-webkit-box;
+				-webkit-line-clamp:2;
+				-webkit-box-orient:vertical;
+				overflow:hidden;
+			}
+			.box1{
+				display: inline-block;
+				/* width: 25%; */
+				text-align: center;
+				border: 1px solid #0000FF;
+				}
+				
+		
+		</style>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+		</script>
+	</head>
+	<body>
+		<div class="headerDad">
+
+		</div>
+		<div class="text2">热卖精选：从子频道（服饰鞋包，亲子，居家，美妆）档期里面挑选出来，库存大于30%的档期里面挑选出来，库存大于30%的高信价比商品list，数量为50个</div>
+		<div class="swiper-containerBox swiper-container-horizontal" style="width: 100%;overflow: hidden;">
+			<div class="swiper-wrapper">
+				<span class="swiper-slide box1">阿斯芬1</span>
+				<span class="swiper-slide box1">时的格1</span>
+				<span class="swiper-slide box1">啥更的1</span>
+				<span class="swiper-slide box1">是的的1</span>
+				<span class="swiper-slide box1">时的格1</span>
+				<span class="swiper-slide box1">撒地方1</span>
+				<span class="swiper-slide box1">为阿芬1</span>
+				<span class="swiper-slide box1">撒地方1</span>
+			</div>
+			<div class="swiper-button-next"></div><!--右箭头-->
+		</div>
+		<div class="swiper-wrapper onemenu" style="width: 100%;overflow: hidden;margin-bottom: 50px;">
+			<span class="swiper-slide">阿斯蒂芬</span>
+			<span class="swiper-slide">时的风格</span>
+			<span class="swiper-slide">啥都搞好对方更好的</span>
+			<span class="swiper-slide">是的</span>
+			<span class="swiper-slide">时的风格</span>
+			<span class="swiper-slide">撒地方</span>
+			<span class="swiper-slide">为阿斯蒂芬</span>
+			<span class="swiper-slide">撒地方</span>
+		</div>
+		<!-- Swiper -->
+		<div class="topmenu">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<span class="swiper-slide">阿斯蒂芬2</span>
+					<span class="swiper-slide">时的风格2</span>
+					<span class="swiper-slide">啥都搞好对方更好的2</span>
+					<span class="swiper-slide">是的2</span>
+					<span class="swiper-slide">时的风格2</span>
+					<span class="swiper-slide">撒地方2</span>
+					<span class="swiper-slide">为阿斯蒂芬2</span>
+					<span class="swiper-slide">撒地方2</span>
+				</div>
+				<!-- 滚动条 -->
+				<div class="swiper-scrollbar"></div>  
+			</div>
+		</div>
+		<div class="twoMenu" style="width: 100%;">
+			<div class="" style="display: flex;justify-content: center;align-items: center;justify-content: space-around;border: 1px solid #000000;height: 50px;">
+				<span>综合</span>
+				<span>销量</span>
+				<span>价格</span>
+				<span>距离</span>
+			</div>
+		</div>
+		<div class="footer">
+			11111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+		</div>
+		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/Swiper/4.0.6/js/swiper.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				
+				var swiper = new Swiper('.swiper-container', {
+					spaceBetween: 20,
+					slidesPerView: 'auto',
+					freeMode: true,
+					slideToClickedSlide: true,  //点击的那一项在第一排
+					scrollbar: {    
+						el: '.swiper-scrollbar',
+					},
+				});
+				
+				
+    var swiper = new Swiper('.swiper-containerBox', {
+      slidesPerView: 3,
+      spaceBetween: 30,
+      slidesPerGroup: 3,
+      loop: true,
+      loopFillGroupWithBlank: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  
+			})
+			var onemenuTop = $('.onemenu').offset().top;
+			var twoMenuTop = $('.twoMenu').offset().top;
+			$(window).scroll(function() {
+				// console.log($(document).height()) //页面高度
+				// console.log($(window).height()) //窗口高度
+				// console.log($(window).scrollTop()) //窗口高度
+
+				if ($(window).scrollTop() >= onemenuTop) {
+					// $(".onemenu").css({"display": "none"});
+					$(".topmenu").css({
+						"display": "block"
+					});
+
+					console.log("wolaile ")
+				} else {
+					// $(".onemenu").css({"display": "block"});
+					$(".topmenu").css({
+						"display": "none"
+					});
+
+				}
+				if ($(window).scrollTop() >= (twoMenuTop - 37)) {
+					$(".twoMenu").css({
+						"position": "fixed",
+						"top": "37px"
+					})
+					console.log("dierge")
+				} else {
+					$(".twoMenu").css({
+						"position": "static",
+						"top": ''
+					})
+				}
+
+			});
+		</script>
+	</body>
+</html>

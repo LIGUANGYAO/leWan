@@ -1,0 +1,71 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <table class="layui-table view">
+        <tr>
+            <td class="label">商家名称：</td>
+            <td class="content">{$merchant.merchant_name}</td>
+        </tr>
+        <tr>
+            <td class="label">联系人信息：</td>
+            <td class="content">{$merchant.merchant_contact}[tel:{$merchant.merchant_contactmobile}]</td>
+        </tr>
+        <tr>
+            <td class="label">登录账号：</td>
+            <td class="content">{$merchant.loginname}</td>
+        </tr>
+        <tr>
+            <td class="label">商家地址：</td>
+            <td class="content">{$merchant.merchant_ssq}{$merchant.merchant_address}</td>
+        </tr>
+        <tr>
+            <td class="label">商家电话：</td>
+            <td class="content">{$merchant.merchant_400tel}</td>
+        </tr>
+        <tr>
+            <td class="label">商家logo：</td>
+            <td class="content"><img src="{$merchant.merchant_logo}" style="width: 100px;"> </td>
+        </tr>
+        <tr>
+            <td class="label">营业执照：</td>
+            <td class="content"><img src="{$merchant.merchant_license}" style="width: 100px;"> </td>
+        </tr>
+        <tr>
+            <td class="label">广告语：</td>
+            <td class="content">{$merchant.merchant_slogan}</td>
+        </tr>
+        <tr>
+            <td class="label">商家介绍：</td>
+            <td class="content">{$merchant.merchant_description}</td>
+        </tr>
+        <tr>
+            <td class="label">营业状态：</td>
+            <td class="content">
+                <if condition="$merchant.merchant_open eq 1">营业中<else/>暂停营业</if>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">审核状态：</td>
+            <td class="content">
+                <if condition="$merchant.merchant_status eq '0'">待审核<elseif condition="$merchant.merchant_status eq '1'">驳回<else/>通过</if>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">申请时间：</td>
+            <td class="content">{$merchant.merchant_addtime|date='Y-m-d H:i:s',###}</td>
+        </tr>
+        <tr>
+            <td class="label">更新时间：</td>
+            <td class="content">{$merchant.merchant_uptime|date='Y-m-d H:i:s',###}</td>
+        </tr>
+        <if condition="$merchant.merchant_status neq '2'">
+        <tr>
+            <td class="label"></td>
+            <td><a href="javascript:openWindow('审核-{$val.merchant_name}', '{:url('system/merchant/inview', array('id'=>$merchant['merchant_id']))}', '600px', '500px');" class="normalIcon" title="审核">审核</a></td>
+        </tr>
+        </if>
+    </table>
+
+</div>
+<script>
+
+
+</script>

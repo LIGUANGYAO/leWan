@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>个人资料</title>
+        <meta name="author" content="saltyfishweb.com">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Expires" CONTENT="-1">
+        <meta http-equiv="Cache-Control" CONTENT="no-cache">
+        <meta http-equiv="Pragma" CONTENT="no-cache">
+        <link href="/www/css/main.css?rand={$time}" rel="stylesheet" type="text/css">
+    </head>
+<body style="background:#f7f9fc;">
+
+    <!--顶部导航栏-->
+    <include file='Index:alert' />
+
+    <!--内容部分-->
+    <div class="main" style="background: #f7f9fc;">
+        <div class="relative">
+            <img src="/www/images/info.jpg" class="img100 l">
+            <div class="clear"></div>
+            <div class="mxxq">
+                <div class="bt">个人资料</div>
+            </div>
+        </div>
+
+        <div class="inner93">
+            <div class="inputbox">
+                <div class="label">姓名</div>
+                <div class="inputb"><input id="_xm" value="{$user.truename}"></div>
+            </div>
+            <div class="inputbox">
+                <div class="label">性别</div>
+                <div class="inputb">
+                    <select id="_sex">
+                        <option value="女" <if condition="$user.sex eq '女'"> selected="selected"</if>>女</option>
+                        <option value="男" <if condition="$user.sex eq '男'"> selected="selected"</if>>男</option>
+                    </select>
+                </div>
+            </div>
+            <div class="inputbox">
+                <div class="label">电话</div>
+                <div class="inputb"><input id="_tel" value="{$user.phone}" maxlength="11"></div>
+            </div>
+            <div class="inputbox">
+                <div class="label">Email</div>
+                <div class="inputb"><input id="_email" value="{$user.email}"></div>
+            </div>
+
+            <a href="javascript:bc()" class="bc">保存资料</a>
+
+        </div>
+    </div>
+
+
+    <div style=" clear:both; height:20px;"></div>
+
+    <script type="text/javascript" src="/www/js/zepto.min.1.14.js"></script>
+    <script>
+    function bc() {
+        var xm = $('#_xm').val();
+        var sex = $('#_sex').val();
+        var tel = $('#_tel').val();
+        var email = $('#_email').val();
+        if(xm.trim().length < 2){
+            window.myalert('请填写姓名');return;
+        }
+        if(!validtel(tel)){
+            window.myalert('手机号格式不正确');return;
+        }
+        if(!validemail(email)){
+            window.myalert('email格式不正确');return;
+        }
+        data = {
+            xm:xm,
+            tel:tel,
+            sex:sex,
+            email:email
+        }
+        $.ajax({
+            type: "POST",
+            url: "/index.php/wechat/user/info",
+            data:data,
+            dataType:'json',
+            success: function(res){
+                window.myalert(res.info);
+            }
+        });
+    }
+    </script>
+    <include file='Index:sharejs' />
+</body>
+</html>

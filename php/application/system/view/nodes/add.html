@@ -1,0 +1,61 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/nodes/add')}" method="post" enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <label class="layui-form-label">分组</label>
+            <div class="layui-input-inline">
+              <select name="group_id" lay-verify="require">
+                <volist name="grouplist" id="val">
+                <option value="{$val.id}">{$val.title}</option>
+                </volist>
+              </select>
+            </div>
+         </div>
+        <div class="layui-form-item">
+		      <label class="layui-form-label">节点名称</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="title" lay-verify="require" class="layui-input">
+		      </div>
+		 </div>
+        <div class="layui-form-item">
+		      <label class="layui-form-label">节点代码</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="codes" lay-verify="require" class="layui-input">
+		      </div>
+		 </div>
+		 <div class="layui-form-item">
+              <label class="layui-form-label">参数</label>
+              <div class="layui-input-inline">
+                <input type="text" name="args" value="{$obj.args}" placeholder="{a:b, c:d}" class="layui-input">
+              </div>
+         </div>
+        
+		 <div class="layui-form-item">
+		    <label class="layui-form-label">节点类型</label>
+		    <div class="layui-input-block">
+		      <input type="radio" name="type" value="1" title="菜单" checked="">
+		      <input type="radio" name="type" value="2" title="操作">
+		    </div>
+		 </div>
+		 <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="status" lay-skin="switch" lay-text="ON|OFF" checked="checked" value="1">
+            </div>
+         </div>
+         <div class="layui-form-item">
+              <label class="layui-form-label">排序</label>
+              <div class="layui-input-inline">
+                <input type="text" name="sort" lay-verify="number" class="layui-input">
+              </div>
+         </div>
+         
+		 <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+		    </div>
+		  </div>
+    </form>
+
+</div>
+<script>
+</script>

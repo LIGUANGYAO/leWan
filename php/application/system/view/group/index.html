@@ -1,0 +1,65 @@
+<div class="page">
+
+    
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th nowrap="nowrap" width="20"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+            <th nowrap="nowrap">分组名称</th>
+            <th nowrap="nowrap">状态</th>
+            <th nowrap="nowrap">排序</th>
+            <th  nowrap="nowrap" width="100">操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="data" id="val">
+          <tr>
+            <td><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>
+            <td>{$val.title}</td>
+            <td>
+                <input type="checkbox" name="status" lay-skin="switch" lay-text="ON|OFF" lay-filter="switchAjax" <if condition="$val.status eq '1'">checked="checked"</if> itemid="{$val.id}" url="/system/group/switching" tbname="sys_group" filed="status" >
+            </td>
+            <td>
+                <input type="text" value="{$val.sort}" onchange="realsave(this)" oninput="this.value=this.value.replace(/\D/g,'').replace(/^0+(?=\d)/,'')" class="layui-input write" itemid="{$val.id}" url="/system/group/realsave" tbname="sys_group" filed="sort" >
+            </td>
+            <td>
+                <a href="javascript:openWindow('修改', '{:url('system/group/edit', array('id'=>$val['id']))}')" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+                &nbsp; 
+                <a href="javascript:sure('确定删除这条数据？', '{:url('system/group/delete', array('id'=>$val['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+            </td>
+          </tr>
+          </volist>
+          
+        </tbody>
+      </table>
+      <div class="tabletool">
+         <!-- 工具按钮 -->
+         <div class="l">
+            <a href="" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+         </div>
+         
+         <!-- 分页工具 -->
+         <div id="limitpage" class="r"></div>
+         <div class="clear"></div>
+      </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

@@ -1,0 +1,76 @@
+<div class="page">
+
+    
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th nowrap="nowrap" >分类名称</th>
+            <th nowrap="nowrap">排序</th>
+            <th nowrap="nowrap">添加时间</th>
+            <th nowrap="nowrap" width="100">操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="data" id="val">
+          <tr>
+            <td>{$val.cat_name}</td>
+            <td>
+                <input type="text" value="{$val.sort}" onchange="realsave(this)" oninput="this.value=this.value.replace(/\D/g,'').replace(/^0+(?=\d)/,'')" class="layui-input write" itemid="{$val.id}" url="/system/categories/realsave" tbname="categories" filed="sort" >
+            </td>
+            <td>
+                {$val.addtime}
+            </td>
+            <td>
+                <a href="javascript:openWindow('修改', '{:url('system/categories/edit', array('id'=>$val['id']))}', '500px', '550px')" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+                &nbsp; 
+                <a href="javascript:sure('确定删除这条数据？', '{:url('system/categories/delete', array('id'=>$val['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+            </td>
+          </tr>
+          	 <volist name="val.childs" id="cc">
+	          <tr>
+	            <td> &nbsp; &nbsp; &nbsp; &nbsp; {$cc.cat_name}</td>
+	            <td>
+	                <input type="text" value="{$cc.sort}" onchange="realsave(this)" oninput="this.value=this.value.replace(/\D/g,'').replace(/^0+(?=\d)/,'')" class="layui-input write" itemid="{$cc.id}" url="/system/categories/realsave" tbname="categories" filed="sort" >
+	            </td>
+	            <td>
+	                {$cc.addtime}
+	            </td>
+	            <td>
+	                <a href="javascript:openWindow('修改', '{:url('system/categories/edit', array('id'=>$cc['id']))}', '500px', '550px')" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+	                &nbsp; 
+	                <a href="javascript:sure('确定删除这条数据？', '{:url('system/categories/delete', array('id'=>$cc['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+	            </td>
+	          </tr>
+	          </volist>
+          </volist>
+          
+        </tbody>
+      </table>
+      <div class="tabletool">
+         
+         
+         <!-- 分页工具 -->
+         <div id="limitpage" class="r"></div>
+         <div class="clear"></div>
+      </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

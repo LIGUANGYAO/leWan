@@ -1,0 +1,94 @@
+<div class="page">
+
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+        
+        <a href="javascript:sure('确定发布菜单？', '{:url('wxmenu/create')}')" class="layui-btn"><i class="fa fa-plus"></i> 发布菜单</a>
+        &nbsp;
+        <a href="javascript:sure('确定发布菜单？', '{:url('wxmenu/create', array('remove'=>1))}')" class="layui-btn"><i class="fa fa-plus"></i> 删除菜单</a>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <!-- 必须，只有这里才真正控制宽度 -->
+        <colgroup>
+          <col width="10%">
+          <col width="10%">
+          <col width="10%">
+          <col width="20%">
+          <col width="10%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>菜单名称</th>
+            <th>类型</th>
+            <th>排序</th>
+            <th>添加时间</th>
+            <th>操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="list" id="val">
+          <tr>
+            <td>{$val.name}</td>
+            <td>
+            <if condition="$val.type eq 'view'">
+            	网页跳转
+            <else/>
+            	事件推送
+            </if>
+            </td>
+            <td>
+                <input type="text" value="{$val.sort}" onchange="realsave(this)" oninput="this.value=this.value.replace(/\D/g,'').replace(/^0+(?=\d)/,'')" class="layui-input write" itemid="{$val.id}" url="/system/wxmenu/realsave" tbname="wx_menu" filed="sort" >
+            </td>
+            <td>{$val.addtime}</td>
+            <td>
+                <a href="{:url('wxmenu/edit', array('id'=>$val['id']))}" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+            <if condition="$val.parent_id neq -1">
+                &nbsp; 
+                <a href="javascript:sure('确定删除这条数据？', '{:url('wxmenu/delete', array('id'=>$val['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+            </if>
+            </td>
+          </tr>
+          	<volist name="val.childs" id="a">
+	          <tr>
+	            <td>&nbsp; &nbsp;  &nbsp;{$a.name}</td>
+	            <td>
+	            <if condition="$a.type eq 'view'">
+	            	网页跳转
+	            <else/>
+	            	事件推送
+	            </if>
+	            </td>
+	            <td>
+	                <input type="text" value="{$a.sort}" onchange="realsave(this)" oninput="this.value=this.value.replace(/\D/g,'').replace(/^0+(?=\d)/,'')" class="layui-input write" itemid="{$a.id}" url="/system/wxmenu/realsave" tbname="wx_menu" filed="sort" >
+	            </td>
+	            <td>{$a.addtime}</td>
+	            <td>
+	                <a href="{:url('wxmenu/edit', array('id'=>$a['id']))}" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+	                &nbsp; 
+	                <a href="javascript:sure('确定删除这条数据？', '{:url('wxmenu/delete', array('id'=>$a['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+	                
+	            </td>
+	          </tr>
+          	</volist>
+          </volist>
+          
+        </tbody>
+      </table>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

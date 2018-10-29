@@ -1,0 +1,93 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: jay
+ * Date: 2018/7/20
+ * Time: 13:53
+ */
+namespace app\common\model;
+use think\Db;
+
+
+/**
+ * 支付工具
+ * Class Paymodel
+ * @package app\common\model
+ */
+class Paymodel{
+
+
+    /**
+     * 微信公众号支付-统一下单
+     * @param $openId
+     * @param $orderNo
+     * @param $amount
+     * @param $notifyurl
+     * @param $subject
+     * @param $body
+     * @return \json数据，可直接填入js函数作为参数
+     */
+    public function wxJsPay($openId, $orderNo, $amount, $notifyurl, $subject='成都新津明宇丽雅悦酒店', $body='成都新津明宇丽雅悦酒店'){
+        //调用JSAPI
+        Vendor("WxPay.WxPay#Api");
+        Vendor("WxPay.WxPay#JsApiPay");
+
+        $tools = new \JsApiPay();
+
+        //②、统一下单
+        $input = new \WxPayUnifiedOrder();
+        $input->SetBody($body);
+        $input->SetAttach($subject);
+        $input->SetOut_trade_no($orderNo);
+        $input->SetTotal_fee($amount*100);
+        $input->SetTime_start(date("YmdHis"));
+        $input->SetTime_expire(date("YmdHis", time() + 600));
+        $input->SetGoods_tag("test");
+        $input->SetNotify_url(url($notifyurl, ['payway'=>PayMethod::WxJSApi], true, true));
+        $input->SetTrade_type("JSAPI");
+        $input->SetOpenid($openId);
+        $config = new \WxPayConfig();
+        $order = \WxPayApi::unifiedOrder($config, $input);
+        //统一下单结果
+        //fuck($order);
+        if($order['return_code'] != 'SUCCESS'){
+            echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script>alert("'.$order['return_msg'].'"); window.history.go(-1);</script>';exit;
+        }
+        if($order['result_code'] != 'SUCCESS'){
+            echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script>alert("'.$order['err_code_des'].'"); window.history.go(-1);</script>';exit;
+        }
+        //返回js参数调起支付
+        $jsApiParameters = $tools->GetJsApiParameters($order);
+        return $jsApiParameters;
+    }
+
+
+    /**
+     * 处理微信退款
+     * @param $order
+     * @return bool|\成功时返回，其他抛异常
+     */
+    public function wxRefund($order){
+        Vendor("WxPay.WxPay#Api");
+        Vendor("WxPay.WxPay#JsApiPay");
+        try{
+            $transaction_id = $order["transaction_id"];
+            $total_fee = $order["totalfee"]*100;
+            $refund_fee = $order["totalfee"]*100;
+            $input = new \WxPayRefund();
+            $input->SetTransaction_id($transaction_id);
+            $input->SetTotal_fee($total_fee);
+            $input->SetRefund_fee($refund_fee);
+
+            $config = new \WxPayConfig();
+            $input->SetOut_refund_no("sdkphp".date("YmdHis"));
+            $input->SetOp_user_id($config->GetMerchantId());
+            return \WxPayApi::refund($config, $input);
+        } catch(Exception $e) {
+            return false;
+        }
+    }
+
+
+
+}

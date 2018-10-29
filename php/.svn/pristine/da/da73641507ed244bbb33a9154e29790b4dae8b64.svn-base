@@ -1,0 +1,80 @@
+
+<!-- 下拉刷新,加载更多-->
+<script type="text/javascript" src="/www/js/dropload.min.js"></script>
+<link rel="stylesheet" href="/www/css/dropload.css">
+<input type="hidden" id="pageNo" value="1">
+<input type="hidden" id="hasMore" value="1">
+<input type="hidden" id="cat_id" value="{$cat_id|default=0}">
+<input type="hidden" id="type_1" value="{$type_1|default=0}">
+<input type="hidden" id="type_2" value="{$type_2|default=0}">
+<script>
+    $(function () {
+
+        // dropload
+        $('.scrollbody').dropload({
+            scrollArea: window,
+            domUp: {
+                domClass: 'dropload-up',
+                domRefresh: '<div class="dropload-refresh"></div>',
+                domUpdate: '<div class="dropload-update"></div>',
+                domLoad: '<div class="dropload-load"><span class="loading"></span></div>'
+            },
+            domDown: {
+                domClass: 'dropload-down hide',
+                domRefresh: '<div class="dropload-refresh"></div>',
+                domLoad: '<div class="dropload-load"><span class="loading"></span></div>',
+                domNoData: '<div class="dropload-noData"></div>'
+            },
+            loadUpFn: function (me) {
+                me.resetload();
+            },
+            loadDownFn: function (me) {
+                pageNo = $('#pageNo').val();
+                hasMore = $('#hasMore').val();
+                cat_id = $('#cat_id').val();
+                type_1 = $('#type_1').val();
+                type_2 = $('#type_2').val();
+                if (hasMore == 0) {  //没有更多
+                    return;
+                }
+                // 锁定
+                me.lock();
+                
+                pm = {
+                    "pn":pageNo,
+                    "cat_id":cat_id,
+                    "type_1":type_1,
+                    "type_2":type_2
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '{$dropdown_url}',
+                    dataType:'json',
+                    data: pm ,
+                    success: function (res) {
+                        $('#pageNo').val(res.data.pn);
+                        $('#hasMore').val(res.data.hasmore);
+
+                        $('.lists').append(res.data.html);
+
+                        if (res.data.hasmore == 0) {
+                            me.noData();
+                        } else {
+                            me.unlock();
+                        }
+                        // 每次数据加载完，必须重置
+                        me.resetload();
+                    },
+                    error: function (xhr, type) {
+                        alert('Ajax error!');
+                        // 即使加载出错，也得重置
+                        me.resetload();
+                    }
+                });
+            },
+            threshold: 50,
+            distance: 50
+        });
+    });
+</script>
+<!-- 上拉加载更多end-->

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{$room.title}-房间详情</title>
+        <meta name="author" content="saltyfishweb.com">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Expires" CONTENT="-1">
+        <meta http-equiv="Cache-Control" CONTENT="no-cache">
+        <meta http-equiv="Pragma" CONTENT="no-cache">
+        <link href="/www/swiper4/css/swiper.min.css" rel="stylesheet" type="text/css">
+        <link href="/www/css/main.css?rand={$time}" rel="stylesheet" type="text/css">
+    </head>
+<body style="background:#f5f5f5;">
+
+    <!--顶部导航栏-->
+    <include file='Index:alert' />
+
+    <!--内容部分-->
+    <div class="main">
+        <div class="picture">
+            <img src="/uploads/{$room.images.0}">
+            <div class="clear"></div>
+            <a class="view"></a>
+            <div class="jiejian">
+                <div class="inner93">
+                    <div class="mc">{$room.title}</div>
+                    <div class="td">{$room.feature}</div>
+                </div>
+            </div>
+        </div>
+        <div class="descp"><div class="inner93">{$room.descp}</div> </div>
+        <div class="ruzhushuom tubiao">
+            <div class="inner97">
+                <volist name="icons" id="val">
+                <div class="icon">
+                    <img src="/www/images/{$val.icon}"><br>{$val.name}
+                </div>
+                </volist>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="ruzhushuom">
+            <div class="inner93">
+                <div class="tt">入住说明</div>
+                <div class="text">
+                    {$room.introduction}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="navbtoom">
+        <div class="wz"><span class="y">￥</span><span class="je">{$room.price*1}</span>元/晚 </div>
+        <a href="{:urlwx('index/dingdanqueren', array('roomid'=>$room['id']))}" class="btn">立即预定</a>
+    </div>
+    <div style=" clear:both; height:60px;"></div>
+
+    <!--详情图片预览-->
+    <div class="picturepriview">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <volist name="room.images" id="val">
+                    <div class="swiper-slide"><img src="/uploads/{$val}" class="img100"></div>
+                </volist>
+            </div>
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/www/js/zepto.min.1.14.js"></script>
+    <script type="text/javascript" src="/www/swiper4/js/swiper.min.js"></script>
+    <script>
+        var mySwiper;
+        $(function () {
+            mySwiper = new Swiper ('.swiper-container', {
+                direction: 'horizontal',
+                loop: true,
+
+                // 如果需要分页器
+                pagination: {
+                    el: '.swiper-pagination',
+                },
+            });
+
+            $(document).click(function (event) {
+                var event=event||e;
+                if($(event.target).hasClass('swiper-slide')){
+                    $('.picturepriview').hide();
+                }
+            });
+            $('.view').click(function () {
+                $('.picturepriview').show();
+                mySwiper.update();
+            })
+        })
+    </script>
+    <include file='Index:sharejs' />
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" name="viewport" />
+        <title>{$seo.title}</title>
+        <meta name="keywords" content="{$seo.keywords}" />
+        <meta name="description" content="{$seo.description}" />
+        <link type="text/css" rel="stylesheet" href="/www/css/page.css?t={$time}">
+    </head>
+    <body>
+        <div class="section">
+            <volist name="list" id="val">
+                <a href="{:urlwx('wechat/page/info', ['id'=>$val['id']])}">
+                    <div class="plist">{$val.title}</div>
+                </a>
+            </volist>
+        </div>
+
+
+    </body>
+</html>

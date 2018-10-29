@@ -1,0 +1,39 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/roles/auth')}" method="post" enctype="multipart/form-data">
+        <!-- 分组循环 -->
+        <volist name="list" id="g">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-bottom: 3px; ">
+		  <legend style="font-size: 14px; font-weight: bold;">{$g.title}</legend>
+		</fieldset>
+		
+		 <div class="layui-form-item">
+		    <div class="layui-input-block modul" style="width:180px;">
+		      <input type="checkbox" name="modul[]" lay-filter="modulchoose" lay-skin="primary" title="全选" value="{$mud.id}">
+		    </div>
+		    
+		    <div class="layui-input-block items" style="width:auto;">
+		      <!-- 模块循环 -->
+		      <volist name="g.list" id="n">
+              <input type="checkbox" name="nodes[]" lay-filter="modul2choose" lay-skin="primary" title="{$n.node}" value="{$n.node_id}" <notempty name="$n.ischeck"> checked="checked"</notempty>>
+              </volist>
+		      
+		    </div>
+		    <div class="clear"></div>
+		 </div>
+		 
+		 <div style="clear:both; height:12px;"></div>
+         </volist>
+        
+        
+		 <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+		    </div>
+		 </div>
+		 <input type="hidden" value="{$Request.param.id}" name="role_id">
+    </form>
+
+</div>
+<script>
+
+</script>

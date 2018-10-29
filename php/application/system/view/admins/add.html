@@ -1,0 +1,49 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/admins/add')}" method="post" enctype="multipart/form-data">
+        <div class="layui-form-item">
+		      <label class="layui-form-label">登录账号</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="jname" lay-verify="require" class="layui-input">
+		      </div>
+		</div>
+        <div class="layui-form-item">
+		      <label class="layui-form-label">登录密码</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="jpass" lay-verify="min6" class="layui-input">
+		      </div>
+		 </div>
+        <div class="layui-form-item">
+		      <label class="layui-form-label">昵称</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="nickname" lay-verify="require" class="layui-input">
+		      </div>
+		</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+		    <div class="layui-input-inline">
+		      <select name="role_id" lay-verify="require">
+		        <volist name="rolelist" id="val">
+		        <option value="{$val.id}">{$val.role_name}</option>
+		        </volist>
+		      </select>
+		    </div>
+		 </div>
+		 <div class="layui-form-item">
+              <label class="layui-form-label">头像</label>
+              <div class="layui-input-inline">
+                <input type="file" name="img" textname="head" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="点击上传">
+                <input type="hidden" name="head">
+                <div class="img_preview head" title="图片预览"></div>
+              </div>
+              <div class="clear"></div>
+         </div>
+		 <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+		    </div>
+		  </div>
+    </form>
+
+</div>
+<script>
+</script>

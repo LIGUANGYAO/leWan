@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="Generator" content="ALLWIN v1" />
+	<meta name="Generator" content="ALLWIN v1" />
+	<title>成都新津明宇丽雅悦酒店-地图</title>
+	<meta name="author" content="saltyfishweb.com">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="Expires" CONTENT="-1">
+	<meta http-equiv="Cache-Control" CONTENT="no-cache">
+	<meta http-equiv="Pragma" CONTENT="no-cache">
+	<link href="/www/css/main.css?rand={$time}" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=G5qrZnzEFgjmekZwXLlqaC6hl8r10zLZ"></script>
+</head>
+<body>
+<div id="allmap"></div>
+</body>
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point('103.824164','30.427387');
+	map.centerAndZoom(point, 16);
+	map.addOverlay(new BMap.Marker(point));
+</script>
+</html>
+

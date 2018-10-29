@@ -1,0 +1,71 @@
+<div class="page">
+
+    
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <!-- 必须，只有这里才真正控制宽度 -->
+        <colgroup>
+          <col width="50">
+          <col>
+          <col>
+          <col width="15%">
+          <col width="15%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+            <th>关键词</th>
+            <th>关联素材id</th>
+            <th>操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="list" id="val">
+          <tr>
+            <td><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>
+            <td>{$val.key}</td>
+            <td>
+                {$val.groupid}
+            </td>
+            <td>
+                <a href="{:url('system/wxkey/edit', array('id'=>$val['id']))}" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+                <if condition="$val.id gt 1">
+                &nbsp; 
+                <a href="javascript:sure('确定删除这条数据？', '{:url('system/wxkey/delete', array('id'=>$val['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+                </if>
+            </td>
+          </tr>
+          </volist>
+          
+        </tbody>
+      </table>
+      <div class="tabletool">
+         <!-- 工具按钮 -->
+         <div class="l">
+             <a href="javascript:batchDel('/system/wxkey/delete');" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+         </div>
+         
+         <!-- 分页工具 -->
+         <div id="limitpage" class="r"></div>
+         <div class="clear"></div>
+      </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

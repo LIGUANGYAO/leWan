@@ -1,0 +1,131 @@
+<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<div class="page" style="padding:20px 0px 0px 20px;">
+	<form action="{:url('wxsource/add')}" method="post" name="myform" id="myform"  enctype="multipart/form-data" style="margin-top:10px;">
+	  <div class="pad-10">
+	      <div class="leftbox">
+		  	
+			 <for start="1" end="9">
+			 <if condition="$i eq 1">
+		  	 <div class="sitembox first cur" index="{$i}">
+			 	<div class="item_pic first"><img src="/static/images/df.png" /></div>
+				<div class="lab_title item_title">标题，必填</div>
+				<div class="item_handel">
+					<a href="#" class="icons del">删除</a>
+				</div>
+				<div class="clear"></div>
+			 </div>
+			 <else/>
+			 <div class="sitembox" index="{$i}">
+			 	<div class="item_pic"><img src="/static/images/df.png" /></div>
+				<div class="item_title2"><table height="100%"><tr><td valign="middle" class="lab_title" style="width:165px;">标题</td></tr></table></div>
+				<div class="item_handel">
+					<a href="#" class="icons del">删除</a>
+				</div>
+				<div class="clear"></div>
+			 </div>
+			 </if>
+			 </for>
+			 
+			 <div class="clear" style="height:120px;"></div>
+		  </div>
+		  <!--右侧内容-->
+		  <div class="rightbox">
+		  <for start="1" end="9" name="i">
+		  	 <div class="rarea   <if condition="$i gt 1">hidden</if> editor{$i}">
+				 <div class="inputitem"><input class="input" type="text" name="title[]" placeholder="素材标题， 必填！" /></div>
+				 <div class="inputitem"><textarea name="abstract[]" class="textarea" placeholder="摘要选填，如果不填写会默认抓取正文前54个字" ></textarea></div>
+				 
+				 <div class="inputitem"><input type="radio" name="type{$i}" value="1" checked="checked" />阅读素材 &nbsp; &nbsp;<input type="radio" name="type{$i}" value="2" />网页跳转
+				 &nbsp; &nbsp;
+				 <input type="checkbox" name="iscode{$i}" value="1" />网页授权
+				 </div>
+				 <div class="inputitem"><input class="input" type="text" name="url[]" placeholder="阅读原文链接/网页跳转链接，没有则不填写.识别用户请加参数openid=FromUserName或者openid/FromUserName" /></div>
+				 
+				 <div class="inputitem">
+					<a href="javascript:;" class="sctp">上传图片</a> &nbsp; &nbsp; <if condition="$i eq 1">封面大图片建议尺寸：900像素 * 500像素<else/>小图片建议尺寸：200像素 * 200像素</if>
+					<input type="hidden" id="pic{$i}" name="pic[]" value="df.jpg" />
+				 </div>
+				 
+				 <div class="inputitem">
+					<textarea class="ckeditor" cols="40" id="content{$i}" name="content[]" rows="10" >{$article.info}</textarea>
+				 </div>
+		  	  </div>
+			  <div class="clear"></div>
+		  </for> 
+		  <div class="clear" style="height:220px;"></div> 
+		  </div>
+	  </div>
+	
+	</form>
+</div>
+<form action="{:url('system/ajax/uploadSingleImage')}" id="picform" method="post" enctype="multipart/form-data">
+<input style="display:none;" type="file" name="img" id="_pic_" />
+</form>
+<div class="fline">
+	<a href="javascript:commit();">保&nbsp; &nbsp; 存</a><br />
+	<span>图文素材最多添加8条信息，第一条信息必填，其他的信息根据实际情况填写！</span>
+</div>
+<script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<script>
+var index = 1;
+$(function(){
+	
+	//上传图片
+	$('.sctp').click(function(){
+		$("#_pic_").click();
+	})
+	$(document).on('change',"input[type='file']",function(evt){
+		$('#picform').submit();
+	});
+	$('#picform').ajaxForm({
+		complete: function(xhr) {
+			var ajaxdata = eval('(' + xhr.responseText + ')');
+			if(ajaxdata.status==0){
+				alert('图片上传失败，'+ajaxdata.info);
+			}else{
+				obj = $("div[index="+index+"]");
+				$(obj).find('.item_pic').find('img').attr('src', ajaxdata.data.url);
+				$('#pic'+index).val(ajaxdata.data.filename);
+			}
+		}
+	});
+	
+	$('.sitembox').click(function(){
+		$('.sitembox').removeClass('cur');
+		$(this).addClass('cur');
+		index = $(this).attr('index');
+		$('.rarea').hide();
+		$('.editor'+index).show();
+	})
+	
+	//同步输入内容
+	$("input[name='title[]'").keyup(function(){
+		obj = $("div[index="+index+"]");
+		$(obj).find('.lab_title').html($(this).val());
+	})
+
+})
+
+KindEditor.ready(function(K) {
+	window.editor = K.create('#content1,#content2,#content3,#content4,#content5,#content6,#content7,#content8', {
+		width : '99%',
+		height: '350px',
+		afterBlur: function(){this.sync();}
+	});
+})
+
+function commit(){
+	obj = $(".editor1");
+	title = $(obj).find('.input').eq(0).val();
+	if(title.trim().length < 2){
+		alert('请耐心输入标题');
+		return ;
+	}
+	document.forms['myform'].submit();
+}
+
+</script>
+</body>
+</html>

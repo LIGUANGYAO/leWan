@@ -1,0 +1,151 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2018/10/18
+ * Time: 10:37
+ * 用户实名认证控制器
+ * 肖亚子
+ */
+namespace app\system\Controller;
+
+use think\Request;
+use think\Db;
+use app\common\AdminBaseController;
+use app\system\model\UserauthModel;
+
+class UserauthController extends AdminBaseController{
+
+    /**
+     * @return string
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取用户实名认证
+     * 肖亚子
+     */
+    public function AuthList(){
+        $Condition = array();//定义查询条件默认空
+        $Type      = $this->get("type",0);//实名认证状态默认认证成功
+        $Psize     = $this->get("page",1);//当前分页页数默认第一页
+        $Title     = $this->get("title");//搜索栏数据
+        $Tst       = strtotime($this->get("trialstarttime"));//审核开始时间
+        $Tet       = strtotime($this->get("trialendtime"));//审核结束时间
+        $StartTime = strtotime($this->get("starttime"));//认证开始时间
+        $EndTime   = strtotime($this->get("endtime"));//认证结束时间
+
+        $Condition["a.status"] = array('eq',$Type);
+
+        if ($Title){
+            $Condition["a.truename|u.mobile|u.nickname"] = array("like","%$Title%");
+        }
+
+        $Condition = self::TimeContrast($Tst,$Tet,"uptime",$Condition);
+        $Condition = self::TimeContrast($StartTime,$EndTime,"addtime",$Condition);
+
+        $Adopt     = UserauthModel::AuthCount(array("status" => 2));
+        $Fail      = UserauthModel::AuthCount(array("status" => 1));
+        $Auditing  = UserauthModel::AuthCount(array("status" => 0));
+        $Data      = UserauthModel::AuthList($Condition,$Psize,50);
+
+        $Query     = array("title" => $Title);
+        $Query     = self::Time($Tst,"trialstarttime",$Query);
+        $Query     = self::Time($Tet,"trialendtime",$Query);
+        $Query     = self::Time($StartTime,"starttime",$Query);
+        $Query     = self::Time($EndTime,"endtime",$Query);
+
+        $this->assign("query",$Query);
+        $this->assign("adopt",$Adopt);
+        $this->assign("fail",$Fail);
+        $this->assign("auditing",$Auditing);
+        $this->assign("type",$Type);
+        $this->assign("data",$Data);
+
+        return $this->display('list', true);
+    }
+
+    /**
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     * 获取实名认证详情/审核认证
+     * 肖亚子
+     */
+    public function AuthData(){
+
+        $Condition = array();//定义查询条件默认空
+
+        if(Request()->isGet()){
+            $Id   = $this->get("id");
+
+            $Condition["auth_id"] = array("eq",$Id);
+
+            $Data = UserauthModel::AuthFind($Condition);
+
+            $this->assign("data",$Data);
+            return $this->display('authdata', false);
+        }else{
+            $Id     = $this->post("id");
+            $Status = $this->post("status");
+            $Remark = $this->post("remark");
+
+            parent::Tpl_NoSpaces($Status,"请选择审核状态");
+            parent::Tpl_NoSpaces($Remark,"请填写驳回原因");
+            parent::Tpl_StringLength($Remark,"驳回原因10-20字",3,10,30);
+
+            $Condition["auth_id"] = array("eq",$Id);
+            $Data["status"] = $Status;
+            $Data["remark"] = $Remark;
+            $Data["uptime"] = time();
+
+            $AuthUp = UserauthModel::AuthUpdate($Condition,$Data);
+
+            if ($AuthUp) {
+                $this->log("用户实名认证审核：[ID:".$Id."更改为".$Status == 1?"驳回":"通过"."]");
+                $this->toSuccess("实名认证审核成功", '', 2);
+            }else{
+                $this->toError("实名认证审核失败");
+            }
+        }
+    }
+
+    /**
+     * @param $StartTime  开始时间
+     * @param $EndTime    结束时间
+     * @param $Key        字段
+     * @param $Condition  返回组合
+     * @return mixed
+     */
+    public  function TimeContrast($StartTime,$EndTime,$Key,$Condition){
+
+        if (!empty($StartTime) && empty($EndTime)) {
+            parent::Tpl_NotGtTime($StartTime,"开始时间不能大于当前时间"); //开始时间不为空和当前时间对比
+            $Condition[$Key] = array(array('egt', $StartTime));
+        } else if (empty($StartTime) && !empty($EndTime)) {
+            parent::Tpl_NotGtTime($EndTime,"结束时间不能大于当前时间"); //结束时间不为空和当前时间对比
+            $Condition[$Key] = array(array('lt', $EndTime));
+        } else if (!empty($StartTime) && !empty($EndTime)) {
+            parent::Tpl_TimeContrast1($StartTime,$EndTime); //开始和结束时间都不为空进行判断
+            $Condition[$Key] = array(array('egt', $StartTime), array('elt', $EndTime));
+        }
+
+        return $Condition;
+   }
+
+    /**
+     * @param $Time  转换时间
+     * @param $Key   返回字段
+     * @param $Query 组合数组
+     * @return mixed
+     */
+   public function Time($Time,$Key,$Query){
+       if(!empty($Time)){
+           $Query[$Key] = date("Y-m-d H:i:s",$Time);
+       }
+
+       return $Query;
+   }
+}

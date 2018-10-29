@@ -1,0 +1,41 @@
+<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{$action}" method="post" enctype="multipart/form-data">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">服务名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" value="{$obj.title}" lay-verify="require" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">价格</label>
+            <div class="layui-input-inline">
+                <input type="text" name="price" value="{$obj.price}" lay-verify="money" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+
+        <input type="hidden" value="{$obj.id}" name="id">
+    </form>
+
+</div>
+<script>
+    KindEditor.ready(function (K) {
+        window.editor = K.create('#content,#en_content', {
+            width: '100%',
+            height: '550px',
+            afterBlur: function () {
+                this.sync();
+            }
+        });
+    })
+
+</script>

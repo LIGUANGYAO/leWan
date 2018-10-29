@@ -1,0 +1,88 @@
+<br class="page">
+<div class="layui-field-title"></div>
+
+<form class="layui-form "  action="{:url('Useraddress/SiteList')}">
+
+    <div class="layui-input-inline" style="width:400px;">
+        <div class="layui-input-block">
+            <input type="text" name="title"  placeholder="请输入用户昵称/联系电话/收货人/收货电话"  class="layui-input" style="width:400px;" value="{$title}">
+        </div>
+    </div>
+
+    <div class="layui-input-inline layui-input-block">
+        <select name="flag" >
+            <option value="0">请选择状态</option>
+            <option value="1" <if condition="$flag eq 1">selected="selected"</if>>未默认</option>
+            <option value="2" <if condition="$flag eq 2">selected="selected"</if>>已默认</option>
+        </select>
+    </div>
+
+    <div class="layui-input-inline ">
+           <span class="input-group-btn ">
+                <button type="submit" class="layui-btn"><i class="fa fa-search"></i> 搜索</button>
+            </span>
+    </div>
+
+</form>
+
+<div class="clear"></div>
+<!-- 模板样式 -->
+
+<div class="layui-form">
+    <if condition="!empty($data['list'])">
+            <table class="layui-table" lay-skin="line" >
+                <thead>
+                    <tr>
+                        <th >用户昵称</th>
+                        <th >用户联系电话</th>
+                        <th >收货人</th>
+                        <th >收货电话</th>
+                        <th >收货城市</th>
+                        <th width="300px;">收货地址</th>
+                        <th >地址状态</th>
+                        <th >录入时间</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <volist name="$data['list']" id="val">
+                        <tr class="">
+                            <td >{$val['nickname']}</td>
+                            <td >{$val['umobile']}</td>
+                            <td>{$val['contact']}</td>
+                            <td>{$val['mobile']}</td>
+                            <td>{$val['ssq']}</td>
+                            <td>{$val['address']}</td>
+                            <td>
+                                <if condition="$val['flag'] eq 2">
+                                    <label class="layui-badge layui-bg-green">默认地址</label>
+                                    <else />
+                                    <label class="layui-badge layui-bg-gray">待选地址</label>
+                                </if>
+                            </td>
+                            <td >{$val['addtime']|date="Y-m-d H:i",###}</td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+        <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    暂无数据w(ﾟДﾟ)w
+                </div>
+            </div>
+    </if>
+
+    <div class="tabletool">
+        <!-- 分页工具 -->
+        <div id="limitpage" class="r"></div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+</div>
+
+<script>
+
+</script>

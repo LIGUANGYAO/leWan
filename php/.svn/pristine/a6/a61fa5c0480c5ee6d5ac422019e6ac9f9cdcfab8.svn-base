@@ -1,0 +1,132 @@
+<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<style>
+    table{width: 600px;}
+    table td{line-height: 34px;}
+    table td.label{width: 120px; text-align: right; padding-right: 20px;}
+    .line{background: lightsteelblue; padding-left: 30px;}
+</style>
+<div class="page" style="padding:20px 0px 0px 20px;">
+    <table>
+        <tr>
+            <td class="line" colspan="2">订单信息</td>
+        </tr>
+        <tr>
+            <td class="label">编号</td>
+            <td>{$obj.order_no}
+
+                <if condition="$val.status eq '0'">
+                    <span style="color: #868686">[待付款]</span>
+                    <elseif condition="$obj.status eq '1'" />
+                    <span style="color: #868686">[已付款]</span>
+                    <elseif condition="$obj.status eq '2'" />
+                    <span style="color: green">[已完成]</span>
+                    <elseif condition="$obj.status eq '5'" />
+                    <span style="color: red">[（取消订单）申请退款]</span>
+                    <elseif condition="$obj.status eq '6'" />
+                    <span style="color: green">[退款成功]</span>
+                </if>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">总金额</td>
+            <td>{$obj.totalfee}</td>
+        </tr>
+        <tr>
+            <td class="label">实付金额</td>
+            <td>{$obj.payamount}</td>
+        </tr>
+        <tr>
+            <td class="label">积分抵扣金额</td>
+            <td>{$obj.discountfee}</td>
+        </tr>
+        <tr>
+            <td class="label">使用积分</td>
+            <td>{$obj.discountpoints}</td>
+        </tr>
+        <tr>
+            <td class="label">入住日期</td>
+            <td>{$obj.starttime}</td>
+        </tr>
+        <tr>
+            <td class="label">离开日期</td>
+            <td>{$obj.endtime}</td>
+        </tr>
+        <tr>
+            <td class="label">下单时间</td>
+            <td>{$obj.addtime|date="Y-m-d H:i:s", ###}</td>
+        </tr>
+        <tr>
+            <td class="label">付款时间</td>
+            <td><notempty name="$obj.paytime"> {$obj.paytime|date="Y-m-d H:i:s", ###}</notempty></td>
+        </tr>
+        <tr>
+            <td class="label">付款单号</td>
+            <td>{$obj.transaction_id}</td>
+        </tr>
+        <tr>
+            <td class="label">取消时间</td>
+            <td><notempty name="$obj.canceltime"> {$obj.refundtime|date="Y-m-d H:i:s", ###}</notempty></td>
+        </tr>
+        <tr>
+            <td class="label">退款时间</td>
+            <td><notempty name="$obj.refundtime"> {$obj.refundtime|date="Y-m-d H:i:s", ###}</notempty></td>
+        </tr>
+        <tr>
+            <td class="label">退款单号</td>
+            <td>{$obj.refund_id}</td>
+        </tr>
+
+        <tr>
+            <td class="line" colspan="2">房间信息</td>
+        </tr>
+        <tr>
+            <td class="label">房型名称</td>
+            <td>{$obj.title}</td>
+        </tr>
+        <tr>
+            <td class="label">价格</td>
+            <td>{$obj.price}</td>
+        </tr>
+        <volist name="$obj.services" id="val">
+        <tr>
+            <td class="label">增值服务{$i}</td>
+            <td>{$val.price}</td>
+        </tr>
+        </volist>
+
+        <tr>
+            <td class="line" colspan="2">客户信息</td>
+        </tr>
+        <tr>
+            <td class="label">姓名</td>
+            <td>{$obj.username}</td>
+        </tr>
+        <tr>
+            <td class="label">电话</td>
+            <td>{$obj.mobile}</td>
+        </tr>
+        <tr>
+            <td class="label">备注</td>
+            <td>{$obj.remark}</td>
+        </tr>
+        <tr>
+            <td class="line" colspan="2">操作</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <if condition="$obj.status eq '5'" >
+                <a href="javascript:sure('确定退款？', '{:url('order/delete', array('id'=>$obj['id']))}')" class="delIcon" title="确认退款">确认退款</a>
+                </if>
+                <if condition="$obj.status eq '1'" >
+                    <a href="javascript:sure('确定入住？', '{:url('order/ruzhu', array('id'=>$obj['id']))}')" class="delIcon" title="客人入住">客人入住</a>
+                </if>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<script>
+
+
+</script>

@@ -1,0 +1,36 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/group/add')}" method="post" enctype="multipart/form-data">
+        <div class="layui-form-item">
+		      <label class="layui-form-label">分组名称</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="title" lay-verify="require" class="layui-input">
+		      </div>
+		 </div>
+        <div class="layui-form-item">
+		      <label class="layui-form-label">分组代码</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="code" lay-verify="string" class="layui-input">
+		      </div>
+		 </div>
+        <div class="layui-form-item">
+		    <label class="layui-form-label">状态</label>
+		    <div class="layui-input-block">
+		      <input type="checkbox" name="status" lay-skin="switch" lay-text="ON|OFF" checked="checked" value="1">
+		    </div>
+		</div>
+		<div class="layui-form-item">
+              <label class="layui-form-label">排序</label>
+              <div class="layui-input-inline">
+                <input type="text" name="sort" lay-verify="number" class="layui-input">
+              </div>
+         </div>
+		<div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+		    </div>
+		 </div>
+    </form>
+
+</div>
+<script>
+</script>

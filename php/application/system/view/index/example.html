@@ -1,0 +1,21 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/admins/addx')}" method="post">
+        <!-- 单个图片及时上传， 复制 div class="layui-form-item"这段。 改3个地方:textname="logourl" 相关-->
+        <div class="layui-form-item">
+              <label class="layui-form-label">文件上传</label>
+              <div class="layui-input-inline">
+                <input type="file" name="img" textname="logourl" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="请上传一张图片吧亲">
+                <input type="hidden" name="logourl">
+                <div class="img_preview logourl" title="图片预览"></div>
+              </div>
+              <div class="clear"></div>
+         </div>
+         
+         
+         <!-- 多图上传-->
+         <div class="clear"></div>
+         <include  file="../application/common/html/batchuploadimg.html" />
+         
+    </form>
+</div>
+

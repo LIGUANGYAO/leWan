@@ -1,0 +1,551 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0
+			}
+			/*底部选项卡*/
+			.mui-bar-tab i{
+				font-size: 24px;
+			}
+			.mui-bar-tab .mui-tab-item{
+				color: #CCCCCC;
+			}
+			.mui-bar-tab .mui-tab-item.mui-active{
+				color: #333333;
+				font-weight: bold;
+			}
+			.mui-bar{
+				box-shadow: 0px -4px 15px 2px #e7e7e7;
+				background-color: #FFFFFF;
+			}
+			/*页头*/
+			
+			.headerSearch {
+				height: 1.226rem;
+			}
+			
+			.headerSearch>div {
+				display: inline-block;
+				line-height: 1.226rem;
+				float: left;
+			}
+			
+			.headerSearch>div:nth-child(1) {
+				margin-left: 2%;
+				width: 18%;
+			}
+			
+			.headerSearch>div:nth-child(1)>i {
+				font-size: 0.55rem;
+			}
+			
+			.headerSearch>div:nth-child(1)>span {
+				margin-left: 0.08rem;
+				font-size: 0.426rem;
+				font-weight: bold;
+				color: #242323;
+			}
+			
+			.headerSearch>div:nth-child(2) {
+				width: 65%;
+			}
+			
+			.headerSearch>div:nth-child(2) {
+				margin-left: 2%;
+			}
+			
+			.headerSearch>div:nth-child(2)>input {
+				background-color: #FFFFFF;
+				height: 0.773rem;
+				margin-bottom: 0;
+				font-size: 0.346rem;
+				color: #666666;
+			}
+			
+			input::-webkit-input-placeholder {
+				font-size: 0.32rem;
+				color: #CCCCCC;
+			}
+			
+			.headerSearch>div:nth-child(3) {
+				margin-left: 3%;
+			}
+			
+			.headerSearch>div:nth-child(3)>i {
+				font-size: 0.5rem;
+				color: #333333;
+			}
+			
+			.message::after {
+				/*伪元素*/
+				content: "●";
+				color: #F76E1E;
+				position: relative;
+				font-size: 0.346rem;
+				top: -10px;
+				left: -10px;
+			}
+			/*banner图*/
+			
+			.mui-slider-item {
+				height: 3.493rem !important;
+				overflow: hidden;
+			}
+			
+			.mui-slider img {
+				width: 100%;
+				position: absolute;
+			}
+			
+			.mui-slider-indicator {
+				bottom: 5px;
+			}
+			
+			.mui-slider-indicator .mui-indicator {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-slider-indicator .mui-active.mui-indicator {
+				border-radius: 3px;
+				width: 20px;
+				background: #E1B872;
+				box-shadow: 0 0 0 0 #fff;
+			}
+			/*八大板块图标*/
+			
+			.eightPlate {
+				overflow: hidden;
+				background-color: #FFFFFF;
+				padding-bottom: 0.346rem;
+			}
+			
+			.plateHeader {
+				height: 1.333rem;
+				padding-top: 0.266rem;
+			}
+			
+			.plateHeader span {
+				line-height: 1.066rem;
+			}
+			
+			.titleText {
+				margin-left: 0.32rem;
+				font-size: 0.48rem;
+				font-weight: bold;
+				color: #D7D7D7;
+			}
+			
+			.titleText span {
+				color: #333333;
+			}
+			
+			.arrowthinright {
+				float: right;
+				margin-right: 0.666rem;
+				color: #999999;
+				font-size: 0.8rem;
+			}
+			
+			.navImg {
+				width: 2.4rem;
+				height: 2.4rem;
+				border-radius: 0.2rem;
+				margin-left: 0.106rem;
+				text-align: center;
+				line-height: 2.4rem;
+				font-size: 0.746rem;
+				color: #FFFFFF;
+				font-weight: bold;
+			}
+			
+			.fourText {
+				line-height: normal;
+				display: inline-block;
+				vertical-align: middle;
+			}
+			
+			.navImg:nth-child(odd) {
+				background-image: url(../../img/homePage/eightNav1.png);
+			}
+			
+			.navImg:nth-child(even) {
+				background-image: url(../../img/homePage/eightNav2.png);
+			}
+			/*隐藏菜单栏*/
+			
+			.navText {
+				width: auto;
+			}
+			
+			.topmenu {
+				display: none;
+				height: 1.44rem;
+				background-color: white;
+				padding: 0 0.4rem;
+				line-height: 1.44rem;
+				font-size: 0.48rem;
+				color: #999999;
+				font-weight: 400;
+				font-family: "微软雅黑";
+				position: fixed;
+				top: 0;
+				z-index: 70;
+				left: 0;
+				box-shadow: 0 4px 5px #e7e7e7;
+			}
+			.topmenu span{
+				margin-right: 0.4rem;
+			}
+			.swiper-active {
+				/*选中后标题属性*/
+				color: #E1B872;
+				font-weight: 800;
+			}
+			/*排序方式*/
+			
+			.spaceConnet {
+				height: 0.32rem;
+			}
+			
+			.contentHeader {
+				display: flex !important;
+				justify-content: center;
+				align-items: center;
+				justify-content: space-around;
+				height: 1rem;
+				background-color: #FFFFFF;
+			}
+			
+			.contentHeader span {
+				color: #333333;
+				font-weight: 800;
+				font-size: 0.426rem;
+				display: inline-block;
+				padding-bottom: 0.05rem;
+			}
+			
+			.filterActive {
+				border-bottom: 3px solid #E1B872;
+			}
+			.disContentHeader{
+				visibility:hidden;
+				width: 100%;
+				position: fixed;
+				top: 1.44rem;
+				z-index: 60;
+			}
+			/*图文展示*/
+			.productDel>ul{
+				padding-bottom: 2rem;
+			}
+			.mui-table-view:before {
+				height: 0;
+			}
+			
+			.mui-table-view .mui-media-object {
+				line-height: 2.293rem;
+				max-width: 3.466rem;
+				height: 2.293rem;
+			}
+			
+			.mui-table-view-cell>a:not(.mui-btn) {
+				white-space: normal;
+			}
+			
+			.textShow {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				/*规定几行显示省略号*/
+				-webkit-box-orient: vertical;
+				font-size: 0.32rem;
+				color: #333333;
+				line-height: 1.4;
+			}
+			
+			.textShow strong {
+				font-size: 0.426rem;
+			}
+			
+			.price {
+				position: relative;
+				height: 2.293rem;
+			}
+			
+			.price p {
+				position: absolute;
+				bottom: 0rem;
+			}
+			
+			.detailBox {
+				width: 100%;
+			}
+			
+			.detailBox>span:nth-child(1) {
+				font-size: 0.453rem;
+				color: #333333;
+				font-weight: bold;
+				letter-spacing: 0;
+			}
+			
+			.detailBox>span:nth-child(2) {
+				font-size: 0.293rem;
+				color: #999999;
+			}
+			
+			.detailBox>span:nth-child(2)>span {
+				color: #F76E1E;
+			}
+			
+			.detailBox>span:nth-child(3) {
+				font-size: 0.293rem;
+				color: #999999;
+				float: right;
+				margin-right: 3px;
+				margin-top: 2px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--底部导航-->
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="#tabbar">
+				<span class="mui-icon"><i class="iconfont icon-shouye"></i></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-chat">
+				<span class="mui-icon"><i class="iconfont icon-huo"></i></span>
+				<span class="mui-tab-label">每日爆款</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-contact">
+				<span class="mui-icon"><i class="iconfont icon-chakantiezishijian"></i></span>
+				<span class="mui-tab-label">预约中心</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-map">
+				<span class="mui-icon"><i class="iconfont icon-wode"></i></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		<!--页头搜索框-->
+		<div class="headerSearch">
+			<div class="addressTap">
+				<i class="iconfont icon-dingwei"></i>
+				<span class="address">成都</span>
+			</div>
+			<div class="search">
+				<input type="search" placeholder="请输入商品名称/景区/酒店">
+			</div>
+			<div class="message">
+				<i class="iconfont icon-xiaoxi"></i>
+			</div>
+		</div>
+		<!--首页banner图-->
+		<div class="mui-slider">
+			<div class="mui-slider-group mui-slider-loop">
+				<!--支持循环，需要重复图片节点-->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<img src="../../img/homePage/banner1.png" />
+				</div>
+
+				<div class="mui-slider-item">
+					<img src="../../img/homePage/banner1.png" />
+				</div>
+				<div class="mui-slider-item">
+					<img src="../../img/homePage/banner2.png" />
+				</div>
+				<div class="mui-slider-item">
+					<img src="../../img/homePage/banner3.png" />
+				</div>
+
+				<!--支持循环，需要重复图片节点-->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<img src="../../img/homePage/banner1.png" />
+				</div>
+			</div>
+			<!--轮播图图标小点-->
+			<div class="mui-slider-indicator">
+				<div class="mui-indicator mui-active"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+			</div>
+		</div>
+		<!--八大板块-->
+		<div class="eightPlate">
+			<div class="plateHeader">
+				<span class="titleText"><span>吃喝玩乐 </span> HOT</span>
+				<span class="arrowthinright"><i class="iconfont icon-youjiantou"></i></span>
+			</div>
+			<div class="swiper-containerBox swiper-container-horizontal">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide navImg fourText">新人</br>免单</div>
+					<div class="swiper-slide navImg">美食</div>
+					<div class="swiper-slide navImg">酒店</div>
+					<div class="swiper-slide navImg">乐园</div>
+					<div class="swiper-slide navImg">亲子</div>
+					<div class="swiper-slide navImg">礼品</div>
+					<div class="swiper-slide navImg">景区</div>
+					<div class="swiper-slide navImg">出行</div>
+				</div>
+				<!--<div class="swiper-button-next"></div>右箭头-->
+			</div>
+		</div>
+		<!--隐藏八大板块-->
+		<div class="topmenu">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<span class="swiper-slide navText swiper-active">首页</span>
+					<span class="swiper-slide navText">美食</span>
+					<span class="swiper-slide navText">酒店</span>
+					<span class="swiper-slide navText">乐园</span>
+					<span class="swiper-slide navText">亲子</span>
+					<span class="swiper-slide navText">礼品</span>
+					<span class="swiper-slide navText">景区</span>
+					<span class="swiper-slide navText">出行</span>
+					<span class="swiper-slide navText">新人免单</span>
+				</div>
+				<!-- 滚动条 -->
+				<!--<div class="swiper-scrollbar"></div>-->
+			</div>
+		</div>
+		<div class="spaceConnet"></div>
+		<!--隐藏排序方式-->
+		<div class="contentHeader disContentHeader">
+			<span class="filterPar filterActive">综合</span>
+			<span class="filterPar">销量</span>
+			<span class="filterPar">价格</span>
+			<span class="filterPar">距离</span>
+		</div>
+		<div class="content">
+			<div class="contentHeader showContentHeader">
+				<span class="filterPar filterActive">综合</span>
+				<span class="filterPar">销量</span>
+				<span class="filterPar">价格</span>
+				<span class="filterPar">距离</span>
+			</div>
+			<div class="productDel">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media">
+						<img class="mui-media-object mui-pull-left" src="../../img/homePage/homePage1.png">
+						<div class="mui-media-body price">
+							<div class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>能和心是weff件幸福的gdrts gs 事情；可是打呼噜怎么办？的是大会客服都是回家看到</div>
+							<p class="detailBox">
+								<span>￥151起/</span>
+								<span>佣金:<span>￥62</span></span>
+								<span>已售598</span>
+							</p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<img class="mui-media-object mui-pull-left" src="../../img/homePage/homePage1.png">
+						<div class="mui-media-body price">
+							<div class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>能和心是weff件幸福的gdrts gs 事情；可是打呼噜怎么办？的是大会客服都是回家看到</div>
+							<p class="detailBox">
+								<span>￥151起/</span>
+								<span>佣金:<span>￥62</span></span>
+								<span>已售598</span>
+							</p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<img class="mui-media-object mui-pull-left" src="../../img/homePage/homePage1.png">
+						<div class="mui-media-body price">
+							<div class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>能和心是weff件幸福的gdrts gs 事情；可是打呼噜怎么办？的是大会客服都是回家看到</div>
+							<p class="detailBox">
+								<span>￥151起/</span>
+								<span>佣金:<span>￥62</span></span>
+								<span>已售598</span>
+							</p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<img class="mui-media-object mui-pull-left" src="../../img/homePage/homePage1.png">
+						<div class="mui-media-body price">
+							<div class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>能和心是weff件幸福的gdrts gs 事情；可是打呼噜怎么办？的是大会客服都是回家看到</div>
+							<p class="detailBox">
+								<span>￥151起/</span>
+								<span>佣金:<span>￥62</span></span>
+								<span>已售598</span>
+							</p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<img class="mui-media-object mui-pull-left" src="../../img/homePage/homePage1.png">
+						<div class="mui-media-body price">
+							<div class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>能和心是weff件幸福的gdrts gs 事情；可是打呼噜怎么办？的是大会客服都是回家看到</div>
+							<p class="detailBox">
+								<span>￥151起/</span>
+								<span>佣金:<span>￥62</span></span>
+								<span>已售598</span>
+							</p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<img class="mui-media-object mui-pull-left" src="../../img/homePage/homePage1.png">
+						<div class="mui-media-body price">
+							<div class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>能和心是weff件幸福的gdrts gs 事情；可是打呼噜怎么办？的是大会客服都是回家看到</div>
+							<p class="detailBox">
+								<span>￥151起/</span>
+								<span>佣金:<span>￥62</span></span>
+								<span>已售598</span>
+							</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				//获得slider插件对象
+				var gallery = mui('.mui-slider');
+				gallery.slider({
+					interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+				});
+				//侧滑菜单
+				var swiper = new Swiper('.swiper-container', {
+					spaceBetween: 20,
+					slidesPerView: 'auto',
+					freeMode: true
+				});
+				//滚动显隐
+				var spaceConnet = ($('.spaceConnet').offset().top)/75;
+				var showContentHeader = ($('.showContentHeader').offset().top)/75;
+				$(window).scroll(function() {
+					// console.log($(document).height()) //页面高度
+					// console.log($(window).height()) //窗口高度
+					// console.log($(window).scrollTop()) //窗口高度
+					var scrollTop = ($(window).scrollTop())/75;
+					if(scrollTop >= spaceConnet-0.72) {
+						$(".topmenu").css({"display": "block"});
+					} else {
+						$(".topmenu").css({"display": "none"});
+
+					}
+					if(scrollTop >= showContentHeader-0.72) {
+						$(".disContentHeader").css({"visibility": "visible"});
+						console.log(showContentHeader)
+					} else {
+						$(".disContentHeader").css({"visibility": "hidden"});
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

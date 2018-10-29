@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0
+			}
+			
+			input[type=search] {
+				background-color: #FFFFFF;
+			}
+			
+			.headerSearch>div {
+				display: inline-block;
+			}
+			
+			.mui-icon-arrowthinright {
+				float: right;
+			}
+			/*八大板块*/
+			
+			.swiper-slide {
+				width: auto!important;
+			}
+			
+			.topmenu {
+				height: 35px;
+				background-color: white;
+				border-bottom: 1px solid #CCCCCC;
+				padding: 0 10px;
+				line-height: 35px;
+				font-family: "微软雅黑"
+			}
+			/*图文展示*/
+			.mui-table-view .mui-media-object {
+			    line-height: 68px;
+			    max-width: 65px;
+			    height: 91px;
+			}
+			.mui-table-view-cell>a:not(.mui-btn) {
+				 white-space: normal; 	
+			}
+			.textShow {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2; //规定几行显示省略号
+				-webkit-box-orient: vertical;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<!--底部导航-->
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item" href="#tabbar">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-chat">
+				<span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+				<span class="mui-tab-label">每日爆款</span>
+			</a>
+			<a class="mui-tab-item mui-active" href="#tabbar-with-contact">
+				<span class="mui-icon mui-icon-contact"></span>
+				<span class="mui-tab-label">预约中心</span>
+			</a>
+			<a class="mui-tab-item" href="#tabbar-with-map">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		<!--页头搜索框-->
+		<div class="headerSearch">
+			<div class="addressTap">
+				<span class="mui-icon mui-icon-location"></span>
+				<span class="address">成都</span>
+			</div>
+			<div class="mui-input-row mui-search">
+				<input type="search" placeholder="请输入商品名称/景区/酒店">
+			</div>
+			<div class="message">
+				<span class="mui-icon mui-icon-chatbubble"></span>
+			</div>
+		</div>
+		<!--首页banner图-->
+		<div class="mui-slider">
+			<div class="mui-slider-group mui-slider-loop">
+				<!--支持循环，需要重复图片节点-->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<img src="../../img/homePage/banner1.png" />
+				</div>
+
+				<div class="mui-slider-item">
+					<img src="../../img/homePage/banner1.png" />
+				</div>
+				<div class="mui-slider-item">
+					<img src="../../img/homePage/banner2.png" />
+				</div>
+
+				<!--支持循环，需要重复图片节点-->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<img src="../../img/homePage/banner1.png" />
+				</div>
+			</div>
+		</div>
+		<!--八大板块-->
+		<div class="eightPlate">
+			<div class="plateHeader">
+				<span><em>吃喝玩乐 </em> HOT</span>
+				<span class="mui-icon mui-icon-arrowthinright"></span>
+			</div>
+			<div class="">
+
+			</div>
+		</div>
+		<!--隐藏八大板块-->
+		<div class="topmenu">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<span class="swiper-slide">首页</span>
+					<span class="swiper-slide">美食</span>
+					<span class="swiper-slide">酒店</span>
+					<span class="swiper-slide">乐园</span>
+					<span class="swiper-slide">亲子</span>
+					<span class="swiper-slide">礼品</span>
+					<span class="swiper-slide">景区</span>
+					<span class="swiper-slide">出行</span>
+					<span class="swiper-slide">新人免单</span>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="contentHeader">
+				<span>综合</span>
+				<span>销量</span>
+				<span>价格</span>
+				<span>距离</span>
+			</div>
+			<div class="">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-left" src="../../img/homePage/homePage1.png">
+							<div class="mui-media-body">
+								<div class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>能和心是件幸福的事情；可是，打呼噜怎么办？的是大会客服都是回家看到</div>
+								<p>
+									<span>￥158 起</span>
+									<span>佣金：￥68</span>
+								</p>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../../plugins/rem.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script type="text/javascript">
+			//获得slider插件对象
+			var gallery = mui('.mui-slider');
+			gallery.slider({
+				interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+			});
+			//侧滑菜单
+			var swiper = new Swiper('.swiper-container', {
+				spaceBetween: 20,
+				slidesPerView: 'auto',
+				freeMode: true
+			});
+			mui.init()
+		</script>
+	</body>
+
+</html>

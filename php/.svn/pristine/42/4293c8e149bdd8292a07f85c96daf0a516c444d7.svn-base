@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{$page_title|default='乐玩联盟平台管理中心'}</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="/static/layui/css/layui1.9.css" type="text/css">
+<link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="/static/css/main.css" type="text/css">
+<link rel="stylesheet" href="/static/css/skin_default.css" type="text/css">
+<link rel="stylesheet" href="/static/css/message.css" type="text/css">
+
+<script src="/static/js/zepto.min.js"></script>
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/jfinal.js"></script>
+</head>
+<body>
+
+<!-- header end -->

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>正在发起微信支付</title>
+    <meta name="author" content="saltyfishweb.com">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" CONTENT="-1">
+    <meta http-equiv="Cache-Control" CONTENT="no-cache">
+    <meta http-equiv="Pragma" CONTENT="no-cache">
+    <link href="/www/css/main.css?rand={$time}" rel="stylesheet" type="text/css">
+</head>
+<body style="background:#fff;">
+<!--内容部分-->
+<div class="main" style="background: #fff;">
+    <div class="inner93" style="width: 80%; margin-top: 20px;">
+        <img src="/www/images/success.jpg" class="img100">
+        <div class="ydtag suc"><span>预订成功</span></div>
+        <div class="ydtag fail"><span>预订失败</span></div>
+        <div class="paygress">正在发起支付...</div>
+        <div class="paytxt">订单编号:{$order.order_no}<br>您还可以在“我的订单”中查看预订详情</div>
+        <div class="paytxt2">订单尚未支付，请重新支付<br> 我们将为您保留15分钟，超时将自动取消</div>
+        <a class="paybtn rebuy"><span>继续预订</span></a>
+        <a class="paybtn repay"><span>重新支付</span></a>
+    </div>
+</div>
+
+
+<div style=" clear:both; height:20px;"></div>
+
+<script type="text/javascript" src="/www/js/zepto.min.1.14.js"></script>
+<script>
+    //调用微信JS api 支付
+    function jsApiCall()
+    {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {$order.jsApiParameters},
+            function(res){
+                WeixinJSBridge.log(res.err_msg);
+                if(res.err_msg == "get_brand_wcpay_request:cancel" ) {
+                    $('.paygress,.paytxt,.ydtag.suc,.paybtn.rebuy').hide();
+                    $('.ydtag.fail,.paytxt2,.paybtn.repay').show();
+                    //$('.bt3').html('&nbsp;您取消了支付！');
+                }
+                if(res.err_msg == "get_brand_wcpay_request:fail" ) {
+                    $('.paygress,.paytxt,.ydtag.suc,.paybtn.rebuy').hide();
+                    $('.ydtag.fail,.paytxt2,.paybtn.repay').show();
+                    //$('.bt3').html('&nbsp;支付失败！');
+                }
+                if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                    $('.paytxt,.ydtag.suc,.paybtn.rebuy').show();
+                    $('.paygress,.ydtag.fail,.paytxt2,.paybtn.repay').hide();
+                }
+            }
+        );
+    }
+
+    function callpay()
+    {
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }else{
+            jsApiCall();
+        }
+    }
+
+    $(function () {
+        setTimeout(function(){callpay()}, 500);
+
+        $('.rebuy').click(function () {
+            window.location.href='/wechat';
+        });
+        $('.repay').click(function () {
+            callpay();
+        });
+    });
+</script>
+
+</body>
+</html>

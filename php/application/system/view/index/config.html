@@ -1,0 +1,155 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">平台设置</li>
+            <li>公众号设置</li>
+        </ul>
+        <div class="layui-tab-content">
+            <!--基本信息-->
+            <div class="layui-tab-item layui-show">	
+                <form class="layui-form " action="{:url('config/index')}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="tab" value="1" />
+                    <volist name="config" id="val">
+                        <eq name="val.tab" value="1">
+                        <if condition="$val.type eq 'text'">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-inline" style="width:400px;">
+                                    <input type="text" name="{$val.field}" value="{$val.value}" lay-verify="require" class="layui-input">
+                                </div>
+                                <div style="display: inline-block; margin-top: 10px; color: #e2e2e2;">
+                                    {$val.info}
+                                </div>
+                            </div>
+                            <elseif condition="$val.type eq 'file'" />
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-inline" style="width:260px;">
+                                    <input type="file" name="img" textname="{$val.field}" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="{$val.btntxt}">
+                                    <input type="hidden" name="{$val.field}" value="{$val.value}">
+                                    <div class="img_preview {$val.field}" title="图片预览"><img src="/uploads/{$val.value}"></div>
+                                </div>
+                                <div class="layui-input-inline" style="width:260px;">
+                                    <input type="text" name="{$val.field}_alt" value="{$val.alt}" placeholder="输入图片名称" class="layui-input">
+                                </div>
+                            </div>
+                            <elseif condition="$val.type eq 'radio'" />
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-block">
+                                    <volist name="val.options" id="obj" key="rindex">
+                                        <input type="radio" name="{$val.field}" value="{$rindex}" title="{$obj}" <if condition="$val['value'] eq $rindex"> checked=""</if>>
+                                    </volist>
+                                </div>
+                            </div>
+                        </if>
+                        </eq>
+                    </volist>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 其他 tab=2-->
+            <div class="layui-tab-item">
+                <form class="layui-form " action="{:url('config/index')}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="tab" value="2" />
+                    <volist name="config" id="val">
+                        <eq name="val.tab" value="2">
+                        <if condition="$val.type eq 'text'">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-inline" style="width:400px;">
+                                    <input type="text" name="{$val.field}" value="{$val.value}" lay-verify="require" class="layui-input">
+                                </div>
+                                <div style="display: inline-block; margin-top: 10px; color: #e2e2e2;">
+                                    {$val.info}
+                                </div>
+                            </div>
+                            <elseif condition="$val.type eq 'file'" />
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-inline" style="width:260px;">
+                                    <input type="file" name="img" textname="{$val.field}" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="{$val.btntxt}">
+                                    <input type="hidden" name="{$val.field}" value="{$val.value}">
+                                    <div class="img_preview {$val.field}" title="图片预览"><img src="/uploads/{$val.value}"></div>
+                                </div>
+                                <div class="layui-input-inline" style="width:260px;">
+                                    <input type="text" name="{$val.field}_alt" value="{$val.alt}" placeholder="输入图片名称" class="layui-input">
+                                </div>
+                            </div>
+                            <elseif condition="$val.type eq 'radio'" />
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-block">
+                                    <volist name="val.options" id="obj" key="rindex">
+                                        <input type="radio" name="{$val.field}" value="{$rindex}" title="{$obj}" <if condition="$val['value'] eq $rindex"> checked=""</if>>
+                                    </volist>
+                                </div>
+                            </div>
+                        </if>
+                        </eq>
+                    </volist>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 联系我们 tab=3-->
+            <div class="layui-tab-item">
+                <form class="layui-form " action="{:url('config/index')}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="tab" value="3" />
+                    <volist name="config" id="val">
+                        <eq name="val.tab" value="3">
+                        <if condition="$val.type eq 'text'">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-inline" style="width:400px;">
+                                    <input type="text" name="{$val.field}" value="{$val.value}" lay-verify="require" class="layui-input">
+                                </div>
+                                <div style="display: inline-block; margin-top: 10px; color: #e2e2e2;">
+                                    {$val.info}
+                                </div>
+                            </div>
+                            <elseif condition="$val.type eq 'file'" />
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-inline" style="width:260px;">
+                                    <input type="file" name="img" textname="{$val.field}" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="{$val.btntxt}">
+                                    <input type="hidden" name="{$val.field}" value="{$val.value}">
+                                    <div class="img_preview {$val.field}" title="图片预览"><img src="/uploads/{$val.value}"></div>
+                                </div>
+                                <div class="layui-input-inline" style="width:260px;">
+                                    <input type="text" name="{$val.field}_alt" value="{$val.alt}" placeholder="输入图片名称" class="layui-input">
+                                </div>
+                            </div>
+                            <elseif condition="$val.type eq 'radio'" />
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$val.label}</label>
+                                <div class="layui-input-block">
+                                    <volist name="val.options" id="obj" key="rindex">
+                                        <input type="radio" name="{$val.field}" value="{$rindex}" title="{$obj}" <if condition="$val['value'] eq $rindex"> checked=""</if>>
+                                    </volist>
+                                </div>
+                            </div>
+                        </if>
+                        </eq>
+                    </volist>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>

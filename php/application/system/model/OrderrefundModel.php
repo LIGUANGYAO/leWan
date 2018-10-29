@@ -1,0 +1,95 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2018/10/26
+ * Time: 9:21
+ * 退款模型
+ * 肖亚子
+ */
+namespace app\system\model;
+use think\model;
+use think\Db;
+
+class OrderrefundModel extends BaseModel{
+
+    public static function TableName(){
+        return Db::name("order_refund");
+    }
+
+    /**
+     * @param array $Condition    查询条件
+     * @param int $Psize          分页数默认第一页
+     * @param int $PageSize       分页条数默认一页50条
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取退款申请数据
+     * 肖亚子
+     */
+
+    public function OrderRefundList($Condition=array(), $Psize=1, $PageSize=50){
+
+        $Field     = "r.*,u.mobile,u.nickname,o.order_no,m.merchant_name";
+        $Count     = self::TableName()
+                        ->alias("r")
+                        ->field($Field)
+                        ->Join("user u","u.user_id = r.user_id","left")
+                        ->Join("order o","o.order_id = r.order_id","left")
+                        ->Join("merchant m","m.merchant_id = o.merchant_id","left")
+                        ->where($Condition)
+                        ->order('r.refund_id desc')
+                        ->count();
+
+        $PageCount = ceil($Count/$PageSize);
+
+        $List      = self::TableName()
+                        ->alias("r")
+                        ->field($Field)
+                        ->Join("user u","u.user_id = r.user_id","left")
+                        ->Join("order o","o.order_id = r.order_id","left")
+                        ->Join("merchant m","m.merchant_id = o.merchant_id","left")
+                        ->where($Condition)
+                        ->order('r.refund_id desc')
+                        ->select();
+
+        $PaginaTion = parent::Paging($Count,$Psize,$PageCount,$List);
+
+        return $PaginaTion;
+
+    }
+
+    /**
+     * @param array $Condition       搜索查询条件
+     * @param array $CountCondition  单独订单状态条件
+     * @param $Type                  查询订单状态类型
+     * @param $Status                列表展示类型状态
+     * @return int|string
+     * 查询订单退货状态数量
+     * 肖亚子
+     */
+    public function RefundCount($Condition = array(),$CountCondition = array(),$Type,$Status){
+        if ($Type == $Status){
+            $Count = self::TableName()
+                        ->alias("r")
+                        ->Join("user u","u.user_id = r.user_id","left")
+                        ->Join("order o","o.order_id = r.order_id","left")
+                        ->Join("merchant m","m.merchant_id = o.merchant_id","left")
+                        ->where($Condition)
+                        ->order('r.refund_id desc')
+                        ->count();
+        }else{
+            $Count = self::TableName()
+                        ->alias("r")
+                        ->Join("user u","u.user_id = r.user_id","left")
+                        ->Join("order o","o.order_id = r.order_id","left")
+                        ->Join("merchant m","m.merchant_id = o.merchant_id","left")
+                        ->where($CountCondition)
+                        ->order('r.refund_id desc')
+                        ->count();
+        }
+
+        return $Count;
+    }
+}

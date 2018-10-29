@@ -1,0 +1,84 @@
+<div class="page">
+
+    <div class="l" style="width:90%; ">
+    <form class="layui-form search" action="{:url('system/page/index')}">
+        <div class="layui-inline">
+            <label class="layui-form-indexlabel">关键词</label>
+	        <div class="layui-input-inline">
+	            <input type="text" name="kws" value="{$kws}" placeholder="啤酒名称" autocomplete="off" class="layui-input">
+	        </div> 
+	    </div>
+	   
+        <div class="layui-inline">
+            <label class="layui-form-indexlabel">发布时间</label>
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="starttime" value="{$starttime}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+	        </div> 
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="endtime" value="{$endtime}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+	        </div> 
+        </div>
+        
+        
+        <button class="layui-btn layui-btn-small">搜 &nbsp; 索</button>
+          
+    </form>
+    </div>
+    
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th nowrap="nowrap" width="20"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+            <th nowrap="nowrap">页面</th>
+            <th nowrap="nowrap">发布时间</th>
+            <th nowrap="nowrap" width="100">操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="data.list" id="val">
+          <tr>
+            <td nowrap="nowrap"><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>
+            <td nowrap="nowrap">{$val.title}</td>
+            <td nowrap="nowrap">{$val.add_time|date="Y-m-d",###}</td>
+            <td nowrap="nowrap">
+                <a href="{:url('page/edit', array('id'=>$val['id']))}" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+                &nbsp; 
+                <a href="javascript:sure('确定删除这条数据？', '{:url('page/delete', array('id'=>$val['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+                
+            </td>
+          </tr>
+          </volist>
+          
+        </tbody>
+      </table>
+      <div class="tabletool">
+         <!-- 工具按钮 -->
+         <div class="l">
+            <a href="javascript:batchDel('/system/page/delete');" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+         </div>
+         
+         <!-- 分页工具 -->
+         <div id="limitpage" class="r"></div>
+         <div class="clear"></div>
+      </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

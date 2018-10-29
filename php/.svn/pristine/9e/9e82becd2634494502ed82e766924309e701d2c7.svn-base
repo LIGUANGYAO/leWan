@@ -1,0 +1,75 @@
+<div class="page">
+
+    
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <!-- 必须，只有这里才真正控制宽度 -->
+        <colroles>
+          <col width="50">
+          <col>
+          <col>
+          <col width="15%">
+          <col width="15%">
+        </colroles>
+        <thead>
+          <tr>
+            <th nowrap="nowrap" width="20"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+            <th nowrap="nowrap">角色名称</th>
+            <th nowrap="nowrap">备注</th>
+            <th nowrap="nowrap">状态</th>
+            <th nowrap="nowrap" width="100">操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="data" id="val">
+          <tr>
+            <td nowrap="nowrap"><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>
+            <td nowrap="nowrap">{$val.role_name}</td>
+            <td nowrap="nowrap">{$val.remarks}</td>
+            <td nowrap="nowrap">
+                <input type="checkbox" name="status" lay-skin="switch" lay-text="ON|OFF" lay-filter="switchAjax" <if condition="$val.status eq '1'">checked="checked"</if> itemid="{$val.id}" url="/system/roles/switching" tbname="sys_roles" filed="status" >
+            </td>
+            <td nowrap="nowrap">
+                <a href="javascript:openWindow('修改', '{:url('system/roles/edit', array('id'=>$val['id']))}', '500px', '400px')" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+                &nbsp; 
+                <a href="{:url('system/roles/auth', array('id'=>$val['id']))}" class="authIcon" title="删除">编辑权限</a>
+                <if condition="$i gt 1">
+                &nbsp; 
+                <a href="javascript:sure('确定删除这条数据？', '{:url('system/roles/delete', array('id'=>$val['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+                </if>
+            </td>
+          </tr>
+          </volist>
+          
+        </tbody>
+      </table>
+      <div class="tabletool">
+         <!-- 工具按钮 -->
+         <div class="l hidden">
+            <a href="" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+         </div>
+         
+         <!-- 分页工具 -->
+         <div id="limitpage" class="r"></div>
+         <div class="clear"></div>
+      </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

@@ -1,0 +1,15 @@
+<!-- body start -->
+<div id="header">
+    <include  file="/public/top" />
+</div>
+    <!-- header end -->
+
+
+<!-- 下面这两块position:absolute; -->
+<div id="leftbox" <if condition="$Think.session.admin.hidemenu eq '0'">style="width:50px;" </if>>
+    <include  file="public/left" />
+</div>
+<!-- left end -->
+<div id="rightbox" <if condition="$Think.session.admin.hidemenu eq '0'">style="left:50px;" </if>>
+    <div class="navbar"><i class="fa fa-map-marker"></i>&nbsp;系统首页 > {$page_title}     </div>
+   

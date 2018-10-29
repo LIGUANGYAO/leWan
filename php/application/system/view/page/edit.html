@@ -1,0 +1,61 @@
+<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{$action}" method="post" enctype="multipart/form-data">
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">页面名称</label>
+			<div class="layui-input-inline" style="width:400px;">
+				<input type="text" name="title" value="{$obj.title}" lay-verify="require" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item hidden">
+			<label class="layui-form-label">图片</label>
+			<div class="layui-input-inline">
+				<input type="file" name="img" textname="photo1" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="上传照片1">
+				<input type="hidden" name="photo1">
+				<div class="img_preview photo1" title="图片预览"><img src="/uploads/{$obj.photo1}"></div>
+			</div>
+			<div class="layui-input-inline">
+				<input type="file" name="img" textname="photo2" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="上传照片2">
+				<input type="hidden" name="photo2">
+				<div class="img_preview photo2" title="图片预览"><img src="/uploads/{$obj.photo2}"></div>
+			</div>
+			<div class="layui-input-inline">
+				<input type="file" name="img" textname="photo3" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="上传照片3">
+				<input type="hidden" name="photo3">
+				<div class="img_preview photo3" title="图片预览"><img src="/uploads/{$obj.photo3}"></div>
+			</div>
+			<div class="layui-input-inline">
+				<input type="file" name="img" textname="photo4" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="上传照片4">
+				<input type="hidden" name="photo4">
+				<div class="img_preview photo4" title="图片预览"><img src="/uploads/{$obj.photo4}"></div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">内容描述</label>
+			<div class="layui-input-inline" style="width:50%; ">
+				<textarea class="ckeditor" cols="40" id="content" name="content" rows="10" >{$obj.content}</textarea>
+			</div>
+		</div>
+		 <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+		    </div>
+		  </div>
+		  
+		  <input type="hidden" value="{$obj.id}" name="id">
+    </form>
+
+</div>
+<script>
+KindEditor.ready(function(K) {
+	window.editor = K.create('#content,#en_content', {
+		width : '100%',
+		height: '210px',
+		afterBlur: function(){this.sync();}
+	});
+})
+
+</script>

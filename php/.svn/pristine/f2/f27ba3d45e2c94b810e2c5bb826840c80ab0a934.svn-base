@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>VIP</title>
+        <meta name="author" content="saltyfishweb.com">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Expires" CONTENT="-1">
+        <meta http-equiv="Cache-Control" CONTENT="no-cache">
+        <meta http-equiv="Pragma" CONTENT="no-cache">
+        <link href="/www/css/main.css?rand={$time}" rel="stylesheet" type="text/css">
+    </head>
+<body style="background:#f7f9fc;">
+
+    <!--顶部导航栏-->
+    <include file='Index:alert' />
+
+    <!--内容部分-->
+    <div class="main" style="background: #f7f9fc;">
+        <div class="relative">
+            <img src="/www/images/VIP.jpg" class="img100 l">
+            <div class="clear"></div>
+            <div class="mxxq">
+                <div class="bt">会员卡</div>
+            </div>
+        </div>
+
+        <div class="relative">
+            <img src="/www/images/card.png" class="img100 l">
+            <div class="clear"></div>
+            <div style="position: absolute; left: 0px; width: 100%; color: #596265; font-size: 16px; top: 35%; text-align: center;">{$user.phone}</div>
+            <div style="position: absolute; left: 0px; width: 100%; color: #f0dcb2; font-size: 19px; bottom: 11%; text-align: center;">{$user.vipcode}</div>
+        </div>
+    </div>
+
+
+    <div style=" clear:both; height:20px;"></div>
+
+    <script type="text/javascript" src="/www/js/zepto.min.1.14.js"></script>
+    <script>
+
+    </script>
+    <include file='Index:sharejs' />
+</body>
+</html>

@@ -1,0 +1,307 @@
+<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<div class="page" style="padding: 20px 0px 0px 0px;">
+	<form class="layui-form " action="{$action}" method="post"
+		enctype="multipart/form-data" onsubmit="return fromsubmit()">
+		<input type="hidden" name="cat_id" value="28">
+		<div class="layui-tab">
+			<ul class="layui-tab-title">
+				<li class="layui-this">中文编辑</li>
+				<li>英语编辑</li>
+			</ul>
+			<div class="layui-tab-content">
+				<!-- tab1 -->
+				<div class="layui-tab-item layui-show">
+					<div class="layui-form-item">
+						<label class="layui-form-label">门店名称</label>
+						<div class="layui-input-inline" style="width: 390px;">
+							<input type="text" name="title" value="{$obj.title}"
+								lay-verify="require" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">门店地址</label>
+						<div class="layui-input-inline">
+							<select name="provence_id" lay-verify="require"
+								lay-filter="provence_id">
+								<option value="">选择省</option>
+								<volist name="provence" id="val">
+								<option value="{$val.code}"<if
+										condition="$obj.provence_id eq $val['code']">
+									selected="selected"</if>>{$val.provence}
+								</option>
+								</volist>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="city_id" lay-verify="require" lay-filter="city_id">
+								<option>城市</option>
+								<volist name="city" id="val">
+								<option value="{$val.code}"<if
+										condition="$obj.city_id eq $val['code']">
+									selected="selected"</if>>{$val.city}
+								</option>
+								</volist>
+							</select>
+						</div>
+						<div class="layui-input-inline">
+							<select name="area_id" lay-verify="require" lay-filter="area_id">
+								<option>区县</option>
+								<volist name="area" id="val">
+								<option value="{$val.code}"<if
+										condition="$obj.area_id eq $val['code']">
+									selected="selected"</if>>{$val.area}
+								</option>
+								</volist>
+							</select>
+						</div>
+						<div class="layui-input-inline" style="width: 300px;">
+							<input type="text" name="address" value="{$obj.address}"
+								placeholder="输入地址后自动定位" onkeyup="getPoints()"
+								lay-verify="require" class="layui-input">
+						</div>
+						<input type="hidden" name="ssq" value="{$obj.ssq}">
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">地图定位</label>
+						<div class="layui-input-inline" style="width: 800px;">
+							<a class="layui-btn layui-btn-normal"
+								href="javascript:toggleMap()">地图定位</a> &nbsp; <span
+								style="color: #666;" id="points">{$obj.lng},{$obj.lat}.
+								请点击地图，自动拾取经纬度</span>
+							<div class="map">
+								<div id="allmap" style="width: 895px; height: 460px;"></div>
+							</div>
+						</div>
+						<input type="hidden" name="lng" value="{$obj.lng}"> <input
+							type="hidden" name="lat" value="{$obj.lat}">
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">门店电话</label>
+						<div class="layui-input-inline">
+							<input type="text" name="tel" value="{$obj.tel}"
+								lay-verify="require" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">营业时间</label>
+						<div class="layui-input-inline">
+							<input type="text" name="businesstime"
+								value="{$obj.businesstime}" placeholder="09:00-18:00"
+								lay-verify="require" class="layui-input">
+						</div>
+					</div>
+
+					<!-- 每日特供 -->
+					<div class="layui-form-item">
+						<label class="layui-form-label">每日特供</label>
+						<div class="layui-input-inline">
+							<input type="file" name="img" textname="pic_tg1"
+								class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="点击上传">
+							<input type="hidden" name="pic_tg1">
+							<div class="img_preview pic_tg1" title="图片预览">
+								<img src="/uploads/{$obj.pic_tg1}">
+							</div>
+						</div>
+						<div class="layui-input-inline">
+							<input type="file" name="img" textname="pic_tg2"
+								class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="点击上传">
+							<input type="hidden" name="pic_tg2">
+							<div class="img_preview pic_tg2" title="图片预览">
+								<img src="/uploads/{$obj.pic_tg2}">
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<!-- 菜单 -->
+					<div class="layui-form-item">
+						<label class="layui-form-label">菜单1</label>
+						<div class="layui-input-inline">
+							<input type="file" name="img" textname="pic_menu1"
+								class="layui-upload-file" lay-ext="jpg|png|gif"
+								lay-title="点击上传封面"> <input type="hidden"
+								name="pic_menu1">
+							<div class="img_preview pic_menu1" title="图片预览">
+								<img src="/uploads/{$obj.pic_menu1}">
+							</div>
+						</div>
+						<div class="layui-input-inline">
+							<input type="file" name="img" textname="pic_menu1_1"
+								class="layui-upload-file" lay-ext="jpg|png|gif"
+								lay-title="点击上传预览图"> <input type="hidden"
+								name="pic_menu1_1">
+							<div class="img_preview pic_menu1_1" title="图片预览">
+								<img src="/uploads/{$obj.pic_menu1_1}">
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">菜单2</label>
+						<div class="layui-input-inline">
+							<input type="file" name="img" textname="pic_menu2"
+								class="layui-upload-file" lay-ext="jpg|png|gif"
+								lay-title="点击上传封面"> <input type="hidden"
+								name="pic_menu2">
+							<div class="img_preview pic_menu2" title="图片预览">
+								<img src="/uploads/{$obj.pic_menu2}">
+							</div>
+						</div>
+						<div class="layui-input-inline">
+							<input type="file" name="img" textname="pic_menu2_2"
+								class="layui-upload-file" lay-ext="jpg|png|gif"
+								lay-title="点击上传预览图"> <input type="hidden"
+								name="pic_menu2_2">
+							<div class="img_preview pic_menu2_2" title="图片预览">
+								<img src="/uploads/{$obj.pic_menu2_2}">
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">菜单3</label>
+						<div class="layui-input-inline">
+							<input type="file" name="img" textname="pic_menu3"
+								class="layui-upload-file" lay-ext="jpg|png|gif"
+								lay-title="点击上传封面"> <input type="hidden"
+								name="pic_menu3">
+							<div class="img_preview pic_menu3" title="图片预览">
+								<img src="/uploads/{$obj.pic_menu3}">
+							</div>
+						</div>
+						<div class="layui-input-inline">
+							<input type="file" name="img" textname="pic_menu3_3"
+								class="layui-upload-file" lay-ext="jpg|png|gif"
+								lay-title="点击上传预览图"> <input type="hidden"
+								name="pic_menu3_3">
+							<div class="img_preview pic_menu3_3" title="图片预览">
+								<img src="/uploads/{$obj.pic_menu3_3}">
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">内容介绍</label>
+						<div class="layui-input-inline" style="width: 860px;">
+							<textarea class="ckeditor" cols="40" id="content" name="content"
+								rows="10">{$obj.content}</textarea>
+						</div>
+					</div>
+				</div>
+				<!-- 英文 -->
+				<div class="layui-tab-item">
+					<div class="layui-form-item">
+						<label class="layui-form-label">门店名称</label>
+						<div class="layui-input-inline" style="width: 390px;">
+							<input type="text" name="en_title" value="{$obj.en_title}"
+								lay-verify="require" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">省市区</label>
+						<div class="layui-input-inline" style="width: 390px;">
+							<input type="text" name="en_ssq" value="{$obj.en_ssq}"
+								lay-verify="require" class="layui-input">
+						</div>
+						<div class="layui-input-inline" style="width: 300px;">
+							<input type="text" name="en_address" value="{$obj.en_address}"
+								placeholder="" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">内容介绍</label>
+						<div class="layui-input-inline" style="width: 860px;">
+							<textarea class="ckeditor" cols="40" id="en_content"
+								name="en_content" rows="10">{$obj.en_content}</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+			</div>
+		</div>
+
+		<input type="hidden" value="{$obj.id}" name="id">
+	</form>
+
+</div>
+
+
+<script type="text/javascript"
+	src="http://api.map.baidu.com/api?v=2.0&ak=lWkv6t1TRk3jcGxLLEOedOty"></script>
+<script>
+KindEditor.ready(function(K) {
+	window.editor = K.create('#content,#en_content', {
+		width : '100%',
+		height: '550px',
+		afterBlur: function(){this.sync();}
+	});
+});
+
+/**
+ * 创建地图 
+ */
+var map = new BMap.Map("allmap");
+map.enableDragging();
+map.enableScrollWheelZoom();
+map.centerAndZoom(new BMap.Point(116.403765, 39.914850), 12);
+//创建地址解析器实例     
+var myGeo = new BMap.Geocoder();
+
+//单击获取点击的经纬度
+map.addEventListener("click",function(e){
+  map.clearOverlays();
+  lng = e.point.lng;
+  lat = e.point.lat;
+  map.addOverlay(new BMap.Marker(e.point));
+  $('#points').html(lng+', '+lat);
+  $("input[name='lng']").val(lng);
+  $("input[name='lat']").val(lat);
+});
+var mapstatus = 1;
+function toggleMap(){
+  if(mapstatus == 0){
+      $('.map').show();
+      mapstatus = 1;
+  }else{
+      //关闭地图
+      $('.map').hide();
+      mapstatus = 0;
+  }
+}
+function getPoints(){
+   map.clearOverlays();
+   p = $("select[name='provence_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+   c = $("select[name='city_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+   a = $("select[name='area_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+  address = $("input[name='address']").val();
+  myGeo.getPoint(p+c+a+address, function(point){      
+      if (point) {      
+          map.centerAndZoom(point, 16);      
+          map.addOverlay(new BMap.Marker(point));
+          lng = point.lng;
+          lat = point.lat;
+          $('#points').html(lng+', '+lat);
+      }      
+   }, 
+  "北京市");
+}
+
+function fromsubmit(){
+	p = $("select[name='provence_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+    c = $("select[name='city_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+    a = $("select[name='area_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+    
+     $("input[name='ssq']").val(p+c+a);
+     return true;
+}
+
+</script>

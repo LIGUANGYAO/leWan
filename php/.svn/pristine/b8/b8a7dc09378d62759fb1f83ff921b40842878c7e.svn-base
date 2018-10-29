@@ -1,0 +1,134 @@
+<div class="page">
+
+    <div class="l" style="width:90%; ">
+    <form class="layui-form search" action="{:url('system/order/index')}">
+        <div class="layui-inline">
+            <label class="layui-form-indexlabel">姓名</label>
+	        <div class="layui-input-inline">
+	            <input type="text" name="kws" value="{$kws}" placeholder="关键词" autocomplete="off" class="layui-input">
+	        </div> 
+	    </div>
+	    <div class="layui-inline">
+            <label class="layui-form-indexlabel">状态</label>
+	        <div class="layui-input-inline">
+	            <select name="status" lay-verify="require">
+	                <option value="-2">全部</option>
+                    <!-- -1无效  0新订单；1已付款；2已入住完成；5（支付）取消订单 6退款成功-->
+	                <option value="0" <if condition="$status eq '0'"> selected="selected"</if>>未付款</option>
+	                <option value="1" <if condition="$status eq 1"> selected="selected"</if>>已付款</option>
+	                <option value="2" <if condition="$status eq 2"> selected="selected"</if>>已入住</option>
+	                <option value="5" <if condition="$status eq 5"> selected="selected"</if>>取消订单</option>
+                    <option value="-1" <if condition="$status eq -1"> selected="selected"</if>>无效订单</option>
+	            </select>
+	        </div>
+	    </div>
+        <div class="layui-inline">
+            <label class="layui-form-indexlabel">下单时间</label>
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="starttime" value="{$starttime}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+	        </div> 
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="endtime" value="{$endtime}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+	        </div> 
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-indexlabel">入住日期</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="starttime1" value="{$starttime1}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+            </div>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="endtime1" value="{$endtime1}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+            </div>
+        </div>
+        
+        
+        <button class="layui-btn layui-btn-small">搜 &nbsp; 索</button>
+          
+    </form>
+    </div>
+    
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th nowrap="nowrap" width="20"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+            <th nowrap="nowrap">订单号</th>
+            <th nowrap="nowrap">订单金额</th>
+            <th nowrap="nowrap">付款金额</th>
+            <th nowrap="nowrap">客户姓名</th>
+            <th nowrap="nowrap">客户电话</th>
+            <th nowrap="nowrap">入住日期</th>
+            <th nowrap="nowrap">离开日期</th>
+            <th nowrap="nowrap">状态</th>
+            <th nowrap="nowrap">下单时间</th>
+            <th nowrap="nowrap" width="100">操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="data.list" id="val">
+          <tr>
+            <td nowrap="nowrap"><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>
+              <td nowrap="nowrap"><a href="{:url('order/view', array('id'=>$val['id']))}" title="查看详情">{$val.order_no}</a></td>
+            <td nowrap="nowrap">{$val.totalfee}</td>
+            <td nowrap="nowrap">{$val.payamount}</td>
+            <td nowrap="nowrap">{$val.username}</td>
+            <td nowrap="nowrap">{$val.mobile}</td>
+            <td nowrap="nowrap">{$val.starttime}</td>
+            <td nowrap="nowrap">{$val.endtime}</td>
+            <td nowrap="nowrap">
+                <if condition="$val.status eq '0'">
+                    <span style="color: #868686">待付款</span>
+                <elseif condition="$val.status eq '1'" />
+                        <span style="color: #333">已付款</span>
+                <elseif condition="$val.status eq '2'" />
+                    <span style="color: green">已完成</span>
+                <elseif condition="$val.status eq '5'" />
+                    <span style="color: red">（取消订单）申请退款</span>
+                <elseif condition="$val.status eq '6'" />
+                    <span style="color: green">退款成功</span>
+                <elseif condition="$val.status eq '-1'" />
+                    <span style="color: #E2E2E2">无效</span>
+                </if>
+            </td>
+            <td nowrap="nowrap">{$val.addtime|date='Y-m-d H:i',###}</td>
+            <td nowrap="nowrap">
+                <a href="{:url('order/view', array('id'=>$val['id']))}" class="editIcon" title="查看详情"><i class="fa fa-edit"></i></a>
+                &nbsp; 
+                <a href="javascript:sure('确定删除这条数据？', '{:url('order/delete', array('id'=>$val['id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+                
+            </td>
+          </tr>
+          </volist>
+          
+        </tbody>
+      </table>
+      <div class="tabletool">
+         <!-- 工具按钮 -->
+         <div class="l">
+            <a href="javascript:batchDel('/system/order/delete');" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+         </div>
+         
+         <!-- 分页工具 -->
+         <div id="limitpage" class="r"></div>
+         <div class="clear"></div>
+      </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

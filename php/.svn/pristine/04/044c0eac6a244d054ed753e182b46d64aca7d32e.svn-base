@@ -1,0 +1,86 @@
+<div class="page">
+
+    <div class="l" style="width:90%; ">
+    <form class="layui-form search" action="{:url('system/admins/logs')}">
+        <div class="layui-input-inline">
+            <input type="text" name="title" value="{$title}" placeholder="关键词" autocomplete="off" class="layui-input">
+        </div> 
+        <div class="layui-input-inline">
+            <select name="admin_id" lay-verify="require">
+                <option value="0">不限</option> 
+                <volist name="adminlist" id="val">
+                <option value="{$val.id}" <if condition="$admin_id eq $val['id']"> selected="selected"</if>>{$val.jname}</option>
+                </volist>
+            </select>
+        </div>
+        
+        <button class="layui-btn layui-btn-small">搜 &nbsp; 索</button>
+          
+    </form>
+    </div>
+    
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <!-- 必须，只有这里才真正控制宽度 -->
+        <!--<colgroup>
+          <col width="50">
+          <col width="10%">
+          <col width="70%">
+          <col>
+        </colgroup>-->
+        <thead>
+          <tr>
+            <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+            <th width="100px;">管理员账号</th>
+            <th width="150px;">管理员姓名</th>
+            <th width="200px;">操作模块</th>
+            <th >操作内容</th>
+            <th width="200px">ip地址</th>
+            <th width="200px;">时间</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="data.list" id="val">
+          <tr>
+            <td><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>
+            <td>{$val.admin_name}</td>
+            <td>{$val.admin_nickname}</td>
+            <td>{$val.module}</td>
+            <td >{$val.intro}</td>
+            <td style="width:200px;overflow:hidden;display:block;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;" title="{$val.ipaddress}">{$val.ipaddress}</td>
+            <td>{$val.addtime}</td>
+          </tr>
+          </volist>
+          
+        </tbody>
+      </table>
+      <div class="tabletool">
+         <!-- 工具按钮 -->
+         <div class="l">
+            <a href="javascript:batchDel('/system/admins/deleteLogs');" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+         </div>
+         
+         <!-- 分页工具 -->
+         <div id="limitpage" class="r"></div>
+         <div class="clear"></div>
+      </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

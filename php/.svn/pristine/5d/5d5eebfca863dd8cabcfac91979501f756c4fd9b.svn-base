@@ -1,0 +1,30 @@
+<?php
+/**
+ * 后台应用配置
+ */
+
+
+return [
+	//后台index控制器不进行权限判断
+    'filter_indexaction' => [
+        'index/logout',
+        'index/login',
+    ],
+    
+    //过滤不需要权限验证的操作
+    'filter_controllaction' => [
+    	'index/index',
+    	'config/edit',
+    	'categories/edit',
+    	'categories/add',
+    	'categories/delete',
+    ],
+    
+    //过滤controller
+    'filter_controller'     => [
+    	'ajax'
+    ],
+		
+    'display_nodes' => true,
+	
+];

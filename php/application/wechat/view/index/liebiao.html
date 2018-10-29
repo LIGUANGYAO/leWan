@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>房间列表</title>
+        <meta name="author" content="saltyfishweb.com">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Expires" CONTENT="-1">
+        <meta http-equiv="Cache-Control" CONTENT="no-cache">
+        <meta http-equiv="Pragma" CONTENT="no-cache">
+        <link href="/www/css/main.css?rand={$time}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="/www/css/calendar.css?rand={$time}">
+    </head>
+<body style="background:#f5f5f5;">
+
+    <!--顶部导航栏-->
+    <include file='Index:alert' />
+
+    <!--内容部分-->
+    <div class="main">
+        <div class="lbdh">
+            <div class="rq">
+                <div class="lb">入住日期</div>
+                <div class="zhi">{$Think.session.plan.startDate|strtotime|date='Y年m月d日',###}</div>
+            </div>
+            <div class="rq">
+                <div class="lb">退房日期</div>
+                <div class="zhi">{$Think.session.plan.endDate|strtotime|date='Y年m月d日',###}</div>
+            </div>
+            <div class="rq kf">
+                <div class="lb">客房数量</div>
+                <div class="zhi">{$Think.session.plan.rooomnum}间</div>
+            </div>
+            <div class="rq search">
+                <a href=""> &nbsp;</a>
+            </div>
+            <form action="{:urlwx('index/liebiao')}" id="xxxx" method="get">
+                <input id="startDate" name="startDate" value="" type="hidden">
+                <input id="endDate" name="endDate" value="" type="hidden">
+                <input class="NumDate" name="NumDate" value="" type="hidden">
+                <input class="stweek" name="stweek" value="" type="hidden">
+                <input class="enweek" name="enweek" value="" type="hidden">
+                <input class="rooomnum" name="rooomnum" value="" type="hidden">
+            </form>
+        </div>
+
+        <volist name="room" id="val">
+            <div class="lie">
+                <a href="{:urlwx('index/xiangqing', array('roomid'=>$val['id']))}">
+                    <div class="pic">
+                        <img src="/uploads/{$val.pic}">
+                        <div class="clear"></div>
+                        <div class="tedian">
+                            <div class="inner93">
+                                {$val.feature}<span>了解更多</span>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div class="wz">
+                    <div class="inner93">
+                        <div class="title">{$val.title}</div>
+                        <div class="je">￥{$val.price*1}<span>元/晚</span></div>
+                        <a href="{:urlwx('index/dingdanqueren', array('roomid'=>$val['id']))}" class="yd">立即预订</a>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </volist>
+
+    </div>
+
+    <div style=" clear:both; height:20px;"></div>
+
+    <div class="mask_calendar">
+        <div class="calendar"></div>
+        <div class="calendar_tishi">
+            请选择离店日期...
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/www/js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="/www/js/date.js"></script>
+    <script>
+        var myweek = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+        $(function(){
+            $('.lbdh').on('click',function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                $('.mask_calendar').show();
+            });
+            $('.mask_calendar').on('click',function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                if(e.target.className == "mask_calendar"){
+                    $('.calendar').slideUp(200);
+                    $('.mask_calendar').fadeOut(200);
+                }
+            })
+            $('.lbdh').calendarSwitch({
+                selectors : {
+                    sections : ".calendar"
+                },
+                index : 4,      //展示的月份个数
+                animateFunction : "slideToggle",        //动画效果
+                controlDay:true,//知否控制在daysnumber天之内，这个数值的设置前提是总显示天数大于90天
+                daysnumber : "90",     //控制天数
+                comeColor : "#2EB6A8",       //入住颜色
+                outColor : "#2EB6A8",        //离店颜色
+                comeoutColor : "#E0F4F2",        //入住和离店之间的颜色
+                comfireBtn:'.comfire',          //确定按钮的class或者id
+                callback :function(){
+                    $('.mask_calendar').fadeOut(200);
+                    renderRq();
+
+                    var startDate = $('#startDate').val();  //入住的天数
+                    var endDate = $('#endDate').val();      //离店的天数
+                    var NumDate = $('.NumDate').text();    //共多少晚
+                    console.log(startDate);
+                    console.log(endDate);
+                    console.log(NumDate);
+                    //下面做ajax请求
+                    $('#xxxx').submit();
+                },
+            });
+
+            var b=new Date();
+            var ye=b.getFullYear();
+            var mo=b.getMonth()+1;
+            mo = mo<10?"0"+mo:mo;
+            var da=b.getDate();
+            da = da<10?"0"+da:da;
+            $('#startDate').val(ye+'-'+mo+'-'+da);
+            b=new Date(b.getTime()+24*3600*1000);
+            var ye=b.getFullYear();
+            var mo=b.getMonth()+1;
+            mo = mo<10?"0"+mo:mo;
+            var da=b.getDate();
+            da = da<10?"0"+da:da;
+            $('#endDate').val(ye+'-'+mo+'-'+da);
+            renderRq();
+        });
+
+        function renderRq() {
+            var st = new Date($('#startDate').val());
+            var en = new Date($('#endDate').val());
+            $('.rqmb.rz .fs .week').text(myweek[st.getDay()]);
+            $('.stweek').val(myweek[st.getDay()]);
+            $('.rqmb.tf .fs .week').text(myweek[en.getDay()]) ;
+            $('.enweek').val(myweek[en.getDay()]) ;
+            $('.rqmb.rz .daay').text(PrefixInteger(st.getDate(), 2));
+            $('.rqmb.tf .daay').text(PrefixInteger(en.getDate(), 2));
+            $('.rqmb.rz .fs .yy').text(st.getMonth()+1);
+            $('.rqmb.tf .fs .yy').text(en.getMonth()+1);
+            $('.rqmb.sl .daay').text($('.rsselect').val());
+            $('.rooomnum').val($('.rsselect').val());
+        }
+        function PrefixInteger(num, length) {
+            return (Array(length).join('0') + num).slice(-length);
+        }
+
+        var bannercount = '{$bannercount}'*1;
+        var picindex = 1;
+        setInterval(function () {
+            if(picindex > bannercount){
+                picindex = 1;
+            }
+            $('.indexbg.pic'+picindex).fadeIn();
+            $('.indexbg').not($('.indexbg.pic'+picindex)).fadeOut();
+            picindex++;
+            console.log(bannercount);
+        }, 5000);
+
+        function searchFloom() {
+            // var startDate = $('#startDate').val();
+            // var endDate = $('#endDate').val();
+            // var NumDate = $('.NumDate').val();
+            // var stweek = $('.stweek').val();
+            // var enweek = $('.enweek').val();
+            //
+            $('#xxxx').submit();
+        }
+    </script>
+    <include file='Index:sharejs' />
+</body>
+</html>

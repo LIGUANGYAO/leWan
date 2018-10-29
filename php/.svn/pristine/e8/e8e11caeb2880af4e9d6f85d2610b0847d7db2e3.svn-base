@@ -1,0 +1,15 @@
+body{background:#fff; }
+*{outline: none; text-decoration: none;margin: 0px; padding: 0px;}
+a:hover{text-decoration: none;}
+.wid100{width: 100%;}
+.center95{width: 97%; margin: 0px auto;}
+.clear{clear: both}
+.r{float: right;}
+.l{float: left; }
+.relative{position: relative;}
+.section{max-width: 720px; margin: 0px auto;}
+.plist{padding: 15px 10px; border-bottom: 1px solid #c1c1c1; color: #222; font-size: 15px;}
+.pagecontent{font-size: 15px;}
+.pagecontent *{font-size: 15px; line-height: 26px;}
+.pagecontent img{width: 100%; float: left;}
+.ggdb{position: fixed; z-index: 10; bottom: 0px; left: 0px; width: 100%; }

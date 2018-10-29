@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>收入明细</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #FFFFFF;
+			}
+			/*头部*/
+			.headerBox{
+				box-shadow: 0px 1px 15px 2px #ccc;
+				z-index: 10;
+				position: relative;     /*如果不加相对定位，box-shadow无效*/
+			}
+			.header{
+				height: 1.2rem;
+				line-height: 1.2rem;
+				font-size: 0.4rem;
+				display: flex;
+				justify-content: space-around;
+			}
+			.headerSec{
+				padding: 0 0.3rem;
+			}
+			.headerActive{
+				font-weight: bold;
+				border-bottom: 5px solid #E1B872;
+			}
+			.mui-table-view:before{
+				height: 0;
+			}
+			.content{
+				z-index: 5;
+			}
+			
+			/*我的佣金列表*/
+			.myCommission>ul>li>span:nth-child(1){
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: 500;
+			}
+			.myCommission>ul>li>span:nth-child(2){
+				font-size: 0.506rem;
+				font-weight: bold;
+				float: right;
+			}
+			.addMoney{   /*佣金正数*/
+				color: #F76E1E;
+			}
+			.removeMoney{	/*佣金负数*/
+				color: #333333;
+			}
+			.myCommission>ul>li>span>span{
+				font-size: 0.32rem;
+				color: #999999;
+				font-weight: bold;
+				margin-left: 0.1rem;
+			}
+			.myCommission .mui-table-view-cell{
+				padding: 0.533rem 0.533rem;
+			}
+			
+			/*我的提现*/
+			.myWithdraw{
+				display: none;
+			}
+			.myWithdraw>ul>li{
+				padding: 0.4rem 0.56rem;
+			}
+			.myWithdraw>ul>li>div{
+				display: inline-block;
+				float: left;
+			}
+			.withdrawMoney{
+				width: 70%;
+			}
+			.withdrawMoney>div:nth-child(1){
+				font-weight: 500;
+				font-size: 0.426rem;
+				color: #333333;
+			}
+			.withdrawMoney>div:nth-child(2){
+				font-weight: bold;
+				font-size: 0.506rem;
+				color: #333333;
+				margin-top: 0.213rem;
+			}
+			.withdrawMoney span{
+				font-size: 0.32rem;
+			}
+			
+			
+			.withdrawTime{
+				width: 30%;
+			}
+			.withdrawTime>div:nth-child(1){
+				font-weight: bold;
+				font-size: 0.426rem;
+			}
+			.withdrawIng{		/*提现中*/
+				color: #F76E1E;
+			}
+			.withdrawEd{
+				color: #333333;
+			}
+			
+			.withdrawTime>div:nth-child(2){
+				font-weight: 500;
+				font-size: 0.4rem;
+				color: #999999;
+				margin-top: 0.213rem;
+			}
+			
+			
+		</style>
+	</head>
+
+	<body>
+		<div class="headerBox">
+			<div class="header">
+				<div class="headerSec headerActive">我的佣金</div>
+				<div class="headerSec">我的提现</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="">
+				<!--我的佣金-->
+				<div class="myCommission">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<span>订单号：8248728472983</span>
+							<span class="addMoney">+25<span>（元）</span></span>
+						</li>
+						<li class="mui-table-view-cell">
+							<span>订单号：8248728472983</span>
+							<span class="removeMoney">-25<span>（元）</span></span>
+						</li>
+						<!--空状态时-->
+					    <div class="lw-empty" style="display: block;" v-else>
+							<div class="lw-empty-box">
+								<div class="lw-empty-flex">
+									<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img"/>
+									<div class="lw-empty-test">暂无客户 去推广产品吧！</div>
+								</div>
+							</div>
+						</div>	
+					</ul>
+				</div>
+				<!--我的提现-->
+				<div class="myWithdraw">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<div class="withdrawMoney">
+								<div>提现到微信零钱包</div>
+								<div>45.72 <span>（元）</span></div>
+							</div>
+							<div class="withdrawTime">
+								<div class="withdrawIng">提现中</div>
+								<div>19:45:21</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="withdrawMoney">
+								<div>提现到微信零钱包</div>
+								<div>45.72 <span>（元）</span></div>
+							</div>
+							<div class="withdrawTime">
+								<div class="withdrawEd">已完成</div>
+								<div>19:45:21</div>
+							</div>
+						</li>
+						
+						
+						<!--空状态时-->
+					    <div class="lw-empty" style="display: block;" v-else>
+							<div class="lw-empty-box">
+								<div class="lw-empty-flex">
+									<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img"/>
+									<div class="lw-empty-test">暂无客户 去推广产品吧！</div>
+								</div>
+							</div>
+						</div>	
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				//切换导航栏
+				mui("body").on("tap",".headerSec",function(){
+					$(".headerSec").removeClass("headerActive");
+					$(this).addClass("headerActive");
+					var _index = $(this).index();
+					if(_index == 0){
+						$('.myCommission').show();
+						$('.myWithdraw').hide();
+					}else{
+						$('.myWithdraw').show();
+						$('.myCommission').hide();
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,118 @@
+<?php
+namespace app\system\controller;
+
+use app\common\AdminBaseController;
+use think\Request;
+use think\Db;
+use think\Session;
+use app\common\RegExpression;
+use app\common\Md5Help;
+use app\common\SysHelp;
+use app\system\model\AdminModel;
+
+/**
+ * 分类管理模块
+ * Enter description here ...
+ * @author Administrator
+ *
+ */
+class CategoriesController extends AdminBaseController
+{
+    
+    /**
+     * 分类管理列表
+     * Enter description here ...
+     */
+    public function index(){
+    	$catesection = $this->get('section', 0);
+    	if($catesection > 0){
+    		Session::set('catesection', $catesection);
+    	}
+    	if(!Session::has('catesection')){
+    		$this->error('没有section');
+    	}
+    	
+        //设置添加信息按钮
+        $this->assign('addbtn',  $this->returnAddbtn('添加分类', 'system/categories/add', 1, '500px', '550px'));
+        
+        $data = Db::name('categories')->where('parent_id = '.$catesection)->order('sort asc')->select();
+        foreach ($data as $k=>$v){
+        	$data[$k]['childs'] = Db::name('categories')->where('parent_id = '.$v['id'])->order('sort asc')->select();
+        }
+        $this->assign('data',  $data);
+        return $this->display('public/cateindex', true);
+    }
+    
+    
+    /**
+     * 添加操作
+     * Enter description here ...
+     */
+    public function add(){
+        if (Request::instance()->isGet()){
+        	$parents = Db::name('categories')->where('parent_id = '.Session::get('catesection'))->order('sort asc')->select();
+            $this->assign('parents',  $parents);
+            return $this->display('public/cateadd');
+        }else{
+            $item['cat_name'] = $this->post('cat_name', '', RegExpression::REQUIRED, '分类名称');
+            $item['parent_id'] = $this->post('parent_id', 0);
+            $item['sort'] = $this->post('sort', 0);
+            $item['addtime'] = SysHelp::getTimeString();
+            
+            $res = Db::name('categories')->insert($item);
+            if($res !== false){
+                $this->toSuccess('添加成功', '', 2);
+            }else{
+                $this->toError('添加失败');
+            }
+        }
+    }
+    
+    
+    /**
+     * 修改
+     * Enter description here ...
+     */
+    public function edit(){
+        if (Request::instance()->isGet()){
+            $item = Db::name('categories')->where('id', Request::instance()->param('id', 0))->find();
+            $this->assign('obj', $item);
+            
+            $parents = Db::name('categories')->where('parent_id = '.Session::get('catesection'))->order('sort asc')->select();
+            $this->assign('parents',  $parents);
+            
+            return $this->display('public/cateedit');
+        }else{
+        	$item['cat_name'] = $this->post('cat_name', '', RegExpression::REQUIRED, '分类名称');
+            $item['parent_id'] = $this->post('parent_id', 0);
+            $item['sort'] = $this->post('sort', 0);
+            $item['id'] = $this->post('id', 0);
+            $item['addtime'] = SysHelp::getTimeString();
+            
+            $res = Db::name('categories')->update($item);
+            if($res !== false){
+                $this->toSuccess('修改成功', '', 2);
+            }else{
+                $this->toError('添加失败');
+            }
+        }
+    }
+    
+    /**
+     * 删除账号
+     * Enter description here ...
+     */
+    public function delete(){
+        $id = Request::instance()->param('id', 0);
+        $this->log('删除分类：'.Db::name('categories')->where('id', $id)->value('cat_name'));
+        $res = Db::name('categories')->delete($id);
+        if($res !== false){
+            $this->toSuccess('删除成功');
+        }else{
+            $this->toError('删除失败');
+        }
+    }
+    
+    
+    
+}

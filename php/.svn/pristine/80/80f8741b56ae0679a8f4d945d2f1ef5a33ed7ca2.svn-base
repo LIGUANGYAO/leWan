@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>订单确认</title>
+        <meta name="author" content="saltyfishweb.com">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Expires" CONTENT="-1">
+        <meta http-equiv="Cache-Control" CONTENT="no-cache">
+        <meta http-equiv="Pragma" CONTENT="no-cache">
+        <link href="/www/swiper4/css/swiper.min.css" rel="stylesheet" type="text/css">
+        <link href="/www/css/main.css?rand={$time}" rel="stylesheet" type="text/css">
+    </head>
+<body style="background:#f5f5f5;">
+
+    <!--顶部导航栏-->
+    <include file='Index:alert' />
+
+    <!--内容部分-->
+    <div class="main">
+        <div class="tiaotiao">
+            <img src="/www/images/back.jpg" class="img100">
+            <div class="clear"></div>
+            <div style=" position: absolute; width: 100%; height: 100%; top: 0px; left: 0px;">
+                <div class="inner93">
+                    <div class="bt">成都新津明宇丽雅<span>悦</span>酒店</div>
+                    <div class="dzs">四川省 成都市 新津县 瑞通路140号</div>
+                    <a href="{:url('wechat/index/map')}" class="mp"></a>
+                    <a href="tel:028-82418888" class="tel"></a>
+                </div>
+            </div>
+        </div>
+        <div class="fff sec1">
+            <div class="inner93">
+                <div class="mc">{$room.title}</div>
+                <div class="jy">{$Think.session.plan.startDate|strtotime|date='Y年m月d日',###} 至 {$Think.session.plan.endDate|strtotime|date='Y年m月d日',###} &nbsp; 共{$Think.session.plan.NumDate}晚<br>{$room.feature}</div>
+                <div class="splitter100" style="margin-top: 15px; margin-bottom: 15px;"></div>
+                <div class="bge">
+                    <div class="lb">房间数量</div>
+                    <div class="nr">{$Think.session.plan.rooomnum}</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="bge">
+                    <div class="lb">客户姓名</div>
+                    <div class="nr"><input type="text" placeholder="请填写姓名" class="ddinput" id="inputname" value="{$user.username}"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="bge">
+                    <div class="lb">联系电话</div>
+                    <div class="nr"><input type="text" placeholder="请填写电话号码" class="ddinput" id="inputtel" value="{$user.phone}" maxlength="11"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="splitter100" style="margin-top: 15px; margin-bottom: 15px;"></div>
+                <div class="bge">
+                    <div class="lb">备注留言</div>
+                    <div class="nr"><textarea placeholder="" id="inputbz" class="ddinput" style="height: 40px;"></textarea> </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fff sec1 top10">
+            <div class="inner93">
+                <div class="bge">
+                    <div class="lb">增值服务</div>
+                    <div class="nr l1" style="margin-top: 3px;">
+                        <volist name="room.services" id="val" >
+                            <div class="ckbox" pid="{$val.id}" money="{$val.price}" <if condition="$i eq count($room.services)">style="margin-bottom: 0px;"</if>>{$val.title} &nbsp; &nbsp;<span>￥{$val.price}</span></div>
+                        </volist>
+
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fff sec1 top10" style="display: none;">
+            <div class="inner93">
+                <div class="bge">
+                    <div class="lb">积分优惠</div>
+                    <div class="nr l2" style="margin-top: 3px;">
+                        <div class="rabox" dk="1">3000会员积分 可抵30元</div>
+                        <div class="rabox" >不使用积分优惠</div>
+                        <div class="rabox" style="margin-bottom: 0px;">未达到使用条件</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fff sec2 top10">
+            <div class="inner93">
+                <div class="bge">
+                    <div class="lb">支付方式</div>
+                    <div class="nr l3" style="margin-top: 3px;">
+                        <div class="rabox cur"><span class="wx">微信支付</span></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--数据-->
+        <input type="hidden" id="_roomid" value="{$room.id}">
+        <input type="hidden" id="_price" value="{$room.price}">
+        <input type="hidden" id="_serviceIds" value="">
+        <input type="hidden" id="_exchange" value="">
+    </div>
+
+
+    <div class="navbtoom">
+        <div class="wz">
+            <div class="ml"><span class="y">￥</span><span class="q">{$room.price * $Think.session.plan.rooomnum * $Think.session.plan.NumDate}</span>元</div>
+            &nbsp;
+            <div class="mx" onclick="showfmx()">费用明细</div>
+        </div>
+        <a href="javascript:yuding()" class="btn">立即预订</a>
+    </div>
+    <div style=" clear:both; height:60px;"></div>
+
+    <div class="fmingxi">
+        <div class="main">
+            <div class="inner93">
+                <div class="mxbt">费用明细</div>
+                <div class="mbxm">房费</div>
+                <div class="xmli"><span class="l">{$Think.session.plan.startDate}至<br>{$Think.session.plan.endDate} </span> <span class="r" style="text-align: right">{$room.title}<br>￥{$room.price} × {$Think.session.plan.rooomnum}间 × {$Think.session.plan.NumDate}晚</span></div>
+                <img src="/www/images/splitter.png" class="img100">
+
+                <div class="mbxm">增值服务</div>
+                <volist name="room.services" id="val" >
+                <div class="xmli fw"><span class="l">{$val.title}</span> <span class="r">￥{$val.price}</span></div>
+                </volist>
+                <div class="xmli fww"><span class="l">无</span> <span class="r"></span></div>
+                <img src="/www/images/splitter.png" class="img100">
+
+                <div class="hide">
+                    <div class="mbxm">积分优惠</div>
+                    <div class="xmli"><span class="l">2000积分抵扣</span> <span class="r">￥23</span></div>
+                    <div class="xmli jff"><span class="l">无</span> <span class="r"></span></div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="ddje">
+                    <div class="l">订单金额</div>
+                    <div class="r">￥{$room.price * $Think.session.plan.rooomnum * $Think.session.plan.NumDate}</div>
+                </div>
+                <div class="fclose"><a href="javascript:closefmx()"></a> </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/www/js/zepto.min.1.14.js"></script>
+    <script>
+        var roomnum = '{$Think.session.plan.rooomnum}';
+        var jiwan = '{$Think.session.plan.NumDate|default=1}';
+        $(function () {
+            $('.l1 .ckbox').click(function () {
+                if($(this).hasClass('cur')){
+                    $(this).removeClass('cur');
+                }else{
+                    $(this).addClass('cur');
+                }
+                ids = '';
+                money = 0;
+                $('.fw').hide();
+                $('.l1 .ckbox').each(function (k,v) {
+                    if($(v).hasClass('cur')){
+                        $('.fw').eq(k).show();
+                        ids += $(v).attr('pid')+',';
+                        money += $(v).attr('money')*1;
+                    }
+                });
+                totalfee = money*1+$('#_price').val()*roomnum*jiwan;
+                $('.ddje .r').text('￥' + moneyformat(totalfee));
+                $('.wz .q').text(moneyformat(totalfee));
+                $('#_serviceIds').val(ids)
+            });
+            $('.l2 .rabox').click(function () {
+                $(this).addClass('cur');
+                $('.l2 .rabox').not($(this)).removeClass('cur');
+                $('#_exchange').val($(this).attr('dk'));
+            });
+        });
+
+        function showfmx() {
+            if($('.l1 .ckbox.cur').size() == 0){
+                $('.fww').show();
+            }else{
+                $('.fww').hide();
+            }
+            if($('#_exchange').val() == ''){
+                $('.jff').show();
+            }else{
+                $('.jff').hide();
+            }
+            $('.fmingxi').show();
+        }
+        function closefmx() {
+            $('.fmingxi').hide();
+        }
+
+        /**
+         * 开始预定
+         */
+        function yuding() {
+            roomid = $('#_roomid').val();
+            inputname = $('#inputname').val();
+            inputtel = $('#inputtel').val();
+            inputbz = $('#inputbz').val();
+            serviceIds = $('#_serviceIds').val();
+            exchange = $('#_exchange').val();
+            if(inputname.trim() == ''){
+                window.myalert('客户姓名必填');return;
+            }
+            re= /^(13[0-9]{9})|(18[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})$/;
+            if(!re.test(inputtel)){
+                myalert('手机号格式不正确');return;
+            }
+            data = {
+                roomid:roomid,
+                inputname:inputname,
+                inputtel:inputtel,
+                inputbz:inputbz,
+                serviceIds:serviceIds,
+                exchange:exchange
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/wechat/order/build",
+                data:data,
+                dataType:'json',
+                success: function(res){
+                    if(res.status == 1){
+                        window.location.href = res.data.url;
+                    }else{
+                        window.myalert(res.info);
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

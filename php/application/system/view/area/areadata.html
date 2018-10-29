@@ -1,0 +1,34 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('Area/AreaData')}" method="post" enctype="multipart/form-data">
+        <input type='hidden'  name="areacode" value="{$code}">
+        <input type='hidden'  name="pcode" value="{$pcode}">
+        <input type='hidden'  name="type" value="{$type}">
+        <input type='hidden'  name="id" value="{$data['id']}">
+
+        <if condition="$type neq 1">
+            <div class="layui-form-item">
+                <label class="layui-form-label">上级城市</label>
+                <div class="layui-input-inline" style="width: 60%">
+                    <input required="" lay-verify="required" placeholder="上级城市"  class="layui-input layui-disabled" disabled type="text" value="{$data['superior']}">
+                </div>
+            </div>
+        </if>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color:red">*</span>城市名称</label>
+            <div class="layui-input-inline" style="width: 60%">
+                <input type="text" name="cityname" lay-verify="min7" class="layui-input" placeholder="请输入城市名" value="{$data['provence']}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+<script>
+</script>

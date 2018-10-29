@@ -1,0 +1,61 @@
+<tagLib name="tpl" />
+<include file="Public:header" />
+<div class="pad-lr-10">
+	
+    <form id="myform" name="myform" action="{:u('Agent/delete')}" method="post" onsubmit="return check();">
+    <div class="table-list">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="10%" align="left">ID</th>            
+                <th width="25%" align="left">场景名称</th>
+				<th width="20%" align="left">二维码</th>
+				<th width="10%" align="left">添加时间</th>
+				<th width="10%">操作</th> 			
+            </tr>
+        </thead>
+    	<tbody>
+        <volist name="datalist" id="val" >
+        <tr>
+			<td align="left">{$val.id}</td>
+			<td align="left">{$val.qname}</td>
+			<td align="left"><img src="{$val.src}" style="height:120px; width:120px;" /></td>
+			<td align="left">{$val.addtime}</td>
+			<td align="center">
+				
+				<a class="blue" href="{:u('Wxqrcode/edit', array('id'=>$val['id']))}">编辑</a>
+				&nbsp;
+				<a class="blue" href="javascript:del('{:u('Wxqrcode/delete', array('id'=>$val['id']))}')">删除</a>
+			</td>
+        </tr>
+        </volist>
+    	</tbody>
+    </table>
+
+    </div>
+    </form>
+</div>
+<script language="javascript">
+function check(){
+	var ids='';
+	$("input[name='id[]']:checked").each(function(i, n){
+		ids += $(n).val() + ',';
+	});
+	if(ids=='') {
+		window.top.art.dialog({content:lang_please_select+'代理	',lock:true,width:'200',height:'50',time:1.5},function(){});
+		return false;
+	}
+	return true;
+}
+function sort(id,type,num){
+    
+    $.get("{:u('Wxqrcode/sort')}", { id: id, type: type,num:num }, function(jsondata){
+        
+		$("#"+type+"_"+id+" ").attr('value', jsondata);
+		
+	},'json'); 
+}
+
+</script>
+</body>
+</html>

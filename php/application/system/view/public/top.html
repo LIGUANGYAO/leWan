@@ -1,0 +1,33 @@
+<!-- 左侧 -->
+<a href="javascript:;" target="_blank" class="logo l"><img src="/static/images/logo.png" /></a>
+
+
+<volist name="groups" id="val" key="n">
+<a href="javascript:Go('{$val.id}');" class="aim l">{$val.title}</a>
+</volist>
+
+<!-- 右侧 -->
+<a href="javascript:logout();" class="aim r" title="退出登录"><i class="fa fa-sign-out"></i></a>
+<a href="javascript:openWindow('修改', '{:url('system/admins/edit', array('id'=>$Think.session.admin.id))}', '600px', '550px');" class="aim admin r" title="个人信息"><img src="/static/images/logo.png"> <span>{$Think.session.admin.nickname}</span></a>
+<a href="javascript:clearCache();" class="aim r" title="清除缓存"><i class="fa fa-trash-o"></i></a>
+<!--<a href="" class="aim r" title="系统设置"><i class="fa fa-gear"></i></a>-->
+<a href="" class="aim r" title="刷新页面"><i class="fa fa-refresh"></i></a>
+<a href="/wechat" target="_blank"  class="aim r" title="主页"><i class="fa fa-home"></i></a>
+
+<script>
+function Go(group_id){
+	$.ajax({
+	   type: "POST",
+	   url: "{:url('system/ajax/clickGroup')}",
+	   data:"group_id="+group_id,
+	   dataType:'json',
+	   success: function(res){
+		  if(res.status == 1){
+			  window.location.href = res.data;
+		  }else{
+			  
+		  }
+	   }
+	}); 
+}
+</script>

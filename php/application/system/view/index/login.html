@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>乐玩联盟平台管理中心</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="/static/css/login.css" rel='stylesheet' type='text/css' />
+        <script src="/static/js/zepto.min.js"></script>
+        <script type="text/javascript" src="/static/layui/layui.js"></script>
+        <script type="text/javascript" src="/static/js/jfinal.js"></script>
+    </head>
+    <body>
+
+        <!--SIGN UP-->
+        <h1>欢迎您</h1>
+        <div class="login-form">
+            
+            <div class="head-info">
+                <label class="lbl-1"> </label> <label class="lbl-2"> </label> 
+                <label	class="lbl-3"> </label>
+            </div>
+            <div class="clear"></div>
+            <div class="avtar">
+                <img src="/static/images/logo.png" />
+            </div>
+            <div class="content">
+                <input type="text" class="text username" id="loginid" placeholder="请输入账号">
+                <input type="password" class="password" id="pwdid" placeholder="请输入密码">
+
+                <div class="key">
+                    <input id="code" class="logintext" type="text" name="verify" placeholder="请输入验证码"   >
+                    <img  id="verify_img" src="{:captcha_src()}" alt="验证码" onclick="javascript:this.src = '{:captcha_src()}?mt=' + Math.random()"  />
+                </div>
+            </div>
+            <div style="clear: both; height:5em"></div>
+            <div class="signin">
+                <input type="submit" value="登录" onclick="login()">
+            </div>
+        </div>
+        <div class="copy-rights">
+            <p>
+                
+            </p>
+        </div>
+
+        <script>
+
+            $('body').bind('keyup', function(event) {
+                if (event.keyCode == "13") {
+                    //回车执行查询
+                   login()
+                }
+            });
+
+            function login() {
+                var loginid = $('#loginid').val();
+                var pwdid = $('#pwdid').val();
+                var code = $('#code').val();
+                if (loginid.length < 5) {
+                    layer.msg('请输入用户名', {icon: 2});
+                    return;
+                }
+                if (pwdid.length < 5) {
+                    layer.msg('请输入密码', {icon: 2});
+                    return;
+                }
+                if (code.length < 4) {
+                    layer.msg('请输入验证码', {icon: 2});
+                    return;
+                }
+                var data = {
+                    'loginid': loginid,
+                    'pwdid': pwdid,
+                    'code': code
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "{:Url('Index/login')}",
+                    data: data,
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status == 0) {
+                            layer.msg(res.info, {icon: 2});
+                            $('#verify_img').click();
+                        } else {
+                            window.location.href = res.data;
+                        }
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>

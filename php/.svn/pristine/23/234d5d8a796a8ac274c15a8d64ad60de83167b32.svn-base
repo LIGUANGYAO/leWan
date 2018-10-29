@@ -1,0 +1,33 @@
+<include file="Public:header" />
+<link href="/statics/admin/css/main.css" rel="stylesheet" type="text/css" />
+<script src="/statics/js/masonry.pkgd.min.js"></script>
+<div class="pad_10">
+<form action="{:u('Wxqrcode/add')}" method="post" name="myform" id="myform" >
+<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+	<tr> 
+      <th width="80">场景名称 :</th>
+      <td><input type="text" name="qname" id="qname" class="input-text" value=""></td>
+    </tr>
+
+	<tr>
+      <th></th>
+      <td><input type="submit" name="dosubmit" id="dosubmit" class="button" value=" 提 交 "></td>
+    </tr>
+</table>
+
+</form>
+<script type="text/javascript">
+
+	$(function(){
+		$.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){window.top.art.dialog({content:msg,lock:true,width:'200',height:'50'}, function(){this.close();$(obj).focus();})}});
+		$("#qname").formValidator({onshow:"填写场景名称",onfocus:"填写场景名称"}).inputValidator({min:2,onerror:"请填写场景名称"});
+	})
+	
+	
+
+</script>
+</div>
+
+
+</body>
+</html>

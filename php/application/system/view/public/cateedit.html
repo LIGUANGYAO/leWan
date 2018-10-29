@@ -1,0 +1,38 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/categories/edit')}" method="post" enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <label class="layui-form-label">上级分类</label>
+		    <div class="layui-input-inline">
+		      <select name="parent_id" lay-verify="require">
+		        <option value="{$Think.session.catesection}">无</option>
+		        <volist name="parents" id="val">
+		        <option value="{$val.id}" <if condition="$obj['parent_id'] eq $val['id']"> selected="selected"</if>>{$val.cat_name}</option>
+		        </volist>
+		      </select>
+		    </div>
+		 </div>
+        <div class="layui-form-item">
+		      <label class="layui-form-label">分类名称</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="cat_name" value="{$obj.cat_name}" class="layui-input">
+		      </div>
+		</div>
+        <div class="layui-form-item">
+		      <label class="layui-form-label">排序</label>
+		      <div class="layui-input-inline">
+		        <input type="text" name="sort" value="{$obj.sort}" class="layui-input">
+		      </div>
+		</div>
+		
+		<input type="hidden" value="{$obj.id}" name="id">
+		
+		<div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+		    </div>
+		 </div>
+    </form>
+
+</div>
+<script>
+</script>

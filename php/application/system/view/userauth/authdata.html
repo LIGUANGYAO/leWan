@@ -1,0 +1,114 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('Userauth/AuthData')}" method="post" enctype="multipart/form-data">
+        <input type='hidden'  name="id" value="{$data['auth_id']}">
+
+        <div class="layui-form-item col-sm-10">
+            <label class="layui-form-label">用户昵称：</label>
+            <div class="layui-input-block">
+                <input type="text"  lay-verify="min7" class="layui-input" disabled value="{$data['nickname']}">
+            </div>
+        </div>
+
+        <div class="layui-form-item col-sm-10">
+            <label class="layui-form-label">联系电话：</label>
+            <div class="layui-input-block">
+                <input type="text"  lay-verify="min7" class="layui-input" disabled value="{$data['mobile']}">
+            </div>
+        </div>
+
+        <div class="layui-form-item col-sm-10">
+            <label class="layui-form-label">真实姓名：</label>
+            <div class="layui-input-block">
+                <input type="text"  lay-verify="min7" class="layui-input" disabled value="{$data['truename']}">
+            </div>
+        </div>
+
+        <div class="layui-form-item col-sm-10">
+            <label class="layui-form-label">身份证：</label>
+            <div class="layui-input-block">
+                <img src="/static/images/bg1.jpg" class="col-sm-12" style="height: 250px;">
+                <div class="layui-field-title"></div>
+            </div>
+            <div class="layui-input-block">
+                <img src="/static/images/bg1.jpg" class="col-sm-12" style="height: 250px;">
+            </div>
+        </div>
+
+        <if condition="$data['status'] neq 2">
+            <div class="layui-form-item ">
+                <label class="layui-form-label"><span style="color:red">*</span>审核：</label>
+                <div class="layui-input-inline">
+                    <label><input type="radio"  onclick="teststatus(1)" name="status" value="1" title="驳回"  <if condition="$data['status'] eq 1">checked="checked"</if> ></label>
+                    <label><input type="radio"  onclick="teststatus(2)" name="status"  value="2"  title="通过"  <if condition="$data['status'] eq 2">checked="checked"<else />checked="checked"</if> ></label>
+                </div>
+            </div>
+
+            <div class="layui-form-item col-sm-10" id="reasons" <if condition="$data['status'] neq 1"> style="display: none"</if>>
+                <label class="layui-form-label"><span style="color:red">*</span>驳回原因：</label>
+                <div class="layui-input-block">
+                    <textarea id="remark" name="remark" placeholder="驳回原因必须填写,10-30字" class="layui-textarea">{$data['remark']}</textarea>
+                </div>
+            </div>
+        </if>
+
+        <if condition="!empty($data['uptime'])">
+            <div class="layui-form-item col-sm-10">
+                <label class="layui-form-label">审核时间：</label>
+                <div class="layui-input-block ">
+                    <input type="text"  lay-verify="min7" class="layui-input" disabled value="{$data['uptime']|date='Y-m-d H:i',###}">
+                </div>
+            </div>
+        </if>
+
+        <div class="layui-form-item col-sm-10">
+            <label class="layui-form-label">认证时间</label>
+            <div class="layui-input-block">
+                <input type="text"  lay-verify="min7" class="layui-input" disabled value="{$data['addtime']|date='Y-m-d H:i',###}">
+            </div>
+        </div>
+
+        <if condition="$data['status'] neq 2">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                </div>
+            </div>
+        </if>
+
+    </form>
+</div>
+
+<script>
+
+    function teststatus(s) {
+        if(s == 1){
+            $('#reasons').css('display','block');
+        }else{
+            $('#reasons').css('display','none');
+        }
+    }
+
+    $('form').submit(function(){
+        var status = $("input[name='status']:checked").val();
+        var remark = $("#remark").val();
+
+        if (status == undefined){
+            layer.msg('请选择审核状态', {icon: 2});
+            return false;
+        }
+
+        if(status == 1){
+            if(remark.length != ""){
+                if (remark.length < 10 || remark.length > 30) {
+                    layer.msg('驳回原因不能小于10字大于30字', {icon: 2});
+                    return false;
+                }
+            }else{
+                layer.msg('请输驳回原因10-30字', {icon: 2});
+                return false;
+            }
+        }
+
+        return true;
+    })
+</script>

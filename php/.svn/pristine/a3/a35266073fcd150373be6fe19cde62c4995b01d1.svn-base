@@ -1,0 +1,179 @@
+<?php
+
+namespace app\system\controller;
+
+use app\common\AdminBaseController;
+use app\system\model\MerchantModel;
+use think\Request;
+use think\Db;
+use think\Session;
+use app\common\RegExpression;
+use app\common\Md5Help;
+use app\common\SysHelp;
+use app\system\model\AdminModel;
+use app\system\model\ContentModel;
+
+use app\system\model\UserModel;
+
+/**
+ * 商家管理
+ * Enter description here ...
+ * @author Administrator
+ *
+ */
+class MerchantController extends AdminBaseController {
+
+    /**
+     * 待审核列表
+     * Enter description here ...
+     */
+    public function review() {
+        $where['m.merchant_status'] = 0;
+        $where['m.merchant_del'] = 0;
+        $data = $this->loadList($where);
+        $this->assign('data', $data);
+        return $this->display('merchant/review', true);
+    }
+
+    /**
+     * 驳回商家列表
+     * @return string
+     */
+    public function reback() {
+        $where['m.merchant_status'] = 1;
+        $where['m.merchant_del'] = 0;
+        $data = $this->loadList($where);
+        $this->assign('data', $data);
+        return $this->display('merchant/reback', true);
+    }
+
+
+    /**
+     * 商家列表
+     * @return string
+     */
+    public function index() {
+        $where['m.merchant_status'] = 2;
+        $where['m.merchant_del'] = 0;
+        $data = $this->loadList($where);
+        $this->assign('data', $data);
+        return $this->display('merchant/index', true);
+    }
+
+
+    /**
+     * 查看详情
+     */
+    public function view(){
+        $id = $this->get('id', 0);
+        $merchant = Db::name('merchant')->find($id);
+        if($merchant){
+            $this->assign('merchant',  $merchant);
+            $this->assign('action', url('system/merchant/inview'));
+            return $this->display('merchant/view', true);
+        }else{
+            $this->error('商家不存在');
+        }
+    }
+
+
+    /**
+     * 审核操作
+     */
+    public function inview(){
+        if(Request::instance()->isPost()){
+            $id = $this->post('id', 0);
+            $status = $this->post('status', 1);
+            $reason = $this->post('reason', '');
+            if($status == 1 && $reason==''){
+                $this->error('请填写驳回原因');
+            }
+            $merchant = Db::name('merchant')->find($id);
+            if($merchant){
+                $res = Db::name('merchant')->where('merchant_id', $id)->update(['merchant_status'=>$status, 'merchant_remark'=>$reason, 'merchant_uptime'=>time()]);
+                $this->log(($status==1?'驳回商家:':'审核通过商家:').$merchant['merchant_name']);
+                $this->success('操作成功', url('merchant/review'), 2);
+            }
+        }
+        $id = $this->get('id', 0);
+        $merchant = Db::name('merchant')->find($id);
+        if($merchant){
+            $this->assign('merchant',  $merchant);
+            $this->assign('action', url('system/merchant/inview'));
+            return $this->display('merchant/inview', false);
+        }else{
+            $this->error('商家不存在');
+        }
+    }
+
+    /**
+     * 批量删除
+     */
+    public function delete(){
+        $id = Request::instance()->param('id', 0);
+        $idstr = Request::instance()->post('idstr', '');
+        if ($id > 0) {
+            $obj = Db::name('merchant')->where('merchant_id', $id)->find();
+            $this->log('软删除商家：' . $obj['merchant_name']);
+            $res = Db::name('merchant')->where('merchant_id', $id)->update(['merchant_del'=>1]);
+        } else {
+            //批量删除
+            $idarray = explode(',', $idstr);
+            foreach ($idarray as $k => $v) {
+                if (!(empty($v))) {
+                    $obj = Db::name('merchant')->where('merchant_id', $v)->find();
+                    $this->log('软删除商家：' . $obj['merchant_name']);
+                    $res = Db::name('merchant')->where('merchant_id', $v)->update(['merchant_del'=>1]);
+                }
+            }
+        }
+        $this->toSuccess('删除成功');
+    }
+
+    /**
+     * 加载列表数据
+     */
+    private function loadList($map){
+        $where = $map;
+        //获取参数
+        $pn = $this->get('page', 1);
+        $kws = $this->get('kws', '');
+        $provence_id = $this->get('provence_id', '');
+        $city_id = $this->get('city_id', '');
+        $area_id = $this->get('area_id', '');
+        $starttime = $this->get('starttime', '');
+        $endtime = $this->get('endtime', '');
+        //组合where
+        if($kws != ''){
+            $where['m.merchant_name|m.loginname|m.merchant_contact'] = array('like', '%'.$kws.'%');
+            $this->assign('kws', $kws);
+        }
+        if($starttime != ''){
+            $where['m.merchant_addtime'] = array('egt', strtotime($starttime));
+            $this->assign('starttime', $starttime);
+        }
+        if($endtime != ''){
+            $where['m.merchant_addtime'] = array('elt', strtotime($endtime)+86400);
+            $this->assign('endtime', $endtime);
+        }
+        if($provence_id != ''){
+            $where['m.merchant_pcode'] = $provence_id;
+            $this->assign('provence_id', $provence_id);
+            $this->assign('city', $this->getCityList($provence_id));
+        }
+        if($city_id != ''){
+            $where['m.merchant_ccode'] = $city_id;
+            $this->assign('city_id', $city_id);
+            $this->assign('area', $this->getAreaList($city_id));
+        }
+        if($area_id != ''){
+            $where['m.merchant_acode'] = $area_id;
+            $this->assign('area_id', $area_id);
+        }
+        //省份
+        $this->assign('provence', $this->getProvenceList());
+
+        return MerchantModel::getList($where, $pn);
+    }
+
+}
