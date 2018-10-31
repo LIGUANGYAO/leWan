@@ -47,10 +47,7 @@
 				width: 0.533rem;
 				height: 0.533rem;
 				border-radius: 0.266rem;
-				background-color: #FFFFFF;
-			}
-			.runLevelImg>i{
-				color: #F76E1E;
+				background-color: #F76E1E;
 			}
 			.headerCardBox{
 				position: relative;
@@ -297,7 +294,7 @@
 				<div class="powerExplain" id="equityExplain">权益说明？</div>
 				<div class="headPortrait" style="background-image: url(../../img/homePage/eightNav1.png);"></div>
 				<div class="runLevel">
-					<span class="runLevelImg"><i class="iconfont icon-canpinhuihuiyuanv1-copy"></i></span>
+					<span class="runLevelImg"><i class="iconfont icon-yousanjiao"></i></span>
 					<span>运营达人</span>
 				</div>
 			</div>
@@ -402,19 +399,12 @@
 		</div>
 		<script src="../../plugins/flexible.js"></script>
 		<script src="../../plugins/jquery-2.1.4.js"></script>
-		<!--<script src="../../plugins/clipboard.min.js"></script>-->
 		<script src="../../plugins/vue.js"></script>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../plugins/swiper-4.3.3.min.js"></script>
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				
-				
-				
-				
-				
-				
 				
 				mui('body').on('tap','#equityExplain',function(){	//权益说明
 					mui.openWindow({
