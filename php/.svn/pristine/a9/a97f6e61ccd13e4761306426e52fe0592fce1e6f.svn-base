@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>联系我们</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #FFFFFF;
+			}
+			
+			.header{
+				width: 100%;
+				height: 11.066rem;
+				background-size: 100% 100%;
+				position: relative;
+				display: table;
+				text-align: center;
+			}
+			
+			.title{
+				font-size: 0.88rem;
+				font-weight: 800;
+				color: #FFFFFF;
+				margin: 1.333rem 0 0 0.853rem;
+				line-height: 0.88rem;
+			}
+			.wire{
+				width: 0.906rem;
+				display: inline-block;
+				height: 0.32rem;
+				background-color: #FFFFFF;
+				margin: 0.3rem 0 0 0.853rem;
+			}
+			.text{
+				width: 9.36rem;
+				height: 6.6rem;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin: auto;
+				font-size: 0.346rem;
+				color: #999999;
+				font-weight: 400;
+				box-shadow: #999999 0px 0px 10px;
+				padding: 0.32rem;
+				background-color: #FFFFFF;
+				border-radius: 0.2rem;
+			}
+			.titleText{
+				text-align: center;
+				font-size: 0.586rem;
+				margin: 0.5rem 0;
+				color: #333333;
+				font-weight: 600;
+			}
+			.text textarea{
+				width: 8.373rem;
+				height: 2.88rem;
+				border: none;
+				border-radius: 0.2rem;
+				background-color: #F6F6F6;
+				padding: 0.2rem;
+			}
+			.titleBtn{
+				width: 4.773rem;
+				height: 1.04rem;
+				line-height: 1.04rem;
+				background-color: #F77917;
+				color: #FFFFFF;
+				border-radius: 0.1rem;
+				font-size: 0.426rem;
+				margin: 0 auto;
+				margin-top: 0.35rem;
+			}
+			/*尾部*/
+			.footer{
+				margin-top: 3.12rem;
+				text-align: center;
+			}
+			.footer div{
+				font-size: 0.453rem;
+				font-weight: 500;
+				color: #F77917;
+			}
+			.footer i{
+				margin-right: 0.15rem;
+			}
+			.footer p{
+				color: #999999;
+				font-size: 0.32rem;
+				margin-top: 0.266rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="header" style="background-image: url(../../img/personalCenter/contactUs1.png);">
+			<div class="title">联系我们</div>
+			<div class="wire"></div>
+			<div class="text">
+				<div class="titleText">乐玩联盟</div>
+				<textarea name="" id="" cols="" rows="" placeholder="欢迎您提交宝贵的意见，我们将更加完善相关服务，感谢您的使用"></textarea>
+				<div class="titleBtn">提交建议</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div><i class="iconfont icon-dianhua1"></i>028-7344XX</div>
+			<p>欢迎拨打平台售后服务专线</p>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				
+			})
+		</script>
+	</body>
+
+</html>

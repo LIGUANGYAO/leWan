@@ -328,15 +328,7 @@
 							</div>
 						</div>
 					</div>
-					<!--空状态时-->
-					    <div class="lw-empty" style="display: block;" v-else>
-							<div class="lw-empty-box">
-								<div class="lw-empty-flex">
-									<img src="../../img/personalCenter/nullList1.png" alt="" class="lw-empty-img"/>
-									<div class="lw-empty-test">暂无客户 去推广产品吧！</div>
-								</div>
-							</div>
-						</div>
+					
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>预约时间</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #efeff4
+			}
+			/*列表*/
+			.content{
+				margin: 0.533rem 0.32rem;
+				background-color: #FFFFFF;
+			}
+			
+			.contentBox{
+				
+			}
+			
+			
+		</style>
+	</head>
+
+	<body>
+		<div class="content">
+			<ul class="contentBox">
+				<li class="">
+					<div class="">10月12日</div>
+					<div class="">周一</div>
+					<div class="">剩3</div>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				
+				
+			})
+		</script>
+	</body>
+
+</html>

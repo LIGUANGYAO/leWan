@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>地址</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #FFFFFF;
+			}
+			.mui-input-group:after{
+				height: 0;
+			}
+			/*列表*/
+			.mui-input-row{
+				height: 1.626rem !important;
+				line-height: 1.626rem;
+			}
+			.mui-input-row label{
+				font-size: 0.373rem;
+				color: #666666;
+				font-weight: 500;
+				height: 1.626rem;
+				line-height: 1.626rem;
+				padding: 0 0.4rem;
+				width: 30%;
+			}
+			.secAddressBox{
+				position: relative;
+			}
+			
+			.mui-input-row img{
+				position: absolute;
+				right: 3%;
+				width: 6%;
+				top: 0;
+				bottom: 0;
+				margin: auto;	
+			}
+			.mui-input-row input{
+				font-size: 0.373rem;
+				color: #333333;
+				font-weight: bold;
+				height: 1.626rem;
+				width: 70% !important;
+			}
+			
+			
+			
+			/*尾部*/
+			.footer{
+				margin-top: 3.466rem;
+				width: 100%;
+				text-align: center;
+			}
+			.footerBox{
+				display: inline-block;
+				width: 6.56rem;
+				height: 1.333rem;
+				line-height: 1.333rem;
+				text-align: center;
+				background: linear-gradient(to right, #FF791C 0%,#DC2609 100%);
+				border-radius: 0.666rem;
+				color: #FFFFFF;
+				font-size: 0.426rem;
+				font-weight: 500;
+				box-shadow: 0 0 8px 1px rgba(0,0,0,0.3);
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div class="content">
+			<form class="mui-input-group">
+			    <div class="mui-input-row">
+			        <label>收货人:</label>
+			    	<input type="text" class="" placeholder="请输入收货人">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>手机号码:</label>
+			        <input type="number" class="" placeholder="请输入手机号码">
+			    </div>
+			    <div class="mui-input-row secAddressBox">
+			        <label>所在地区:</label>
+			        <input type="text" class="secAddress" disabled="disabled" placeholder="请选择地区">
+			        <img src="../../img/personalCenter/adressEdit.png"/>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>详细地址:</label>
+			        <input type="text" class="" placeholder="街道、楼牌号等">
+			    </div>
+			</form>
+		</div>
+		
+		<div class="footer">
+			<div class="footerBox">
+				<span>新建收货地址</span>
+			</div>
+		</div>
+		
+		
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var secPage = getUrlParam("secPage")
+				if(secPage === "0"){	//直属好友
+					log("编辑地址");
+					document.title = '编辑地址';
+				}else{					//全部好友
+					log("新增地址");
+					document.title = '新增地址';
+				}
+			})
+		</script>
+	</body>
+
+</html>
