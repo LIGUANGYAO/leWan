@@ -1,0 +1,436 @@
+-- ----------------------------
+-- [存储过程：插入账户日志]
+-- Function structure for `insert_account_record`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `insert_account_record`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_account_record`(in `user_id` int, in `order_id` int, in `record_currency` varchar(20), in `record_action` int, in `record_amount` DECIMAL(10,2), in `record_balance` DECIMAL(10,2),  in `record_addtime` int, in `record_attach` varchar(800), in `record_remark` VARCHAR(50), in `record_status` int ,out error int, out recordId int)
+BEGIN
+
+  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+  SET error = 0;
+
+  #1.拼接sql，插入明细
+  SET @month_tag = FROM_UNIXTIME(unix_timestamp(), '%Y%m');
+  SET @sql1 = CONCAT('INSERT IGNORE INTO `jay_account_', record_currency, @month_tag, '`(user_id,order_id,record_currency,record_action,record_amount,record_balance,record_addtime,record_attach,record_remark,record_status) VALUES (');
+  SET @sql1 = CONCAT(@sql1, user_id,',');
+  SET @sql1 = CONCAT(@sql1, order_id,',');
+  SET @sql1 = CONCAT(@sql1, "'",record_currency,"',");
+  SET @sql1 = CONCAT(@sql1, record_action,',');
+  SET @sql1 = CONCAT(@sql1, record_amount,',');
+  SET @sql1 = CONCAT(@sql1, record_balance,',');
+  SET @sql1 = CONCAT(@sql1, record_addtime,',');
+  SET @sql1 = CONCAT(@sql1, "'",record_attach,"',");
+  SET @sql1 = CONCAT(@sql1, "'",record_remark,"',");
+  SET @sql1 = CONCAT(@sql1, record_status,");");
+  PREPARE statement FROM @sql1;
+  EXECUTE statement;
+  DEALLOCATE PREPARE statement;
+
+  SET recordId = LAST_INSERT_ID(); # 获取明细ID
+END
+;;
+DELIMITER ;
+
+
+
+-- ----------------------------
+-- [存储过程：更新账户余额]
+-- Function structure for `update_account`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `update_account`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_account`(in `userId` int, in `currenty` varchar(20), in `amount` DECIMAL(10,2), in orderId int, in action int, in attach varchar(800), in remark varchar(50),  out error int, out recordId int)
+BEGIN
+
+  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+  SET error = 0;
+  set @currenty = currenty;
+  SET @tag_today = from_unixtime(UNIX_TIMESTAMP(), '%Y%m%d');
+  SET @field_balance = CONCAT('account_', @currenty, '_balance');
+  SET @field_expenditure = CONCAT('account_', @currenty, '_expenditure');
+  SET @field_income = CONCAT('account_', @currenty, '_income');
+
+  #1.初始化用户实时收支数据
+  INSERT IGNORE INTO jay_account (user_id, account_tag, account_uptime) VALUES (userId, 0, UNIX_TIMESTAMP());
+  #2.初始化用户日收支数据
+  INSERT IGNORE INTO jay_account (
+    user_id,
+    account_cash_balance,
+    account_commission_balance,
+    account_points_balance,
+    account_tag,
+    account_uptime)
+    SELECT user_id, account_cash_balance, account_commission_balance, account_points_balance, @tag_today, UNIX_TIMESTAMP() FROM jay_account WHERE user_id = userId AND account_tag=0;
+
+  #3.获取账户余额
+  SET @old_balance = 0;
+  SET @v_sql = CONCAT('SELECT ', @field_balance, ' INTO @old_balance FROM jay_account WHERE
+                          account_tag = 0 AND user_id = ', userId, ' LIMIT 1;');
+      PREPARE statement FROM @v_sql;
+      EXECUTE statement;
+      DEALLOCATE PREPARE statement;
+
+  #4.更新用户实时收支总计和余额
+  SET @v_sql = CONCAT('UPDATE jay_account SET
+        ', @field_balance, ' = ', @field_balance, ' + ', amount, ',
+        ', @field_expenditure, ' = ', @field_expenditure, ' + ', IF(amount < 0, amount, 0), ',
+        ', @field_income, ' = ', @field_income, ' + ', IF(amount > 0, amount, 0), ',
+        account_uptime = ', UNIX_TIMESTAMP(), '
+        WHERE user_id = ', userId, ' AND account_tag = 0');
+      PREPARE statement FROM @v_sql;
+      EXECUTE statement;
+      DEALLOCATE PREPARE statement;
+
+
+  #5.更新用户当日收支总计和余额
+  SET @v_sql = CONCAT('UPDATE jay_account SET
+        ', @field_balance, ' = ', @field_balance, ' + ', amount, ',
+        ', @field_expenditure, ' = ', @field_expenditure, ' + ', IF(amount < 0, amount, 0), ',
+        ', @field_income, ' = ', @field_income, ' + ', IF(amount > 0, amount, 0), ',
+        account_uptime = ', UNIX_TIMESTAMP(), '
+        WHERE user_id = ', userId, ' AND account_tag = ',@tag_today);
+      PREPARE statement FROM @v_sql;
+      EXECUTE statement;
+      DEALLOCATE PREPARE statement;
+
+  #6.记录日志
+  call insert_account_record(userId, orderId, currenty, action, amount, (@old_balance + amount), UNIX_TIMESTAMP(), attach, remark, 2, error, recordId);
+END
+;;
+DELIMITER ;
+
+
+
+-- ----------------------------
+-- [存储过程：扣除税]
+-- Function structure for `deduction_Fee`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `deduction_Fee`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deduction_Fee`(in userId int, in amount DECIMAL(10,2), in taxfee_fuwu DECIMAL(10,2), in taxfee_geren DECIMAL(10,2), in taxfee_pingtai DECIMAL(10,2), in recordId int, out error int)
+BEGIN
+
+  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+  SET error = 0;
+
+  #1.计算3个扣费金额
+  set @tax_geren = FORMAT( amount * taxfee_geren / 100, 2);
+  set @tax_fuwu = FORMAT( amount * taxfee_fuwu / 100, 2);
+  set @tax_pingtai = FORMAT( amount * taxfee_pingtai / 100, 2);
+  set @attach = CONCAT("{\"userId\":\"",userId,"\",\"userName\":\"\",\"orderNo\":\"\",\"recordId\":\"", recordId,"\"}");
+  #2.扣除手续费
+  IF @tax_geren > 0 THEN
+    call update_account(userId, 'cash', -@tax_geren, 0, 853, @attach, "扣除个人所得税", error, @recordid);
+  END IF;
+  IF @tax_pingtai > 0 THEN
+    call update_account(userId, 'cash', -@tax_pingtai, 0, 854, @attach, "扣除平台管理费", error, @recordid);
+  END IF;
+  IF @tax_fuwu > 0 THEN
+    call update_account(userId, 'cash', -@tax_fuwu, 0, 855, @attach, "扣除技术服务费", error, @recordid);
+  END IF;
+
+END
+;;
+DELIMITER ;
+
+
+
+-- ----------------------------
+-- [存储过程：次日结算佣金到现金,一个交易一个交易的结算]
+-- Function structure for `jiesuan_commissionToCashOneAndOne`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `jiesuan_commissionToCashOneAndOne`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `jiesuan_commissionToCashOneAndOne`(in userId int, in orderId int, in amount DECIMAL(10,2), in attach VARCHAR(800), in taxfee_fuwu DECIMAL(10,2),in taxfee_geren DECIMAL(10,2),in taxfee_pingtai DECIMAL(10,2), out error int)
+BEGIN
+
+  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+  SET error = 0;
+  #1.扣除佣金
+  call update_account(userId, 'commission', -amount, orderId, 651, attach, "次日结算扣除佣金", error, @recordid);
+  #2.结算现金
+  call update_account(userId, 'cash', amount, orderId, 802, attach, "次日结算累加现金", error, @recordid);
+  #3.扣除手续费
+  call deduction_Fee(userId, amount, taxfee_fuwu, taxfee_geren, taxfee_pingtai, @recordid, error);
+
+END
+;;
+DELIMITER ;
+
+
+-- ----------------------------
+-- [存储过程：次月累计佣金到现金，一个人只有1条累计结算]
+-- Function structure for `jiesuan_commissionToCashAll`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `jiesuan_commissionToCashAll`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `jiesuan_commissionToCashAll`(in userId int, in amount DECIMAL(10,2), in attach VARCHAR(800), in taxfee_fuwu DECIMAL(10,2),in taxfee_geren DECIMAL(10,2),in taxfee_pingtai DECIMAL(10,2), out error int)
+BEGIN
+
+  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+  SET error = 0;
+  #1.扣除佣金
+  call update_account(userId, 'commission', -amount, 0, 652, attach, "次月累计结算扣除佣金", error, @recordid);
+  #2.结算现金
+  call update_account(userId, 'cash', amount, 0, 803, attach, "次月累计结算现金", error, @recordid);
+  #3.扣除手续费
+  call deduction_Fee(userId, amount, taxfee_fuwu, taxfee_geren, taxfee_pingtai, @recordid, error);
+
+END
+;;
+DELIMITER ;
+
+
+
+-- ----------------------------
+-- [存储过程：次日结算入口]
+-- Function structure for `TimerTask_ciriJiesuan`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `TimerTask_ciriJiesuan`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `TimerTask_ciriJiesuan`(out error int)
+BEGIN
+
+  declare orderId int default 0;
+  declare userId int default 0;
+  declare recordAmount DECIMAL(10,2) default 0;
+  declare recordAttach VARCHAR(800) default '';
+  declare done int default 0;
+  DECLARE recordlist CURSOR FOR SELECT * FROM view_forJiesuanOneAndOne;
+  DECLARE CONTINUE handler FOR not found set done = 1;
+  DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+  SET error = 0;
+
+  # 今日tag
+  SET @day_tag = FROM_UNIXTIME(UNIX_TIMESTAMP(), '%Y%m%d');
+  # 当月tag
+  SET @moth_tag = FROM_UNIXTIME(UNIX_TIMESTAMP(), '%Y%m');
+  # 上月tag
+  SET @lastmoth_tag = DATE_FORMAT(DATE_ADD(@day_tag, INTERVAL -1 MONTH), '%Y%m');
+  # 手续费参数
+  SET @taxfee_fuwu = 0;
+  SET @taxfee_geren = 0;
+  SET @taxfee_pingtai = 0;
+  SELECT `value` INTO @taxfee_fuwu from jay_parameter where `key`='taxfee_fuwu';
+  SELECT `value` INTO @taxfee_geren from jay_parameter where `key`='taxfee_geren';
+  SELECT `value` INTO @taxfee_pingtai from jay_parameter where `key`='taxfee_pingtai';
+  # 当日0点之前的时间戳
+  SET @today_befor_time = UNIX_TIMESTAMP(FROM_UNIXTIME(UNIX_TIMESTAMP(), '%Y-%m-%d'));
+
+  # 开启事务
+  start transaction;
+      out_label: BEGIN
+        OPEN recordlist;
+        repeat
+          FETCH recordlist INTO orderId,userId,recordAmount,recordAttach;
+          IF NOT done THEN
+            #1.结算佣金
+            call jiesuan_commissionToCashOneAndOne(userId, orderId, recordAmount, recordAttach, @taxfee_fuwu, @taxfee_geren, @taxfee_pingtai, error);
+            if error then
+              leave out_label;
+            end if;
+
+            #2.更新结算状态
+            SET @v_sql = CONCAT('UPDATE jay_account_commission', @lastmoth_tag, ' SET record_status = 2 ');
+            SET @v_sql = CONCAT(@v_sql, ' WHERE user_id = ', userId);
+            SET @v_sql = CONCAT(@v_sql, ' AND order_id = ', orderId);
+            SET @v_sql = CONCAT(@v_sql, ' AND record_status = 1');
+            PREPARE statement FROM @v_sql;
+            EXECUTE statement;
+            DEALLOCATE PREPARE statement;
+
+            SET @v_sql = CONCAT('UPDATE jay_account_commission', @moth_tag, ' SET record_status = 2 ');
+            SET @v_sql = CONCAT(@v_sql, ' WHERE user_id = ', userId);
+            SET @v_sql = CONCAT(@v_sql, ' AND order_id = ', orderId);
+            SET @v_sql = CONCAT(@v_sql, ' AND record_status = 1');
+            PREPARE statement FROM @v_sql;
+            EXECUTE statement;
+            DEALLOCATE PREPARE statement;
+
+          END IF;
+        until done end repeat;
+        close recordlist;#关闭释放资源
+      END out_label;
+
+  # 提交事务
+  IF error = 1 THEN
+    ROLLBACK ;
+  ELSE
+    COMMIT ;
+  END IF;
+
+  #记录执行日志
+  set @logId = addTimerlog('jiesuan_main', error);
+
+END
+;;
+DELIMITER ;
+
+
+
+
+
+-- ----------------------------
+-- [自动创建交易明细表]Procedure structure for `TimerTask_recordtable`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `TimerTask_recordtable`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `TimerTask_recordtable`(OUT error INT)
+BEGIN
+
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+    SET error = 0;
+
+    SET @month_tag = FROM_UNIXTIME(unix_timestamp(), '%Y%m');
+    SET @nextmonth_tag = DATE_FORMAT(DATE_ADD(@month_tag * 100 + 1, INTERVAL 1 MONTH), '%Y%m');
+    # 今日tag
+    SET @day_tag = FROM_UNIXTIME(UNIX_TIMESTAMP(), '%Y%m%d');
+    # 上月tag
+    SET @lastmoth_tag = DATE_FORMAT(DATE_ADD(@day_tag, INTERVAL -1 MONTH), '%Y%m');
+
+    # 创建当月现金币交易记录表
+    SET @v_sql = CONCAT('CREATE TABLE IF NOT EXISTS `jay_account_cash', @month_tag, '` LIKE `jay_account_record`;');
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    # 创建下月现金币交易记录表
+    SET @v_sql = CONCAT('CREATE TABLE IF NOT EXISTS `jay_account_cash', @nextmonth_tag, '` LIKE `jay_account_record`;');
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    # 创建当月佣金交易记录表
+    SET @v_sql = CONCAT('CREATE TABLE IF NOT EXISTS `jay_account_commission', @month_tag, '` LIKE `jay_account_record`;');
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    # 创建下月佣金交易记录表
+    SET @v_sql = CONCAT('CREATE TABLE IF NOT EXISTS `jay_account_commission', @nextmonth_tag, '` LIKE `jay_account_record`;');
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    # 创建两个月佣金明细视图->按用户id,订单id统计佣金->次日结算
+    DROP VIEW IF EXISTS `view_forJiesuanOneAndOne`;
+    SET @v_sql = CONCAT('CREATE VIEW `view_forJiesuanOneAndOne` AS ');
+    SET @v_sql = CONCAT(@v_sql, ' select r.order_id, r.user_id, sum(r.record_amount) record_amount, r.record_attach from ( ');
+    SET @v_sql = CONCAT(@v_sql, ' select * from jay_account_commission', @lastmoth_tag, ' where record_action in (601,602,603) UNION ALL ');
+    SET @v_sql = CONCAT(@v_sql, ' select * from jay_account_commission', @month_tag, ' where record_action in (601,602,603) ) as r ');
+    SET @v_sql = CONCAT(@v_sql, ' where r.record_status = 1 ');
+    SET @v_sql = CONCAT(@v_sql, ' GROUP BY r.user_id,r.order_id ');
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    #记录执行日志
+    set @logId = addTimerlog('TimerTask_recordtable', error);
+  END
+;;
+DELIMITER ;
+
+
+
+
+
+
+-- ----------------------------
+-- [自动统计上月收支]Procedure structure for `TimerTask_lastMonthAccount`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `TimerTask_lastMonthAccount`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `TimerTask_lastMonthAccount`(OUT error INT)
+  BEGIN
+
+    declare done int default 0;
+    declare userId int default 0;
+    #获取要统计的用户id
+    declare userlist cursor for select user_id from jay_account WHERE account_tag=0;
+    declare continue handler for not found set done = 1;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+    SET error = 0;
+
+    # 本月月tag
+    SET @month_tag = FROM_UNIXTIME(unix_timestamp(), '%Y%m');
+    # 上月tag
+    SET @lastmoth_tag = DATE_FORMAT(DATE_ADD(@day_tag, INTERVAL -1 MONTH), '%Y%m');
+
+    out_label: BEGIN
+      open userlist;
+      repeat
+        FETCH userlist INTO userId;
+        IF not done
+          THEN
+            BEGIN
+                #1.统计每一个用户的收支
+
+                #2.插入IGNORE上月收支记录
+
+                #3.更新上月收支记录
+            END ;
+        END IF ;
+      until done end repeat;
+      close userlist;#关闭释放资源
+    END out_label;
+    # 1.创建上月收支记录
+    -- INSERT IGNORE INTO jay_account (user_id, account_tag, account_uptime) VALUES (userId, 0, UNIX_TIMESTAMP());
+    -- SET @v_sql = CONCAT('CREATE TABLE IF NOT EXISTS `jay_account_cash', @month_tag, '` LIKE `jay_account_record`;');
+    -- PREPARE statement FROM @v_sql;
+    -- EXECUTE statement;
+    -- DEALLOCATE PREPARE statement;
+
+
+    #记录执行日志
+    -- set @logId = addTimerlog('TimerTask_recordtable', error);
+  END
+;;
+DELIMITER ;
+
+
+
+-- ----------------------------
+-- 函数日志记录 `addTimerlog`
+-- ----------------------------
+DROP FUNCTION IF EXISTS `addTimerlog`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `addTimerlog`(pname VARCHAR(50), errorstatis int) RETURNS int(4)
+    SQL SECURITY INVOKER
+BEGIN
+
+    INSERT INTO jay_timer_log(procedurename, `error`, addtime) VALUES (pname, errorstatis, UNIX_TIMESTAMP());
+    RETURN LAST_INSERT_ID();
+
+END
+;;
+DELIMITER ;
+
+
+-- ----------------------------
+-- Event structure for `timer_createtable`
+-- ----------------------------
+DROP EVENT IF EXISTS `timer_createtable`;
+DELIMITER ;;
+CREATE EVENT `NewEvent`
+  ON SCHEDULE EVERY 1 MONTH STARTS '2018-10-01 00:00:00'
+  ON COMPLETION NOT PRESERVE
+ENABLE
+DO
+  call TimerTask_recordtable(@error);
+;;
+DELIMITER ;
+
+
+-- ----------------------------
+-- Event structure for `timer_cirijiesuan`
+-- ----------------------------
+DROP EVENT IF EXISTS `timer_cirijiesuan`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` EVENT `timer_cirijiesuan`
+  ON SCHEDULE EVERY 1 DAY STARTS '2018-10-20 01:00:00'
+  ON COMPLETION NOT PRESERVE
+  ENABLE DO
+  call jiesuan_main(@error);
+;;
+DELIMITER ;

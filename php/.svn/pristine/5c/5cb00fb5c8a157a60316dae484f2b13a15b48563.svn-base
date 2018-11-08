@@ -1,0 +1,438 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>支付成功</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0
+			}
+			/*页头*/
+			
+			.header {
+				background-color: #FFFFFF;
+				padding: 0.453rem 0.586rem 0.373rem 0.586rem;
+			}
+			
+			.headerOne>span:nth-child(1) {
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: bold;
+			}
+			
+			.headerOne>span:nth-child(2) {
+				float: right;
+				font-size: 0.373rem;
+				color: #999999;
+				font-weight: bold;
+			}
+			
+			.headerTwo {
+				margin-top: 0.24rem;
+			}
+			
+			.headerTwo>span {
+				font-size: 0.506rem;
+				color: #F77917;
+				font-weight: bold;
+				margin-right: 0.2rem;
+			}
+			
+			.headerTwo>div {
+				float: right;
+				font-size: 0.373rem;
+				background-color: #F77917;
+				padding: 0.08rem 0.32rem;
+				display: inline-block;
+				border-radius: 0.5rem;
+				color: #FFFFFF;
+				font-weight: bold;
+			}
+			/*查看更多*/
+			.MoreModal{
+				display: none;
+				width: 100vw;
+				height: 100vh;
+				position: fixed;
+				top: 0;
+				left: 0;
+				background-color: rgba(0,0,0,0.6); 
+				z-index: 10;
+			}
+			.modalContent{
+				margin: 0 auto;
+				margin-top: 1.6rem;
+				width: 7.6rem;
+				border-radius: 0.2rem;
+				overflow: hidden;
+				background-color: #FFFFFF;
+			}
+			.modalTitle{
+				margin: 0 auto;
+				width: 2.453rem;
+				height: 1rem;
+				line-height: 1rem;
+				text-align: center;
+				background-color: #F76E1E;
+				color: #FFFFFF;
+				font-size: 0.373rem;
+				font-weight: bold;
+				border-bottom-left-radius: 0.3rem;
+				border-bottom-right-radius: 0.3rem;
+			}
+			.modalBox{
+				margin-top: 0.133rem;
+				height: 8rem;
+				overflow-y: scroll;
+			}
+			.modalBox:after,.modalBox:before{
+				height: 0;
+			}
+			.modalBox>li{
+				margin: 0 0.15rem;
+			}
+			.modalBox span:nth-child(1){
+				font-size: 0.426rem;
+				font-weight: bold;
+				color: #F77917;
+			}
+			.modalBox span:nth-child(2){
+				float: right;
+				font-size: 0.373rem;
+				font-weight: bold;
+				color: #333333;
+			}
+			.closeModal{
+				margin-top: 0.266rem;
+				height: 1rem;
+				line-height: 1rem;
+				text-align: center;
+				background-color: #F76E1E;
+				color: #FFFFFF;
+				font-size: 0.373rem;
+				font-weight: bold;
+			}
+			
+			
+			
+			/*列表行间距调节*/
+			
+			.mui-input-row {
+				height: 1.4rem !important;
+				line-height: 1.4rem !important;
+			}
+			
+			.mui-input-row label {
+				line-height: 2;
+			}
+			
+			.mui-input-row input {
+				line-height: 2;
+				height: auto;
+			}
+			
+			.mui-input-row label {
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: bold;
+			}
+			
+			.mui-input-row input {
+				font-size: 0.426rem;
+			}
+			
+			.postscript label {
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: bold;
+				line-height: 1.1;
+				float: left;
+				width: 35%;
+				padding: 11px 15px;
+			}
+			
+			.postscript textarea {
+				width: 90%;
+				margin: 0 5% 15px 5%;
+				background-color: #FFFFFF;
+				padding: 5px 10px;
+				border-radius: 8px;
+			}
+			
+			.mui-input-group:after {
+				height: 0;
+			}
+			/*推荐更多-轮播*/
+			
+			.footer {
+				background-color: #FFFFFF;
+				margin-top: 0.266rem;
+			}
+			
+			.footerHeader {
+				font-size: 0.453rem;
+				font-weight: bold;
+				color: #333333;
+				text-align: center;
+				padding: 0.8rem 0 0.5rem 0;
+			}
+			.goodsBox{
+			    display: flex;
+			    justify-content: center;
+				flex-wrap:wrap;
+			}
+			.mui-card {
+			    box-shadow: none;
+			    margin: 0.15rem;
+			}
+			.mui-card-header{
+				width: 4.4rem;
+				height: 2.666rem;
+				border-radius: 7px;
+			}
+			.mui-card-footer:before, .mui-card-header:after{
+				height: 0;
+			}
+			.mui-card-header.mui-card-media{
+				padding: 0;
+				position: relative;
+			}
+			.address{
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				padding: 0 5px 0 2px;
+				background-color: #F77917;
+				color: #FFFFFF;
+				font-size: 0.266rem;
+				font-weight: 800;
+				border-bottom-left-radius: 7px;
+				border-bottom-right-radius: 10px;
+				border-top-right-radius: 10px;
+			}
+			.mui-card-content{
+				width: 4.4rem;
+			}
+			.mui-cardFooter{
+				width: 4.4rem;
+				padding: 0 0.2rem;
+			}
+			.mui-card-content-inner{
+				padding: 0.2rem 0.15rem;
+			}
+			.textShow{
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				text-indent: 0.106rem;
+				font-size: 0.3rem;
+				font-weight: bold;
+				color: #666;
+				letter-spacing: -1px;
+				line-height: 1.3;
+			}
+			.textShow strong{
+				font-size: 0.4rem;
+				letter-spacing: 0;
+				color: #333333;
+			}
+			
+			.mui-cardFooter p{
+				width: 100%;
+			}
+			.cardTrue{
+				font-size: 0.426rem;
+				color: #F77917;
+				margin-right: 0.2rem;
+			}
+			.cardFalse{
+				font-size: 0.4rem;
+				color: #999999;
+				text-decoration: line-through;
+			}
+			.cardText{
+				font-size: 0.4rem;
+				color: #999999;
+				margin-right: 0.2rem;
+			}
+			.cardMoney{
+				font-size: 0.4rem;
+				color: #EAC380;
+			}
+			.swiper-container{
+				padding-bottom: 20px;
+			}
+			.swiper-container-horizontal>.swiper-pagination-bullets{
+				bottom: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="header">
+			<div class="headerOne">
+				<span>消费电子码: </span>
+				<span>2018-10-13至2018-10-31</span>
+			</div>
+			<div class="headerTwo">
+				<span>CD873658</span>
+				<span>CD873658</span>
+				<div id="lookAtMore">查看更多</div>
+			</div>
+		</div>
+
+		<div class="content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>购买数量：</label>
+					<input type="text" disabled="disabled" value="1">
+				</div>
+				<div class="mui-input-row">
+					<label>联系人名：</label>
+					<input type="text" disabled="disabled" value="刘德华">
+				</div>
+				<div class="mui-input-row">
+					<label>联系电话：</label>
+					<input type="number" disabled="disabled" value="13518116656">
+				</div>
+				<div class="postscript">
+					<label>备注信息：</label>
+					<textarea rows="3" disabled="disabled">速度发货，谢谢</textarea>
+				</div>
+			</form>
+		</div>
+		<div class="footer">
+			<div class="footerHeader">更多推荐</div>
+			<div class="swiper-container swiper-container-horizontal swiper-container-ios">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="goodsBox">
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
+									<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
+								</div>
+								<div class="mui-card-content">
+									<div class="mui-card-content-inner">
+										<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>
+											能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+										</p>
+									</div>
+								</div>
+								<div class="mui-cardFooter">
+									<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
+									<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+								</div>
+							</div>
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
+									<div class="address"><i class="iconfont icon-dingwei"></i>金牛区</div>
+								</div>
+								<div class="mui-card-content">
+									<div class="mui-card-content-inner">
+										<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>
+											能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+										</p>
+									</div>
+								</div>
+								<div class="mui-cardFooter">
+									<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
+									<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+								</div>
+							</div>
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)"></div>
+								<div class="mui-card-content">
+									<div class="mui-card-content-inner">
+										<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>
+											能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+										</p>
+									</div>
+								</div>
+								<div class="mui-cardFooter">
+									<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
+									<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+								</div>
+							</div>
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)"></div>
+								<div class="mui-card-content">
+									<div class="mui-card-content-inner">
+										<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>
+											能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+										</p>
+									</div>
+								</div>
+								<div class="mui-cardFooter">
+									<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
+									<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						我是第二面
+					</div>
+					<div class="swiper-slide">
+						我是第三面
+					</div>
+				</div>
+				<!-- Add Pagination -->
+				<div class="swiper-pagination swiper-pagination-bullets">
+					<span class="swiper-pagination-bullet"></span>
+					<span class="swiper-pagination-bullet"></span>
+					<span class="swiper-pagination-bullet"></span>
+				</div>
+				<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+			</div>
+		</div>
+		<div class="MoreModal">
+			<div class="modalContent">
+				<div class="modalTitle">消费电子码</div>
+				<ul class="mui-table-view modalBox">
+					<li class="mui-table-view-cell">
+						<span>L3IE8928W</span>
+						<span>去使用</span>
+					</li>
+					
+				</ul>
+				<div class="closeModal" id="closeModal">关闭</div>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				mui('body').on('tap', '#lookAtMore', function() { //查看更多
+					$(".MoreModal").css({"display":"block"})
+				})
+				
+				mui('body').on('tap','#closeModal',function(){	//关闭查看更多
+					$(".MoreModal").css({"display":"none"})
+				})
+				
+				
+				
+				//商品推荐更多
+				var swiper = new Swiper('.swiper-container', {
+					pagination: {
+						el: '.swiper-pagination',
+					},
+				});
+			})
+		</script>
+	</body>
+
+</html>

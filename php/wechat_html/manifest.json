@@ -159,6 +159,13 @@
 					"page/personalCenter/personalCenter.html"
 				],
 				"priority": 0
+			},
+			"page/homePage/register.html": {
+				"resources": [],
+				"refer": [
+					"page/homePage/homePage.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

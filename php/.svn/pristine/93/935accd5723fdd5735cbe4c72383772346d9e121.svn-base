@@ -1,0 +1,658 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>酒店详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0
+			}
+			/*banner图*/
+			.mui-slider-item {
+				height: 5.866rem !important;
+				overflow: hidden;
+			}
+			
+			.mui-slider img {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+			
+			.mui-slider-indicator {
+				bottom: 8px;
+			}
+			
+			.mui-slider-indicator .mui-indicator {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-slider-indicator .mui-active.mui-indicator {
+				background: #E1B872;
+				box-shadow: 0 0 0 0 #fff;
+			}
+			/*商品价格*/
+			.textIntroduce{
+				min-height: 1.76rem;
+				background-color: #FFFFFF;
+				padding: 0.266rem 0.32rem;
+				position: relative;
+			}
+			.textShowHeader{
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				/*规定几行显示省略号*/
+				-webkit-box-orient: vertical;
+				text-indent: 0.106rem;
+				font-size: 0.4rem;
+				font-weight: bold;
+				color: #333333;
+				letter-spacing: -1px;
+				line-height: 1.3;
+			}
+			.textShowHeader strong{
+				font-size: 0.506rem;
+				letter-spacing: 0;
+			}
+			
+			
+			/*商家地址*/
+			.BusinessAddress{
+				background-color: #FFFFFF;
+				margin-top: 0.266rem;
+				font-weight: bold;
+				color: #999999;
+				padding: 0.14rem 0.32rem;
+				overflow: hidden;
+			}
+			.BusinessAddress img{
+				width: 0.5rem;
+				height: 0.6rem;
+				margin-right: 0.1rem;
+				display: inline-block;
+				vertical-align: middle;
+			}
+			.addressLeft{
+				display: inline-block;
+				width: 90%;
+				float: left;
+			}
+			.addressLeft>div:first-child{
+				font-size: 0.426rem;
+			}
+			.addressLeft>div:last-child{
+				margin-top: 0.16rem;
+			}
+			.addressRight{
+				display: inline-block;
+				width: 10%;
+				float: right;
+				position: relative;
+				top: 0.3rem;
+			}
+			/*商品详情*/
+			.content{
+				background-color: #FFFFFF;
+				margin-top: 0.266rem;
+			}
+			.details{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				justify-content: space-around;
+				color: #333333;
+				font-size: 0.426rem;
+				padding: 0.346rem 0 0.24rem 0;
+				border-bottom: 1px solid #F2F2F2;
+			}
+			.detailsActive{		/*选中时的状态*/
+				position:relative;
+			}
+			.detailsActive:before {
+				content:"";
+				position:absolute;
+				left:25%;
+				bottom:-0.24rem;
+				width:50%;
+				height:4px;
+				background-color:#F77917;
+			}
+			.contentBox{
+				padding: 0.6rem 0.32rem;
+			}
+			.contentHeader{
+				font-size: 0.453rem;
+				text-align: center;
+				color: #333333;
+				padding: 0.266rem 0 0.666rem 0;
+			}
+			.contentDetail>h1{
+				color: #333333;
+				font-size: 0.506rem;
+				font-weight: bold;
+			}
+			.contentDetail>h6{
+				color: #333333;
+				font-size: 0.4rem;
+				font-weight:500;
+				margin-top: 0.133rem;
+			}
+			.contentDetail>p{
+				color: #333333;
+				font-size: 0.586rem;
+				font-weight: bold;
+				margin-top: 0.373rem;
+			}
+			.contentDetail>p>span{
+				color: #999999;
+				font-size: 0.426rem;
+				font-weight: 100;
+				text-decoration: line-through;
+			}
+			.contentDetail>div{
+				margin-top: 0.133rem;
+				margin-bottom: 0.133rem;
+				display: flex;
+				justify-content: space-between;
+			}
+			.contentDetail>div>span:nth-child(1){
+				color: #999999;
+				font-size: 0.346rem;
+				padding: 0.16rem 0;
+			}
+			.contentDetail>div>span:nth-child(1)>span{
+				color: #F77917;
+				font-weight: bold;
+			}
+			.contentDetail>div>span:nth-child(2){
+				color: #999999;
+				font-size: 0.373rem;
+				padding: 0.16rem 0.533rem;
+			}
+			.contentDetail>div>span:nth-child(3){
+				color: #FFFFFF;
+				font-size: 0.4rem;
+				background-color: #E1B872;
+				padding: 0.16rem 0.533rem;
+				display: inline-block;
+				border-radius: 0.8rem;
+			}
+			.purchaseNotes{
+				font-size: 0.453rem;
+				text-align: center;
+				color: #333333;
+				padding: 0.266rem 0 0.666rem 0;
+			}
+			
+			
+			
+			
+			
+			/*底部栏*/
+			.downBtn{
+				width: 100%;
+				height: 1.28rem;
+				z-index: 10;
+				position: fixed;
+				bottom: 0;
+				font-size: 0.506rem;
+				font-weight: bold;
+				box-shadow: 0 -1px 10px 1px rgba(0,0,0,0.2);
+			}
+			.downBtn>div{
+				display: inline-block;
+				text-align: center;
+				height: 1.28rem;
+				line-height: 1.28rem;
+				float: left;
+				
+			}
+			.downBtn>div:first-child{
+				width: 35%;
+				font-size: 0.4rem;
+				color: #333333;
+				background-color: #FFFFFF;
+			}
+			.downBtn>div:nth-child(2){
+				width: 24%;
+				color: #FFFFFF;
+				background-color: #333333;
+			}
+			.downBtn>div:nth-child(3){
+				width: 41%;
+				color: #FFFFFF;
+				background-color: #F77917;		
+			}
+			/*推荐更多-轮播*/
+			
+			.footer {
+				background-color: #FFFFFF;
+				margin-top: 0.266rem;
+			}
+			
+			.footerHeader {
+				font-size: 0.453rem;
+				font-weight: bold;
+				color: #333333;
+				text-align: center;
+				padding: 0.8rem 0 0.5rem 0;
+			}
+			.goodsBox{
+			    display: flex;
+			    justify-content: center;
+				flex-wrap:wrap;
+			}
+			.mui-card {
+			    box-shadow: none;
+			    margin: 0.15rem;
+			}
+			.mui-card-header{
+				width: 4.4rem;
+				height: 2.666rem;
+				border-radius: 7px;
+			}
+			.mui-card-footer:before, .mui-card-header:after{
+				height: 0;
+			}
+			.mui-card-header.mui-card-media{
+				padding: 0;
+				position: relative;
+			}
+			.address{
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				padding: 0 5px 0 2px;
+				background-color: #F77917;
+				color: #FFFFFF;
+				font-size: 0.266rem;
+				font-weight: 800;
+				border-bottom-left-radius: 7px;
+				border-bottom-right-radius: 10px;
+				border-top-right-radius: 10px;
+			}
+			.mui-card-content{
+				width: 4.4rem;
+			}
+			.mui-cardFooter{
+				width: 4.4rem;
+				padding: 0 0.2rem;
+			}
+			.mui-card-content-inner{
+				padding: 0.2rem 0.15rem;
+			}
+			.textShow{
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				text-indent: 0.106rem;
+				font-size: 0.3rem;
+				font-weight: bold;
+				color: #666;
+				letter-spacing: -1px;
+				line-height: 1.3;
+			}
+			.textShow strong{
+				font-size: 0.4rem;
+				letter-spacing: 0;
+				color: #333333;
+			}
+			
+			.mui-cardFooter p{
+				width: 100%;
+			}
+			.cardTrue{
+				font-size: 0.426rem;
+				color: #F77917;
+				margin-right: 0.2rem;
+			}
+			.cardFalse{
+				font-size: 0.4rem;
+				color: #999999;
+				text-decoration: line-through;
+			}
+			.cardText{
+				font-size: 0.4rem;
+				color: #999999;
+				margin-right: 0.2rem;
+			}
+			.cardMoney{
+				font-size: 0.4rem;
+				color: #EAC380;
+			}
+			.swiper-container{
+				padding-bottom: 20px;
+			}
+			.swiper-container-horizontal>.swiper-pagination-bullets{
+				bottom: 0;
+			}
+			
+			
+			/*查看房型模态窗*/
+			.mui-modal{
+				background-color: rgba(0,0,0,0.7);
+			}
+			.mui-bar-nav{
+				top: 25vh;
+			}
+			.mui-content{
+				height: 75vh;
+				margin-top:25vh;
+				background-color:#FFFFFF;
+				position: relative;
+				overflow-y: auto;
+				padding-bottom: 1.5rem;
+			}
+			.BuyNow{
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				height: 1.226rem;
+				line-height: 1.226rem;
+				text-align: center;
+				font-size: 0.48rem;
+				color: #FFFFFF;
+				font-weight: bold;
+				background-color: #E1B872;
+			}
+			
+			
+			/*公用*/
+			.header{
+				text-align: center;
+				padding-top: 0.2rem;
+			}
+			.titleImg{
+				display: inline-block;
+				width: 8.853rem;
+				height: 4.933rem;
+				border-radius: 0.2rem;
+				background-size: 100% 100%;
+			}
+			.contentTitle{
+				font-size: 0.426rem;
+				color: #000000;
+				font-weight: bold;
+				margin: 0.4rem;
+				clear: both;
+			}
+			.contentText{
+				font-size: 0.4rem;
+				color: #999999;
+				font-weight: 500;
+				margin-top: 0.266rem;
+				margin-left: 0.4rem;
+				overflow: hidden;
+			}
+			.contentText>div{
+				display: inline-block;
+				float: left;
+				width: 50%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="headerBox">
+			<div class="mui-slider">
+				<div class="mui-slider-group mui-slider-loop">
+					<!--支持循环，需要重复图片节点-->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<img src="../../img/homePage/banner3.png" />
+					</div>
+	
+					<div class="mui-slider-item">
+						<img src="../../img/homePage/banner1.png" />
+					</div>
+					<div class="mui-slider-item">
+						<img src="../../img/homePage/banner2.png" />
+					</div>
+					<div class="mui-slider-item">
+						<img src="../../img/homePage/banner3.png" />
+					</div>
+	
+					<!--支持循环，需要重复图片节点-->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<img src="../../img/homePage/banner1.png" />
+					</div>
+				</div>
+				<!--轮播图图标小点-->
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+				</div>
+			</div>
+			<div class="textIntroduce">
+				<div class="textShowHeader">
+					<strong>【旅行者.漫步酒店】</strong>这家众筹的旅行者民宿，藏身 于画外桐坞深处。让人想在这里住上十天，因为这里有十 间房。
+				</div>
+			</div>
+		</div>
+		<div class="BusinessAddress">
+			<div class="addressLeft">
+				<div>商家地址</div>
+				<div>
+					<img src="../../img/homePage/address.jpg"/>
+					<span>四川省成都市青羊区宽窄巷子66号</span>
+				</div>
+			</div>
+			<div class="addressRight"><i class="mui-icon mui-icon-forward"></i></div>
+		</div>
+		<div class="content">
+			<div class="details">
+				<span class="detailsSec detailsActive">购买须知</span>
+				<span class="detailsSec">特色介绍</span>
+			</div>
+			<div class="contentBox">
+				<div class="contentHeader">房型推荐</div>
+				<ul class="mui-table-view contentList">
+					 <li class="mui-table-view-cell contentDetail">
+					 	<h1>【旅行者.漫步hotel】</h1>
+						<h6>太空行走主题大床房（含双人早餐+游泳券）</h6>
+						<p>￥148 <span> ￥499</span></p>
+						<div>
+							<span>佣金：<span>￥52</span></span>
+							<span><a href="#modal">房型详情<i class="iconfont icon-icon_sanjiaoxing"></i></a></span>
+							<span class="nowShop">立即购买</span>
+						</div>
+					 </li>
+					 <li class="mui-table-view-cell contentDetail">
+					 	<h1>【宇宙大爆炸】</h1>
+						<h6>宇宙大爆炸主题大床房（含双人早餐+游泳券）</h6>
+						<p>￥200 <span> ￥588</span></p>
+						<div>
+							<span>佣金：<span>￥80</span></span>
+							<span><a href="#modal">房型详情<i class="iconfont icon-icon_sanjiaoxing"></i></a></span>
+							<span class="nowShop">立即购买</span>
+						</div>
+					 </li>
+			        
+				</ul>
+			</div>
+			<div class="purchaseNotes">购买须知</div>
+			<div class="">
+				须知</br>须知</br>须知</br>须知</br>须知</br>须知</br>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="footerHeader">更多推荐</div>
+			<div class="swiper-container swiper-container-horizontal swiper-container-ios">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<div class="goodsBox">
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
+									<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
+								</div>
+								<div class="mui-card-content">
+									<div class="mui-card-content-inner">
+										<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>
+											能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+										</p>
+									</div>
+								</div>
+								<div class="mui-cardFooter">
+									<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
+									<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+								</div>
+							</div>
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
+									<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
+								</div>
+								<div class="mui-card-content">
+									<div class="mui-card-content-inner">
+										<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>
+											能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+										</p>
+									</div>
+								</div>
+								<div class="mui-cardFooter">
+									<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
+									<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+								</div>
+							</div>
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
+									<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
+								</div>
+								<div class="mui-card-content">
+									<div class="mui-card-content-inner">
+										<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>
+											能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+										</p>
+									</div>
+								</div>
+								<div class="mui-cardFooter">
+									<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
+									<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+								</div>
+							</div>
+							<div class="mui-card">
+								<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
+									<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
+								</div>
+								<div class="mui-card-content">
+									<div class="mui-card-content-inner">
+										<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>
+											能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+										</p>
+									</div>
+								</div>
+								<div class="mui-cardFooter">
+									<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
+									<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						我是第二面
+					</div>
+					<div class="swiper-slide">
+						我是第三面
+					</div>
+				</div>
+				<!-- Add Pagination -->
+				<div class="swiper-pagination swiper-pagination-bullets">
+					<span class="swiper-pagination-bullet"></span>
+					<span class="swiper-pagination-bullet"></span>
+					<span class="swiper-pagination-bullet"></span>
+				</div>
+				<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+			</div>
+		</div>
+		<div class="downBtn">
+			<div id="homePage">首页</div>
+			<div>分享</div>
+			<div class="nowShop">立刻购买</div>
+		</div>
+		
+		<div id="modal" class="mui-modal">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-icon mui-icon-close mui-pull-right" href="#modal"></a>
+				<h1 class="mui-title">房型说明</h1>
+			</header>
+			<div class="mui-content">
+				<div class="">
+					<div class="header">
+						<div class="titleImg" style="background-image: url(../../img/homePage/banner3.png)"></div>
+					</div>
+					<div class="">
+						<div class="contentTitle">房型信息</div>
+						<div class="contentText">
+							<div class="">
+								<p>房间面积:38（平方）</p>
+								<p>床型尺寸：1.8-2m</p>
+								<p>可住人数：不限</p>
+								<p>早餐：双早</p>
+							</div>
+							<div class="">
+								<p>床型：大床</p>
+								<p>窗户：有窗</p>
+								<p>加床规则：不可加床</p>
+							</div>
+						</div>
+						<div class="contentTitle">房间设施</div>
+						<div class="contentText">
+							空调、冰箱、电视、拖鞋、电吹风
+						</div>
+						<div class="contentTitle">预订须知</div>
+						<div class="contentText">
+							请提前预订1-3天，周末节假日请尽量提前预订
+						</div>
+					</div>
+				</div>
+				<div class="BuyNow nowShop">立刻购买</div>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				
+				//首页
+				mui('body').on('tap','#homePage',function(){	
+					mui.openWindow({
+						url:"homePage.html"
+					})
+				})
+				//立刻购买
+				mui('body').on('tap','.nowShop',function(){	
+					mui.openWindow({
+						url:"OrderPaymentHotel.html"
+					})
+				})
+				//获得slider插件对象
+				var gallery = mui('.mui-slider');
+				gallery.slider({
+					interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+				});
+				//商品推荐更多
+				var swiper = new Swiper('.swiper-container', {
+					pagination: {
+						el: '.swiper-pagination',
+					},
+				});
+				
+			})
+		</script>
+	</body>
+
+</html>

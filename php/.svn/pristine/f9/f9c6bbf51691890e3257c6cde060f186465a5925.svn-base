@@ -1,0 +1,49 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2018/11/6
+ * Time: 18:02
+ */
+
+namespace app\api\model;
+use app\common\model\AccountRecordModel;
+use app\common\model\Currency;
+use app\common\model\CurrencyAction;
+use think\Db;
+
+/**
+ * 支付通知业务处理
+ * Class NotifyModel
+ * @package app\api\model
+ */
+class NotifyModel
+{
+
+    public function notifyMall($order, $notifyparams){
+        //1.更新订单状态
+        $uporder['order_transaction'] = $notifyparams['transaction_id'];
+        $uporder['order_paytime'] = time();
+        $uporder['order_uptime'] = time();
+        $uporder['order_status'] = 2;
+        $res1 = Db::name('order')->where(['order_id'=>$order['order_id']])->update($uporder);
+        $arm = new AccountRecordModel();
+        //支付cash明细
+        $res5 = $arm->add($order['user_id'], $order['order_id'], Currency::Cash, CurrencyAction::CashRechargeWechatResume, $order['order_payfee'], $arm->getRecordAttach($order['order_id'], $order['order_fullname'], $order['order_no']), '微信消费充值');
+        $res6 = $arm->add($order['user_id'], $order['order_id'], Currency::Cash, CurrencyAction::CashWechatResume, -$order['order_payfee'], $arm->getRecordAttach($order['order_id'], $order['order_fullname'], $order['order_no']), '微信消费');
+        //2.新人免单全返到佣金
+        $res2 = true;
+        if($order['product_returnall'] == 1){
+            $res2 = $arm->add($order['user_id'], $order['order_id'], Currency::Commission, CurrencyAction::CommissionReturnAll, $order['order_payfee'], $arm->getRecordAttach($order['order_id'], '平台', $order['order_no']), '新人免单全返');
+        }
+        //3.发放佣金
+        $cm = new CommissionModel();
+        $res3 = $cm->build($order['order_id']);
+        if($res1 !== false && $res2 && $res3 !== false && $res5 && $res6){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+}

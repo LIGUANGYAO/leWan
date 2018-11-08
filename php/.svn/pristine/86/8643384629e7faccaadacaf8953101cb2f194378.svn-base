@@ -1,0 +1,18 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2018/11/7
+ * Time: 15:39
+ * 用户提现接口
+ * 肖亚子
+ */
+
+namespace app\api\controller;
+use Think\Exception;
+use app\api\model\UserModel;
+
+class UserwithdrawController extends ApiBaseController{
+
+
+}

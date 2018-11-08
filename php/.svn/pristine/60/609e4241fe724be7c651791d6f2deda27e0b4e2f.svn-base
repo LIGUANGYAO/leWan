@@ -1,0 +1,101 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2018/11/6
+ * Time: 18:02
+ */
+
+namespace app\api\model;
+use app\common\model\AccountRecordModel;
+use app\common\model\Currency;
+use app\common\model\CurrencyAction;
+use think\Db;
+
+/**
+ * 支付通知业务处理
+ * Class NotifyModel
+ * @package app\api\model
+ */
+class NotifyModel
+{
+
+    public function notifyMall($order, $notifyparams, $cfg){
+        //1.更新订单状态
+        $uporder['order_transaction'] = $notifyparams['transaction_id'];
+        $uporder['order_paytime'] = time();
+        $uporder['order_uptime'] = time();
+        $uporder['order_status'] = 2;
+        $res1 = Db::name('order')->where(['order_id'=>$order['order_id']])->update($uporder);
+        $arm = new AccountRecordModel();
+        //支付cash明细
+        $res5 = $arm->add($order['user_id'], $order['order_id'], Currency::Cash, CurrencyAction::CashRechargeWechatResume, $order['order_payfee'], $arm->getRecordAttach($order['order_id'], $order['order_fullname'], $order['order_no']), '微信消费充值');
+        $res6 = $arm->add($order['user_id'], $order['order_id'], Currency::Cash, CurrencyAction::CashWechatResume, -$order['order_payfee'], $arm->getRecordAttach($order['order_id'], $order['order_fullname'], $order['order_no']), '微信消费');
+        //2.新人免单全返到佣金
+        $res2 = true;
+        if($order['product_returnall'] == 1){
+            $res2 = $arm->add($order['user_id'], $order['order_id'], Currency::Commission, CurrencyAction::CommissionReturnAll, $order['order_payfee'], $arm->getRecordAttach($order['order_id'], '平台', $order['order_no']), '新人免单全返');
+        }
+        //3.发放佣金
+        $cm = new CommissionModel();
+        $res3 = $cm->build($order['order_id']);
+        //4.生成电子码
+        if($order['order_isexpress'] == 1){
+            $mom = new MallOrderModel();
+            $order['consume_code'] = $mom->buildConsumeCode($order['order_id'], $order['num'], $order['user_id'], $order['op_id']);
+        }
+        //5.短信通知
+        $this->sendOrderSms($order, $cfg);
+        //6.服务号推送通知
+        $this->sendTplmsg($order);
+        if($res1 !== false && $res2 && $res3 !== false && $res5 && $res6){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    private function sendOrderSms($order, $cfg){
+        if($order['order_reservation'] == 1 && $order['order_isexpress'] == 1){
+            //到店预约类短信
+            $content = config('cdxx_sms.content_ordersuccessyuyue');
+            $content = str_replace('{name}', $order['order_fullname'], $content);
+            $content = str_replace('{num}', $order['num'], $content);
+            $content = str_replace('{code}', $order['consume_code'], $content);
+            $content = str_replace('{starttime}', date('m.d',$order['product_startusetime']), $content);
+            $content = str_replace('{yysj1}', $cfg['yy_start'], $content);
+            $content = str_replace('{yysj2}', $cfg['yy_end'], $content);
+            $yyurl = 'http://'.$cfg['domain'].'/wechat_html/page/reservationCenter/reservationCenter.html?code='.$order['consume_code'];
+            $content = str_replace('{yyurl}', createShortUrl($yyurl), $content);
+            $content = str_replace('{yxq1}', date('Y-m-d', $order['product_startusetime']), $content);
+            $content = str_replace('{yxq2}', date('Y-m-d', $order['product_endusetime']), $content);
+        }elseif($order['order_reservation'] == 2 && $order['order_isexpress'] == 1){
+            //到店免预约类短信
+            $content = config('cdxx_sms.content_ordersuccessmianyuyue');
+            $content = str_replace('{name}', $order['order_fullname'], $content);
+            $content = str_replace('{num}', $order['num'], $content);
+            $content = str_replace('{code}', $order['consume_code'], $content);
+            $content = str_replace('{yxq1}', date('Y-m-d', $order['product_startusetime']), $content);
+            $content = str_replace('{yxq2}', date('Y-m-d', $order['product_endusetime']), $content);
+        }elseif($order['order_isexpress'] == 2){
+            //快递商品短信
+        }
+        return sendSmsCdxx($order['order_mobile'], $content);
+    }
+
+
+    /**
+     * 给客户发送模板推送消息
+     * @param $order
+     */
+    private function sendTplmsg($order){
+        $obj['touser'] = $order['openid'];
+        $obj['template_id'] = $order[''];
+        $obj['url'] = $order[''];
+        $obj['data'] = [
+            []
+        ];
+        wx_post('https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$order['accesstoken'], json_encode($obj));
+    }
+}

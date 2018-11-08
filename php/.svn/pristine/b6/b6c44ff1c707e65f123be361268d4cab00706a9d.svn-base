@@ -1,0 +1,285 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>注册</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #FFFFFF;
+			}
+			
+			/*头部*/
+			.header{
+				width: 100%;
+				height: 6.426rem;
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				position: relative;
+				text-align: center;
+			}
+			
+			.goinshop{
+				font-size: 0.48rem;
+				color: #FFFFFF;
+				font-weight: bold;
+				float: left;
+				margin: 3.08rem 0 0 1.2rem;
+			}
+			.inviteUser{
+				position: absolute;
+				display: inline-block;
+				width: 9.36rem;
+				height: 2.4rem;
+				left: 0;
+				right: 0;
+				bottom: -1.2rem;
+				margin: 0 auto;
+				background-color: #FFFFFF;
+				border-radius: 0.1rem;
+				z-index: 10;
+				box-shadow: 0 0 10px 1px rgba(0,0,0,0.2);
+			}
+			/*二维码注册*/
+			.userImg{	
+				width: 1.44rem;
+				height: 1.44rem;
+				border-radius: 0.72rem;
+				display: inline-block;
+				float: left;
+				margin: 0.48rem 0.26rem;
+			}
+			.userMessage{
+				display: inline-block;
+				width: 6.666rem;
+				text-align: left;
+			}
+			/*邀请码注册*/
+			.InvitationCode{
+				display: none;
+			}
+			.InvitationCode>div{
+				margin: 0.426rem 0 0 0.533rem;
+				font-size: 0.48rem;
+				color: #333333;
+				font-weight: 800;
+				float: left;
+			}
+			.InvitationCode>input{
+				border: none;
+				font-size: 0.48rem;
+			}
+			.InvitationCode>input::-webkit-input-placeholder {
+				color: #E2E2E2;
+			}
+			
+			.userMessage>div{
+				margin-top: 0.5rem;
+				font-size: 0.533rem;
+				color: #333333;
+				font-weight: 800;
+			}
+			.userMessage>p{
+				margin-top: 0.25rem;
+				font-size: 0.4rem;
+				color: #999999;
+				font-weight: 500;
+			}
+			/*内容*/
+			.content{
+				margin-top: 1.68rem;
+				overflow: hidden;
+			}
+			.conTitle{
+				font-size: 0.48rem;
+				color: #333333;
+				font-weight: 800;
+				margin-left: 0.7rem;
+			}
+			
+			.mui-input-group{
+				width: 8.56rem;
+				margin: 0 auto;
+			}
+			.mui-input-group:after,.mui-input-group:before{
+				height: 0;
+			}
+			.mui-input-group .mui-input-row:after{
+				left: 0;
+				background-color:#E2E2E2;
+			}
+			.mui-input-group input::-webkit-input-placeholder {
+				color: #E2E2E2;
+			}
+			.mui-input-group .mui-input-row{
+				height: 1.466rem;
+			}
+			.mui-input-group input{
+				padding: 0.373rem 15px 0.373rem 0;
+				height: 1.466rem;
+				font-size: 0.48rem;
+				font-weight: 500;
+			}
+			.authCode{
+				width: 5.5rem;
+				float: left;
+			}
+			.getAuthCode{
+				display: inline-block;
+				font-size: 0.346rem;
+				width: 2.5rem;
+				height: 1.466rem;
+				line-height: 2rem;
+				color: #E1B872;
+				text-align: center;
+				float: right;
+			}
+			
+			
+			/*尾部*/
+			.footer{
+				margin-top: 1rem;
+				color: #999999;
+				font-size: 0.293rem;
+				text-align: center;
+			}
+			.footer>img{
+				width: 0.373rem;
+				height: 0.373rem;
+			}
+			.footer span{
+				color: #E1B872;
+			}
+			
+			.footerBtn{
+				text-align: center;
+				margin-top: 0.4rem;
+			}
+			.registerBtn{
+				display: inline-block;
+				width: 6.853rem;
+				height: 1.333rem;
+				line-height: 1.333rem;
+				color: #FFFFFF;
+				background-color: #E1B872;
+				font-size: 0.48rem;
+				font-weight: 500;
+				border-radius: 0.1rem;
+			}
+			.goingToshop{
+				color: #CCCCCC;
+				font-size: 0.32rem;
+				font-weight: 500;
+				margin-top: 0.266rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="header" style="background-image: url(../../img/homePage/register1.png);">
+			<span class="goinshop goToInShop">进入商城</span>
+			<div class="inviteUser">
+				<!--二维码分享注册-->
+				<img class="userImg" src="../../img/homePage/eightNav2.png"/>
+				<div class="userMessage">
+					<div>刘德华</div>
+					<p>邀请您加入乐玩联盟</p>
+				</div>
+				<!--邀请码注册-->
+				<div class="InvitationCode">
+					<div>邀请码</div>
+					<input type="text" maxlength="8" name="" id="" placeholder="请输入8位邀请码"/>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="conTitle">手机号</div>
+			<div class="mui-input-group">
+			    <div class="mui-input-row">
+			        <input type="number" id="phone" oninput="if(value.length>11)value=value.slice(0,11)" maxlength="11" placeholder="请输入11位手机号码">
+			    </div>
+			    <div class="mui-input-row authCode">
+			        <input type="number" class="" oninput="if(value.length>6)value=value.slice(0,6)" maxlength="6" placeholder="请输入验证码">
+			    </div>
+			    <div class="getAuthCode" id="getAuthCode">
+			    	获取验证码
+			    </div>
+			</div>
+		</div>
+		<div class="footer">
+			<img src="../../img/homePage/register2.png"/>
+			我已阅读并同意<span>《服务协议》</span>和<span>《隐私政策》</span>
+		</div>
+		<div class="footerBtn">
+			<div class="registerBtn">注册</div>
+			<div class="goingToshop goToInShop">进入商城看看<i class="iconfont icon-gengduo"></i></div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				
+				//获取验证码
+				mui('body').on('tap', '#getAuthCode', function() {
+					var phone = $("#phone").val();
+					if(!validate([phone, ['required','phone'],['手机号码不能为空', '手机号码格式错误']])) return void 0;
+					var regInfo = {
+						'userPhone': phone,
+						"smsLog": 
+					};
+					$.ajax({
+						url: API_SERVER + '/message/sms/getVerifyCode',
+						type: 'post',
+						contentType: 'application/json',
+						data: JSON.stringify(regInfo),
+						dataType: 'json',
+						async: false,
+						cache: false,
+						success: function(data) {
+							if(data.status == 0) { //已存在微信用户关系跳转到已入驻页面                	
+								mui.toast('发送成功!');
+								showd();
+			
+							} else { //跳转到未入驻页面
+								mui.toast('发送失败!');
+								sendtype = 0;
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							sendtype = 0;
+							console.log(type);
+						}
+					});
+				});
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				//进入商城看看
+				mui("body").on("tap",".goToInShop",function(){
+					mui.openWindow({
+						url: "homePage.html",
+						id: "homePage.html"
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>

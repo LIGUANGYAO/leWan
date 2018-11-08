@@ -1,26 +1,31 @@
 {
-	"page/personalCenter/personalCenter.html": {
-		"refer": [
-			"page/homePage/homePage.html"
-		]
-	},
-	"page/homePage/homePage.html": {
-		"refer": [
-			"page/everydayFaddish/everydayFaddish.html",
-			"page/reservationCenter/reservationCenter.html",
-			"page/personalCenter/personalCenter.html"
-		]
-	},
-	"page/reservationCenter/reservationCenter.html": {
-		"refer": [
-			"page/personalCenter/personalCenter.html",
-			"page/reservationCenter/appointmentTime.html"
-		]
-	},
-	"page/everydayFaddish/everydayFaddish.html": {
-		"refer": [
-			"page/reservationCenter/reservationCenter.html",
-			"page/personalCenter/personalCenter.html"
-		]
-	}
+  "page/personalCenter/personalCenter.html": {
+    "refer": [
+      "page/homePage/homePage.html"
+    ]
+  },
+  "page/homePage/homePage.html": {
+    "refer": [
+      "page/everydayFaddish/everydayFaddish.html",
+      "page/reservationCenter/reservationCenter.html",
+      "page/personalCenter/personalCenter.html"
+    ]
+  },
+  "page/reservationCenter/reservationCenter.html": {
+    "refer": [
+      "page/personalCenter/personalCenter.html",
+      "page/reservationCenter/appointmentTime.html"
+    ]
+  },
+  "page/everydayFaddish/everydayFaddish.html": {
+    "refer": [
+      "page/reservationCenter/reservationCenter.html",
+      "page/personalCenter/personalCenter.html"
+    ]
+  },
+  "page/homePage/register.html": {
+    "refer": [
+      "page/homePage/homePage.html"
+    ]
+  }
 }
