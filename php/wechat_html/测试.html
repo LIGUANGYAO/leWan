@@ -28,25 +28,6 @@
 		
 		<script type="text/javascript">
 			$(function() {
-				//配置注入
-				function configWx() {
-					var thisPageUrl = location.href.split('#')[0];
-					var json = {
-						url: thisPageUrl
-					};
-					var ajaxHelper = new AjaxHelper()
-					ajaxHelper.get("../weixin/getJsTicket", json, function(data) {
-						if(data != null) {
-							configWeiXin(data.appId, data.timestamp, data.nonceStr,
-								data.signature);
-						} else {
-							console.log("配置weixin jsapi失败");
-						}
-					}, function() {
-						console.log("配置请求错误");
-					});
-				}
-
 				function configWeiXin(appId, timestamp, nonceStr, signature) {
 					wx.config({
 						debug: true, // 开启调试模式,调用的所有api的赚回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
