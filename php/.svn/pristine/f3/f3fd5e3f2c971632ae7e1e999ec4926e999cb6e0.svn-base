@@ -44,7 +44,14 @@
 		<div class="content">
 			<div class="contentTitle">
 				<div class="">
-					页面
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
 				</div>
 				<div id="1">1</div>
 				<div id="2">2</div>
@@ -68,10 +75,10 @@
 				var code = getUrlParam("code")
 				log("code+" + code)
 				$("#1").text("code+" + code)
-				if(!code && !token) {
+				if(!code) {
 					log("没有code")
-//					var redirectUrl = "http://cs.lewan6.ren/wechat_html/page/everydayFaddish/everydayFaddish.html"
-//					window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9639c4a683f9ce86&redirect_uri='+redirectUrl+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
+					var redirectUrl = "http://cs.lewan6.ren/wechat_html/page/everydayFaddish/everydayFaddish.html"
+					window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9639c4a683f9ce86&redirect_uri='+redirectUrl+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
 //					$.ajax({
 //						url: API_SERVER + "Wechat/WechatAuthorizeCode",
 //						async: false,

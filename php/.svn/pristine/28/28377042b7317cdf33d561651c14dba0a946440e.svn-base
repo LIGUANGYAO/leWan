@@ -44,12 +44,18 @@
 		<div class="content">
 			<div class="contentTitle">
 				<div class="">
-					页面
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
+					页面又要又要重写</br>
 				</div>
-				<div id="1">1</div>
-				<div id="2">2</div>
-				<div id="3">3</div>
-				<div id="4">4</div>
+				<div id="1"></div>
+				<div id="2"></div>
+				<div id="3"></div>
 				
 			</div>
 		</div>
@@ -68,25 +74,23 @@
 				var code = getUrlParam("code")
 				log("code+" + code)
 				$("#1").text("code+" + code)
-				if(!code && !token) {
-					log("没有code")
-//					var redirectUrl = "http://cs.lewan6.ren/wechat_html/page/everydayFaddish/everydayFaddish.html"
-//					window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9639c4a683f9ce86&redirect_uri='+redirectUrl+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
-//					$.ajax({
-//						url: API_SERVER + "Wechat/WechatAuthorizeCode",
-//						async: false,
-//						data: {
-//							redirect_url: redirectUrl
-//						},
-//						success: function(data) {
-//							log(data)
-//							if(data.code == 200) {
-//								log("重定向获取code成功跳转到指定页面")
-//							} else {
-//								mui.toast(data.message)
-//							}
-//						}
-//					})
+				if(!code) {
+					var redirectUrl = API_SERVER + "wechat_html/page/homePage/everydayFaddish.html"
+					$.ajax({
+						url: API_SERVER + "Wechat/WechatAuthorizeCode",
+						async: false,
+						data: {
+							redirect_url: redirectUrl
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								log("重定向获取code成功跳转到指定页面")
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
 				}
 
 				//第二步===》进入页面授权
@@ -100,24 +104,22 @@
 				}
 				log("token+" + token)
 				if(!token) {
-					log("没有token")
 					//获取token
 					$.ajax({
 						url: API_SERVER + "Wechat/WechatAuthorize",
 						async: false,
 						data: {
-							code: code+"&state="
+							code: code + "&state="
 						},
 						success: function(data) {
 							log(data)
 							if(data.code == 200) {
 								localStorage.setItem("token", data.data.token); //token
-								localStorage.setItem("subscribe", data.data.subscribe?data.data.subscribe:0); //是否关注公众号==》等于1 用户已关注公众号
+								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
 								if(data.data.subscribe == 1) {
 									$(".MoreModal").hide()
 								}
 								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
-								$("#4").text("level+" + data.data.level)
 							} else {
 								mui.toast(data.message)
 							}
@@ -149,22 +151,22 @@
 												'onMenuShareAppMessage', 'onMenuShareQQ',
 												'onMenuShareWeibo', 'onMenuShareQZone' ]
 								});
-								//获取地理位置接口
-								wx.getLocation({
-									type: 'wgs84', // 默认为wgs84的gps坐标，如果要赚回直接给openLocation用的火星坐标，可传入'gcj02'
-									success: function(res) {
-										log(res)
-										var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-										var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-										var speed = res.speed; // 速度，以米/每秒计
-										var accuracy = res.accuracy; // 位置精度
-									}
-								});
+								
 							}
 						}
 					});
 				}
-				
+				//获取地理位置接口
+				wx.getLocation({
+					type: 'wgs84', // 默认为wgs84的gps坐标，如果要赚回直接给openLocation用的火星坐标，可传入'gcj02'
+					success: function(res) {
+						log(res)
+						var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+						var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+						var speed = res.speed; // 速度，以米/每秒计
+						var accuracy = res.accuracy; // 位置精度
+					}
+				});
 		    });    
 		</script>
 	</body>

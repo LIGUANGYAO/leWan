@@ -33,9 +33,12 @@
 				margin-left: 2%;
 				width: 28%;
 				text-align: center;
-				overflow: hidden;/*超出部分隐藏*/
-	            white-space: nowrap;/*不换行*/
-	            text-overflow:ellipsis;/*超出部分文字以...显示*/
+				overflow: hidden;
+				/*超出部分隐藏*/
+				white-space: nowrap;
+				/*不换行*/
+				text-overflow: ellipsis;
+				/*超出部分文字以...显示*/
 			}
 			
 			.headerSearch>div:nth-child(1)>i {
@@ -248,6 +251,7 @@
 				min-width: 3.573rem;
 				height: 2.64rem;
 				position: relative;
+				border-radius: 0.2rem;
 			}
 			
 			.generalize {
@@ -292,6 +296,8 @@
 				position: absolute;
 				bottom: 0;
 				color: #FFFFFF;
+				border-bottom-left-radius: 0.2rem;
+				border-bottom-right-radius: 0.2rem;
 			}
 			
 			.distance i {
@@ -469,7 +475,7 @@
 			</a>
 			<a class="mui-tab-item" id="everydayFaddish">
 				<span class="mui-icon"><i class="iconfont icon-huo"></i></span>
-				<span class="mui-tab-label">每日爆款</span>
+				<span class="mui-tab-label">分享圈</span>
 			</a>
 			<a class="mui-tab-item" id="reservationCenter">
 				<span class="mui-icon"><i class="iconfont icon-chakantiezishijian"></i></span>
@@ -480,168 +486,285 @@
 				<span class="mui-tab-label">我的</span>
 			</a>
 		</nav>
-		<div class="">
-			<div class="" id="J_el">
-				<!--页头搜索框-->
-				<div class="headerSearch">
-					<div class="addressTap">
-						<i class="iconfont icon-dingwei"></i>
-						<span class="address">成都市</span>
-					</div>
-					<div class="search">
-						<input type="search" placeholder="请输入商品名称/景区/酒店">
-					</div>
-					<div class="message messageCenter">
-						<i class="iconfont icon-xiaoxi"></i>
-					</div>
-				</div>
-				<!--首页banner图-->
-				<div class="mui-slider">
-					<div class="mui-slider-group mui-slider-loop">
-						<!--支持循环，需要重复图片节点-->
-						<div class="mui-slider-item mui-slider-item-duplicate">
-							<img src="../../img/homePage/banner1.png" />
-						</div>
 
-						<div class="mui-slider-item">
-							<img src="../../img/homePage/banner1.png" />
-						</div>
-						<div class="mui-slider-item">
-							<img src="../../img/homePage/banner2.png" />
-						</div>
-						<div class="mui-slider-item">
-							<img src="../../img/homePage/banner3.png" />
-						</div>
-						<!--支持循环，需要重复图片节点-->
-						<div class="mui-slider-item mui-slider-item-duplicate">
-							<img src="../../img/homePage/banner1.png" />
-						</div>
-					</div>
-					<!--轮播图图标小点-->
-					<div class="mui-slider-indicator">
-						<div class="mui-indicator mui-active"></div>
-						<div class="mui-indicator"></div>
-						<div class="mui-indicator"></div>
+		<div class="" id="J_el">
+			<!--页头搜索框-->
+			<div class="headerSearch">
+				<div class="addressTap">
+					<i class="iconfont icon-dingwei"></i>
+					<span class="address">成都市</span>
+				</div>
+				<div class="search">
+					<input type="search" placeholder="请输入商品名称/景区/酒店">
+				</div>
+				<div class="message messageCenter">
+					<i class="iconfont icon-xiaoxi"></i>
+				</div>
+			</div>
+			<!--首页banner图-->
+			<div class="mui-slider">
+				<div class="mui-slider-group mui-slider-loop">
+					<!--支持循环，需要重复图片节点-->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<img src="../../img/homePage/banner1.png" />
 					</div>
 
+					<div class="mui-slider-item">
+						<img src="../../img/homePage/banner1.png" />
+					</div>
+					<div class="mui-slider-item">
+						<img src="../../img/homePage/banner2.png" />
+					</div>
+					<div class="mui-slider-item">
+						<img src="../../img/homePage/banner3.png" />
+					</div>
+					<!--支持循环，需要重复图片节点-->
+					<div class="mui-slider-item mui-slider-item-duplicate">
+						<img src="../../img/homePage/banner1.png" />
+					</div>
 				</div>
-				<!--八大板块-->
-				<div class="eightPlate">
-					<div class="plateHeader">
-						<div class="plateHeaderOne">
-							<div class="">
-								<img src="../../img/homePage/xinren.png" />
-								<div>新人</div>
-							</div>
-							<div class="">
-								<img src="../../img/homePage/meishi.png" />
-								<div>美食</div>
-							</div>
-							<div class="">
-								<img src="../../img/homePage/jiudian.png" />
-								<div>酒店</div>
-							</div>
-							<div class="">
-								<img src="../../img/homePage/lipin.png" />
-								<div>礼品</div>
-							</div>
-						</div>
-						<div class="plateHeaderTwo">
-							<div class="">
-								<img src="../../img/homePage/qinzi.png" />
-								<div>亲子</div>
-							</div>
-							<div class="">
-								<img src="../../img/homePage/leyuan.png" />
-								<div>乐园</div>
-							</div>
-							<div class="">
-								<img src="../../img/homePage/jingqu.png" />
-								<div>景区</div>
-							</div>
-							<div class="">
-								<img src="../../img/homePage/chuxing.png" />
-								<div>出行</div>
-							</div>
-						</div>
+				<!--轮播图图标小点-->
+				<div class="mui-slider-indicator">
+					<div class="mui-indicator mui-active"></div>
+					<div class="mui-indicator"></div>
+					<div class="mui-indicator"></div>
+				</div>
 
-					</div>
-				</div>
-				<!--隐藏八大板块-->
-				<div class="topmenu">
-					<div id="topNav" class="swiper-container">
-						<div class="swiper-wrapper">
-							<span class="swiper-slide navText swiper-active">首页</span>
-							<span class="swiper-slide navText">美食</span>
-							<span class="swiper-slide navText">酒店</span>
-							<span class="swiper-slide navText">乐园</span>
-							<span class="swiper-slide navText">亲子</span>
-							<span class="swiper-slide navText">礼品</span>
-							<span class="swiper-slide navText">景区</span>
-							<span class="swiper-slide navText">出行</span>
-							<span class="swiper-slide navText">新人免单</span>
+			</div>
+			<!--八大板块-->
+			<div class="eightPlate">
+				<div class="plateHeader">
+					<div class="plateHeaderOne">
+						<div class="">
+							<img src="../../img/homePage/xinren.png" />
+							<div>新人</div>
 						</div>
-						<!-- 滚动条 -->
-						<!--<div class="swiper-scrollbar"></div>-->
+						<div class="">
+							<img src="../../img/homePage/meishi.png" />
+							<div>美食</div>
+						</div>
+						<div class="">
+							<img src="../../img/homePage/jiudian.png" />
+							<div>酒店</div>
+						</div>
+						<div class="">
+							<img src="../../img/homePage/lipin.png" />
+							<div>礼品</div>
+						</div>
 					</div>
+					<div class="plateHeaderTwo">
+						<div class="">
+							<img src="../../img/homePage/qinzi.png" />
+							<div>亲子</div>
+						</div>
+						<div class="">
+							<img src="../../img/homePage/leyuan.png" />
+							<div>乐园</div>
+						</div>
+						<div class="">
+							<img src="../../img/homePage/jingqu.png" />
+							<div>景区</div>
+						</div>
+						<div class="">
+							<img src="../../img/homePage/chuxing.png" />
+							<div>出行</div>
+						</div>
+					</div>
+
 				</div>
-				<div class="spaceConnet"></div>
-				<div class="content">
-					<div class="contentHeaBox">
-						<div class="contentHeader showContentHeader">
-							<span class="filterPar filterActive">综合</span>
-							<span class="filterPar">销量</span>
-							<span class="filterPar priceAfter">
+			</div>
+			<!--隐藏八大板块-->
+			<div class="topmenu">
+				<div id="topNav" class="swiper-container">
+					<div class="swiper-wrapper">
+						<!--<span class="swiper-slide navText" :class="{swiper-active: index==1}" v-for="(items,index) in eightIn">{{items.cate_name}}</span>-->
+						<span class="swiper-slide navText">美食</span>
+						<span class="swiper-slide navText">酒店</span>
+						<span class="swiper-slide navText">乐园</span>
+						<span class="swiper-slide navText">亲子</span>
+						<span class="swiper-slide navText">礼品</span>
+						<span class="swiper-slide navText">景区</span>
+						<span class="swiper-slide navText">出行</span>
+						<span class="swiper-slide navText">新人免单</span>
+					</div>
+					<!-- 滚动条 -->
+					<!--<div class="swiper-scrollbar"></div>-->
+				</div>
+			</div>
+			<div class="spaceConnet" ref="spaceConnet"></div>
+			<div class="content">
+				<div class="contentHeaBox" ref="contentHeaBox">
+					<div class="contentHeader showContentHeader">
+						<span class="filterPar filterActive">综合</span>
+						<span class="filterPar">销量</span>
+						<span class="filterPar priceAfter">
 						价格<i class="iconfont icon-paixujiantoushang iconActive" dataVal='0'></i><i class="iconfont icon-paixujiantouxia" dataVal="1"></i></span>
-							<span class="filterPar">距离</span>
-						</div>
-					</div>
-					<div class="productDel">
-						<ul class="mui-table-view">
-
-							<li class="mui-table-view-cell mui-media">
-								<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
-									<div class="generalize">
-										<div>Top</div>
-										<div>1</div>
-									</div>
-									<div class="distance">
-										<span><i class="iconfont icon-dingwei"></i>成都</span>
-										<span>5km</span>
-									</div>
-								</div>
-								<div class="mui-media-body price">
-									<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
-									<p class="detailBox">
-										<span>￥151起</span>
-										<span>赚:￥62</span>
-										<span>已售598</span>
-									</p>
-									<div class="countDown">
-										距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
-									</div>
-								</div>
-							</li>
-
-						</ul>
+						<span class="filterPar">距离</span>
 					</div>
 				</div>
-				<!--新人关注二维码-->
-				<div class="MoreModal">
-					<div class="modalContent">
-						<div class="modalTitle" style="background-image: url(../../img/homePage/homePage2.png);">
-							<div class="closeModal" id="closeModal"><i class="iconfont icon-guanbi1"></i></div>
-							<div class="QRBox">
-								<div class="QRImg">
-									<img src="../../img/homePage/homePage3.png" />
+				<!--<div class="mui-scroll-wrapper" id="refreshContainer">-->
+				<!--<div class="mui-scroll">-->
+				<div class="productDel">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media">
+							<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
+								<div class="generalize">
+									<div>Top</div>
+									<div>1</div>
 								</div>
-								<div class="RichScan">长按识别二维码</div>
+								<div class="distance">
+									<span><i class="iconfont icon-dingwei"></i>成都</span>
+									<span>5km</span>
+								</div>
 							</div>
+							<div class="mui-media-body price">
+								<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
+								<p class="detailBox">
+									<span>￥151起</span>
+									<span>赚:￥62</span>
+									<span>已售598</span>
+								</p>
+								<div class="countDown">
+									距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
+								</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
+								<div class="generalize">
+									<div>Top</div>
+									<div>1</div>
+								</div>
+								<div class="distance">
+									<span><i class="iconfont icon-dingwei"></i>成都</span>
+									<span>5km</span>
+								</div>
+							</div>
+							<div class="mui-media-body price">
+								<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
+								<p class="detailBox">
+									<span>￥151起</span>
+									<span>赚:￥62</span>
+									<span>已售598</span>
+								</p>
+								<div class="countDown">
+									距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
+								</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
+								<div class="generalize">
+									<div>Top</div>
+									<div>1</div>
+								</div>
+								<div class="distance">
+									<span><i class="iconfont icon-dingwei"></i>成都</span>
+									<span>5km</span>
+								</div>
+							</div>
+							<div class="mui-media-body price">
+								<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
+								<p class="detailBox">
+									<span>￥151起</span>
+									<span>赚:￥62</span>
+									<span>已售598</span>
+								</p>
+								<div class="countDown">
+									距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
+								</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
+								<div class="generalize">
+									<div>Top</div>
+									<div>1</div>
+								</div>
+								<div class="distance">
+									<span><i class="iconfont icon-dingwei"></i>成都</span>
+									<span>5km</span>
+								</div>
+							</div>
+							<div class="mui-media-body price">
+								<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
+								<p class="detailBox">
+									<span>￥151起</span>
+									<span>赚:￥62</span>
+									<span>已售598</span>
+								</p>
+								<div class="countDown">
+									距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
+								</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
+								<div class="generalize">
+									<div>Top</div>
+									<div>1</div>
+								</div>
+								<div class="distance">
+									<span><i class="iconfont icon-dingwei"></i>成都</span>
+									<span>5km</span>
+								</div>
+							</div>
+							<div class="mui-media-body price">
+								<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
+								<p class="detailBox">
+									<span>￥151起</span>
+									<span>赚:￥62</span>
+									<span>已售598</span>
+								</p>
+								<div class="countDown">
+									距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
+								</div>
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
+								<div class="generalize">
+									<div>Top</div>
+									<div>1</div>
+								</div>
+								<div class="distance">
+									<span><i class="iconfont icon-dingwei"></i>成都</span>
+									<span>5km</span>
+								</div>
+							</div>
+							<div class="mui-media-body price">
+								<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
+								<p class="detailBox">
+									<span>￥151起</span>
+									<span>赚:￥62</span>
+									<span>已售598</span>
+								</p>
+								<div class="countDown">
+									距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
+								</div>
+							</div>
+						</li>
+
+					</ul>
+				</div>
+				<!--</div>
+				</div>-->
+			</div>
+			<!--新人关注二维码-->
+			<div class="MoreModal">
+				<div class="modalContent">
+					<div class="modalTitle" style="background-image: url(../../img/homePage/homePage2.png);">
+						<div class="closeModal" id="closeModal"><i class="iconfont icon-guanbi1"></i></div>
+						<div class="QRBox">
+							<div class="QRImg">
+								<img src="../../img/homePage/homePage3.png" />
+							</div>
+							<div class="RichScan">长按识别二维码</div>
 						</div>
-						<div class="modalOne">更多限量好物</div>
-						<div class="modalTwo"></div>
-						<div class="modalThree">尽在乐玩联盟公众号</div>
 					</div>
+					<div class="modalOne">更多限量好物</div>
+					<div class="modalTwo"></div>
+					<div class="modalThree">尽在乐玩联盟公众号</div>
 				</div>
 			</div>
 		</div>
@@ -657,30 +780,48 @@
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				//第一步===》获取code
-				var code = getUrlParam("code")
-				log("code+++++++" + code)
-				if(!code) {
-					var redirectUrl = API_SERVER + "wechat_html/page/homePage/homePage.html"
-					$.ajax({
-						url: API_SERVER + "Wechat/WechatAuthorizeCode",
-						async: false,
-						data: {
-							redirect_url: redirectUrl
-						},
-						success: function(data) {
-							log("重定向获取code++++++++++++"+data)
-							if(data.code == 200) {
-								log("重定向获取code++++++成功跳转到指定页面")
-							} else {
-								mui.toast(data.message)
+				/*下拉刷新和上拉加载效果*/
+				mui.init({
+					pullRefresh: {
+						container: '#refreshContainer', //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+						up: {
+							height: 50,
+							auto: false,
+							contentnomore: '没有更多数据了',
+							contentrefresh: '正在加载...',
+							callback: function() {
+								setTimeout(function() {
+									//									cardLists();
+								}, 1000);
 							}
 						}
-					})
+					}
+				});
+				//第一步===》获取code
+				var code = getUrlParam("code");
+				var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
+				log("code+++++++" + code)
+				if(!code && !token) {
+					//					var redirectUrl = BASE_SERVER + "wechat_html/page/homePage/homePage.html"
+					//					window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9639c4a683f9ce86&redirect_uri='+redirectUrl+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
+					//					$.ajax({
+					//						url: API_SERVER + "Wechat/WechatAuthorizeCode",
+					//						async: false,
+					//						data: {
+					//							redirect_url: redirectUrl
+					//						},
+					//						success: function(data) {
+					//							log("重定向获取code++++++++++++"+data)
+					//							if(data.code == 200) {
+					//								log("重定向获取code++++++成功跳转到指定页面")
+					//							} else {
+					//								mui.toast(data.message)
+					//							}
+					//						}
+					//					})
 				}
 
 				//第二步===》进入页面授权
-				var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
 				var subscribe = localStorage.getItem("subscribe");
 				if(subscribe && subscribe == 1) {
 					$(".MoreModal").hide()
@@ -692,10 +833,10 @@
 						url: API_SERVER + "Wechat/WechatAuthorize",
 						async: false,
 						data: {
-							code: code + "&state="
+							code: code + "&state=1"
 						},
 						success: function(data) {
-							log("页面授权成功++++++++++"+data)
+							log(data)
 							if(data.code == 200) {
 								localStorage.setItem("token", data.data.token); //token
 								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
@@ -709,48 +850,66 @@
 						}
 					})
 				}
-				
+
 				//第三步==》微信验签==》获取用户定位
-				function getPosition(){
+				getPosition()
+				//获取地理位置
+				var latitude; // 纬度，浮点数，范围为90 ~ -90
+				var longitude; // 经度，浮点数，范围为180 ~ -180。
+
+				function getPosition() {
 					$.ajax({
 						url: API_SERVER + 'Wechat/WechatPosition',
-						data:{
+						async: false,
+						data: {
 							token: token,
 							url: "wechat_html/page/homePage/homePage.html"
 						},
 						success: function(data) {
 							if(data.code == 200) {
 								log(data);
-								function configWeiXin(appId, timestamp, nonceStr, signature) {
-									wx.config({
-										debug: true, // 开启调试模式,调用的所有api的赚回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-										appId: '', // 必填，公众号的唯一标识
-										timestamp: , // 必填，生成签名的时间戳
-										nonceStr: '', // 必填，生成签名的随机串
-										signature: '', // 必填，签名
-										jsApiList: [] // 必填，需要使用的JS接口列表
-									});
-								}
+								wx.config({
+									debug: true, // 开启调试模式,调用的所有api的赚回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+									appId: data.data.appId, // 必填，公众号的唯一标识
+									timestamp: data.data.timestamp, // 必填，生成签名的时间戳
+									nonceStr: data.data.nonceStr, // 必填，生成签名的随机串
+									signature: data.data.signature, // 必填，签名
+									jsApiList: ['chooseImage', 'uploadImage', 'downloadImage', // 必填，需要使用的JS接口列表
+										'previewImage', 'openLocation', 'getLocation',
+										'scanQRCode', 'checkJsApi', 'onMenuShareTimeline',
+										'onMenuShareAppMessage', 'onMenuShareQQ',
+										'onMenuShareWeibo', 'onMenuShareQZone'
+									]
+								});
+								wx.getLocation({
+									type: 'wgs84', // 默认为wgs84的gps坐标，如果要赚回直接给openLocation用的火星坐标，可传入'gcj02'
+									success: function(res) {
+										log(res)
+										latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+										longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+										var speed = res.speed; // 速度，以米/每秒计
+										var accuracy = res.accuracy; // 位置精度
+									}
+								});
 							}
 						}
 					});
 				}
-				
-				
-				
+
 				//第四步====》选取开通地址
 				var cityPicker = new mui.PopPicker({
 					layer: 2
 				});
 				var initCity;
 				getCity()
-				function getCity(){
+
+				function getCity() {
 					$.ajax({
 						url: API_SERVER + 'Area/AreaOpenUp',
 						async: false,
 						success: function(data) {
 							if(data.code == 200) {
-								log("获取开通地址成功+++++++++" + data)
+								log(data)
 								initCity = data.data;
 							}
 						}
@@ -758,25 +917,25 @@
 				}
 				cityPicker.setData(initCity);
 				var _getParam = function(obj, param) {
-						return obj[param] || '';
-					};
+					return obj[param] || '';
+				};
 				mui('body').on('tap', '.addressTap', function() {
 					document.activeElement.blur(); //选择城市时隐藏输入键盘
 					cityPicker.show(function(items) {
 						$(".address").text(_getParam(items[1], 'text'))
 						$(".address").attr({
-							"province": _getParam(items[0],'value'),
-							"city": _getParam(items[1],'value')
+							"province": _getParam(items[0], 'value'),
+							"city": _getParam(items[1], 'value')
 						})
 					});
 				});
-				
+
 				//==========绑定数据===================================
-				
+
 				var vueData = {
-					homePageBanner: [],	//首页banner图
-					cardList: [],	//商品列表
-					eightIn: [],	//八大入口动态参数
+					homePageBanner: [], //首页banner图
+					eightIn: [], //八大入口动态参数
+					cardList: [], //商品列表
 				};
 				new Vue({
 					el: '#J_el',
@@ -785,24 +944,72 @@
 						//						cardList: cardList
 					}
 				});
-				
-				
-				var getBanner = function(){
+
+				//获取首页banner
+				var getBanner = function() {
 					$.ajax({
 						url: API_SERVER + 'Banner/HomePageList',
-						async: false,
+						async: false, //data==>cate==>商品类型id=》不传就是默认首页
 						success: function(data) {
 							if(data.code == 200) {
-								log("获取banner成功"+data)
-								initCity = data.data;
+								log(data)
+								vueData.homePageBanner = data.data;
 							}
 						}
 					});
 				}
 				getBanner();
-				
-				
-				
+
+				//获取八大板块
+				getEight();
+
+				function getEight() {
+					$.ajax({
+						url: API_SERVER + 'Productcategory/CategoryList',
+						async: false,
+						success: function(data) {
+							if(data.code == 200) {
+								log(data)
+								vueData.eightIn = data.data;
+							}
+						}
+					});
+				}
+
+				//获取商品列表 
+				getProduct();
+
+				function getProduct() {
+					$.ajax({
+						url: API_SERVER + 'Product/ProductList',
+						async: false,
+						headers: {
+							"product": "wechat",
+							"platform": "pn",
+							"provincecode": 110000,
+							"citycode": 110100
+						},
+						data: {
+							token: token,
+							paging: 1, //int    |否|分页默认第一页|
+							paged: 10, //  | int    |否|分页条数默认10条|
+							title: "", // | string |否|商品名搜索|
+							cateid: "", //| id     |否|商品分类|
+							sales: 1, //| int    |否|销售量 0取消 1降序 2升序 |
+							price: 0, //| int    |否|价格   0取消 1降序 2升序|
+							distance: 0, //| int    |否|距离 0取消距离 1离我最近|
+							lat: "", //   | string |是|用户纬度 选择了距离必传|
+							lng: "" //   | string |是|用户经度 选择了距离必传|
+						},
+						success: function(data) {
+							if(data.code == 200) {
+								log(data)
+								vueData.cardList = data.data;
+							}
+						}
+					});
+				}
+
 				//八大模块跳转
 				mui('body').on('tap', '.plateHeader div div', function() {
 					mui.openWindow({
@@ -845,7 +1052,6 @@
 					}
 				}
 
-
 				mui('body').on('tap', '.messageCenter', function() { //消息中心
 					mui.openWindow({
 						url: "messageCenter.html",
@@ -860,71 +1066,72 @@
 						$(".priceAfter i").toggleClass("iconActive")
 					}
 				})
+				Vue.nextTick(function() {
+					//轮播  ==》获得slider插件对象
+					var gallery = mui('.mui-slider');
+					gallery.slider({
+						interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
+					});
 
-				//轮播  ==》获得slider插件对象
-				var gallery = mui('.mui-slider');
-				gallery.slider({
-					interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
-				});
-				//侧滑菜单
-				var mySwiper = new Swiper('#topNav', {
-					freeMode: true,
-					freeModeMomentumRatio: 0.5,
-					slidesPerView: 'auto',
-				});
-
-				swiperWidth = mySwiper.container[0].clientWidth
-				maxTranslate = mySwiper.maxTranslate();
-				maxWidth = -maxTranslate + swiperWidth / 2
-
-				$(".swiper-container").on('touchstart', function(e) {
-					e.preventDefault()
-				})
-				mySwiper.on('tap', function(swiper, e) {
-					slide = swiper.slides[swiper.clickedIndex]
-					slideLeft = slide.offsetLeft
-					slideWidth = slide.clientWidth
-					slideCenter = slideLeft + slideWidth / 2
-					// 被点击slide的中心点
-					mySwiper.setWrapperTransition(300)
-					if(slideCenter < swiperWidth / 2) {
-						mySwiper.setWrapperTranslate(0)
-					} else if(slideCenter > maxWidth) {
-						mySwiper.setWrapperTranslate(maxTranslate)
-					} else {
-						nowTlanslate = slideCenter - swiperWidth / 2
-						mySwiper.setWrapperTranslate(-nowTlanslate)
-					}
-					$("#topNav  .swiper-active").removeClass('swiper-active')
-					$("#topNav .swiper-slide").eq(swiper.clickedIndex).addClass('swiper-active')
-				})
-
-				//滚动显隐
-				var spaceConnet = ($('.spaceConnet').offset().top) / 75;
-				var showContentHeader = ($('.contentHeaBox').offset().top) / 75;
-				$(window).scroll(function() {
-					var scrollTop = ($(window).scrollTop()) / 75;
-					if(scrollTop >= spaceConnet - 0.72) {
-						$(".topmenu").css({
-							"opacity": 1,
-							"visibility": "visible"
-						});
-					} else {
-						$(".topmenu").css({
-							"opacity": 0,
-							"visibility": "hidden"
-						});
-					}
-					if(scrollTop >= showContentHeader - 0.72) {
-						$(".showContentHeader").css({
-							"position": "fixed",
-							"top": "1.44rem"
-						});
-					} else {
-						$(".showContentHeader").css({
-							"position": "static"
-						});
-					}
+					//侧滑菜单
+					var mySwiper = new Swiper('#topNav', {
+						freeMode: true,
+						freeModeMomentumRatio: 0.5,
+						slidesPerView: 'auto',
+					});
+					//					
+					//					swiperWidth = mySwiper.container[0].clientWidth
+					//					maxTranslate = mySwiper.maxTranslate();
+					//					maxWidth = -maxTranslate + swiperWidth / 2
+					//	
+					//					$(".swiper-container").on('touchstart', function(e) {
+					//						e.preventDefault()
+					//					})
+					//					mySwiper.on('tap', function(swiper, e) {
+					//						slide = swiper.slides[swiper.clickedIndex]
+					//						slideLeft = slide.offsetLeft
+					//						slideWidth = slide.clientWidth
+					//						slideCenter = slideLeft + slideWidth / 2
+					//						// 被点击slide的中心点
+					//						mySwiper.setWrapperTransition(300)
+					//						if(slideCenter < swiperWidth / 2) {
+					//							mySwiper.setWrapperTranslate(0)
+					//						} else if(slideCenter > maxWidth) {
+					//							mySwiper.setWrapperTranslate(maxTranslate)
+					//						} else {
+					//							nowTlanslate = slideCenter - swiperWidth / 2
+					//							mySwiper.setWrapperTranslate(-nowTlanslate)
+					//						}
+					//						$("#topNav  .swiper-active").removeClass('swiper-active')
+					//						$("#topNav .swiper-slide").eq(swiper.clickedIndex).addClass('swiper-active')
+					//					})
+					//滚动显隐
+					var spaceConnet = ($('.spaceConnet').offset().top) / 75;
+					var showContentHeader = ($('.contentHeaBox').offset().top) / 75;
+					$(window).scroll(function() {
+						var scrollTop = ($(window).scrollTop()) / 75;
+						if(scrollTop >= spaceConnet - 0.72) {
+							$(".topmenu").css({
+								"opacity": 1,
+								"visibility": "visible"
+							});
+						} else {
+							$(".topmenu").css({
+								"opacity": 0,
+								"visibility": "hidden"
+							});
+						}
+						if(scrollTop >= showContentHeader - 0.72) {
+							$(".showContentHeader").css({
+								"position": "fixed",
+								"top": "1.44rem"
+							});
+						} else {
+							$(".showContentHeader").css({
+								"position": "static"
+							});
+						}
+					})
 				})
 
 				//				document.querySelector('.mui-scroll-wrapper').addEventListener('scroll', function(e) {

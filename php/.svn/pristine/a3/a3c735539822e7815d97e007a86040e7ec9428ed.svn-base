@@ -5,7 +5,7 @@
 var log = console.log.bind(console); //简写打印台
 //域名
 var API_SERVER = "http://cs.lewan6.ren/api/"
-var BASE_SERVER = "http://cs.lewan6.ren/"
+//var API_SERVER = "http://192.168.0.128/api/"
 
 
 
