@@ -19,51 +19,150 @@
 			/*卡片*/
 			
 			.headerBox {
-				background-color: #FFFFFF;
+				position: relative;
+				width: 100%;
+				height: 5.36rem;
+				background:  linear-gradient(to right, #B27F29 0%, #F6D993 100%);
+			}
+			.cardMonery{
+				height: 1rem;
+				line-height: 1rem;
+				margin-top:  0.8rem;
+			}
+			.cardMonery>span:nth-child(1){
+				font-size:  0.373rem;
+				color:  #FFFFFF;
+				font-weight:  500;
+				margin-left: 0.32rem;
+			}
+			.cardMonery>span:nth-child(2){
+				font-size:  0.693rem;
+				color:  #FFFFFF;
+				font-weight:  bold;
+				margin-left: 0.32rem;
+			}
+			.clearBoth{
 				overflow: hidden;
 			}
 			.cardBox {
-				width: 8.56rem;
-				height: 4.426rem;
-				margin: 0.426rem 0.733rem;
-				border-radius: 5px;
+				width: 9.173rem;
+				height: 5.493rem;
+				border-radius:  0.2rem;
 				box-shadow: #999 0px 0px 10px;
 				overflow: hidden;
-				position: relative;
+				position: absolute;
+				left:  0.413rem;
+				bottom:  -2.453rem;
+				text-align: center;
+				background-color: #FFFFFF;
+			}
+			
+			
+			
+			
+			
+			/*内容*/
+			.btnBox{
+				margin-top:  4.32rem;
+				width: 100%;
 				text-align: center;
 			}
-			.WithdrawalRecord{
-				color: #CCCCCC;
-				font-size: 0.32rem;
-				float: right;
-				margin-right: 0.266rem;
+			.cardTitle{
+				font-size: 0.373rem;
+				font-weight: bold;
+				color: #D1A859;
+				margin-top: 0.266rem;
+			}
+			.cardInput{
+				margin:  0 auto;
+				margin-top: 0.8rem;
+				width: 7.706rem;
+				height: 1.173rem;
+				line-height: 1.173rem;
+				border-bottom: 2px solid #CCCCCC;
+				overflow: hidden;
+			}
+			.cOne{
+				width: 10%;
+				float: left;
+				font-size: 0.586rem;
+				color: #333333;
+				font-weight: bold;
+			}
+			.cTwo{
+				width: 70% !important;
+				float: left;
+				height: 1.173rem !important;
+				border: none !important;
+				padding-left: 0 !important;
+				font-size: 0.48rem !important;
+			}
+			.cThree{
+				width: 20%;
+				float: left;
+				font-size: 0.426rem;
+				font-weight: bold;
+				color: #333333;
 			}
 			.title{
-				font-size: 0.4rem;
+				text-align: left;
+				width: 100%;
+				font-size:  0.426rem;
 				color: #999999;
-				position: absolute;
-				top: 0.373rem;
-				left: 0;
-				right: 0;
+				font-weight: 500;
+				margin: 0.613rem 0 0 0.746rem;
 			}
-			.money{
-				font-weight: bold;
-				font-size: 0.88rem;
-				color: #E1B872;
-				margin-top: 1.44rem;
+			.secBank{
+				width: 100%;
+				margin-top: 0.266rem;
 			}
-			.withdrawalBtn{
+			.secBank>span:nth-child(1){
+				float: left;
+				margin-left: 0.746rem;
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: 500;
+			}
+			.secBank>span:nth-child(2){
+				float: right;
+				margin-right: 0.72rem;
+				font-size: 0.426rem;
+				color: #999999;
+				font-weight: 500;
+			}
+			
+			.nowWantMonery{
 				display: inline-block;
-				width: 2.746rem;
-				height: 0.933rem;
-				line-height: 0.933rem;
-				background-color: #E1B872;
+				width:  8.906rem;
+				height: 1.333rem;
+				line-height: 1.333rem;
 				color: #FFFFFF;
-				border-radius: 0.466rem;
-				margin-top: 0.533rem;
-				font-size: 0.506rem;
+				font-size:  0.426rem;
+				font-weight: bold;
+				background:  linear-gradient(to right, #F6D993 0%, #B27F29 100%);
+				border-radius: 0.15rem;
 			}
-			/*内容*/
+			.footer{
+				margin-top: 0.88rem;
+				text-align: center;
+				font-size: 0.373rem;
+				font-weight: bold;
+			}
+			.footer>span:nth-child(1){
+				color: #999999;
+			}
+			.footer>span:nth-child(2){
+				display: inline-block;
+				width: 0.053rem;
+				height: 0.32rem;
+				background-color: #999999;
+				margin: 0 0.24rem;
+			}
+			.footer>span:nth-child(3){
+				color: #E1B872;
+			}
+			
+			
 			.contentTitle{
 				margin: 0.8rem 0 0 0.32rem;
 			}
@@ -93,14 +192,35 @@
 
 	<body>
 		<div class="headerBox">
-			<div class="cardBox">
-				<span class="WithdrawalRecord">提现记录<i class="iconfont icon-yousanjiao"></i></span>
-				<div class="title">可提现金额</div>
-				<div class="money">8735.00</div>
-				<div class="withdrawalBtn">提 现</div>
+			<div class="clearBoth"> </div>
+			<div class="cardMonery">
+				<span>可提现金额：</span>
+				<span>0.00</span>
 			</div>
+			<div class="cardBox">
+					<div class="cardTitle">提现到银行卡</div>
+					<div class="cardInput">
+						<span class="cOne">￥</span>
+						<input type="number" class="cTwo" value="" placeholder="最低100元提"/>
+						<span class="cThree">全部</span>
+					</div>
+					<div class="title">到账银行卡</div>
+					<div class="secBank">
+						<span>中国工商银行</span>
+						<span>7261 <i class="mui-icon mui-icon-forward"></i></span>
+					</div>
+			</div>
+			
 		</div>
 		<div class="content">
+			<div class="btnBox">
+				<div class="nowWantMonery">立即提现</div>
+			</div>
+			<div class="footer">
+				<span>提现说明</span>
+				<span></span>
+				<span>提现记录</span>
+			</div>
 			<div class="contentTitle">
 				<div></div>
 				<span>提现说明</span>

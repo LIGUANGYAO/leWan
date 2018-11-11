@@ -173,6 +173,12 @@
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
+				mui("body").on("tap",".contentList",function(){
+					mui.openWindow({url: "indentDetail.html"})
+				})
+				
+				
+				
 				//切换导航栏
 				mui("body").on("tap",".headerList",function(){
 					$(".headerList").removeClass("headerActive");
