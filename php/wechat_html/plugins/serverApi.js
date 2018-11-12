@@ -7,10 +7,6 @@ var log = console.log.bind(console); //简写打印台
 var API_SERVER = "http://cs.lewan6.ren/api/"
 var BASE_SERVER = "http://cs.lewan6.ren/"
 
-
-
-
-
 //时间戳转年月日
 //getDateTime(时间戳, 'Y/MM/dd hh:mm:ss')   getDateTime(1536278730, "Y年MM月dd日 hh时mm分ss秒")
 function getDateTime(timestamp, format) {
@@ -119,35 +115,65 @@ function getUrlParam(name) {
 	return items;
 }
 
-(function($){
-    //首先备份下jquery的ajax方法
-    var _ajax = $.ajax;
-    //重写jquery的ajax方法
-    $.ajax=function(opt){
-        //扩展增强处理
-        var _opt = $.extend(opt,{
-        	type: "POST", 
+//判断访问终端
+var browser = {
+	versions: function() {
+		var u = navigator.userAgent,
+			app = navigator.appVersion;
+		return {
+			trident: u.indexOf('Trident') > -1, //IE内核
+			presto: u.indexOf('Presto') > -1, //opera内核
+			webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+			gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+			mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+			ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+			android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
+			iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+			iPad: u.indexOf('iPad') > -1, //是否iPad
+			webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+			weixin: u.indexOf('MicroMessenger') > -1, //是否微信
+			qq: u.match(/\sQQ/i) == " qq" //是否QQ
+		};
+	}(),
+	language: (navigator.browserLanguage || navigator.language).toLowerCase()
+}
+var browserType;
+if(browser.versions.android) {
+	browserType = "android"
+} else if(browser.versions.ios) {
+	browserType = "ios"
+} else {
+	browserType = "android"
+}
+(function($) {
+	//首先备份下jquery的ajax方法
+	var _ajax = $.ajax;
+	//重写jquery的ajax方法
+	$.ajax = function(opt) {
+		//扩展增强处理
+		var _opt = $.extend(opt, {
+			type: "POST",
 			cache: false,
-			dataType:"json",	//默认后不显示图片上传中
+			dataType: "json", //默认后不显示图片上传中
 			headers: {
-				        "product":"wechat",
-				        "platform":"pn"
-				     },
-			beforeSend:function(XHR){
-	            //提交前回调方法
-	            $('body').append("<div id='ajaxBox'><div><img id='ajaxInfo' src='../../img/loading.gif'/><div id='ajaxText'>加载中..</div></div></div>");
-	        },
-	        complete:function(XHR, TS){
-	            //请求完成后回调函数 (请求成功或失败之后均调用)。
-	            $("#ajaxBox").remove();
-	        },
-            error: function(d){
-            	console.log(d)
-            	mui.toast("网络异常");
-            }
-        });
-        return _ajax(_opt);
-    };
+				"product": "wechat",
+				"platform": browserType
+			},
+			beforeSend: function(XHR) {
+				//提交前回调方法
+				$('body').append("<div id='ajaxBox'><div><img id='ajaxInfo' src='../../img/loading.gif'/><div id='ajaxText'>加载中..</div></div></div>");
+			},
+			complete: function(XHR, TS) {
+				//请求完成后回调函数 (请求成功或失败之后均调用)。
+				$("#ajaxBox").remove();
+			},
+			error: function(d) {
+				console.log(d)
+				mui.toast("网络异常");
+			}
+		});
+		return _ajax(_opt);
+	};
 })(jQuery);
 
 //jQuery.extend({

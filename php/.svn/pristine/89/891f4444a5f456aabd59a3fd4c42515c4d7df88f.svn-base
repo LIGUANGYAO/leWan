@@ -588,7 +588,8 @@
 						<span class="filterPar">距离</span>
 					</div>
 				</div>
-				<div id="refreshContainer">
+				<!--<div class="mui-scroll-wrapper" id="refreshContainer">-->
+				<!--<div class="mui-scroll">-->
 				<div class="productDel">
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell mui-media">
@@ -732,7 +733,8 @@
 
 					</ul>
 				</div>
-				</div>
+				<!--</div>
+				</div>-->
 			</div>
 			<!--新人关注二维码-->
 			<div class="MoreModal">
@@ -775,7 +777,6 @@
 							contentrefresh: '正在加载...',
 							callback: function() {
 								setTimeout(function() {
-									alert("上拉可以加载新数据了")
 									//									cardLists();
 								}, 1000);
 							}
@@ -785,14 +786,10 @@
 				//第一步===》判断是否有token
 				var code = getUrlParam("code");
 				var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
-				var subscribe = localStorage.getItem("subscribe");
-				if(subscribe && subscribe == 1) {
-					$(".MoreModal").hide()
-				}
 				alert(token)
 				alert("token++++++++++" + token)
 				
-				if(token == 'undefined' || token == null || token == "") {
+				if(token == 'undefined') {
 					alert("token == 'undefined'   去获取token")
 					alert("code+++++++" + code)
 					if(JSON.stringify(code) == "null"){
@@ -823,6 +820,22 @@
 					}
 				}
 				
+				
+				
+
+				//第二步===》进入页面授权
+				var subscribe = localStorage.getItem("subscribe");
+				if(subscribe && subscribe == 1) {
+					$(".MoreModal").hide()
+				}
+
+				
+				
+				
+				
+				
+				
+
 				//第三步==》微信验签==》获取用户定位
 				getPosition()
 				//获取地理位置
@@ -830,7 +843,6 @@
 				var longitude; // 经度，浮点数，范围为180 ~ -180。
 
 				function getPosition() {
-					alert("获取微信定位")
 					$.ajax({
 						url: API_SERVER + 'Wechat/WechatPosition',
 						async: false,
@@ -840,7 +852,7 @@
 						},
 						success: function(data) {
 							if(data.code == 200) {
-								alert("微信验签"+data);
+								log(data);
 								wx.config({
 									debug: true, // 开启调试模式,调用的所有api的赚回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 									appId: data.data.appId, // 必填，公众号的唯一标识
@@ -857,15 +869,12 @@
 								wx.getLocation({
 									type: 'wgs84', // 默认为wgs84的gps坐标，如果要赚回直接给openLocation用的火星坐标，可传入'gcj02'
 									success: function(res) {
-										alert("获取的位置"+res)
+										log(res)
 										latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
 										longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 										var speed = res.speed; // 速度，以米/每秒计
 										var accuracy = res.accuracy; // 位置精度
-									},
-									cancel: function (res) {
-								       alert('用户拒绝授权获取地理位置');
-								    }
+									}
 								});
 							}
 						}
