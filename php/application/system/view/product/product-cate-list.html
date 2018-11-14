@@ -1,0 +1,79 @@
+<div class="page">
+    <div class="r">
+        <notempty name="addbtn">
+            <if condition="$addbtn.type eq '1'">
+                <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')"
+                   class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+                <else/>
+                <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+            </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th nowrap="nowrap">分组名称</th>
+                <th nowrap="nowrap">图标</th>
+                <th nowrap="nowrap">状态</th>
+                <th nowrap="nowrap" width="100">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="data" id="val">
+                    <tr>
+                        <td>{$val.category_name}</td>
+                        <td><img src="/uploads/{$val.category_icon}" width="40" alt=""></td>
+                        <td>
+                            <input type="checkbox" name="category_status" lay-skin="switch" lay-text="ON|OFF" lay-filter="switchAjax"
+                            <if condition="$val.category_status eq '1'">checked="checked"</if>
+                            itemid="{$val.category_id}" url="/system/Product/switching" tbname="product_category"  filed="category_status" idkey="category_id">
+                        </td>
+                        <td>
+                            <a href="javascript:openWindow('修改', '{:url(\'system/Product/productCategoryEdit\', array(\'id\'=>$val[\'category_id\'],\'type\'=>\'edit\'))}')"
+                               class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+                            &nbsp;
+                            <a href="javascript:sure('确定删除这条数据？', '{:url(\'system/Product/productCategoryEdit\', array(\'id\'=>$val[\'category_id\'],\'type\'=>\'del\'))}')"
+                               class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                    </tr>
+
+                    <volist name="val._child" id="v">
+                        <tr>
+                            <td style="text-indent: 40px">--{$v.category_name}</td>
+                            <td><img src="{$v.category_icon}" width="35" alt=""></td>
+                            <td>
+                                <input type="checkbox" name="status" lay-skin="switch" lay-text="ON|OFF"
+                                       lay-filter="switchAjax"
+                                <if condition="$v.category_status eq '1'">checked="checked"</if>
+                                itemid="{$v.category_id}" url="/system/group/switching" tbname="sys_group" filed="status" >
+                            </td>
+                            <td>
+                                <a href="javascript:openWindow('修改', '{:url(\'system/Product/productCategoryEdit\', array(\'id\'=>$val[\'category_id\'],\'type\'=>\'edit\'))}')"
+                                   class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+                                &nbsp;
+                                <a href="javascript:sure('确定删除这条数据？', '{:url(\'system/Product/productCategoryEdit\', array(\'id\'=>$v[\'category_id\'],\'type\'=>\'del\'))}')"
+                                   class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                    </volist>
+                </volist>
+            </tbody>
+        </table>
+        <div class="tabletool">
+            <!-- 工具按钮 -->
+            <div class="l">
+                <a href="" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+            </div>
+
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(' .layui-table td, .layui-table th').css({'border': 'none', 'border-bottom': '1px solid #e2e2e2'})
+</script>
