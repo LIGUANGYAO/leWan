@@ -102,6 +102,7 @@
 			}
 			
 			.mui-slider img {
+				height: 3.2rem;
 				width: 100%;
 				position: absolute;
 			}
@@ -154,10 +155,12 @@
 				height: 1.8rem;
 				display: block;
 			}
-			.plateHeaderOne>div:nth-child(1)>img{
+			
+			.plateHeaderOne>div:nth-child(1)>img {
 				height: 1.8rem;
 				width: auto;
 			}
+			
 			.plateHeader>div>div {
 				font-size: :;
 				;
@@ -520,10 +523,10 @@
 					<div class="headerSearch">
 						<div class="addressTap">
 							<i class="iconfont icon-dingwei"></i>
-							<span class="address">成都市</span>
+							<span class="address">成都</span>
 						</div>
 						<div class="search">
-							<input type="search" placeholder="请输入商品名称/景区/酒店">
+							<input type="search" id="title" placeholder="请输入商品名称/景区/酒店">
 						</div>
 						<div class="message messageCenter">
 							<i class="iconfont icon-xiaoxi"></i>
@@ -533,31 +536,25 @@
 					<div class="mui-slider">
 						<div class="mui-slider-group mui-slider-loop">
 							<!--支持循环，需要重复图片节点-->
-							<div class="mui-slider-item mui-slider-item-duplicate">
-								<img src="../../img/homePage/banner1.png" />
+							<div class="mui-slider-item zuihou mui-slider-item-duplicate"  v-for="items in homePageBanner.slice(homePageBanner.length-1)">
+								<img :src="items.pic" />
 							</div>
 
-							<div class="mui-slider-item">
-								<img src="../../img/homePage/banner1.png" />
+							<div class="mui-slider-item" v-for="items in homePageBanner">
+								<img :src="items.pic" />
 							</div>
-							<div class="mui-slider-item">
+							<!--<div class="mui-slider-item">
 								<img src="../../img/homePage/banner2.png" />
 							</div>
-							<div class="mui-slider-item">
-								<img src="../../img/homePage/banner3.png" />
-							</div>
 							<!--支持循环，需要重复图片节点-->
-							<div class="mui-slider-item mui-slider-item-duplicate">
-								<img src="../../img/homePage/banner1.png" />
+							<div class="mui-slider-item kaishi mui-slider-item-duplicate"  v-for="items in homePageBanner.slice(0,1)">
+								<img :src="items.pic" />
 							</div>
 						</div>
 						<!--轮播图图标小点-->
 						<div class="mui-slider-indicator">
-							<div class="mui-indicator mui-active"></div>
-							<div class="mui-indicator"></div>
-							<div class="mui-indicator"></div>
+							<div class="mui-indicator" :class="{'mui-active':index==0}" v-for="(items,index) in homePageBanner"></div>
 						</div>
-
 					</div>
 					<!--八大板块-->
 					<div class="eightPlate">
@@ -577,7 +574,7 @@
 
 						</div>
 					</div>
-					
+
 					<div class="spaceConnet" ref="spaceConnet"></div>
 					<div class="content">
 						<div class="contentHeaBox">
@@ -756,7 +753,7 @@
 
 		<script src="../../plugins/flexible.js"></script>
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-		<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.10&key=b286bfefabeab1fbee7737811fb1ab0c&plugin=AMap.Geocoder"></script>
 		<script src="../../plugins/jquery-2.1.4.js"></script>
 		<script src="../../plugins/vue.js"></script>
 		<script src="../../js/mui.min.js"></script>
@@ -777,7 +774,7 @@
 							contentrefresh: '正在加载...',
 							callback: function() {
 								setTimeout(function() {
-									//									cardLists();
+									cardLists();
 								}, 1000);
 							}
 						}
@@ -790,7 +787,6 @@
 				if(subscribe && subscribe == 1) {
 					$(".MoreModal").hide()
 				}
-
 				if(token == 'undefined' || token == null || token == "") {
 					if(JSON.stringify(code) == "null") {
 						var redirectUrl = BASE_SERVER + "wechat_html/page/homePage/homePage.html"
@@ -860,7 +856,7 @@
 											longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 											var speed = res.speed; // 速度，以米/每秒计
 											var accuracy = res.accuracy; // 位置精度
-
+											regeoCode();	//执行高德地址逆解析
 										},
 										cancel: function(res) {
 											alert('用户拒绝授权获取地理位置');
@@ -872,14 +868,26 @@
 						}
 					});
 				}
-				var geocoder = new qq.maps.Geocoder({
-					complete: function(result) {
-						log(result)
-						var address = result.detail.address; //保存result的详细地址信息
-						alert(address);
-					}
-				});
-				geocoder.getAddress(new qq.maps.LatLng(latitude, longitude));
+				function regeoCode() {
+					var geocoder = new AMap.Geocoder({});
+					var lnglat = [longitude, latitude]
+					geocoder.getAddress(lnglat, function(status, result) {
+						if(status === 'complete' && result.regeocode) {
+							log(result)
+							var address = result.regeocode.formattedAddress;	//详细地址
+							$(".address").text(result.regeocode.addressComponent.city);
+							var addressCode = result.regeocode.addressComponent.adcode;		//区code码
+							var addressCodeProvince = addressCode.substr(0,2)+"0000";	//当前省code码
+							var addressCodeCity = addressCode.substr(0,4)+"00";		//当前市code码
+							$(".address").attr({
+								"province": addressCodeProvince,
+								"city":addressCodeCity
+							});
+						} else {
+							alert(JSON.stringify(result))
+						}
+					});
+				}
 
 				//第四步====》选取开通地址
 				var cityPicker = new mui.PopPicker({
@@ -887,7 +895,6 @@
 				});
 				var initCity;
 				getCity()
-
 				function getCity() {
 					$.ajax({
 						url: API_SERVER + 'Area/AreaOpenUp',
@@ -901,11 +908,11 @@
 					});
 				}
 				cityPicker.setData(initCity);
-				var _getParam = function(obj, param) {
-					return obj[param] || '';
-				};
 				mui('body').on('tap', '.addressTap', function() {
 					document.activeElement.blur(); //选择城市时隐藏输入键盘
+					var _getParam = function(obj, param) {
+						return obj[param] || '';
+					};
 					cityPicker.show(function(items) {
 						$(".address").text(_getParam(items[1], 'text'))
 						$(".address").attr({
@@ -919,12 +926,15 @@
 				var scroll = mui('.mui-scroll-wrapper').scroll();
 				var scrollTop;
 				document.querySelector('.mui-scroll-wrapper').addEventListener('scroll', function(e) {
-					scrollTop = Math.abs(scroll.y)/75
+					scrollTop = Math.abs(scroll.y) / 75
 				})
-				
 				var spaceConnet = ($('.spaceConnet').offset().top) / 75;
 				var showContentHeader = ($('.contentHeaBox').offset().top) / 75;
 				
+				var pageData = {
+					page: 1,
+					psize: 10
+				}
 				var vueData = {
 					homePageBanner: [], //首页banner图
 					eightIn: [], //八大入口动态参数
@@ -936,11 +946,16 @@
 					methods: {
 						handleScroll: handleScroll,
 						jumpToProductList: jumpToProductList,
-						//						cardList: cardList
 					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
 					},
+					updated: function() {
+						/*初始化轮播*/
+	                    mui('.mui-slider').slider({
+	                        interval: 2000 //自动播放周期
+	                    });
+	               }
 				});
 
 				//获取首页banner
@@ -949,28 +964,19 @@
 				function getBanner() {
 					$.ajax({
 						url: API_SERVER + 'Banner/HomePageList',
-						data: {
+						async: false, 
+						data: {		
 							cate: 1
-						},
-						async: false, //data==>cate==>商品类型id=》不传就是默认首页
+						},		//data==>cate==>商品类型id=》不传就是默认首页
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
 								vueData.homePageBanner = data.data;
-								galleryInit();
 							}
 						}
 					});
 				}
-				//初始化轮播
-				function galleryInit() {
-					//轮播  ==》获得slider插件对象
-					var gallery = mui('.mui-slider');
-					gallery.slider({
-						interval: 2000 //自动轮播周期，若为0则不自动播放，默认为0；
-					});
-				}
-
+				
 				//获取八大板块
 				getEight();
 
@@ -982,12 +988,11 @@
 							if(data.code == 200) {
 								log(data)
 								vueData.eightIn = data.data;
-								$(".hideEightBox").html= "<span class='swiper-slide navText swiper-active'>首页</span>";
-								var reHtml="";
-								for(var i = 0; i<data.data.length;i++){
-									reHtml += "<span class='swiper-slide navText' cateName="+data.data[i].cate_name+" cateId="+data.data[i].cate_id+">"+data.data[i].cate_name+"</span>"
+								var reHtml = "";
+								for(var i = 0; i < data.data.length; i++) {
+									reHtml += "<span class='swiper-slide navText' cateName=" + data.data[i].cate_name + " cateId=" + data.data[i].cate_id + ">" + data.data[i].cate_name + "</span>"
 								}
-								$(".hideEightBox").html( "<span class='swiper-slide navText swiper-active'>首页</span>"+reHtml);
+								$(".hideEightBox").html("<span class='swiper-slide navText swiper-active'>首页</span>" + reHtml);
 								swiperInit();
 							}
 						}
@@ -1011,9 +1016,9 @@
 						url: "productList.html?cateId=" + id + "&cateName=" + name
 					})
 				}
-				mui('body').on("tap",".navText",function(){
-					var cateId = $(this).attr(cateId)
-					var cateName = $(this).attr(cateName)
+				mui('body').on("tap", ".navText", function() {
+					var cateId = $(this).attr("cateId")
+					var cateName = $(this).attr("cateName")
 					mui.openWindow({
 						url: "productList.html?cateId=" + cateId + "&cateName=" + cateName
 					})
@@ -1023,30 +1028,39 @@
 				getProduct();
 
 				function getProduct() {
+					var provincecode = 510000;	//省code TODO
+					var citycode = 510100;	//市code码  TODO
+//					var provincecode = $(".address").attr("province");	//省code
+//					var citycode = $(".address").attr("city");	//市code码
+					var title = $("#title").val();//搜索框
+					
+					
 					$.ajax({
 						url: API_SERVER + 'Product/ProductList',
 						async: false,
 						headers: {
 							"product": "wechat",
-							"platform": "ios", //TODO
-							"provincecode": 110000,
-							"citycode": 110100
+							"platform": browserType, //sreverApi里面设置了全局变量
+							"provincecode": provincecode,
+							"citycode": citycode
 						},
 						data: {
 							token: token,
-							paging: 1, //int    |否|分页默认第一页|
-							paged: 10, //  | int    |否|分页条数默认10条|
-							title: "", // | string |否|商品名搜索|
-							cateid: "", //| id     |否|商品分类|
+							type:  1,  	// int    |是|1未定位 2已定位|
+							bursting: null,	// int    |是|1获取爆款商品 必须定位|
+							paging: pageData.page, //int    |否|分页默认第一页|
+							paged: pageData.psize, //  | int    |否|分页条数默认10条|
+							title: title, // | string |否|商品名搜索|
+							cateid: null, //| id     |否|商品分类|
 							sales: 1, //| int    |否|销售量 0取消 1降序 2升序 |
 							price: 0, //| int    |否|价格   0取消 1降序 2升序|
 							distance: 0, //| int    |否|距离 0取消距离 1离我最近|
-							lat: "", //   | string |是|用户纬度 选择了距离必传|
-							lng: "" //   | string |是|用户经度 选择了距离必传|
+							lat: latitude, //   | string |是|用户纬度 选择了距离必传|
+							lng: longitude //   | string |是|用户经度 选择了距离必传|
 						},
 						success: function(data) {
+							log(data)
 							if(data.code == 200) {
-								log(data)
 								vueData.cardList = data.data;
 							}
 						}
@@ -1091,8 +1105,7 @@
 
 				mui('body').on('tap', '.messageCenter', function() { //消息中心
 					mui.openWindow({
-						url: "messageCenter.html",
-						id: "messageCenter.html"
+						url: "messageCenter.html"
 					})
 				})
 				//排序方式
@@ -1104,26 +1117,24 @@
 					
 					$(".posiContentHeader .filterPar").eq(clickVal).addClass("filterActive");
 					$(".showContentHeader .filterPar").eq(clickVal).addClass("filterActive");
-					
-					
+
 					if($(".filterPar").index(this) == 2 || $(".filterPar").index(this) == 6) {
 						isClick++;
 						log(isClick)
-						if(isClick == 2){
+						if(isClick == 2) {
 							$(".priceAfter i").toggleClass("iconActive");
 							isClick = 1;
 						}
-					}else{
+					} else {
 						isClick = 0;
 						$(".priceAfter i").removeClass("iconActive");
 						$(".priceAfter i").eq(0).addClass("iconActive");
 						$(".priceAfter i").eq(2).addClass("iconActive");
 					}
-					
 				})
 				
 				function handleScroll() {
-//					log(scrollTop + "+" + spaceConnet + "+" + showContentHeader)
+					//					log(scrollTop + "+" + spaceConnet + "+" + showContentHeader)
 					if(scrollTop >= spaceConnet - 0.72) {
 						$(".topmenu").css({
 							"opacity": 1,
@@ -1145,7 +1156,6 @@
 							"position": "static"
 						});
 					}
-
 				}
 			})
 		</script>

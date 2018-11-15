@@ -1,0 +1,59 @@
+<br class="page">
+<div class="layui-field-title"></div>
+<div class="clear"></div>
+
+<!-- 模板样式 -->
+
+<div class="layui-form">
+    <if condition="!empty($data)">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+            <tr>
+                <th >银行名</th>
+                <th >银行图标</th>
+                <th >银行背景</th>
+                <th >开放时间</th>
+                <th width="250px;">开户支行名称</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <volist name="$data" id="val">
+                <tr class="">
+                    <td >{$val.bank_name}</td>
+                    <td ><img src="{$val.bank_icon}" style="width: 50px;height: 50px;"></td>
+                    <td ><img src="{$val.bank_back}" style="width: 300px;height: 100px;"></td>
+                    <td >{$val.bank_addtime|date="Y-m-d H:i",###}</td>
+                    <td >
+                        <div class="layui-btn-group">
+                            <a href="{:url('Bank/BankDet', array('id'=>$val.bank_id))}" class="layui-btn layui-btn-sm" title="银行详情">
+                                <i class="layui-icon"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <else />
+        <div class="layui-field-title"></div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                暂无数据w(ﾟДﾟ)w
+            </div>
+        </div>
+    </if>
+
+    <div class="tabletool">
+        <!-- 分页工具 -->
+        <div id="limitpage" class="r"></div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+</script>
