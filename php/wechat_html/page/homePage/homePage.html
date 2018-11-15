@@ -587,12 +587,12 @@
 							</div>
 						</div>
 
-						<ul class="mui-table-view">
-							<li class="mui-table-view-cell mui-media">
+						<ul class="mui-table-view" v-if="cardList.length">
+							<li class="mui-table-view-cell mui-media" v-for="(items,index) in cardList">
 								<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
-									<div class="generalize">
+									<div class="generalize" v-if="index<=9">
 										<div>Top</div>
-										<div>1</div>
+										<div>{{ index }}</div>
 									</div>
 									<div class="distance">
 										<span><i class="iconfont icon-dingwei"></i>成都</span>
@@ -611,123 +611,17 @@
 									</div>
 								</div>
 							</li>
-							<li class="mui-table-view-cell mui-media">
-								<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
-									<div class="generalize">
-										<div>Top</div>
-										<div>1</div>
-									</div>
-									<div class="distance">
-										<span><i class="iconfont icon-dingwei"></i>成都</span>
-										<span>5km</span>
-									</div>
-								</div>
-								<div class="mui-media-body price">
-									<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
-									<p class="detailBox">
-										<span>￥151起</span>
-										<span>赚:￥62</span>
-										<span>已售598</span>
-									</p>
-									<div class="countDown">
-										距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
-									</div>
-								</div>
-							</li>
-							<li class="mui-table-view-cell mui-media">
-								<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
-									<div class="generalize">
-										<div>Top</div>
-										<div>1</div>
-									</div>
-									<div class="distance">
-										<span><i class="iconfont icon-dingwei"></i>成都</span>
-										<span>5km</span>
-									</div>
-								</div>
-								<div class="mui-media-body price">
-									<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
-									<p class="detailBox">
-										<span>￥151起</span>
-										<span>赚:￥62</span>
-										<span>已售598</span>
-									</p>
-									<div class="countDown">
-										距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
-									</div>
-								</div>
-							</li>
-							<li class="mui-table-view-cell mui-media">
-								<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
-									<div class="generalize">
-										<div>Top</div>
-										<div>1</div>
-									</div>
-									<div class="distance">
-										<span><i class="iconfont icon-dingwei"></i>成都</span>
-										<span>5km</span>
-									</div>
-								</div>
-								<div class="mui-media-body price">
-									<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
-									<p class="detailBox">
-										<span>￥151起</span>
-										<span>赚:￥62</span>
-										<span>已售598</span>
-									</p>
-									<div class="countDown">
-										距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
-									</div>
-								</div>
-							</li>
-							<li class="mui-table-view-cell mui-media">
-								<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
-									<div class="generalize">
-										<div>Top</div>
-										<div>1</div>
-									</div>
-									<div class="distance">
-										<span><i class="iconfont icon-dingwei"></i>成都</span>
-										<span>5km</span>
-									</div>
-								</div>
-								<div class="mui-media-body price">
-									<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
-									<p class="detailBox">
-										<span>￥151起</span>
-										<span>赚:￥62</span>
-										<span>已售598</span>
-									</p>
-									<div class="countDown">
-										距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
-									</div>
-								</div>
-							</li>
-							<li class="mui-table-view-cell mui-media">
-								<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
-									<div class="generalize">
-										<div>Top</div>
-										<div>1</div>
-									</div>
-									<div class="distance">
-										<span><i class="iconfont icon-dingwei"></i>成都</span>
-										<span>5km</span>
-									</div>
-								</div>
-								<div class="mui-media-body price">
-									<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
-									<p class="detailBox">
-										<span>￥151起</span>
-										<span>赚:￥62</span>
-										<span>已售598</span>
-									</p>
-									<div class="countDown">
-										距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
-									</div>
-								</div>
-							</li>
-
+							
 						</ul>
+						<!--空状态时-->
+						<div class="lw-empty" style="display: block;" v-else>
+							<div class="lw-empty-box">
+								<div class="lw-empty-flex">
+									<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+									<div class="lw-empty-test">暂无客户 去推广产品吧！</div>
+								</div>
+							</div>
+						</div>
 
 					</div>
 					<!--新人关注二维码-->
@@ -774,7 +668,7 @@
 							contentrefresh: '正在加载...',
 							callback: function() {
 								setTimeout(function() {
-									cardLists();
+									getProduct();
 								}, 1000);
 							}
 						}
@@ -1025,13 +919,11 @@
 				})
 
 				//获取商品列表 
-				getProduct();
+				getProduct(true);
 
-				function getProduct() {
-					var provincecode = 510000;	//省code TODO
-					var citycode = 510100;	//市code码  TODO
-//					var provincecode = $(".address").attr("province");	//省code
-//					var citycode = $(".address").attr("city");	//市code码
+				function getProduct(empty) {
+					var provincecode = $(".address").attr("province");	//省code
+					var citycode = $(".address").attr("city");	//市code码
 					var title = $("#title").val();//搜索框
 					
 					
@@ -1061,7 +953,18 @@
 						success: function(data) {
 							log(data)
 							if(data.code == 200) {
-								vueData.cardList = data.data;
+								var lists = data.data.list;
+								empty && vueData.cardList.splice(0);
+								for(var i = 0; i < lists.length; i++) {
+									vueData.cardList.push(lists[i]);
+								}
+								pageData.page++;
+								var pullRefresh = mui('#refreshContainer').pullRefresh();
+								pullRefresh && pullRefresh.endPulldownToRefresh && pullRefresh.endPulldownToRefresh();
+								pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
+								pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < pageData.psize);
+							} else {
+								mui.toast(data.message)
 							}
 						}
 					});

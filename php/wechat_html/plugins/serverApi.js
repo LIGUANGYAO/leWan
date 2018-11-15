@@ -151,7 +151,7 @@ if(browser.versions.android) {
 	//重写jquery的ajax方法
 	$.ajax = function(opt) {
 		//扩展增强处理
-		var _opt = $.extend(opt, {
+		var _opt = $.extend({
 			type: "POST",
 			cache: false,
 			dataType: "json", //默认后不显示图片上传中
@@ -171,41 +171,10 @@ if(browser.versions.android) {
 				console.log(d)
 				mui.toast("网络异常");
 			}
-		});
+		},opt);
 		return _ajax(_opt);
 	};
 })(jQuery);
-
-//jQuery.extend({
-//	ajax: function(option){
-//		var args = {
-//			type: "POST", 
-//			cache: false,
-//			dataType:"json",	//默认后不显示图片上传中
-//			headers: {
-//				        "product":"wechat",
-//				        "platform":"pn"
-//				     },
-//			beforeSend:function(XHR){
-//	            //提交前回调方法
-//	            $('body').append("<div id='ajaxBox'><div><img id='ajaxInfo' src='../../img/loading.gif'/><div id='ajaxText'>加载中..</div></div></div>");
-//	        },
-//	        complete:function(XHR, TS){
-//	            //请求完成后回调函数 (请求成功或失败之后均调用)。
-//	            $("#ajaxBox").remove();
-//	        },
-//          error: function(d){
-//          	console.log(d)
-//          	mui.toast("网络异常");
-//          }
-//		}
-//
-//		$.each(option, function (key, value) {
-//	        args[key] = value;
-//	    });	
-//	    $.ajax(args);
-//	}
-//})
 
 //首页底部页面跳转
 //首页
