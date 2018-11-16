@@ -96,13 +96,17 @@
 			}
 			/*banner图*/
 			
+			.bannerBox {
+				height: 4rem;
+			}
+			
 			.mui-slider-item {
-				height: 3.2rem !important;
+				height: 4rem !important;
 				overflow: hidden;
 			}
 			
 			.mui-slider img {
-				height: 3.2rem;
+				height: 4rem;
 				width: 100%;
 				position: absolute;
 			}
@@ -126,7 +130,8 @@
 			/*空白模块*/
 			
 			.mui-slider {
-				position: relative;
+				height: 4rem;
+				top: -2px;
 			}
 			/*八大板块图标*/
 			
@@ -251,6 +256,10 @@
 				color: #E1B872;
 			}
 			/*图文展示*/
+			
+			.mui-scrollbar-vertical {
+				display: none;
+			}
 			
 			.mui-table-view:before {
 				height: 0;
@@ -403,25 +412,24 @@
 				position: fixed;
 				top: 0;
 				left: 0;
-				display: flex;
-				justify-content: center;
-				align-items: center;
+				text-align: center;
 				background-color: rgba(0, 0, 0, 0.6);
 				z-index: 100;
 			}
 			
 			.modalContent {
+				display: inline-block;
+				margin-top: 3.466rem;
 				width: 8.32rem;
 				border-radius: 0.2rem;
 				overflow: hidden;
 				background-color: #FFFFFF;
+				text-align: center;
 			}
 			
 			.modalTitle {
 				width: 100%;
 				height: 6.746rem;
-				background-size: 100% 100%;
-				background-repeat: no-repeat;
 				position: relative;
 			}
 			
@@ -429,54 +437,54 @@
 				position: absolute;
 				right: 0.3rem;
 				top: 0.3rem;
+				color: #CCCCCC;
+			}
+			
+			.QRBox {
+				overflow: hidden;
+			}
+			
+			.QRtitle {
+				font-size: 0.426rem;
+				color: #999999;
+				margin-top: 0.64rem;
+			}
+			
+			.RichScan {
+				font-size: 0.373rem;
+				color: #CCCCCC;
+				margin-top: 0.24rem;
+			}
+			
+			.modalOne {
+				width: 100%;
+				height: 2.8rem;
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
 				color: #FFFFFF;
+				overflow: hidden;
+			}
+			
+			.modalOne>div:nth-child(1) {
+				margin-top: 0.506rem;
+				font-size: 0.453rem;
+				font-weight: 600;
+			}
+			
+			.modalOne>div:nth-child(2) {
+				margin-top: 0.213rem;
+				font-size: 0.373rem;
+				font-weight: 600;
 			}
 			
 			.closeModal>i {
 				font-size: 0.6rem;
 			}
 			
-			.QRBox {
-				position: absolute;
-				right: 0.533rem;
-				bottom: -1.7rem;
-			}
-			
 			.QRImg>img {
-				width: 2.373rem;
-				height: 2.373rem;
-				border: 0.2rem solid #F76E1E;
-			}
-			
-			.modalOne {
-				margin: 0.533rem 0 0 0.48rem;
-				font-size: 0.426rem;
-				color: #333333;
-				font-weight: bold;
-			}
-			
-			.modalTwo {
-				width: 0.346rem;
-				height: 0.053rem;
-				background-color: #F76E1E;
-				margin: 0.266rem 0 0 0.48rem;
-			}
-			
-			.modalThree {
-				margin: 0.266rem 0 0.933rem 0.48rem;
-				font-size: 0.32rem;
-				color: #333333;
-				font-weight: 500;
-			}
-			
-			.RichScan {
-				font-size: 0.32rem;
-				color: #333333;
-				font-weight: 500;
-				height: 0.5rem;
-				line-height: 0.5rem;
-				width: 2.4rem;
-				text-align: center;
+				width: 3.866rem;
+				height: 3.866rem;
+				margin-top: 0.373rem;
 			}
 		</style>
 	</head>
@@ -511,49 +519,54 @@
 		</div>
 		<div class="contentHeader showContentHeader">
 			<span class="filterPar filterActive" dataVal='0'>综合</span>
-			<span class="filterPar" dataVal='1'>销量</span>
-			<span class="filterPar priceAfter" dataVal='2'>
-	价格<i class="iconfont icon-paixujiantoushang iconActive" dataVal='0'></i><i class="iconfont icon-paixujiantouxia" dataVal="1"></i></span>
-			<span class="filterPar" dataVal='3'>距离</span>
+			<span class="filterPar salesOrder" dataVal='1' salesOrder="0">销量</span>
+			<span class="filterPar priceAfter priceOrder" dataVal='2' priceOrder="0">
+	价格<i class="iconfont icon-paixujiantoushang" dataVal='0'></i><i class="iconfont icon-paixujiantouxia" dataVal="1"></i></span>
+			<span class="filterPar distanceOrder" dataVal='3' distanceOrder="0">距离</span>
 		</div>
 		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
 			<div class="mui-scroll">
 				<div class="" id="J_el">
+					<div>  <!--TODO   v-if="showPage"-->
 					<!--页头搜索框-->
-					<div class="headerSearch">
-						<div class="addressTap">
-							<i class="iconfont icon-dingwei"></i>
-							<span class="address">成都</span>
+					<form action="" method="post">
+						<div class="headerSearch">
+							<div class="addressTap">
+								<i class="iconfont icon-dingwei"></i>
+								<span class="address" isLocation="1">成都</span>
+							</div>
+							<div class="search">
+								<input type="search" id="title" placeholder="请输入商品名称/景区/酒店">
+							</div>
+							<div class="message messageCenter">
+								<i class="iconfont icon-xiaoxi"></i>
+							</div>
 						</div>
-						<div class="search">
-							<input type="search" id="title" placeholder="请输入商品名称/景区/酒店">
-						</div>
-						<div class="message messageCenter">
-							<i class="iconfont icon-xiaoxi"></i>
-						</div>
-					</div>
+					</form>
 					<!--首页banner图-->
-					<div class="mui-slider">
-						<div class="mui-slider-group mui-slider-loop">
-							<!--支持循环，需要重复图片节点-->
-							<div class="mui-slider-item zuihou mui-slider-item-duplicate"  v-for="items in homePageBanner.slice(homePageBanner.length-1)">
-								<img :src="items.pic" />
-							</div>
+					<div class="bannerBox">
+						<div class="mui-slider">
+							<div class="mui-slider-group mui-slider-loop">
+								<!--支持循环，需要重复图片节点-->
+								<div class="mui-slider-item zuihou mui-slider-item-duplicate" v-for="items in homePageBanner.slice(homePageBanner.length-1)">
+									<img :src="items.pic" />
+								</div>
 
-							<div class="mui-slider-item" v-for="items in homePageBanner">
-								<img :src="items.pic" />
+								<div class="mui-slider-item" v-for="items in homePageBanner">
+									<img :src="items.pic" />
+								</div>
+								<!--<div class="mui-slider-item">
+									<img src="../../img/homePage/banner2.png" />
+								</div>
+								<!--支持循环，需要重复图片节点-->
+								<div class="mui-slider-item kaishi mui-slider-item-duplicate" v-for="items in homePageBanner.slice(0,1)">
+									<img :src="items.pic" />
+								</div>
 							</div>
-							<!--<div class="mui-slider-item">
-								<img src="../../img/homePage/banner2.png" />
+							<!--轮播图图标小点-->
+							<div class="mui-slider-indicator">
+								<div class="mui-indicator" :class="{'mui-active':index==0}" v-for="(items,index) in homePageBanner"></div>
 							</div>
-							<!--支持循环，需要重复图片节点-->
-							<div class="mui-slider-item kaishi mui-slider-item-duplicate"  v-for="items in homePageBanner.slice(0,1)">
-								<img :src="items.pic" />
-							</div>
-						</div>
-						<!--轮播图图标小点-->
-						<div class="mui-slider-indicator">
-							<div class="mui-indicator" :class="{'mui-active':index==0}" v-for="(items,index) in homePageBanner"></div>
 						</div>
 					</div>
 					<!--八大板块-->
@@ -580,45 +593,46 @@
 						<div class="contentHeaBox">
 							<div class="contentHeader posiContentHeader">
 								<span class="filterPar filterActive" dataVal='0'>综合</span>
-								<span class="filterPar" dataVal='1'>销量</span>
-								<span class="filterPar priceAfter" dataVal='2'>
-						价格<i class="iconfont icon-paixujiantoushang iconActive" dataVal='0'></i><i class="iconfont icon-paixujiantouxia" dataVal="1"></i></span>
-								<span class="filterPar" dataVal='3'>距离</span>
+								<span class="filterPar salesOrder" dataVal='1' salesOrder="0">销量</span>
+								<span class="filterPar priceAfter priceOrder" dataVal='2' priceOrder="0">
+						价格<i class="iconfont icon-paixujiantoushang" dataVal='0'></i><i class="iconfont icon-paixujiantouxia" dataVal="1"></i></span>
+								<span class="filterPar distanceOrder" dataVal='3' distanceOrder="0">距离</span>
 							</div>
 						</div>
 
 						<ul class="mui-table-view" v-if="cardList.length">
-							<li class="mui-table-view-cell mui-media" v-for="(items,index) in cardList">
-								<div class="mui-media-object mui-pull-left" style="background-image: url(../../img/homePage/homePage1.png);">
-									<div class="generalize" v-if="index<=9">
+							<li class="mui-table-view-cell mui-media" v-for="(items,index) in cardList" @tap="jumpToDetails(items.product_id)">
+								<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url(' + items.product_pic + ')'}">
+									<div class="generalize" v-if="index<5">
 										<div>Top</div>
-										<div>{{ index }}</div>
+										<div>{{ index+1 }}</div>
 									</div>
 									<div class="distance">
-										<span><i class="iconfont icon-dingwei"></i>成都</span>
-										<span>5km</span>
+										<span><i class="iconfont icon-dingwei"></i>{{ items.region }}</span>
+										<span v-if="items.distance">{{ items.distance }}km</span>
 									</div>
 								</div>
 								<div class="mui-media-body price">
-									<div class="textShow">绵阳市【马岭山居】传统日式 和服秀榻榻米在这里,我们为您准备了很好的饭菜</div>
+									<div class="textShow">【{{ items.merchant_name }}】 {{ items.product_name }} </div>
 									<p class="detailBox">
-										<span>￥151起</span>
-										<span>赚:￥62</span>
-										<span>已售598</span>
+										<span>￥{{ items.temp_price }}</span>
+										<span>返:￥{{ items.temp_commission }}</span>
+										<span>已售{{ items.product_sold }}</span>
 									</p>
 									<div class="countDown">
+										<!--距结束 &nbsp {{ InitTime(items.product_starttime,items.product_endtime) }}-->
 										距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
 									</div>
 								</div>
 							</li>
-							
+
 						</ul>
 						<!--空状态时-->
 						<div class="lw-empty" style="display: block;" v-else>
 							<div class="lw-empty-box">
 								<div class="lw-empty-flex">
 									<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
-									<div class="lw-empty-test">暂无客户 去推广产品吧！</div>
+									<div class="lw-empty-test">暂无商品 敬请期待！</div>
 								</div>
 							</div>
 						</div>
@@ -627,19 +641,22 @@
 					<!--新人关注二维码-->
 					<div class="MoreModal">
 						<div class="modalContent">
-							<div class="modalTitle" style="background-image: url(../../img/homePage/homePage2.png);">
+							<div class="modalTitle">
 								<div class="closeModal" id="closeModal"><i class="iconfont icon-guanbi1"></i></div>
 								<div class="QRBox">
+									<div class="QRtitle">关注乐玩联盟享受更多优惠</div>
 									<div class="QRImg">
 										<img src="../../img/homePage/homePage3.png" />
 									</div>
-									<div class="RichScan">长按识别二维码</div>
+									<div class="RichScan">长按识别屏幕二维码</div>
 								</div>
 							</div>
-							<div class="modalOne">更多限量好物</div>
-							<div class="modalTwo"></div>
-							<div class="modalThree">尽在乐玩联盟公众号</div>
+							<div class="modalOne" style="background-image: url(../../img/homePage/homePage2.png);">
+								<div>最懂你的吃喝玩乐小助手</div>
+								<div>更多精彩尽在乐玩联盟</div>
+							</div>
 						</div>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -678,8 +695,10 @@
 				var code = getUrlParam("code");
 				var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
 				var subscribe = localStorage.getItem("subscribe");
-				if(subscribe && subscribe == 1) {
-					$(".MoreModal").hide()
+				if(subscribe == 1) {
+					log("我已经关注了")
+				}else{
+					$(".MoreModal").show()
 				}
 				if(token == 'undefined' || token == null || token == "") {
 					if(JSON.stringify(code) == "null") {
@@ -700,9 +719,12 @@
 									token = data.data.token;
 									localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
 									if(data.data.subscribe == 1) {
-										$(".MoreModal").hide()
+										log("我已经关注了")
+									}else{
+										$(".MoreModal").show()
 									}
 									localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+									vueData.level = data.data.level;
 								} else {
 									mui.toast(data.message)
 								}
@@ -748,11 +770,13 @@
 											log(res)
 											latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
 											longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-											var speed = res.speed; // 速度，以米/每秒计
-											var accuracy = res.accuracy; // 位置精度
-											regeoCode();	//执行高德地址逆解析
+											regeoCode(); //执行高德地址逆解析
 										},
 										cancel: function(res) {
+											getBanner(); //拒绝定位直接获取全国banner
+											vueData.showPage = false;
+											pageData.page = 1;  
+											getProduct(true); //拒绝定位获取礼品
 											alert('用户拒绝授权获取地理位置');
 										}
 									});
@@ -762,33 +786,104 @@
 						}
 					});
 				}
+
 				function regeoCode() {
 					var geocoder = new AMap.Geocoder({});
 					var lnglat = [longitude, latitude]
 					geocoder.getAddress(lnglat, function(status, result) {
 						if(status === 'complete' && result.regeocode) {
 							log(result)
-							var address = result.regeocode.formattedAddress;	//详细地址
+							var address = result.regeocode.formattedAddress; //详细地址
 							$(".address").text(result.regeocode.addressComponent.city);
-							var addressCode = result.regeocode.addressComponent.adcode;		//区code码
-							var addressCodeProvince = addressCode.substr(0,2)+"0000";	//当前省code码
-							var addressCodeCity = addressCode.substr(0,4)+"00";		//当前市code码
+							var addressCode = result.regeocode.addressComponent.adcode; //区code码
+							var addressCodeProvince = addressCode.substr(0, 2) + "0000"; //当前省code码
+							var addressCodeCity = addressCode.substr(0, 4) + "00"; //当前市code码
 							$(".address").attr({
 								"province": addressCodeProvince,
-								"city":addressCodeCity
+								"city": addressCodeCity,
+								"isLocation": 2
 							});
+							getBanner(); //定位后执行banner()获取当地banner
+							vueData.showPage = false;
+							pageData.page = 1;  
+							getProduct(true); //定位获取当前地址商品
 						} else {
+							getBanner(); //逆解析失败直接获取全国banner
+							vueData.showPage = false;
+							pageData.page = 1;  
+							getProduct(true); //逆解析失败获取全国产品
 							alert(JSON.stringify(result))
 						}
 					});
 				}
 
-				//第四步====》选取开通地址
+				//==========绑定数据===================================
+				var scroll = mui('.mui-scroll-wrapper').scroll();
+				var scrollTop;
+				document.querySelector('.mui-scroll-wrapper').addEventListener('scroll', function(e) {
+					scrollTop = Math.abs(scroll.y) / 75
+				})
+				var spaceConnet = ($('.spaceConnet').offset().top) / 75;
+				var showContentHeader = ($('.contentHeaBox').offset().top) / 75;
+
+				var pageData = {
+					page: 1,
+					psize: 10
+				}
+				var vueData = {
+					showPage: false,
+					homePageBanner: [], //首页banner图
+					eightIn: [], //八大入口动态参数
+					cardList: [], //商品列表
+					level: 1,	//用户等级
+				};
+				new Vue({
+					el: '#J_el',
+					data: vueData,
+					methods: {
+						handleScroll: handleScroll,
+						jumpToProductList: jumpToProductList,
+						jumpToDetails: jumpToDetails,
+					},
+					mounted: function() {
+						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
+					},
+					updated: function() {
+						/*初始化轮播*/
+						mui('.mui-slider').slider({
+							interval: 2000 //自动播放周期
+						});
+					}
+				});
+				//获取用户个人基本信息
+				getUSerMessage();
+				function getUSerMessage(){
+					$.ajax({
+						url: API_SERVER + 'User/UserPersonal',
+						async: false,
+						data:{token: token},
+						success: function(data) {
+							if(data.code == 200) {
+								log(data)
+								localStorage.setItem("token", data.data.token); //token
+								token = data.data.token;
+								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
+								if(data.data.subscribe != 1) {
+									$(".MoreModal").show()
+								}
+								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+								vueData.level = data.data.level;
+							}
+						}
+					});
+				}
+				//选取开通地址
 				var cityPicker = new mui.PopPicker({
 					layer: 2
 				});
 				var initCity;
 				getCity()
+
 				function getCity() {
 					$.ajax({
 						url: API_SERVER + 'Area/AreaOpenUp',
@@ -802,6 +897,7 @@
 					});
 				}
 				cityPicker.setData(initCity);
+				//搜索框时间监听
 				mui('body').on('tap', '.addressTap', function() {
 					document.activeElement.blur(); //选择城市时隐藏输入键盘
 					var _getParam = function(obj, param) {
@@ -811,57 +907,33 @@
 						$(".address").text(_getParam(items[1], 'text'))
 						$(".address").attr({
 							"province": _getParam(items[0], 'value'),
-							"city": _getParam(items[1], 'value')
-						})
+							"city": _getParam(items[1], 'value'),
+							"isLocation": 2
+						});
+						getBanner(); //选择城市后获取城市banner
+						vueData.showPage = false;
+						pageData.page = 1; //选择城市后，商品列表页数从1开始
+						getProduct(true); //选择之后执行请求商品列表
 					});
 				});
-
-				//==========绑定数据===================================
-				var scroll = mui('.mui-scroll-wrapper').scroll();
-				var scrollTop;
-				document.querySelector('.mui-scroll-wrapper').addEventListener('scroll', function(e) {
-					scrollTop = Math.abs(scroll.y) / 75
-				})
-				var spaceConnet = ($('.spaceConnet').offset().top) / 75;
-				var showContentHeader = ($('.contentHeaBox').offset().top) / 75;
-				
-				var pageData = {
-					page: 1,
-					psize: 10
-				}
-				var vueData = {
-					homePageBanner: [], //首页banner图
-					eightIn: [], //八大入口动态参数
-					cardList: [], //商品列表
-				};
-				new Vue({
-					el: '#J_el',
-					data: vueData,
-					methods: {
-						handleScroll: handleScroll,
-						jumpToProductList: jumpToProductList,
-					},
-					mounted: function() {
-						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
-					},
-					updated: function() {
-						/*初始化轮播*/
-	                    mui('.mui-slider').slider({
-	                        interval: 2000 //自动播放周期
-	                    });
-	               }
-				});
-
-				//获取首页banner
-				getBanner();
-
+				//获取首页banner  定位后执行该方法==》第一次进来就渲染当地banner图
 				function getBanner() {
+					var provincecode = $(".address").attr("province"); //省code
+					var citycode = $(".address").attr("city"); //市code码
+					var isLocation = $(".address").attr("isLocation"); //是否定位1未定位 2已定位
 					$.ajax({
 						url: API_SERVER + 'Banner/HomePageList',
-						async: false, 
-						data: {		
-							cate: 1
-						},		//data==>cate==>商品类型id=》不传就是默认首页
+						async: false,
+						headers: {
+							"product": "wechat",
+							"platform": browserType, //sreverApi里面设置了全局变量
+							"provincecode": provincecode,
+							"citycode": citycode
+						},
+						data: {
+							type: isLocation, //1未定位轮播图 2已定位轮播图
+							cate: null //data==>cate==>商品类型id=》不传就是默认首页
+						},
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
@@ -870,7 +942,7 @@
 						}
 					});
 				}
-				
+
 				//获取八大板块
 				getEight();
 
@@ -919,14 +991,29 @@
 				})
 
 				//获取商品列表 
-				getProduct(true);
-
 				function getProduct(empty) {
-					var provincecode = $(".address").attr("province");	//省code
-					var citycode = $(".address").attr("city");	//市code码
-					var title = $("#title").val();//搜索框
-					
-					
+					var provincecode = $(".address").attr("province"); //省code
+					var citycode = $(".address").attr("city"); //市code码
+					var isLocation = $(".address").attr("isLocation"); //是否定位1未定位 2已定位
+					var title = $("#title").val(); //搜索框
+					var salesOrder = $(".salesOrder").attr("salesOrder"); //销量  0取消 1降序 2升序
+					var priceOrder = $(".priceOrder").attr("priceOrder"); //价格  0取消 1降序 2升序
+					var distanceOrder = $(".distanceOrder").attr("distanceOrder"); //距离排序   0取消距离 1离我最近
+					var data = {
+						token: token,
+						type: isLocation,
+						bursting: null,
+						paging: pageData.page,
+						paged: pageData.psize,
+						title: title,
+						cateid: null,
+						sales: salesOrder,
+						price: priceOrder,
+						distance: distanceOrder,
+						lat: latitude,
+						lng: longitude
+					}
+					//					alert(JSON.stringify(data))
 					$.ajax({
 						url: API_SERVER + 'Product/ProductList',
 						async: false,
@@ -938,22 +1025,24 @@
 						},
 						data: {
 							token: token,
-							type:  1,  	// int    |是|1未定位 2已定位|
-							bursting: null,	// int    |是|1获取爆款商品 必须定位|
+							type: 1, // int    |是|1未定位 2已定位| //TODO
+							bursting: null, // int    |是|1获取爆款商品 必须定位|
 							paging: pageData.page, //int    |否|分页默认第一页|
 							paged: pageData.psize, //  | int    |否|分页条数默认10条|
 							title: title, // | string |否|商品名搜索|
 							cateid: null, //| id     |否|商品分类|
-							sales: 1, //| int    |否|销售量 0取消 1降序 2升序 |
-							price: 0, //| int    |否|价格   0取消 1降序 2升序|
-							distance: 0, //| int    |否|距离 0取消距离 1离我最近|
+							sales: salesOrder, //| int    |否|销售量 0取消 1降序 2升序 |
+							price: priceOrder, //| int    |否|价格   0取消 1降序 2升序|
+							distance: distanceOrder, //| int    |否|距离 0取消距离 1离我最近|
 							lat: latitude, //   | string |是|用户纬度 选择了距离必传|
 							lng: longitude //   | string |是|用户经度 选择了距离必传|
 						},
 						success: function(data) {
+							//							alert(JSON.stringify(data))
 							log(data)
 							if(data.code == 200) {
-								var lists = data.data.list;
+								var lists = data.data;
+								vueData.showPage = true;
 								empty && vueData.cardList.splice(0);
 								for(var i = 0; i < lists.length; i++) {
 									vueData.cardList.push(lists[i]);
@@ -971,18 +1060,12 @@
 				}
 
 				//商品详情跳转
-				mui('body').on('tap', '.mui-media', function() {
+				function jumpToDetails(productId){
+					var isLocation = $(".address").attr("isLocation"); //是否定位1未定位 2已定位
 					mui.openWindow({
-						url: "productDetails.html"
+						url: "productDetails.html?productId="+productId+"&isLocation="+isLocation+"&latitude="+latitude+"&longitude="+longitude
 					})
-				})
-				//商品详情酒店跳转
-				mui('body').on('tap', '.hotel', function() {
-					mui.openWindow({
-						url: "productDetailsHotel.html"
-					})
-				})
-
+				}
 				//关闭二维码
 				mui('body').on('tap', '#closeModal', function() { //关闭关注公众号
 					$(".MoreModal").css({
@@ -991,19 +1074,27 @@
 				})
 
 				//倒计时方法
-				function InitTime(endtime) {
+				function InitTime(starttime, endtime) {
+					var timer = null;
 					var dd, hh, mm, ss = null;
-					var time = parseInt(endtime) - new Date().getTime();
+					var str;
+					var time = parseInt(endtime) - parseInt(starttime);
+					timer = setInterval(function() {
+						if(time > 0) {
+							dd = Math.floor(time / 60 / 60 / 24);
+							hh = Math.floor((time / 60 / 60) % 24);
+							mm = Math.floor((time / 60) % 60);
+							ss = Math.floor(time % 60);
+							//						var str = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
+							str = "<span>" + dd + "</span> 天 <span>" + hh + "</span> : <span>" + mm + "</span> : <span>" + ss + "</span>";
+						}
+					}, 1000);
 					if(time <= 0) {
-						return '结束'
-					} else {
-						dd = Math.floor(time / 60 / 60 / 24);
-						hh = Math.floor((time / 60 / 60) % 24);
-						mm = Math.floor((time / 60) % 60);
-						ss = Math.floor(time % 60);
-						var str = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
-						return str;
+						clearInterval(timer);
+						str = "<span>00</span> 天 <span>00</span> : <span>00</span> : <span>00</span>";
 					}
+					return str;
+					log(str)
 				}
 
 				mui('body').on('tap', '.messageCenter', function() { //消息中心
@@ -1011,31 +1102,70 @@
 						url: "messageCenter.html"
 					})
 				})
+				//软键盘搜索框
+				$("#title").on('keypress', function(e)  {                  
+					var  searchName  =  $(this).val();                  
+					if(e.keyCode == '13')  {  
+						document.activeElement.blur(); //收起虚拟键盘
+						e.preventDefault();                       //请求搜索接口  
+						vueData.showPage = false;
+						pageData.page = 1;                    
+						getProduct(true);
+						$(this).val("");                  
+					}           
+				});
 				//排序方式
-				var isClick = 0;
+				var isClick = 2;
 				mui("body").on("tap", ".filterPar", function() {
 					var clickVal = parseInt($(this).attr('dataVal'));
+					//选中下划线
 					$(".posiContentHeader .filterPar").removeClass("filterActive");
 					$(".showContentHeader .filterPar").removeClass("filterActive");
-					
 					$(".posiContentHeader .filterPar").eq(clickVal).addClass("filterActive");
 					$(".showContentHeader .filterPar").eq(clickVal).addClass("filterActive");
+					//排序方式恢复默认值
+					$(".posiContentHeader .filterPar").eq(1).attr("salesOrder", 0);
+					$(".showContentHeader .filterPar").eq(1).attr("salesOrder", 0);
+					$(".posiContentHeader .filterPar").eq(2).attr("priceOrder", 0);
+					$(".showContentHeader .filterPar").eq(2).attr("priceOrder", 0);
+					$(".posiContentHeader .filterPar").eq(3).attr("distanceOrder", 0);
+					$(".showContentHeader .filterPar").eq(3).attr("distanceOrder", 0);
 
+					if($(".filterPar").index(this) == 1 || $(".filterPar").index(this) == 5) {
+						$(".posiContentHeader .filterPar").eq(1).attr("salesOrder", 1);
+						$(".showContentHeader .filterPar").eq(1).attr("salesOrder", 1);
+					}
 					if($(".filterPar").index(this) == 2 || $(".filterPar").index(this) == 6) {
 						isClick++;
-						log(isClick)
-						if(isClick == 2) {
-							$(".priceAfter i").toggleClass("iconActive");
-							isClick = 1;
+						if(isClick % 2 == 0) {
+							$(".priceAfter i").eq(0).removeClass("iconActive");
+							$(".priceAfter i").eq(2).removeClass("iconActive");
+							$(".priceAfter i").eq(1).addClass("iconActive");
+							$(".priceAfter i").eq(3).addClass("iconActive");
+							$(".posiContentHeader .filterPar").eq(2).attr("priceOrder", 1);
+							$(".showContentHeader .filterPar").eq(2).attr("priceOrder", 1);
+						} else {
+							$(".priceAfter i").eq(0).addClass("iconActive");
+							$(".priceAfter i").eq(2).addClass("iconActive");
+							$(".priceAfter i").eq(1).removeClass("iconActive");
+							$(".priceAfter i").eq(3).removeClass("iconActive");
+							$(".posiContentHeader .filterPar").eq(2).attr("priceOrder", 2);
+							$(".showContentHeader .filterPar").eq(2).attr("priceOrder", 2);
 						}
 					} else {
 						isClick = 0;
 						$(".priceAfter i").removeClass("iconActive");
-						$(".priceAfter i").eq(0).addClass("iconActive");
-						$(".priceAfter i").eq(2).addClass("iconActive");
 					}
-				})
-				
+
+					if($(".filterPar").index(this) == 3 || $(".filterPar").index(this) == 7) {
+						$(".posiContentHeader .filterPar").eq(3).attr("distanceOrder", 1);
+						$(".showContentHeader .filterPar").eq(3).attr("distanceOrder", 1);
+					}
+					vueData.showPage = false;
+					pageData.page = 1;                
+					getProduct(true);         
+				});
+
 				function handleScroll() {
 					//					log(scrollTop + "+" + spaceConnet + "+" + showContentHeader)
 					if(scrollTop >= spaceConnet - 0.72) {
