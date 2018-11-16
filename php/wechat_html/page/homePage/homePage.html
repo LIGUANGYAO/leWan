@@ -527,7 +527,7 @@
 		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
 			<div class="mui-scroll">
 				<div class="" id="J_el">
-					<div>  <!--TODO   v-if="showPage"-->
+					<!--<div v-if="showPage">-->
 					<!--页头搜索框-->
 					<form action="" method="post">
 						<div class="headerSearch">
@@ -657,7 +657,7 @@
 							</div>
 						</div>
 					</div>
-					</div>
+					<!--</div>-->
 				</div>
 			</div>
 		</div>
@@ -825,7 +825,6 @@
 				})
 				var spaceConnet = ($('.spaceConnet').offset().top) / 75;
 				var showContentHeader = ($('.contentHeaBox').offset().top) / 75;
-
 				var pageData = {
 					page: 1,
 					psize: 10
@@ -1165,7 +1164,7 @@
 					pageData.page = 1;                
 					getProduct(true);         
 				});
-
+				
 				function handleScroll() {
 					//					log(scrollTop + "+" + spaceConnet + "+" + showContentHeader)
 					if(scrollTop >= spaceConnet - 0.72) {

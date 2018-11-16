@@ -5,32 +5,63 @@
 		<meta charset="UTF-8">
 		<title>地图接入</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../../css/mui.min.css" rel="stylesheet" />
-		<link href="../../css/leWan.css" rel="stylesheet" />
-		<link href="../../plugins/swiper.min.css" rel="stylesheet" />
-		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+
 		<style type="text/css">
 
 		</style>
 	</head>
 
 	<body>
-		<div>
-
+		<div id="J_el">
+			<div v-for="(item,index) in list" :key="index" class="act_item">
+				<div class="act_info">
+					<div class="time">倒计时：{{time}}   == {{ timeDown(item.time) }}</div>
+				</div>
+			</div>
 		</div>
-		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-		<script src="../../plugins/flexible.js"></script>
-		<script src="../../plugins/jquery-2.1.4.js"></script>
-		<script src="../../plugins/vue.js"></script>
-		<script src="../../js/mui.min.js"></script>
-		<script src="../../plugins/swiper.min.js"></script>
-		<script src="../../plugins/serverApi.js"></script>
-		
+
+		<script src="plugins/vue.js"></script>
+
 		<script type="text/javascript">
-			$(function() {
-				
-				
-			})
+			new Vue({
+				el: '#J_el',
+				data: {
+					time: '',
+					list: [{
+						"time": "1542716420000"
+					}, {
+						"time": "1542711220000"
+					}]
+				},
+				methods: {
+					timeDown(date) {
+						const endTime = new Date(date)
+						const nowTime = new Date();
+						let leftTime = parseInt((endTime.getTime() - nowTime.getTime()) / 1000)
+						let d = parseInt(leftTime / (24 * 60 * 60))
+						let h = this.formate(parseInt(leftTime / (60 * 60) % 24))
+						let m = this.formate(parseInt(leftTime / 60 % 60))
+						let s = this.formate(parseInt(leftTime % 60))
+						this.time = d + "天" + h + "小时" + m + "分" + s + "秒"
+					},
+					formate(time) {
+						if(time >= 10) {
+							return time
+						} else {
+							return 0
+						}
+					},
+					jia(x,y){
+						return "<span>00</span> 天 <span>00</span> : <span>00</span> : <span>00</span>"
+					}
+
+				},
+				mounted: function() {
+					let time = setInterval(() => {
+						this.timeDown()
+					}, 1000)
+				},
+			});
 		</script>
 	</body>
 
