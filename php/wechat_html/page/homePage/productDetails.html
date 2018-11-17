@@ -50,7 +50,9 @@
 				line-height: 0.933rem;
 				padding: 0 0.32rem;
 			}
-			
+			.isNumNone{
+				background-color: #999999;
+			}
 			.realityPrice {
 				font-size: 0.613rem;
 			}
@@ -65,13 +67,13 @@
 			}
 			
 			.textIntroduce {
-				min-height: 3.146rem;
+				min-height: 3.5rem;
 				background-color: #FFFFFF;
 				padding: 0.266rem 0.32rem;
 				position: relative;
 			}
 			
-			.textShow {
+			.textShowOne {
 				overflow: hidden;
 				text-overflow: ellipsis;
 				display: -webkit-box;
@@ -86,7 +88,7 @@
 				line-height: 1.3;
 			}
 			
-			.textShow strong {
+			.textShowOne strong {
 				font-size: 0.506rem;
 				letter-spacing: 0;
 			}
@@ -159,12 +161,21 @@
 				margin-top: 0.16rem;
 			}
 			
+			.addressDetail {
+				display: inline-block;
+				vertical-align: middle;
+				width: 90%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
 			.addressRight {
 				display: inline-block;
 				width: 10%;
 				float: right;
-				position: relative;
-				top: 0.3rem;
+				text-align: center;
+				padding: 0.3rem 0;
 			}
 			/*商品详情*/
 			
@@ -200,7 +211,41 @@
 			}
 			
 			.contentBox {
-				padding: 0.6rem 0.32rem;
+				padding: 0.2rem 0.2rem;
+			}
+			
+			.contentBox img {
+				width: 100% !important;
+				height: auto;
+				vertical-align: bottom
+			}
+			
+			.contentBox span {
+				max-width: 100%;
+			}
+			
+			.purchaseNotes p {
+				font-size: 0.4rem;
+				color: #333333;
+				font-weight: bold;
+				margin: 0.266rem;
+			}
+			
+			.purchaseNotesText {
+				padding: 0 0.2rem;
+				font-size: 0.346rem;
+				color: #999999;
+			}
+			
+			.informationImg {
+				background-size: 100% 100%;
+				text-align: center;
+				width: 3.706rem;
+				height: 1.28rem;
+				line-height: 1.28rem;
+				font-size: 0.453rem;
+				color: #333333;
+				margin: 0.266rem auto;
 			}
 			/*底部栏*/
 			
@@ -209,11 +254,10 @@
 				height: 1.28rem;
 				z-index: 10;
 				position: fixed;
-				bottom: 0;
-				border-top: 1px solid #F2F2F2;
+				bottom: -1px;
 				font-size: 0.506rem;
 				font-weight: bold;
-				box-shadow: 0 -1px 10px 3px #e7e7e7;
+				box-shadow: 0 -1px 10px 1px rgba(0, 0, 0, 0.3);
 			}
 			
 			.downBtn>div {
@@ -223,23 +267,29 @@
 				float: left;
 			}
 			
-			.downBtn>div:first-child {
+			.downBtnOne {
 				width: 35%;
 				font-size: 0.4rem;
 				color: #333333;
 				background-color: #FFFFFF;
 			}
 			
-			.downBtn>div:nth-child(2) {
+			.downBtnTwo {
 				width: 24%;
 				color: #FFFFFF;
 				background-color: #333333;
 			}
 			
-			.downBtn>div:nth-child(3) {
+			.downBtnThree {
 				width: 41%;
 				color: #FFFFFF;
 				background-color: #F77917;
+			}
+			
+			.downBtnFour {
+				width: 65%;
+				color: #FFFFFF;
+				background-color: #999999;
 			}
 			/*推荐更多-轮播*/
 			
@@ -369,47 +419,51 @@
 
 	<body>
 		<div class="" id="J_el">
-			<div class="">
+			<div class="" v-if="showPage">
 				<div class="headerBox">
 					<div class="mui-slider">
 						<div class="mui-slider-group mui-slider-loop">
-							<div class="mui-slider-item">
-								<img src="../../img/homePage/banner1.png" />
+							<div class="mui-slider-item zuihou" v-for="(items,index) in proDetail.product_carousel.slice(proDetail.product_carousel.length-1)">
+								<img :src="items" />
 							</div>
-							<div class="mui-slider-item">
+							<div class="mui-slider-item" :class="{'mui-active': index == 0}" v-for="(items,index) in proDetail.product_carousel">
+								<img :src="items" />
+							</div>
+							<div class="mui-slider-item kaishi" v-for="(items,index) in proDetail.product_carousel.slice(0,1)">
+								<img :src="items" />
+							</div>
+							<!--<div class="mui-slider-item">
 								<img src="../../img/homePage/banner2.png" />
-							</div>
-							<div class="mui-slider-item">
-								<img src="../../img/homePage/banner3.png" />
-							</div>
+							</div>-->
 						</div>
 						<!--轮播图图标小点-->
 						<div class="mui-slider-indicator">
-							<div class="mui-indicator mui-active"></div>
-							<div class="mui-indicator"></div>
-							<div class="mui-indicator"></div>
+							<div class="mui-indicator" :class="{'mui-active': index == 0}" v-for="(items,index) in proDetail.product_carousel"></div>
+							<!--<div class="mui-indicator"></div>-->
 						</div>
 					</div>
-					<div class="priceBox">
-						<span class="realityPrice">￥19.90</span>
-						<span class="originalCost">￥179.00</span>
-						<span class="countDown">距离结束：03天08:11:21</span>
+					<div class="priceBox" :class="{'isNumNone':proDetail.product_numlimit==1&&proPrice.price_commission==0}">
+						<span class="realityPrice">￥{{ proPrice.price_sale }}</span>
+						<span class="originalCost">￥{{ proPrice.price_market }}</span>
+						<span class="countDown" v-if="proPrice.product_timelimit == 1">距离结束：03天08:11:21</span>
+						<!--TODO 倒计时还未实现-->
 					</div>
 					<div class="textIntroduce">
-						<div class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong>能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？的是大会客服都是回家看到</div>
+						<div class="textShowOne"><strong>【{{ proDetail.product_name }}】</strong>商品详情????????</div>
 						<div class="textLabel">
-							<span>限量抢购</span>
-							<span>家庭聚会</span>
-							<span class="commission">佣金：<span>￥13.5</span></span>
+							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
+							<!--<span>家庭聚会</span>-->
+							<span class="commission">佣金：<span>￥{{ proPrice.price_commission }}</span></span>
+							<!--TODO 新人和普通用户不显示-->
 						</div>
 					</div>
 				</div>
 				<div class="BusinessAddress">
-					<div class="addressLeft">
+					<div class="addressLeft" @tap="getSignature(proDetail.merchant_lat,proDetail.merchant_lng,proDetail.merchant_address)">
 						<div>商家地址</div>
 						<div>
 							<img src="../../img/homePage/address.jpg" />
-							<span>四川省成都市青羊区宽窄巷子66号</span>
+							<span class="addressDetail" :lat="proDetail.merchant_lat" :lng="proDetail.merchant_lng">{{ proDetail.merchant_address }}</span>
 						</div>
 					</div>
 					<div class="addressRight"><i class="mui-icon mui-icon-forward"></i></div>
@@ -420,90 +474,84 @@
 						<span class="detailsSec">特色介绍</span>
 					</div>
 					<div class="contentBox">
-						富文本</br>富文本</br>富文本</br>富文本</br>富文本</br>富文本</br>
-						富文本</br>富文本</br>富文本</br>富文本</br>富文本</br>富文本</br>
-						富文本</br>富文本</br>富文本</br>富文本</br>富文本</br>富文本</br>
-						富文本</br>富文本</br>富文本</br>富文本</br>富文本</br>富文本</br>
+						<!--购买须知-->
+						<div class="purchaseNotes">
+							<div class="">
+								<p>【产品详情】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_info"></div>
+							</div>
+							<div class="">
+								<p>【使用方法】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_useinfo"></div>
+							</div>
+							<div class="">
+								<p>【温馨提示】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_notice"></div>
+							</div>
+						</div>
+						<!--特色介绍-->
+						<div class="information">
+							<div class="informationImg" style="background-image: url(../../img/homePage/productDetail1.png);">特色介绍</div>
+							<div class="informationText" v-html="proDetail.product_description"></div>
+						</div>
 					</div>
 				</div>
-				<div class="footer">
+				<div class="footer" v-if="proHotpush.length">
 					<div class="footerHeader">更多推荐</div>
 					<div class="swiper-container swiper-container-horizontal swiper-container-ios">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide">
 								<div class="goodsBox">
-									<div class="mui-card">
-										<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
-											<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
+									<div class="mui-card" v-for="items in proHotpush.slice(0, 4)">
+										<div class="mui-card-header mui-card-media" :style="{backgroundImage: 'url(' + items.product_compic + ')'}">
+											<div class="address"><i class="iconfont icon-dingwei"></i>{{ items.region }}</div>
 										</div>
 										<div class="mui-card-content">
 											<div class="mui-card-content-inner">
-												<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong> 能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
+												<p class="textShow"><strong>【{{ items.merchant_name }}】</strong>{{ items.product_name }}
 												</p>
 											</div>
 										</div>
 										<div class="mui-cardFooter">
-											<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
-											<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
-										</div>
-									</div>
-									<div class="mui-card">
-										<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
-											<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
-										</div>
-										<div class="mui-card-content">
-											<div class="mui-card-content-inner">
-												<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong> 能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
-												</p>
-											</div>
-										</div>
-										<div class="mui-cardFooter">
-											<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
-											<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
-										</div>
-									</div>
-									<div class="mui-card">
-										<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
-											<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
-										</div>
-										<div class="mui-card-content">
-											<div class="mui-card-content-inner">
-												<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong> 能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
-												</p>
-											</div>
-										</div>
-										<div class="mui-cardFooter">
-											<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
-											<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
-										</div>
-									</div>
-									<div class="mui-card">
-										<div class="mui-card-header mui-card-media" style="background-image:url(../../img/homePage/homePage1.png)">
-											<div class="address"><i class="iconfont icon-dingwei"></i>青羊区</div>
-										</div>
-										<div class="mui-card-content">
-											<div class="mui-card-content-inner">
-												<p class="textShow"><strong>【小龙坎麻辣浓汤火锅】</strong> 能和心是件幸福的很快就好事情好几个科技化工可是打呼噜怎么办？
-												</p>
-											</div>
-										</div>
-										<div class="mui-cardFooter">
-											<p><span class="cardTrue">￥168</span><span class="cardFalse">￥684</span></p>
-											<p><span class="cardText">佣金：</span><span class="cardMoney">￥64</span></p>
+											<p><span class="cardTrue">￥{{items.temp_price}}</span><span class="cardFalse">￥684??????</span></p>
+											<!--TODO 商品原价-->
+											<p><span class="cardText">佣金：</span><span class="cardMoney">￥{{items.temp_commission}}</span></p>
+											<!--TODO 新人未注册不显示佣金-->
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="swiper-slide">
-								我是第二面
-							</div>
-							<div class="swiper-slide">
-								我是第三面
+								<div class="mui-card" v-if="proHotpush.length>4" v-for="items in proHotpush.slice(4, 8)">
+									<div class="mui-card-header mui-card-media" :style="{backgroundImage: 'url(' + items.product_compic + ')'}">
+										<div class="address"><i class="iconfont icon-dingwei"></i>{{ items.region }}</div>
+									</div>
+									<div class="mui-card-content">
+										<div class="mui-card-content-inner">
+											<p class="textShow"><strong>【{{ items.merchant_name }}】</strong>{{ items.product_name }}
+											</p>
+										</div>
+									</div>
+									<div class="mui-cardFooter">
+										<p><span class="cardTrue">￥{{items.temp_price}}</span><span class="cardFalse">￥684??????</span></p>
+										<!--TODO 商品原价-->
+										<p><span class="cardText">佣金：</span><span class="cardMoney">￥{{items.temp_commission}}</span></p>
+										<!--TODO 新人未注册不显示佣金-->
+									</div>
+								</div>
+								<!--空状态时-->
+								<div class="lw-empty" style="display: block;" v-else>
+									<div class="lw-empty-box">
+										<div class="lw-empty-flex">
+											<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+											<div class="lw-empty-test">暂无更多产品！</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<!-- Add Pagination -->
 						<div class="swiper-pagination swiper-pagination-bullets">
-							<span class="swiper-pagination-bullet"></span>
 							<span class="swiper-pagination-bullet"></span>
 							<span class="swiper-pagination-bullet"></span>
 						</div>
@@ -511,96 +559,167 @@
 					</div>
 				</div>
 				<div class="downBtn">
-					<div id="homePage">首页</div>
-					<div>分享</div>
-					<div id="nowShop">立刻购买</div>
+					<div class="downBtnOne" @tap="jumpToHomePage">首页</div>
+					<!--TODO-->
+					<div class="downBtnFour" @tap="BuyNow">已售罄</div>
+					<div v-else="proDetail.product_numlimit==1&&proPrice.price_commission==0" class="downBtnTwo" @tap="shareProduct()">分享</div>
+					<div v-show="proDetail.product_numlimit==1&&proPrice.price_commission==0" class="downBtnThree" @tap="BuyNow">立刻购买</div>
 				</div>
-				<script src="../../plugins/flexible.js"></script>
-				<script src="../../plugins/jquery-2.1.4.js"></script>
-				<script src="../../plugins/vue.js"></script>
-				<script src="../../js/mui.min.js"></script>
-				<script src="../../plugins/swiper-4.3.3.min.js"></script>
-				<script src="../../plugins/serverApi.js"></script>
-				<script type="text/javascript">
-					$(function() {
-						var token = localStorage.getItem("token");
-						var isLocation = getUrlParam("isLocation"); //是否定位
-						var productId = getUrlParam("productId"); //商品id
-						var latitude = getUrlParam("latitude"); //纬度
-						var longitude = getUrlParam("longitude"); //经度
-						/*======================================================*/
-						var vueData = {
-							proData: {},
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = localStorage.getItem("token");
+				var isLocation = getUrlParam("isLocation"); //是否定位
+				var productId = getUrlParam("productId"); //商品id
+				var latitude = getUrlParam("latitude"); //纬度
+				var longitude = getUrlParam("longitude"); //经度
 
-						};
-						new Vue({
-							el: '#J_el',
-							data: vueData,
-							methods: {
-								//						handleScroll: handleScroll,
-							},
-							mounted: function() {
+				/*======================================================*/
+				var vueData = {
+					showPage: false,
+					proDetail: {}, //商品详情
+					proPrice: {}, //商品规格
+					proHotpush: [], //热推商品
+				};
+				new Vue({
+					el: '#J_el',
+					data: vueData,
+					methods: {
+						getSignature: getSignature, //地图查看
+						jumpToHomePage: jumpToHomePage, //跳转首页
+						shareProduct: shareProduct, //分享商品
+						BuyNow: BuyNow, //立刻购买
+					},
+					mounted: function() {
 
-							},
-							updated: function() {
-								/*初始化轮播*/
-								mui('.mui-slider').slider({
-									//							interval: 2000 //自动播放周期
-								});
-							}
-						});
-
-						getProductDetails();
-
-						function getProductDetails() {
-							var data = {
-								token: token,
-								type: 1, //TODO
-								pr_id: productId,
-								lat: latitude,
-								lng: longitude
-							};
-							$.ajax({
-								url: API_SERVER + 'Product/ProductDetails',
-								async: false,
-								data: data,
-								success: function(data) {
-									log(data)
-									if(data.code == 200) {
-										vueData.proData = data.data
-
-									}
-								}
-							});
-						}
-
-						//地图跳转
-						mui('body').on('tap', '.BusinessAddress', function() {
-							mui.openWindow({
-								url: "businessAddressMap.html"
-							})
-						})
-						//首页
-						mui('body').on('tap', '#homePage', function() {
-							mui.openWindow({
-								url: "homePage.html"
-							})
-						})
-						//立刻购买
-						mui('body').on('tap', '#nowShop', function() {
-							mui.openWindow({
-								url: "OrderPayment.html"
-							})
-						})
-
+					},
+					updated: function() {
 						//商品推荐更多
 						var swiper = new Swiper('.swiper-container', {
 							pagination: {
 								el: '.swiper-pagination',
 							},
 						});
+						sharePYQ();
+					}
+				});
+
+				getProductDetails();
+
+				function getProductDetails() {
+					var data = {
+						token: token,
+						type: 1, //TODO
+						pr_id: productId,
+						lat: latitude,
+						lng: longitude
+					};
+					$.ajax({
+						url: API_SERVER + 'Product/ProductDetails',
+						async: false,
+						data: data,
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.proDetail = data.data.details;
+								vueData.proPrice = data.data.price[0];
+								vueData.proHotpush = data.data.hotpush;
+								vueData.showPage = true;
+							}
+						}
+					});
+				}
+
+				//地图跳转
+				mui('body').on('tap', '.BusinessAddress', function() {
+
+				})
+				//首页
+				function jumpToHomePage() {
+					mui.openWindow({
+						url: "homePage.html"
 					})
-				</script>
+				}
+				//立刻购买
+				function BuyNow() {
+					mui.openWindow({
+						url: "OrderPayment.html"
+					})
+				}
+				//分享商品
+				function shareProduct(title, url, imgUrl) {
+
+				}
+
+				function sharePYQ() {
+					getWechatSignature(location.href.split('#')[0]);
+					wx.ready(function() {
+						wx.onMenuShareTimeline({
+							title: vueData.proDetail.product_name,
+							link: location.href,
+							imgUrl: "http://cs.lewan6.ren/uploads/20181023/d299376281014144e775bc6a21918586.jpg",
+							trigger: function(res) {
+								// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+							},
+							success: function(res) {
+							},
+							cancel: function(res) {
+							},
+							fail: function(res) {
+								mui.toast(res);
+							}
+						});
+						wx.onMenuShareAppMessage({
+							title: vueData.proDetail.product_name,
+							desc: '在长大的过程中，我才慢慢发现，我身边的所有事，事情是可以改变的',
+							link: location.href,
+							imgUrl: "http://cs.lewan6.ren/uploads/20181023/d299376281014144e775bc6a21918586.jpg",
+							trigger: function(res) {
+								// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+							},
+							success: function(res) {
+							},
+							cancel: function(res) {
+							},
+							fail: function(res) {
+								mui.toast(res);
+							}
+						});
+					});
+				}
+
+				//商家地址
+				function getSignature(lat, lng, address) {
+					log(lat + "==" + lng + "===" + address);
+					$(this).attr()
+					getWechatSignature(location.href.split('#')[0]);
+					wx.ready(function() {
+						wx.openLocation({
+							latitude: parseFloat(lat),
+							longitude: parseFloat(lng),
+							name: '商家地址',
+							address: address,
+							scale: 15,
+							infoUrl: '',
+							success: function(res) {
+								alert('已分享');
+							},
+							fail: function(res) {
+								alert(JSON.stringify(res));
+							}
+						})
+					});
+				}
+			})
+		</script>
 	</body>
 
 </html>

@@ -1,0 +1,48 @@
+<div class="page">
+
+    <div class="l" style="width:90%; ">
+
+    </div>
+
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+                <tr>
+                    <th width="20" ><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th class="nowrap">用户昵称</th>
+                    <th class="nowrap">支出</th>
+                    <th class="nowrap">收入</th>
+                    <th class="nowrap">余额</th>
+                    <th class="nowrap">时间</th>
+                    <th class="nowrap">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="list" id="val">
+                    <tr>
+                        <td class="nowrap"><input type="checkbox" name="id[]" value="{$val.merchant_id}" lay-skin="primary" lay-filter="idchoose"></td>
+                        <td class="nowrap">{$user.nickname}</td>
+                        <td class="nowrap">{$val.account_cash_expenditure}</td>
+                        <td class="nowrap">{$val.account_cash_income}</td>
+                        <td class="nowrap">{$val.account_cash_balance}</td>
+                        <td class="nowrap">{$val.account_tag}</td>
+                        <td class="nowrap">
+                            <a href="{:url('useraccount/day', array('id'=>$val['user_id'], 'tag'=>$val['account_tag']))}" class="editIcon" title="按天记录">按天记录</a>
+                        </td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+      
+    </div>
+
+</div>

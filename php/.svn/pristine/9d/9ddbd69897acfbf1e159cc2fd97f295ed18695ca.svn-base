@@ -1,0 +1,125 @@
+<div class="page">
+
+    <div class="l" style="width:90%; ">
+    <form class="layui-form search" action="{:url('system/finance/index')}">
+
+        <div class="layui-inline">
+            <label class="layui-form-indexlabel">日期范围</label>
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="starttime" value="{$starttime}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+	        </div> 
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="endtime" value="{$endtime}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+	        </div> 
+        </div>
+
+        <button class="layui-btn layui-btn-small">搜 &nbsp; 索</button>
+        <button class="layui-btn layui-btn-small">导出excel</button>
+
+    </form>
+    </div>
+
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+                <tr>
+                    <th width="20" ><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th class="nowrap">日期</th>
+                    <th class="nowrap">订单总金额</th>
+                    <th class="nowrap">实收总金额</th>
+                    <th class="nowrap">总优惠券面额</th>
+                    <th class="nowrap">订单总成本价</th>
+                    <th class="nowrap">总预约加价金额</th>
+                    <th class="nowrap">已售商品数量</th>
+                    <th class="nowrap">佣金总额</th>
+                    <th class="nowrap">总已结算佣金</th>
+                    <th class="nowrap">总提现成功金额</th>
+                    <th class="nowrap">总手续费</th>
+                    <th class="nowrap">商家结算总金额</th>
+                    <th class="nowrap">交易用户量</th>
+                    <th class="nowrap">活跃用户量</th>
+                    <th class="nowrap">新增超级会员数量</th>
+                    <th class="nowrap">新增分销达人数量</th>
+                    <th class="nowrap">新增运营达人人数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="data.list" id="val">
+                    <tr>
+                        <td class="nowrap"><input type="checkbox" name="id[]" value="{$val.finance_id}" lay-skin="primary" lay-filter="idchoose"></td>
+                        <td class="nowrap">{$val.total_tag}</td>
+                        <td class="nowrap">{$val.total_order_business}</td>
+                        <td class="nowrap">{$val.total_order_payfee}</td>
+                        <td class="nowrap">{$val.total_order_coupon}</td>
+                        <td class="nowrap">{$val.total_order_settle}</td>
+                        <td class="nowrap">{$val.total_order_addfee}</td>
+                        <td class="nowrap">{$val.total_order_productnum}</td>
+                        <td class="nowrap">{$val.total_order_commission}</td>
+                        <td class="nowrap">{$val.total_jiesuan_commission}</td>
+                        <td class="nowrap">{$val.total_withdraw}</td>
+                        <td class="nowrap">{$val.total_taxfee}</td>
+                        <td class="nowrap">{$val.total_merchant_settle}</td>
+                        <td class="nowrap">{$val.total_business_user}</td>
+                        <td class="nowrap">{$val.total_active_user}</td>
+                        <td class="nowrap">{$val.total_level2_user}</td>
+                        <td class="nowrap">{$val.total_level3_user}</td>
+                        <td class="nowrap">{$val.total_level4_user}</td>
+                    </tr>
+                </volist>
+
+
+                <tr>
+                    <td class="nowrap"></td>
+                    <td class="nowrap">合计</td>
+                    <td class="nowrap">{$data.heji.total_order_business}</td>
+                    <td class="nowrap">{$data.heji.total_order_payfee}</td>
+                    <td class="nowrap">{$data.heji.total_order_coupon}</td>
+                    <td class="nowrap">{$data.heji.total_order_settle}</td>
+                    <td class="nowrap">{$data.heji.total_order_addfee}</td>
+                    <td class="nowrap">{$data.heji.total_order_productnum}</td>
+                    <td class="nowrap">{$data.heji.total_order_commission}</td>
+                    <td class="nowrap">{$data.heji.total_jiesuan_commission}</td>
+                    <td class="nowrap">{$data.heji.total_withdraw}</td>
+                    <td class="nowrap">{$data.heji.total_taxfee}</td>
+                    <td class="nowrap">{$data.heji.total_merchant_settle}</td>
+                    <td class="nowrap">{$data.heji.total_business_user}</td>
+                    <td class="nowrap">{$data.heji.total_active_user}</td>
+                    <td class="nowrap">{$data.heji.total_level2_user}</td>
+                    <td class="nowrap">{$data.heji.total_level3_user}</td>
+                    <td class="nowrap">{$data.heji.total_level4_user}</td>
+                </tr>
+                <tr>
+                    <td class="nowrap"></td>
+                    <td class="nowrap">总计</td>
+                    <td class="nowrap">{$data.zongji.total_order_business}</td>
+                    <td class="nowrap">{$data.zongji.total_order_payfee}</td>
+                    <td class="nowrap">{$data.zongji.total_order_coupon}</td>
+                    <td class="nowrap">{$data.zongji.total_order_settle}</td>
+                    <td class="nowrap">{$data.zongji.total_order_addfee}</td>
+                    <td class="nowrap">{$data.zongji.total_order_productnum}</td>
+                    <td class="nowrap">{$data.zongji.total_order_commission}</td>
+                    <td class="nowrap">{$data.zongji.total_jiesuan_commission}</td>
+                    <td class="nowrap">{$data.zongji.total_withdraw}</td>
+                    <td class="nowrap">{$data.zongji.total_taxfee}</td>
+                    <td class="nowrap">{$data.zongji.total_merchant_settle}</td>
+                    <td class="nowrap">{$data.zongji.total_business_user}</td>
+                    <td class="nowrap">{$data.zongji.total_active_user}</td>
+                    <td class="nowrap">{$data.zongji.total_level2_user}</td>
+                    <td class="nowrap">{$data.zongji.total_level3_user}</td>
+                    <td class="nowrap">{$data.zongji.total_level4_user}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+      
+    </div>
+
+</div>
