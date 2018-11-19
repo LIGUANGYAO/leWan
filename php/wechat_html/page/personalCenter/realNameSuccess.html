@@ -109,7 +109,50 @@
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
-
+				var token = localStorage.getItem("token");
+				
+				//获取头像
+				getUserMessage()
+				function getUserMessage(){
+					$.ajax({
+						url: API_SERVER + 'User/UserPersonal',
+						async: false,
+						data:{token: token},
+						success: function(data) {
+							if(data.code == 200) {
+								log(data)
+								localStorage.setItem("token", data.data.token); //token
+								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
+								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+								$(".header").css({"background-image" : "url("+ data.data.avatar +")"});//用户头像
+							}
+						}
+					});
+				}
+				//获取实名认证信息
+				getBankMessage();
+				function getBankMessage(){
+					$.ajax({
+						url: API_SERVER + "",	//TODO 接口有错
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$(".headerName").text(data.data.truename);
+								//TODO 身份证号码没有返回
+								$(".headerNumber").text(data.data.truename);
+								
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					}) 
+				}
+				mui('body').on('tap', '.realBtn div', function() { //去添加银行卡
+					mui.openWindow({
+						url: "addBankCard.html"
+					})
+				})
 			})
 		</script>
 	</body>

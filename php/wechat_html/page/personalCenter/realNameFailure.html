@@ -31,6 +31,13 @@
 				color: #D6D6D6;
 				font-weight: bold;
 			}
+			
+			.failQus{
+				font-size: 0.373rem;
+				color: #D1A859;
+				padding: 1rem 0.7rem 0.2rem 0.7rem;
+			}
+			
 			.realBtn{
 				text-align: center;
 				margin-top: 0.8rem;
@@ -75,8 +82,11 @@
 	<body>
 		<div class="">
 			<div class="header">
-				<img src="../../img/personalCenter/realName4.png"/>
+				<img class="IDCardImg" src="../../img/personalCenter/realName4.png"/>
 				<div>审核失败</div>
+			</div>
+			<div class="failQus">
+				驳回原因，图片模糊，请重新认证！
 			</div>
 			<div class="realBtn">
 				<div><i class="iconfont icon-unie62a"></i>重新认证</div>
@@ -101,7 +111,32 @@
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
-
+				var token = localStorage.getItem("token");
+				
+				//获取实名认证信息
+				getBankMessage();
+				function getBankMessage(){
+					$.ajax({
+						url: API_SERVER + "",	//TODO 接口有错
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$(".IDCardImg").attr("src",data.data.positive);
+								$(".failQus").text(data.data.remark);
+								
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					}) 
+				}
+				mui('body').on('tap', '.realBtn div', function() { //重新认证
+					mui.openWindow({
+						url: "realName.html"
+					})
+				})
+				
 			})
 		</script>
 	</body>

@@ -233,7 +233,23 @@ function getWechatSignature(reqUrl){
 	});
 }
 
-
+//全局获取用户个人基本信息
+//getUserMessage()
+function getUserMessage(){
+	$.ajax({
+		url: API_SERVER + 'User/UserPersonal',
+		async: false,
+		data:{token: token},
+		success: function(data) {
+			if(data.code == 200) {
+				log(data)
+				localStorage.setItem("token", data.data.token); //token
+				localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
+				localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+			}
+		}
+	});
+}
 
 //首页底部页面跳转
 //首页

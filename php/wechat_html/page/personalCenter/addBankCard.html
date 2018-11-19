@@ -200,7 +200,31 @@
 						$("#cardType").attr("dataVal", items[0].value);
 					});
 				})
-
+				
+				//是否实名认证
+				var isTrueName = false;
+				getBankMessage();
+				function getBankMessage(){
+					$.ajax({
+						url: API_SERVER + "",	//TODO 接口有错
+						data: {token: token},
+						async: false,
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								if(data.data.status == 2){
+									isTrueName = true;
+								}else{
+									mui.toast("请到个人中心先进行实名认证！")
+								}
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					}) 
+				}
+				
+				
 				mui("body").on("tap", ".sureBtn", function() {
 					var reserve_name = $("#getName").val(); //持卡人
 					var bank_number = $("#cardNumber").val(); //卡号

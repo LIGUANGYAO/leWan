@@ -428,7 +428,7 @@
 				<div class="headerCard">
 					<div class="headerCardTwo">
 						<span>邀请码：<span id="target">88888888</span></span>
-						<span class="btn">复制</span>
+						<span class="btn" onclick="">复制</span>
 					</div>
 					<div class="headerCardOne">
 						<div class="" id="myClient">
@@ -552,6 +552,28 @@
 			$(function() {
 				var token = localStorage.getItem("token");
 				
+				
+				//第一步获取用户信息=》参数token
+				getUserMessage();
+				function getUserMessage(){
+					$.ajax({
+						url: API_SERVER + "User/UserPersonal",
+						data: {token: token},
+						async: false,
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								localStorage.setItem("level",data.data.level);
+								$(".headerImage").css({"background-image" : "url("+ data.data.avatar +")"});//用户头像
+								$(".userName").text(data.data.nickname);//用户昵称
+								$("#LevelName").text(data.data.username);	//等级名称
+								$("#target").text(data.data.recode);	//用户推荐码
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					}) 
+				}
 				//显隐个人中心页面
 				var level = localStorage.getItem("level"); 	//用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
 				if (level == 2 || level == 3 || level == 4 || level == 5){
@@ -562,69 +584,51 @@
 					$("#inputCode").hide();
 					$(".headerTwo").show();
 					$(".content").show();
+					getMessage();
 				}
-
-				//第一步获取用户信息=》参数token
-				$.ajax({
-					url: API_SERVER + "User/UserPersonal",
-					data: {token: token},
-					success: function(data) {
-						log(data)
-						if(data.code == 200) {
-							localStorage.setItem("level",data.data.level);
-							$(".headerImage").css({"background-image" : "url("+ data.data.avatar +")"});//用户头像
-							$(".userName").text(data.data.nickname);//用户昵称
-							$("#LevelName").text(data.data.username);	//等级名称
-							$("#target").text(data.data.recode);	//用户推荐码
-						} else {
-							mui.toast(data.message)
+				
+				
+				function getMessage(){
+					//第二步获取注册会员我的好友=》参数token
+					$.ajax({
+						url: API_SERVER + "User/UserFriends",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$(".myKehu").text(data.data.customer);		//我的客户
+								$(".myKehuBad").text("+"+data.data.newcustomer);	//新增客户
+								$(".zhiHaoyou").text(data.data.directly);		//直属好友
+								$(".zhiHaoyouBad").text("+"+data.data.newdirectly);	//新增直属好友
+								$(".allHaoyou").text(data.data.whole);		//全部客户
+								$(".allHaoyouBad").text("+"+data.data.newwhole);	//新增全部客户
+							} else {
+								mui.toast(data.message)
+							}
 						}
-					}
-				}) 
-				//第二步获取注册会员我的好友=》参数token
-				$.ajax({
-					url: API_SERVER + "User/UserFriends",
-					data: {token: token},
-					success: function(data) {
-						log(data)
-						if(data.code == 200) {
-							$(".myKehu").text(data.data.customer);		//我的客户
-							$(".myKehuBad").text("+"+data.data.newcustomer);	//新增客户
-							$(".zhiHaoyou").text(data.data.directly);		//直属好友
-							$(".zhiHaoyouBad").text("+"+data.data.newdirectly);	//新增直属好友
-							$(".allHaoyou").text(data.data.whole);		//全部客户
-							$(".allHaoyouBad").text("+"+data.data.newwhole);	//新增全部客户
-						} else {
-							mui.toast(data.message)
+					}) 
+					//第三步获取佣金详情=》参数token
+					$.ajax({
+						url: API_SERVER + "User/UserWallet",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$("#putforward").text(data.data.reward.putforward);		//可提现佣金
+								$("#pending").text(data.data.reward.pending);	//待结算
+								$("#grandtotal").text(data.data.reward.grandtotal);		//累计结算
+								$("#sumup").text(data.data.reward.sumup);	//累计提现
+								
+								$("#today").text(data.data.income.today);		//今日
+								$("#yesterday").text(data.data.income.yesterday);	//昨日
+								$("#thismonth").text(data.data.income.thismonth);		//本月
+								$("#lastmonth").text(data.data.income.lastmonth);	//上月
+							} else {
+								mui.toast(data.message)
+							}
 						}
-					}
-				}) 
-				//第三步获取佣金详情=》参数token
-				$.ajax({
-					url: API_SERVER + "User/UserWallet",
-					data: {token: token},
-					success: function(data) {
-						log(data)
-						if(data.code == 200) {
-							$("#putforward").text(data.data.reward.putforward);		//可提现佣金
-							$("#pending").text(data.data.reward.pending);	//待结算
-							$("#grandtotal").text(data.data.reward.grandtotal);		//累计结算
-							$("#sumup").text(data.data.reward.sumup);	//累计提现
-							
-							$("#today").text(data.data.income.today);		//今日
-							$("#yesterday").text(data.data.income.yesterday);	//昨日
-							$("#thismonth").text(data.data.income.thismonth);		//本月
-							$("#lastmonth").text(data.data.income.lastmonth);	//上月
-						} else {
-							mui.toast(data.message)
-						}
-					}
-				}) 
-				
-				
-				
-				
-				
+					}) 
+				}
 				
 				
 				
@@ -699,10 +703,11 @@
 					})
 				})
 				mui('body').on('tap', '#coupon', function() { //优惠券
-					mui.openWindow({
-						url: "coupon.html",
-						id: "coupon.html"
-					})
+					mui.toast("正在开发中！")
+//					mui.openWindow({
+//						url: "coupon.html",
+//						id: "coupon.html"
+//					})
 				})
 				mui('body').on('tap', '#myIndent', function() { //我的订单
 					mui.openWindow({
@@ -717,9 +722,33 @@
 					})
 				})
 				mui('body').on('tap', '#realName', function() { //实名认证
-					mui.openWindow({
-						url: "realName.html",
-						id: "realName.html"
+					//TODO 接口有问题 参数传什么
+					$.ajax({
+						url: API_SERVER + "",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								//TODO 未实名认证是不是加一个状态
+								if(data.data.status == 0){	//审核中
+									mui.toast("审核中，请耐心等待！")
+								}else if(data.data.status == 1){	//审核失败
+									mui.openWindow({
+										url: "realNameFailure.html"
+									})
+								}else if(data.data.status == 2){	//审核成功
+									mui.openWindow({
+										url: "realNameSuccess.html"
+									})
+								}else if(data.data.status == 33333333){ //？？？？？？？？？？？？？？？？？？？？？？？
+									mui.openWindow({
+										url: "realName.html"
+									})
+								}
+							} else {
+								mui.toast(data.message)
+							}
+						}
 					})
 				})
 				mui('body').on('tap', '#contactUs', function() { //联系我们
