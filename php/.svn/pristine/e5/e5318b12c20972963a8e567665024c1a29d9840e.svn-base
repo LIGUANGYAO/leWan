@@ -1,0 +1,39 @@
+<div class="page">
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+            <tr>
+                <th width="20" ><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                <th class="nowrap">会员</th>
+                <th class="nowrap">待结算金额</th>
+                <th class="nowrap">日期</th>
+                <th class="nowrap">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="list" id="val">
+                <tr>
+                    <td class="nowrap"><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>
+                    <td class="nowrap">{$val.nickname}</td>
+                    <td class="nowrap">{$val.record_amount}</td>
+                    <td class="nowrap">{$val.tag}</td>
+                    <td class="nowrap">
+                        <a href="{:url('Settleaccounts/settle', array('user_id'=>$val['user_id']))}" class="editIcon" title="立即结算">立即结算</a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+      
+    </div>
+
+</div>

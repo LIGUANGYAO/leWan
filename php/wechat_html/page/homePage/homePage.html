@@ -232,7 +232,7 @@
 				font-weight: 800;
 				font-size: 0.426rem;
 				display: inline-block;
-				padding-bottom: 0.05rem;
+				padding: 0.1rem 0.2rem 0.05rem 0.2rem;
 			}
 			
 			.filterActive {
@@ -486,10 +486,19 @@
 				height: 3.866rem;
 				margin-top: 0.373rem;
 			}
+			
+			
+			/*全部隐藏*/
+			.displayNone{
+				opacity: 0;
+			}
 		</style>
 	</head>
 
 	<body>
+		<div :class="{'displayNone':!showPage}">
+			
+		
 		<!--底部导航-->
 		<nav class="mui-bar mui-bar-tab">
 			<a class="mui-tab-item mui-active">
@@ -533,7 +542,7 @@
 						<div class="headerSearch">
 							<div class="addressTap">
 								<i class="iconfont icon-dingwei"></i>
-								<span class="address" isLocation="1">成都</span>
+								<span class="address" isLocation="1">全国</span>
 							</div>
 							<div class="search">
 								<input type="search" id="title" placeholder="请输入商品名称/景区/酒店">
@@ -584,7 +593,6 @@
 									<div>{{items.cate_name}}</div>
 								</div>
 							</div>
-
 						</div>
 					</div>
 
@@ -661,7 +669,7 @@
 				</div>
 			</div>
 		</div>
-
+</div>
 		<script src="../../plugins/flexible.js"></script>
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.10&key=b286bfefabeab1fbee7737811fb1ab0c&plugin=AMap.Geocoder"></script>
@@ -993,21 +1001,6 @@
 					var salesOrder = $(".salesOrder").attr("salesOrder"); //销量  0取消 1降序 2升序
 					var priceOrder = $(".priceOrder").attr("priceOrder"); //价格  0取消 1降序 2升序
 					var distanceOrder = $(".distanceOrder").attr("distanceOrder"); //距离排序   0取消距离 1离我最近
-					var data = {
-						token: token,
-						type: isLocation,
-						bursting: null,
-						paging: pageData.page,
-						paged: pageData.psize,
-						title: title,
-						cateid: null,
-						sales: salesOrder,
-						price: priceOrder,
-						distance: distanceOrder,
-						lat: latitude,
-						lng: longitude
-					}
-					//					alert(JSON.stringify(data))
 					$.ajax({
 						url: API_SERVER + 'Product/ProductList',
 						async: false,
@@ -1028,11 +1021,10 @@
 							sales: salesOrder, //| int    |否|销售量 0取消 1降序 2升序 |
 							price: priceOrder, //| int    |否|价格   0取消 1降序 2升序|
 							distance: distanceOrder, //| int    |否|距离 0取消距离 1离我最近|
-							lat: latitude, //   | string |是|用户纬度 选择了距离必传|
-							lng: longitude //   | string |是|用户经度 选择了距离必传|
+							lat: latitude?latitude:null, //   | string |是|用户纬度 选择了距离必传|
+							lng: longitude?longitude:null //   | string |是|用户经度 选择了距离必传|
 						},
 						success: function(data) {
-							//							alert(JSON.stringify(data))
 							log(data)
 							if(data.code == 200) {
 								var lists = data.data;

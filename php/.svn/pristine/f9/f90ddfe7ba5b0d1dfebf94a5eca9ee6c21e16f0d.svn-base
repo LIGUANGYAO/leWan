@@ -1,0 +1,45 @@
+<div class="page">
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+            <tr>
+                <th width="20" ><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                <th class="nowrap">采购人员</th>
+                <th class="nowrap">商品名称</th>
+                <th class="nowrap">营业额</th>
+                <th class="nowrap">产品销量</th>
+                <th class="nowrap">顺差</th>
+                <th class="nowrap">去佣金毛利</th>
+                <th class="nowrap">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="list" id="val">
+                <tr>
+                    <td class="nowrap"><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>
+                    <td class="nowrap">{$val.nickname}</td>
+                    <td style="min-width: 300px; max-width: 300px;">{$val.product_name}</td>
+                    <td class="nowrap">{$val.pf_amount}</td>
+                    <td class="nowrap">{$val.pf_xiaoliang}</td>
+                    <td class="nowrap">{$val.pf_shuncha}</td>
+                    <td class="nowrap">{$val.pf_maoli}</td>
+                    <td class="nowrap">
+                        <a href="{:url('Productperformace/month', array('id'=>$val['product_id']))}" class="editIcon" title="按月查询">按月查询</a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+      
+    </div>
+
+</div>
