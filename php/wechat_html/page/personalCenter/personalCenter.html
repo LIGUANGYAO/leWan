@@ -722,9 +722,8 @@
 					})
 				})
 				mui('body').on('tap', '#realName', function() { //实名认证
-					//TODO 接口有问题 参数传什么
 					$.ajax({
-						url: API_SERVER + "",
+						url: API_SERVER + "Userauth/UserAuthData",
 						data: {token: token},
 						success: function(data) {
 							log(data)
@@ -740,7 +739,7 @@
 									mui.openWindow({
 										url: "realNameSuccess.html"
 									})
-								}else if(data.data.status == 33333333){ //？？？？？？？？？？？？？？？？？？？？？？？
+								}else{
 									mui.openWindow({
 										url: "realName.html"
 									})

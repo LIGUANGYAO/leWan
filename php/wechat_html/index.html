@@ -9,35 +9,51 @@
     
     <script src="js/mui.min.js"></script>
     <script src="plugins/jquery-2.1.4.js"></script>
-    <script src="plugins/serverApi.js"></script>
     <script type="text/javascript" charset="utf-8">
       	$(function(){
-      		var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
-      		if(!token){
-      			var code = getUrlParam("code");
-      			if(!code){
-      				var redirectUrl = BASE_SERVER + "wechat_html/index.html";
-      				window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9639c4a683f9ce86&redirect_uri='+redirectUrl+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
-      			}else{
-      				log(code)
-      				//获取token
-					$.ajax({
-						url: API_SERVER + "Wechat/WechatAuthorize",
-						async: false,
-						data: {code: code + "&state="},
-						success: function(data) {
-							log(data)
-							if(data.code == 200) {
-								localStorage.setItem("token", data.data.token); //token
-								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
-								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
-							} else {
-								mui.toast(data.message)
-							}
+      		function getUrlParam(name) {
+				var pattern = new RegExp("[?&]" + name + "\=([^&]+)", "g");
+				var matcher = pattern.exec(window.location);
+				var items = null;
+				if(matcher != null) {
+					try {
+						items = decodeURIComponent(decodeURIComponent(matcher[1]));
+					} catch(e) {
+						try {
+							items = decodeURIComponent(matcher[1]);
+						} catch(e) {
+							items = matcher[1];
 						}
-					})
-      			}
-      		}
+					}
+				}
+				return items;
+			}
+      		
+      		
+      		var code = getUrlParam("code");
+      		var currentPageUrl = localStorage.getItem("currentPageUrl");
+      		
+      		//获取token
+			$.ajax({
+				url: "http://cs.lewan6.ren/api/Wechat/WechatAuthorize",
+				async: false,
+				data: {
+					code: code + "&state"
+				},
+				success: function(data) {
+					console.log(data)
+					if(data.code == 200) {
+						localStorage.setItem("token", data.data.token); //token
+						localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
+						localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+						mui.openWindow({
+							url: currentPageUrl
+						})
+					} else {
+						mui.toast(data.message)
+					}
+				}
+			})
       	})
     </script>
 </head>

@@ -12,6 +12,9 @@
 		<link href="../../plugins/mui.poppicker.css" rel="stylesheet" />
 		<link href="../../fonts/iconfont.css" rel="stylesheet" />
 		<style type="text/css">
+			[v-cloak] {
+			    display: none !important;
+			}
 			body,
 			html {
 				padding: 0;
@@ -526,7 +529,6 @@
 		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
 			<div class="mui-scroll">
 				<div class="" id="J_el"  v-cloak>
-					<!--<div v-if="showPage">-->
 					<!--页头搜索框-->
 					<form action="" method="post">
 						<div class="headerSearch">
@@ -618,8 +620,8 @@
 										<span>已售{{ items.product_sold }}</span>
 									</p>
 									<div class="countDown">
-										<!--距结束 &nbsp {{ InitTime(items.product_starttime,items.product_endtime) }}-->
-										距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>
+										距结束 &nbsp {{ items.format }}
+										<!--距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>-->
 									</div>
 								</div>
 							</li>
@@ -655,7 +657,6 @@
 							</div>
 						</div>
 					</div>
-					<!--</div>-->
 				</div>
 			</div>
 		</div>
@@ -735,6 +736,7 @@
 				//获取地理位置
 				var latitude; // 纬度，浮点数，范围为90 ~ -90
 				var longitude; // 经度，浮点数，范围为180 ~ -180。
+				var isPosition = false;
 				function getPosition() {
 					log("获取微信定位")
 					$.ajax({
@@ -746,7 +748,6 @@
 						},
 						success: function(data) {
 							if(data.code == 200) {
-								log("微信验签" + data);
 								wx.config({
 									debug: false, // 开启调试模式,调用的所有api的赚回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 									appId: data.data.appId, // 必填，公众号的唯一标识
@@ -762,14 +763,14 @@
 											log(res)
 											latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
 											longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+											isPosition = true;
 											regeoCode(); //执行高德地址逆解析
 										},
 										cancel: function(res) {
+											isPosition = false;
 											getBanner(); //拒绝定位直接获取全国banner
-											vueData.showPage = false;
 											pageData.page = 1;  
 											getProduct(true); //拒绝定位获取礼品
-											alert('用户拒绝授权获取地理位置');
 										}
 									});
 
@@ -796,12 +797,10 @@
 								"isLocation": 2
 							});
 							getBanner(); //定位后执行banner()获取当地banner
-							vueData.showPage = false;
 							pageData.page = 1;  
 							getProduct(true); //定位获取当前地址商品
 						} else {
 							getBanner(); //逆解析失败直接获取全国banner
-							vueData.showPage = false;
 							pageData.page = 1;  
 							getProduct(true); //逆解析失败获取全国产品
 							alert(JSON.stringify(result))
@@ -822,7 +821,6 @@
 					psize: 10
 				}
 				var vueData = {
-					showPage: false,
 					homePageBanner: [], //首页banner图
 					eightIn: [], //八大入口动态参数
 					cardList: [], //商品列表
@@ -835,11 +833,14 @@
 						handleScroll: handleScroll,
 						jumpToProductList: jumpToProductList,
 						jumpToDetails: jumpToDetails,
+						InitTime:InitTime
 					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
+						
 					},
 					updated: function() {
+						InitTime();
 						/*初始化轮播*/
 						mui('.mui-slider').slider({
 							interval: 2000 //自动播放周期
@@ -902,7 +903,6 @@
 							"isLocation": 2
 						});
 						getBanner(); //选择城市后获取城市banner
-						vueData.showPage = false;
 						pageData.page = 1; //选择城市后，商品列表页数从1开始
 						getProduct(true); //选择之后执行请求商品列表
 					});
@@ -969,16 +969,26 @@
 				}
 				//八大模块跳转
 				function jumpToProductList(id, name) {
-					mui.openWindow({
-						url: "productList.html?cateId=" + id + "&cateName=" + name
-					})
+					if(isPosition || id == 4){
+						mui.openWindow({
+							url: "productList.html?cateId=" + id + "&cateName=" + name
+						})
+					}else{
+						mui.toast("请授权获取地理位置！")
+						getPosition();
+					}
 				}
 				mui('body').on("tap", ".navText", function() {
 					var cateId = $(this).attr("cateId")
 					var cateName = $(this).attr("cateName")
-					mui.openWindow({
-						url: "productList.html?cateId=" + cateId + "&cateName=" + cateName
-					})
+					if(isPosition || cateId == 4){
+						mui.openWindow({
+							url: "productList.html?cateId=" + cateId + "&cateName=" + cateName
+						})
+					}else{
+						mui.toast("请授权获取地理位置！")
+						getPosition();
+					}
 				})
 
 				//获取商品列表 
@@ -1001,7 +1011,7 @@
 						},
 						data: {
 							token: token,
-							type: 1, // int    |是|1未定位 2已定位| //TODO
+							type: 1, // int    |是|1未定位 2已定位| //TODO 这个定位指的是自动定位还是选择城市定位
 							bursting: null, // int    |是|1获取爆款商品 必须定位|
 							paging: pageData.page, //int    |否|分页默认第一页|
 							paged: pageData.psize, //  | int    |否|分页条数默认10条|
@@ -1049,27 +1059,38 @@
 				})
 
 				//倒计时方法
-				function InitTime(starttime, endtime) {
-					var timer = null;
-					var dd, hh, mm, ss = null;
-					var str;
-					var time = parseInt(endtime) - parseInt(starttime);
-					timer = setInterval(function() {
-						if(time > 0) {
-							dd = Math.floor(time / 60 / 60 / 24);
-							hh = Math.floor((time / 60 / 60) % 24);
-							mm = Math.floor((time / 60) % 60);
-							ss = Math.floor(time % 60);
-							//						var str = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
-							str = "<span>" + dd + "</span> 天 <span>" + hh + "</span> : <span>" + mm + "</span> : <span>" + ss + "</span>";
-						}
-					}, 1000);
-					if(time <= 0) {
-						clearInterval(timer);
-						str = "<span>00</span> 天 <span>00</span> : <span>00</span> : <span>00</span>";
-					}
-					return str;
-					log(str)
+				function InitTime() {
+//					for(let i=0; i < vueData.cardList.length; i++){
+//						vueData.cardList[i].remainTime = (vueData.cardList[i].now_time - vueData.cardList[i].product_endtime)*1000;
+//						vueData.cardList[i].format = '';
+//					}
+//				    let timer = setInterval(function () {
+//				        for (let i = 0; i < vueData.cardList.length; i++) {
+//				        	
+//				            vueData.cardList[i].remainTime -= 1000;
+//				            let t = vueData.cardList[i].remainTime
+//				            if (t > 0) {
+//				                let day = Math.floor(t / 86400000)
+//				                let hour = Math.floor((t / 3600000) % 24)
+//				                let min = Math.floor((t / 60000) % 60)
+//				                let sec = Math.floor((t / 1000) % 60)
+//				                day = day < 10 ? '0' + day : day
+//				                hour = hour < 10 ? '0' + hour : hour
+//				                min = min < 10 ? '0' + min : min
+//				                sec = sec < 10 ? '0' + sec : sec
+//				                
+//				                log("距离结束："+day+" 天 "+hour+"时"+min+"分"+sec+"秒")
+//				               vueData.cardList[i].format = "距离结束："+day+" 天 "+hour+"时"+min+"分"+sec+"秒"
+//				             } else {
+//				                // 进行判断 如果数据内所有的倒计时已经结束，那么结束定时器， 如果没有那么继续执行定时器
+//				                let flag = vueData.cardList.every(function(val, ind) {val.remainTime <= 0})
+//				                if (flag) clearInterval(timer)
+//				                vueData.cardList[i].format = "距离结束：0天 0时0分0秒" // 结束文案
+//				             }
+//				        }
+//				    }, 1000)
+//				
+
 				}
 
 				mui('body').on('tap', '.messageCenter', function() { //消息中心
@@ -1083,7 +1104,6 @@
 					if(e.keyCode == '13')  {  
 						document.activeElement.blur(); //收起虚拟键盘
 						e.preventDefault();                       //请求搜索接口  
-						vueData.showPage = false;
 						pageData.page = 1;                    
 						getProduct(true);
 						$(this).val("");                  
@@ -1136,13 +1156,11 @@
 						$(".posiContentHeader .filterPar").eq(3).attr("distanceOrder", 1);
 						$(".showContentHeader .filterPar").eq(3).attr("distanceOrder", 1);
 					}
-					vueData.showPage = false;
 					pageData.page = 1;                
 					getProduct(true);         
 				});
 				
 				function handleScroll() {
-					//					log(scrollTop + "+" + spaceConnet + "+" + showContentHeader)
 					if(scrollTop >= spaceConnet - 0.72) {
 						$(".topmenu").css({
 							"opacity": 1,

@@ -124,7 +124,7 @@
 								localStorage.setItem("token", data.data.token); //token
 								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
 								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
-								$(".header").css({"background-image" : "url("+ data.data.avatar +")"});//用户头像
+								$(".headerImg").attr("src",data.data.avatar);//用户头像
 							}
 						}
 					});

@@ -414,11 +414,42 @@
 			.swiper-container-horizontal>.swiper-pagination-bullets {
 				bottom: 0;
 			}
+			
+			/*分享海报*/
+			.model{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				z-index: 20;
+				background-color: rgba(0,0,0,0.5);
+				display: none;
+			}
+			.modelBox{
+				width: 9.2rem;
+				height: 3.306rem;
+				background-color: #FFFFFF;
+				border-radius: 0.2rem;
+				position: absolute;
+				left: 0.4rem;
+				bottom: 0.26rem;
+				display: flex;
+				justify-content:space-around;
+				font-size: 0.373rem;
+				color: #333333;
+				text-align: center;
+			}
+			.model img{
+				width: 1.706rem;
+				height: 1.706rem;
+				margin-top: 0.426rem;
+			}
 		</style>
 	</head>
 
 	<body>
-		<div class="" id="J_el">
+		<div class="" id="J_el" v-cloak>
 			<div class="" v-if="showPage">
 				<div class="headerBox">
 					<div class="mui-slider">
@@ -449,7 +480,7 @@
 						<!--TODO 倒计时还未实现-->
 					</div>
 					<div class="textIntroduce">
-						<div class="textShowOne"><strong>【{{ proDetail.product_name }}】</strong>商品详情????????</div>
+						<div class="textShowOne"><strong>【{{ proDetail.product_name }}】</strong></div>
 						<div class="textLabel">
 							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
 							<!--<span>家庭聚会</span>-->
@@ -560,10 +591,21 @@
 				</div>
 				<div class="downBtn">
 					<div class="downBtnOne" @tap="jumpToHomePage">首页</div>
-					<!--TODO-->
-					<div class="downBtnTwo" @tap="shareProduct()">分享</div>
-					<div class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice.price_id)">立刻购买</div>
-					<!--<div class="downBtnFour" @tap="BuyNow">已售罄</div>-->
+					<div v-if="proPrice.product_dynamicnum>0" class="downBtnTwo" @tap="shareProduct()">分享</div>
+					<div v-if="proPrice.product_dynamicnum>0" class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice.price_id)">立刻购买</div>
+					<div v-if="proPrice.product_dynamicnum == 0" class="downBtnFour">已售罄</div>
+				</div>
+				<div class="model">
+					<div class="modelBox">
+						<div class="">
+							<img src="../../img/homePage/jiudian.png"/>
+							<div>生成海报</div>
+						</div>
+						<div class="">
+							<img src="../../img/homePage/jiudian.png"/>
+							<div>生成链接</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -638,10 +680,7 @@
 					});
 				}
 
-				//地图跳转
-				mui('body').on('tap', '.BusinessAddress', function() {
-
-				})
+				
 				//首页
 				function jumpToHomePage() {
 					mui.openWindow({
@@ -655,10 +694,16 @@
 					})
 				}
 				//分享商品
-				function shareProduct(title, url, imgUrl) {
-
+				function shareProduct() {
+					$(".model").css("display","block")
 				}
-
+				//TODO 事件捕获
+				mui('body').on('tap', '.model', function() {
+					$(".model").css("display","none")
+				})
+				
+				
+				
 				function sharePYQ() {
 					getWechatSignature(location.href.split('#')[0]);
 					wx.ready(function() {

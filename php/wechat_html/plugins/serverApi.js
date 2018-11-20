@@ -175,33 +175,17 @@ if(browser.versions.android) {
 		return _ajax(_opt);
 	};
 })(jQuery);
-//获取微信签名方法/*必传获取签名页面地址****location.href.split('#')[0]****/
-var token = localStorage.getItem("token");
-//var code = getUrlParam("code");
+
+//每个页面获取token
+var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
+//log(location.href)
 //if(token == 'undefined' || token == null || token == "") {
-//	if(JSON.stringify(code) == "null") {
-//		var redirectUrl = BASE_SERVER + "wechat_html/page/homePage/homePage.html"
-//		window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9639c4a683f9ce86&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
-//	} else {
-//		//获取token
-//		$.ajax({
-//			url: API_SERVER + "Wechat/WechatAuthorize",
-//			async: false,
-//			data: {code: code + "&state"},
-//			success: function(data) {
-//				log(data)
-//				if(data.code == 200) {
-//					localStorage.setItem("token", data.data.token); //token
-//					token = data.data.token;
-//					localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
-//					localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
-//				} else {
-//					mui.toast(data.message)
-//				}
-//			}
-//		})
-//	}
+//	localStorage.setItem("currentPageUrl",location.href)
+//	var redirectUrl = BASE_SERVER + "wechat_html/index.html"
+//	window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9639c4a683f9ce86&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
 //}
+
+//获取微信签名方法/*必传获取签名页面地址****location.href.split('#')[0]****/
 function getWechatSignature(reqUrl){
 	log("获取微信签名")
 	$.ajax({
