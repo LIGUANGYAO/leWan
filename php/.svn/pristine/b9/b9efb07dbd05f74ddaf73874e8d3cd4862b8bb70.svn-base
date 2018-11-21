@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>认证成功</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			html {
+				padding: 0;
+				margin: 0;
+				background-color: #FFFFFF;
+				text-align: center;
+			}
+			.content{
+				overflow: auto;
+				padding-bottom: 2rem;
+			}
+			.header{
+				width: 9.5rem;
+				height: 5.5rem;
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				display: inline-block;
+				margin-top: 1.1rem;
+				position: relative;
+				color: #FFFFFF;
+			}
+			.headerImg{
+				width: 1.8rem;
+				height: 1.8rem;
+				border-radius: 0.9rem;
+				position: absolute;
+				top: -0.7rem;
+				left: 0;
+				right: 0;
+				margin: 0 auto;
+			}
+			.title{
+				position: absolute;
+				left: 1.16rem;
+				top: 2rem;
+				font-size: 0.6rem;
+				font-weight: bold;
+			}
+			.headerName{
+				position: absolute;
+				left: 1.16rem;
+				top: 3rem;
+				font-weight: 500;
+				font-size: 0.44rem;
+				letter-spacing: 3px;
+			}
+			.headerNumber{
+				position: absolute;
+				left: 1.16rem;
+				top: 3.8rem;
+				font-size: 0.5rem;
+				letter-spacing: 3px;
+			}
+			.realBtn{
+				text-align: center;
+				margin-top: 0.8rem;
+			}
+			.realBtn>div{
+				width: 8.613rem;
+				height: 1.573rem;
+				line-height: 1.573rem;
+				margin: 0 auto;
+				border-radius: 0.786rem;
+				font-size: 0.426rem;
+				color: #E1B872;
+				font-weight: bold;
+				box-shadow: -1px 8px 15px #FBEBCE,
+				  0 0 0 blue,
+				  1px 1px 15px #FBEBCE,
+				  0 0 0 yellow;
+			}
+			.realBtn>div>i{
+				margin-right: 0.2rem;
+				font-size: 0.6rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="content">
+			<div class="header" style="background-image: url(../../img/personalCenter/realName5.png);">
+				<img class="headerImg" src="../../img/homePage/eightNav1.png"/>
+				<div class="title">您已实名认证</div>
+				<div class="headerName">**熙</div>
+				<div class="headerNumber">5****************0</div>
+			</div>
+			<div class="realBtn">
+				<div><i class="iconfont icon-unie62a"></i>去添加银行卡</div>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/clipboard.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = localStorage.getItem("token");
+				
+				//获取头像
+				getUserMessage()
+				function getUserMessage(){
+					$.ajax({
+						url: API_SERVER + 'User/UserPersonal',
+						async: false,
+						data:{token: token},
+						success: function(data) {
+							if(data.code == 200) {
+								log(data)
+								localStorage.setItem("token", data.data.token); //token
+								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
+								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+								$(".headerImg").attr("src",data.data.avatar);//用户头像
+							}
+						}
+					});
+				}
+				//获取实名认证信息
+				getBankMessage();
+				function getBankMessage(){
+					$.ajax({
+						url: API_SERVER + "",	//TODO 接口有错
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$(".headerName").text(data.data.truename);
+								//TODO 身份证号码没有返回
+								$(".headerNumber").text(data.data.truename);
+								
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					}) 
+				}
+				mui('body').on('tap', '.realBtn div', function() { //去添加银行卡
+					mui.openWindow({
+						url: "addBankCard.html"
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>

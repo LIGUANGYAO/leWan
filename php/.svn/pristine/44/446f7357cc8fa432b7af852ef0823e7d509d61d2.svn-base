@@ -121,12 +121,11 @@
 			height: 100vh;
 			z-index: 20;
 			background-color: rgba(0,0,0,0.6);
-			text-align: center;
-			display: none;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 		.modelBox{
-			display: inline-block;
-			margin-top: 8vh;
 			width: 80vw;
 			height: 80vh;
 			position: relative;
