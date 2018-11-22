@@ -1,0 +1,414 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>预约中心</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #FFFFFF;
+			}
+			/*头部*/
+			
+			.headerBox {
+				box-shadow: 0px 1px 10px 1px #ccc;
+				z-index: 10;
+				position: relative;
+				/*如果不加相对定位，box-shadow无效*/
+			}
+			
+			.header {
+				height: 1.2rem;
+				line-height: 1.2rem;
+				font-size: 0.4rem;
+				display: flex;
+				justify-content: space-around;
+				background-color: #FFFFFF;
+			}
+			
+			.headerSec {
+				padding: 0 0.3rem;
+			}
+			
+			.headerActive {
+				font-weight: bold;
+				border-bottom: 5px solid #E1B872;
+			}
+			
+			.mui-table-view:before {
+				height: 0;
+			}
+			
+			.content {
+				z-index: 5;
+			}
+			/*card*/
+			
+			.cardBox {
+				text-align: center;
+				padding-top: 1.2rem;
+			}
+			
+			.cardList {
+				position: relative;
+				display: inline-block;
+				width: 9.36rem;
+				height: 4.426rem;
+				border-radius: 0.2rem;
+				box-shadow: 0px 0px 10px 1px #ECEFFC;
+				margin-top: 0.266rem;
+			}
+			
+			.cardDetails {
+				position: relative;
+				text-align: left;
+				width: 9.36rem;
+				height: 4.426rem;
+				overflow: hidden;
+			}
+			
+			.buyNumber {
+				position: absolute;
+				top: 0.2rem;
+				right: 0.3rem;
+				font-size: 0.426rem;
+				font-weight: bold;
+				color: #FFB663;
+			}
+			
+			.caLeft {
+				font-size: 0.426rem;
+				color: #999999;
+				font-weight: 500;
+			}
+			
+			.caRight {
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: 500;
+			}
+			
+			.shopName {
+				margin-top: 0.533rem;
+				padding-left: 0.533rem;
+				width: 90%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
+			.shopNumber,
+			.ElectronicCode {
+				margin-top: 0.3rem;
+				padding-left: 0.533rem;
+				width: 95%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
+			.shopTime {
+				font-size: 0.32rem;
+				color: #999999;
+				font-weight: 500;
+				margin-left: 0.533rem;
+				margin-top: 0.533rem;
+			}
+			
+			.goToBtn {
+				width: 2.24rem;
+				height: 0.906rem;
+				line-height: 0.906rem;
+				text-align: center;
+				font-size: 0.426rem;
+				color: #FFFFFF;
+				font-weight: bold;
+				background-color: #FFB663;
+				border-top-left-radius: 0.6rem;
+				border-bottom-right-radius: 0.2rem;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+			}
+			/*已过期*/
+			
+			.haveExpired {
+				width: 9.36rem;
+				height: 4.426rem;
+				/*TODO 已过期*/
+				display: none;
+				position: absolute;
+				left: 0;
+				top: 0;
+				background-color: rgba(255, 255, 255, 0.4);
+				text-align: right;
+			}
+			
+			.haveExpired>img {
+				width: 2.24rem;
+				height: 1.373rem;
+				margin-top: 1.84rem;
+				margin-right: 0.186rem;
+			}
+			/*模态窗*/
+			
+			.modalBox {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				background-color: rgba(0, 0, 0, 0.4);
+				z-index: 30;
+			}
+			
+			.modalCard {
+				width: 8.16rem;
+				height: 9.586rem;
+				background-color: #FFFFFF;
+				border-radius: 0.2rem;
+				margin: 0 auto;
+				margin-top: 3.333rem;
+				z-index: 40;
+			}
+			
+			.modalTitle {
+				background-color: #FC9929;
+				color: #FFFFFF;
+				text-align: center;
+				width: 2.72rem;
+				height: 1.173rem;
+				line-height: 1.173rem;
+				font-size: 0.426rem;
+				font-weight: bold;
+				margin: 0 auto;
+				border-bottom-left-radius: 0.3rem;
+				border-bottom-right-radius: 0.3rem;
+			}
+			.mui-table-view:after{
+				height: 0;
+			}
+			.codeBox {
+				height: 8.3rem;
+				overflow-y: scroll;
+			}
+			.codeBox>li>span:nth-child(1){
+				font-size: 0.426rem;
+				color: #333333;
+			}
+			.codeBox>li>span:nth-child(2){
+				display: inline-block;
+				float: right;
+				border-radius: 0.15rem;
+				border: 1px solid #FC9929;
+				color: #FC9929;
+				padding: 0.05rem 0.2rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--底部导航-->
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item" id="homePage">
+				<span class="mui-icon"><i class="iconfont icon-shouye"></i></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" id="everydayFaddish">
+				<span class="mui-icon"><i class="iconfont icon-huo"></i></span>
+				<span class="mui-tab-label">分享圈</span>
+			</a>
+			<a class="mui-tab-item mui-active">
+				<span class="mui-icon"><i class="iconfont icon-chakantiezishijian"></i></span>
+				<span class="mui-tab-label">预约中心</span>
+			</a>
+			<a class="mui-tab-item" id="personalCenter">
+				<span class="mui-icon"><i class="iconfont icon-wode"></i></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		<div class="headerBox">
+			<div class="header">
+				<div class="headerSec headerActive" dataVal="1">未预约</div>
+				<div class="headerSec" dataVal="2">已预约</div>
+			</div>
+		</div>
+		<div class="" id="J_el" v-cloak>
+			<div class="mui-scroll-wrapper" id="refreshContainer">
+				<div class="mui-scroll">
+					<div class="content">
+						<div class="cardBox" v-if="cardList.length">
+							<div class="cardList" v-for="items in cardList">
+								<div class="cardDetails">
+									<div v-if="items.express == 1 && items.code_count > 1" class="buyNumber">X{{ items.code_count }}</div>
+									<div class="shopName">
+										<span class="caLeft">商品名称：</span>
+										<span class="caRight">{{ items.product_name }}</span>
+									</div>
+									<div class="shopNumber">
+										<span class="caLeft">订单号：</span>
+										<span class="caRight">{{ items.ordernumber }}</span>
+									</div>
+									<div v-if="appointmentType == 2" class="ElectronicCode">
+										<div class="">
+											<span class="caLeft">消费电子码：</span>
+											<span class="caRight">676786583</span>
+											<div class="goToBtn">去查看</div>
+										</div>
+										<div class="">
+											<span class="caLeft">预约发货：</span>
+											<span class="caRight">去预约</span>
+											<div class="goToBtn">去预约</div>
+										</div>
+									</div>
+									<div v-if="appointmentType == 1" class="ElectronicCode">
+										<div class="">
+											<span class="caLeft">消费电子码：</span>
+											<span class="caRight">676786583</span>
+											<div class="goToBtn">去查看</div>
+										</div>
+										<div class="">
+											<span class="caLeft">预约发货：</span>
+											<span class="caRight">去预约</span>
+											<div class="goToBtn">去预约</div>
+										</div>
+									</div>
+									<div class="shopTime">商品期限：{{getDateTime(items.startusetime,"Y-MM-dd")}} 至 {{ getDateTime(items.endusetime,"Y-MM-dd")}}</div>
+								</div>
+								<div class="haveExpired">
+									<img src="../../img/reservationCenter/reservationCenter1.png" />
+								</div>
+							</div>
+						</div>
+						<!--未预约-->
+						<div class="lw-empty" style="display: block;" v-else>
+							<div class="lw-empty-box">
+								<div class="lw-empty-flex">
+									<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+									<div class="lw-empty-test">暂无订单 去选购产品吧！</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modalBox">
+				<div class="modalCard">
+					<div class="modalTitle">消费电子码</div>
+					<ul class="mui-table-view codeBox">
+						<!--TODO 这儿待做-->
+						<li class="mui-table-view-cell" v-for="items in 10">
+							<span>HUWR3253</span>
+							<span @tap="">去预约</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				/*下拉刷新和上拉加载效果*/
+				mui.init({
+					pullRefresh: {
+						container: '#refreshContainer', //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+						up: {
+							height: 50,
+							auto: false,
+							contentnomore: '没有更多数据了',
+							contentrefresh: '正在加载...',
+							callback: function() {
+								setTimeout(function() {
+									getList();
+								}, 1000);
+							}
+						}
+					}
+				});
+				var token = localStorage.getItem("token");
+
+				var pageData = {
+					page: 1,
+					psize: 10
+				}
+				var vueData = {
+					appointmentType: 1, //默认1未预约 2已预约
+					cardList: [], //订单列表
+				};
+				new Vue({
+					el: '#J_el',
+					data: vueData,
+					methods: {
+
+					}
+				});
+
+				//获取预约中心列表
+				getList(true);
+
+				function getList(empty) {
+					$.ajax({
+						url: API_SERVER + 'Yuyue/ConsumeBespokeAll',
+						async: false,
+						data: {
+							token: token,
+							page: pageData.page,
+							type: vueData.appointmentType
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								var lists = data.data;
+								empty && vueData.cardList.splice(0);
+								for(var i = 0; i < lists.length; i++) {
+									vueData.cardList.push(lists[i]);
+								}
+								pageData.page++;
+								var pullRefresh = mui('#refreshContainer').pullRefresh();
+								pullRefresh && pullRefresh.endPulldownToRefresh && pullRefresh.endPulldownToRefresh();
+								pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
+								pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < pageData.psize);
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
+				};
+
+				//切换导航栏
+				mui("body").on("tap", ".headerSec", function() {
+					$(".headerSec").removeClass("headerActive");
+					$(this).addClass("headerActive");
+					vueData.appointmentType = $(this).attr("dataVal");
+					pageData.page = 1;
+					getList(true);
+				})
+
+				mui('body').on('tap', '.modalBox', function(event) { //预约关闭模态窗
+					$('.modalBox').css('display', 'none');
+				})
+
+				mui('body').on('tap', '.goodsOne', function() { //预约时间选择
+					mui.openWindow({
+						url: "appointmentTime.html",
+						id: "appointmentTime.html"
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>
