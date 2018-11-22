@@ -122,7 +122,7 @@
 						success: function(data) {
 							log(data)
 							if(data.code == 200) {
-								$(".IDCardImg").attr("src",data.data.positive);
+								$(".IDCardImg").attr("src",data.data.opposite);
 								$(".failQus").text(data.data.remark);
 								
 							} else {

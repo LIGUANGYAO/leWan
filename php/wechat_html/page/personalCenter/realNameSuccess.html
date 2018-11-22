@@ -133,7 +133,7 @@
 				getBankMessage();
 				function getBankMessage(){
 					$.ajax({
-						url: API_SERVER + "",	//TODO 接口有错
+						url: API_SERVER + "Userauth/UserAuthData",
 						data: {token: token},
 						success: function(data) {
 							log(data)
