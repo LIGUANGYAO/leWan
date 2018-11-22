@@ -150,30 +150,28 @@
 			$(function() {
 				var token = localStorage.getItem("token");
 
-				//获取实名认证信息
-				getBankMessage();
-
-				function getBankMessage() {
+				//提交审核
+				mui('body').on('tap', '.goodsOne', function() {
 					var data = {
 						token: token,
 						truename: $("#trueName").val(),
 						cardno: $("#IDNumber").val(),
 						//TODO 判断问题
-						positive: ,
-						opposite: ,
+//						positive: ,
+//						opposite: ,
 					}
 					var isOk = validate(
-						[vueData.concat, ['required'],
+						[data.truename, ['required'],
 							['姓名不能为空']
 						], //持卡人
-						[vueData.mobile, ['required', 'idCard'],
+						[data.cardno, ['required', 'idCard'],
 							['身份证号码不能为空', '请输入正确的身份证号码']
 						] //手机号码
 					);
 					if(!isOk) return;
 
 					$.ajax({
-						url: API_SERVER + "", //TODO 接口有错
+						url: API_SERVER + "Userauth/UserAuthenticate",
 						data: {
 							token: token
 						},
@@ -188,33 +186,33 @@
 							}
 						}
 					})
-				}
+				})
 				
-				//拍照或从手机相册中选图接口
-				wx.chooseImage({
-					count: 1, // 默认9
-					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-					success: function(res) {
-						var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-					}
-				});
-				//上传图片接口
-				wx.uploadImage({
-					localId: '', // 需要上传的图片的本地ID，由chooseImage接口获得
-					isShowProgressTips: 1, // 默认为1，显示进度提示
-					success: function(res) {
-						var serverId = res.serverId; // 返回图片的服务器端ID
-					}
-				});
-				//下载图片接口
-				wx.downloadImage({
-					serverId: '', // 需要下载的图片的服务器端ID，由uploadImage接口获得
-					isShowProgressTips: 1, // 默认为1，显示进度提示
-					success: function(res) {
-						var localId = res.localId; // 返回图片下载后的本地ID
-					}
-				});
+//				//拍照或从手机相册中选图接口
+//				wx.chooseImage({
+//					count: 1, // 默认9
+//					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+//					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+//					success: function(res) {
+//						var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+//					}
+//				});
+//				//上传图片接口
+//				wx.uploadImage({
+//					localId: '', // 需要上传的图片的本地ID，由chooseImage接口获得
+//					isShowProgressTips: 1, // 默认为1，显示进度提示
+//					success: function(res) {
+//						var serverId = res.serverId; // 返回图片的服务器端ID
+//					}
+//				});
+//				//下载图片接口
+//				wx.downloadImage({
+//					serverId: '', // 需要下载的图片的服务器端ID，由uploadImage接口获得
+//					isShowProgressTips: 1, // 默认为1，显示进度提示
+//					success: function(res) {
+//						var localId = res.localId; // 返回图片下载后的本地ID
+//					}
+//				});
 			})
 		</script>
 	</body>

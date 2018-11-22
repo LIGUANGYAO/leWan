@@ -728,7 +728,6 @@
 						success: function(data) {
 							log(data)
 							if(data.code == 200) {
-								//TODO 未实名认证是不是加一个状态
 								if(data.data.status == 0){	//审核中
 									mui.toast("审核中，请耐心等待！")
 								}else if(data.data.status == 1){	//审核失败

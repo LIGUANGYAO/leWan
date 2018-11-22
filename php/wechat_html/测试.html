@@ -15,13 +15,13 @@
 		<div id="J_el">
 			<div v-for="(item,index) in list" :key="index" class="act_item">
 				<div class="act_info">
-					<div class="time">倒计时：{{time}}   == {{ timeDown(item.time) }}</div>
+					<div class="time"></div>
 				</div>
 			</div>
 		</div>
 
 		<script src="plugins/vue.js"></script>
-
+		<script src="plugins/jquery-2.1.4.js"></script>
 		<script type="text/javascript">
 			new Vue({
 				el: '#J_el',
@@ -40,6 +40,25 @@
 					
 				},
 			});
+			
+			var data = {
+				token: '0009b229c26fb257ab130cec8f313df6',
+				product_id: 3,
+				price_id: 177
+			};
+			$.ajax({
+				url: 'http://cs.lewan6.ren/api/Mall/confirmPay',
+				async: false,
+				headers: {
+					"product": "wechat",		
+					"platform": 'ios'	//TODO ios判断
+				},
+				data: data,
+				success: function(data) {
+					console.log(data)
+					
+				}
+			})
 		</script>
 	</body>
 

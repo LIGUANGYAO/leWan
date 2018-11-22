@@ -375,7 +375,7 @@
 				color: #333333;
 				font-weight: 500;
 				letter-spacing: 0;
-				margin-right: 0.266rem;
+				margin-right: 0.2rem;
 			}
 			
 			.detailBox>span:nth-child(2) {
@@ -620,7 +620,9 @@
 									<div class="textShow">【{{ items.merchant_name }}】 {{ items.product_name }} </div>
 									<p class="detailBox">
 										<span>￥{{ items.temp_price }}</span>
-										<span>返:￥{{ items.temp_commission }}</span>
+										<span v-if="level == 1">  </span>
+										<span v-else-if="level == 2">返:{{ items.temp_commission.zigou }} 分享:{{ items.temp_commission.fenxiang }}</span>
+										<span v-else="level == 2">返:￥{{ items.temp_commission.fenxiang }}</span>
 										<span>已售{{ items.product_sold }}</span>
 									</p>
 									<div class="countDown">

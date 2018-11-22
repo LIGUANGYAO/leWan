@@ -562,7 +562,7 @@
 					<div class="downBtnOne" @tap="jumpToHomePage">首页</div>
 					<!--TODO-->
 					<div class="downBtnTwo" @tap="shareProduct()">分享</div>
-					<div class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice.price_id)">立刻购买</div>
+					<div class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice.price_id)">立即购买</div>
 					<!--<div class="downBtnFour" @tap="BuyNow">已售罄</div>-->
 				</div>
 			</div>
@@ -577,6 +577,7 @@
 		<script type="text/javascript">
 			$(function() {
 				var token = localStorage.getItem("token");
+				//TODO 定位不从列表传
 				var isLocation = getUrlParam("isLocation"); //是否定位
 				var productId = getUrlParam("productId"); //商品id
 				var latitude = getUrlParam("latitude"); //纬度
@@ -616,11 +617,11 @@
 
 				function getProductDetails() {
 					var data = {
-						token: token,
-						type: 1, //TODO
+						token: token?token:null,
+						type: 1, //TODO 1未定位 2已定位
 						pr_id: productId,
-						lat: latitude,
-						lng: longitude
+						lat: latitude?latitude:null,
+						lng: longitude?longitude:null
 					};
 					$.ajax({
 						url: API_SERVER + 'Product/ProductDetails',
@@ -638,10 +639,6 @@
 					});
 				}
 
-				//地图跳转
-				mui('body').on('tap', '.BusinessAddress', function() {
-
-				})
 				//首页
 				function jumpToHomePage() {
 					mui.openWindow({

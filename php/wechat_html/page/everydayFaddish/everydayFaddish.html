@@ -127,18 +127,21 @@
 		.modelBox{
 			display: inline-block;
 			margin-top: 8vh;
-			width: 80vw;
-			height: 80vh;
+			width: 8.8rem;
+			height: 13.333rem;
 			position: relative;
 		}
 		.modelImg{
-			width: 80vw;
-			height: 80vh;
+			width: 8.8rem;
+			height: 13.333rem;
+			border-radius: 0.18rem;
 		}
 		.modelClose{
 			position: absolute;
 			right: 0;
-			top: 0;
+			top: 0.2rem;
+			font-size: 0.8rem;
+			color: #FFFFFF;
 		}
 		</style>
 	</head>
@@ -176,8 +179,7 @@
 							</div>
 							<div class="cardText">
 								<!--TODO 商品介绍 待加-->
-								后期加 ,因食物投入沸水时发出的“咕咚”声而得名，它是中国独创的美食，历史悠久，是一种老少皆宜的食物。
-								古称“古董羹”，因食物投入沸水时发出的“咕咚”声而得名，它是中国独创的美食，历史悠久，是一种老少皆宜的食物。
+								后期加 ,{{ items.product_name }}
 							</div>
 							<div class="cardImgBox">
 								<img v-if="index == 0" :src="src" v-for="(src,index) in items.product_compic"/>
@@ -185,7 +187,7 @@
 							<div class="footerBox">
 								<span>¥ {{ items.temp_price }}</span>
 								<span><i class="iconfont icon-fenxiang"></i>分享赚 ¥ {{ items.temp_commission }}</span>
-								<span>生成海报<i class="iconfont icon-fenxiang"></i></span>
+								<span id="GeneratePoster" @tap="GeneratePoster(items.product_id)">生成海报<i class="iconfont icon-fenxiang"></i></span>
 							</div>
 						</div>
 					</div>
@@ -203,8 +205,8 @@
 		</div>
 		<div id="modal" class="modelPage">
 			<div class="modelBox">
-				<img class="modelImg" src="../../img/homePage/homePage3.png"/>
-				<img class="modelClose" src="../../img/homePage/address.jpg"/>
+				<img class="modelImg" src="../../img/homePage/homePage3.png" />
+				<i class="modelClose iconfont icon-guanbi" id="closeModelBtn"></i>
 			</div>
 		</div>
 		<script src="../../plugins/flexible.js"></script>
@@ -248,7 +250,7 @@
 					el: '#J_el',
 					data: vueData,
 					methods: {
-						jumpToDetails:jumpToDetails
+						GeneratePoster:GeneratePoster
 					}
 				});
 				
@@ -326,6 +328,7 @@
 				longitude= 100.158
 				var provincecode = 510000
 				var citycode = 510200
+				
 				getProduct(true);
 				//获取商品列表 
 				function getProduct(empty) {
@@ -378,14 +381,37 @@
 						getPosition();
 					}
 				}
-
-				//商品详情跳转
-				function jumpToDetails(productId){
-					mui.openWindow({
-						url: "productDetails.html?productId="+productId+"&isLocation="+isPosition+"&latitude="+latitude+"&longitude="+longitude
-					})
+				
+				//模态窗
+				function GeneratePoster(productId){
+					$.ajax({
+						url: API_SERVER + 'Product/ProductShare',
+						async: false,
+						data: {
+							token: token,
+							pr_id: productId,
+							//TODO 返回参数ID名称
+							url: BASE_SERVER + "wechat_html/page/homePage/productDetails.html"
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$(".modelImg").attr("src",data.data.url);
+								$('.modelPage').css("display",'block');
+								$('.modelPage').load(function(){
+								  // 加载完成    
+								});
+							} else {
+								mui.toast(data.message)
+							}
+						},
+					});
 				}
 				
+				//关闭分享海报
+				mui('body').on('tap','.modelPage',function(){
+					$('.modelPage').css("display",'none');
+				})
 			});
 		</script>
 	</body>
