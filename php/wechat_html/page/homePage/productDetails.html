@@ -414,6 +414,87 @@
 			.swiper-container-horizontal>.swiper-pagination-bullets {
 				bottom: 0;
 			}
+			
+			/*分享*/
+			.modalBox{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.4);
+				z-index: 15;
+			}
+			.modalCard{
+				position: absolute;
+				bottom: 0.2rem;
+				left: 0.32rem;
+				width: 9.36rem;
+				height: 3.306rem;
+				border-radius: 0.2rem;
+				background-color: #FFFFFF;
+				text-align: center;
+				font-size: 0.373rem;
+				color: #333333;
+				font-weight: 500;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				
+			}
+			.modalCard img{
+				width: 1.706rem;
+				height: 1.706rem;
+			}
+			
+			/*分享链接*/
+			.modalBox1{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.6);
+				z-index: 20;
+			}
+			.modalBox1 img{
+				width: 100vw;
+			}
+			
+			/*生成海报*/
+			.modalBox2{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100vw;
+				height: 100vh;
+				z-index: 20;
+				background-color: rgba(0,0,0,0.6);
+				text-align: center;
+			}
+			
+			.modalCard2{
+				display: inline-block;
+				margin-top: 8vh;
+				width: 8.8rem;
+				height: 13.333rem;
+				position: relative;
+			}
+			.modelImg{
+				width: 8.8rem;
+				height: 13.333rem;
+				border-radius: 0.18rem;
+			}
+			.modelClose{
+				position: absolute;
+				right: 0.1rem;
+				top: 0.2rem;
+				font-size: 0.8rem;
+				color: #FFFFFF;
+			}
 		</style>
 	</head>
 
@@ -453,7 +534,7 @@
 						<div class="textLabel">
 							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
 							<!--<span>家庭聚会</span>-->
-							<span class="commission">佣金：<span>￥{{ proPrice.price_commission }}</span></span>
+							<span class="commission">佣金：<span>￥{{ proPrice.price_commission.fenxiang }}</span></span>
 							<!--TODO 新人和普通用户不显示-->
 						</div>
 					</div>
@@ -563,8 +644,29 @@
 					<!--TODO-->
 					<div class="downBtnTwo" @tap="shareProduct()">分享</div>
 					<div class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice.price_id)">立即购买</div>
-					<!--<div class="downBtnFour" @tap="BuyNow">已售罄</div>-->
+					<!--<div class="downBtnFour">已售罄</div>-->
 				</div>
+			</div>
+		</div>
+		<div class="modalBox">
+			<div class="modalCard">
+				<div class="createImg">
+					<img src="../../img/homePage/productDetails2.png"/>
+					<div>生成 海报</div>
+				</div>
+				<div class="createUrl">
+					<img src="../../img/homePage/productDetails1.png"/>
+					<div>生成链接</div>
+				</div>
+			</div>
+		</div>
+		<div class="modalBox1">
+			<img class="closeImg" src="../../img/homePage/productDetails3.png"/>
+		</div>
+		<div class="modalBox2">
+			<div class="modalCard2">
+				<img class="modelImg" src="../../img/homePage/homePage3.png" />
+				<i class="modelClose iconfont icon-guanbi" id="closeModelBtn"></i>
 			</div>
 		</div>
 		<script src="../../plugins/flexible.js"></script>
@@ -577,11 +679,7 @@
 		<script type="text/javascript">
 			$(function() {
 				var token = localStorage.getItem("token");
-				//TODO 定位不从列表传
-				var isLocation = getUrlParam("isLocation"); //是否定位
 				var productId = getUrlParam("productId"); //商品id
-				var latitude = getUrlParam("latitude"); //纬度
-				var longitude = getUrlParam("longitude"); //经度
 
 				/*======================================================*/
 				var vueData = {
@@ -620,8 +718,8 @@
 						token: token?token:null,
 						type: 1, //TODO 1未定位 2已定位
 						pr_id: productId,
-						lat: latitude?latitude:null,
-						lng: longitude?longitude:null
+						lat: null,
+						lng: null
 					};
 					$.ajax({
 						url: API_SERVER + 'Product/ProductDetails',
@@ -653,9 +751,51 @@
 				}
 				//分享商品
 				function shareProduct(title, url, imgUrl) {
-
+					$(".modalBox").css("display",'block');
 				}
-
+				//关闭模态窗
+				mui('body').on('tap',".modalBox",function(){
+					$(".modalBox").css("display",'none')
+				})
+				
+				//生成链接
+				mui('body').on('tap',".createUrl",function(){
+					$(".modalBox1").css("display",'block')
+				})
+				//生成海报
+				mui('body').on('tap',".createImg",function(){
+					$.ajax({
+						url: API_SERVER + 'Product/ProductShare',
+						async: false,
+						data: {
+							token: token,
+							pr_id: productId,
+							url: BASE_SERVER + "wechat_html/page/homePage/productDetails.html"
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$(".modelImg").attr("src",data.data.url);
+							} else {
+								mui.toast(data.message)
+							}
+						},
+					});
+					$(".modalBox2").css("display",'block')
+				})
+				
+				//关闭分享朋友圈
+				mui('body').on('tap',".closeImg",function(){
+					$(".modalBox").css("display",'none');
+					$(".modalBox1").css("display",'none');
+				})
+				//关闭图片
+				mui('body').on('tap',"#closeModelBtn",function(){
+					$(".modalBox").css("display",'none');
+					$(".modalBox2").css("display",'none');
+				})
+				
+				
 				function sharePYQ() {
 					getWechatSignature(location.href.split('#')[0]);
 					wx.ready(function() {

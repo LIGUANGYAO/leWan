@@ -56,12 +56,14 @@
 			
 			.mui-input-row input {
 				float: left !important;
-				width: auto !important;
+				width: auto;
 				height: 1.2rem;
 				font-size: 0.426rem;
 				color: #333333;
 			}
-			
+			.cardNumber{
+				width: 70% !important;
+			}
 			input::-webkit-input-placeholder {
 				color: #D8D8D8;
 			}
@@ -123,7 +125,7 @@
 				</div>
 				<div class="mui-input-row">
 					<label>卡号</label>
-					<input type="number" oninput="if(value.length>19)value=value.slice(0,19)" maxlength="19" id="cardNumber" placeholder="请输入银行卡号">
+					<input type="number" oninput="if(value.length>19)value=value.slice(0,19)" maxlength="19" class="cardNumber" id="cardNumber" placeholder="请输入银行卡号">
 				</div>
 				<div class="mui-input-row secAddressBox">
 					<label>银行类型</label>

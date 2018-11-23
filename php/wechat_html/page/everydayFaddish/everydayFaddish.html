@@ -138,7 +138,7 @@
 		}
 		.modelClose{
 			position: absolute;
-			right: 0;
+			right: 0.1rem;
 			top: 0.2rem;
 			font-size: 0.8rem;
 			color: #FFFFFF;
@@ -177,16 +177,14 @@
 								<span>发布日期</span>
 								<span>{{ getDateTime(items.product_starttime,"Y/MM/dd/ hh:mm") }}</span>
 							</div>
-							<div class="cardText">
-								<!--TODO 商品介绍 待加-->
-								后期加 ,{{ items.product_name }}
+							<div class="cardText">{{ items.share_desc }}
 							</div>
 							<div class="cardImgBox">
 								<img v-if="index == 0" :src="src" v-for="(src,index) in items.product_compic"/>
 							</div>
 							<div class="footerBox">
 								<span>¥ {{ items.temp_price }}</span>
-								<span><i class="iconfont icon-fenxiang"></i>分享赚 ¥ {{ items.temp_commission }}</span>
+								<span><i class="iconfont icon-fenxiang"></i>分享赚 ¥ {{ items.temp_commission.fenxiang }}</span>
 								<span id="GeneratePoster" @tap="GeneratePoster(items.product_id)">生成海报<i class="iconfont icon-fenxiang"></i></span>
 							</div>
 						</div>
@@ -323,18 +321,18 @@
 				}
 				
 				
-				isPosition = 2;	//TODO 默认1 不定位
-				latitude=30.155
-				longitude= 100.158
-				var provincecode = 510000
-				var citycode = 510200
+//				isPosition = 2;	//    测试参数
+//				latitude=30.155
+//				longitude= 100.158
+//				var provincecode = 510000
+//				var citycode = 510200
 				
-				getProduct(true);
+//				getProduct(true);
 				//获取商品列表 
 				function getProduct(empty) {
 					if(isPosition == 2){
-//						var provincecode = $(".address").attr("province"); //省code
-//						var citycode = $(".address").attr("city"); //市code码
+						var provincecode = $(".address").attr("province"); //省code
+						var citycode = $(".address").attr("city"); //市code码
 						$.ajax({
 							url: API_SERVER + 'Product/ProductList',
 							async: false,
@@ -377,7 +375,7 @@
 							}
 						});
 					}else{
-						mui.toast("获取爆款产品必须获取您的定位！")
+//						mui.toast("获取爆款产品必须获取您的定位！")
 						getPosition();
 					}
 				}
@@ -390,7 +388,6 @@
 						data: {
 							token: token,
 							pr_id: productId,
-							//TODO 返回参数ID名称
 							url: BASE_SERVER + "wechat_html/page/homePage/productDetails.html"
 						},
 						success: function(data) {

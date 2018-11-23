@@ -552,7 +552,6 @@
 			$(function() {
 				var token = localStorage.getItem("token");
 				
-				
 				//第一步获取用户信息=》参数token
 				getUserMessage();
 				function getUserMessage(){
@@ -629,8 +628,6 @@
 						}
 					}) 
 				}
-				
-				
 				
 				//复制邀请码
 				var clipboard = new $.Clipboard('.btn', {
@@ -738,7 +735,7 @@
 									mui.openWindow({
 										url: "realNameSuccess.html"
 									})
-								}else{
+								}else if(data.data.status == 3){	//未进行实名认证
 									mui.openWindow({
 										url: "realName.html"
 									})

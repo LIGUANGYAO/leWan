@@ -139,8 +139,7 @@
 							log(data)
 							if(data.code == 200) {
 								$(".headerName").text(data.data.truename);
-								//TODO 身份证号码没有返回
-								$(".headerNumber").text(data.data.truename);
+								$(".headerNumber").text(data.data.cardno);
 								
 							} else {
 								mui.toast(data.message)

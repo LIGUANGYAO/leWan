@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>我的银行卡</title>
+		<title>选择地址</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link href="../../css/leWan.css" rel="stylesheet" />
@@ -85,6 +85,10 @@
 				<div class="cardBox" v-if="cardList.length">
 					<div class="cardList" v-for="items in cardList" 
 						:style="{'backgroundImage': 'url(' + items.back + ')'}">
+						
+						<span>地址列表</span>
+						
+						
 						<div class="bankName">{{ items.name }}</div>
 						<div class="bankNumber">{{ items.number }}</div>
 					</div>
@@ -94,7 +98,7 @@
 					<div class="lw-empty-box">
 						<div class="lw-empty-flex">
 							<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
-							<div class="lw-empty-test">暂无银行卡 去新增银行卡吧！</div>
+							<div class="lw-empty-test">暂无收货地址 去新增地址！</div>
 						</div>
 					</div>
 				</div>
