@@ -626,7 +626,7 @@
 										<span>已售{{ items.product_sold }}</span>
 									</p>
 									<div class="countDown">
-										距结束 &nbsp {{ items.format }}
+										距结束： {{ items.djs }}
 										<!--距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>-->
 									</div>
 								</div>
@@ -703,6 +703,7 @@
 				var vueData = {
 					homePageBanner: [], //首页banner图
 					eightIn: [], //八大入口动态参数
+					cardList: [], //商品列表
 					cardList: [], //商品列表
 					level: 1,	//用户等级
 				};
@@ -846,9 +847,37 @@
 						jumpToDetails: jumpToDetails,
 						InitTime:InitTime
 					},
+					created: function() {
+//						vueData.cardListBox.map(function(obj,index){
+//				            this.$set(
+//				                obj,"djs",InitTime(obj.product_endtime)
+//				            );
+//				        })
+//				        this.cardList = vueData.cardListBox;
+					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
 						
+//						setInterval(function(){
+//				            for (var key in vueData.cardList) {
+////				                var aaa = parseInt( vueData.cardList[key]["product_endtime"]*1000 );
+//				                var aaa = new Date('2018/11/28 23:23:23').getTime();
+//				                var bbb = new Date().getTime();
+//				                var rightTime = aaa - bbb;
+//				                if (rightTime > 0) {
+//				                    var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
+//				                    var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
+//				                    var mm = Math.floor((rightTime / 1000 / 60) % 60);
+//				                    var ss = Math.floor((rightTime / 1000) % 60);
+//				                    
+//				                    this.cardList[key]["djs"] = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
+//				                   
+////				                    log(vueData.cardList[key]["djs"])
+////				                    log(vueData.cardList[0].djs)
+//				                }
+//				                log(this.cardList[0].djs)
+//				            }
+//				        }, 1000);
 					},
 					updated: function() {
 						spaceConnet = ($('.spaceConnet').offset().top) / 75;
@@ -859,6 +888,24 @@
 						});
 					}
 				});
+				
+				//倒计时方法
+				function InitTime(endtime){
+				    var dd,hh,mm,ss = null;
+				    var time = parseInt(endtime) - new Date().getTime();
+				    if(time<=0){
+				        return '结束'
+				    }else{
+				        dd = Math.floor(time / 60 / 60 / 24);
+				        hh = Math.floor((time / 60 / 60) % 24);
+				        mm = Math.floor((time / 60) % 60);
+				        ss = Math.floor(time  % 60);
+				        var str = dd+"天"+hh+"小时"+mm+"分"+ss+"秒";
+				        return str;
+				    }
+				}
+
+				
 				//获取用户个人基本信息
 				getUSerMessage();
 				function getUSerMessage(){
@@ -1071,41 +1118,6 @@
 						"display": "none"
 					})
 				})
-
-				//倒计时方法
-				function InitTime() {
-//					for(let i=0; i < vueData.cardList.length; i++){
-//						vueData.cardList[i].remainTime = (vueData.cardList[i].now_time - vueData.cardList[i].product_endtime)*1000;
-//						vueData.cardList[i].format = '';
-//					}
-//				    let timer = setInterval(function () {
-//				        for (let i = 0; i < vueData.cardList.length; i++) {
-//				        	
-//				            vueData.cardList[i].remainTime -= 1000;
-//				            let t = vueData.cardList[i].remainTime
-//				            if (t > 0) {
-//				                let day = Math.floor(t / 86400000)
-//				                let hour = Math.floor((t / 3600000) % 24)
-//				                let min = Math.floor((t / 60000) % 60)
-//				                let sec = Math.floor((t / 1000) % 60)
-//				                day = day < 10 ? '0' + day : day
-//				                hour = hour < 10 ? '0' + hour : hour
-//				                min = min < 10 ? '0' + min : min
-//				                sec = sec < 10 ? '0' + sec : sec
-//				                
-//				                log("距离结束："+day+" 天 "+hour+"时"+min+"分"+sec+"秒")
-//				               vueData.cardList[i].format = "距离结束："+day+" 天 "+hour+"时"+min+"分"+sec+"秒"
-//				             } else {
-//				                // 进行判断 如果数据内所有的倒计时已经结束，那么结束定时器， 如果没有那么继续执行定时器
-//				                let flag = vueData.cardList.every(function(val, ind) {val.remainTime <= 0})
-//				                if (flag) clearInterval(timer)
-//				                vueData.cardList[i].format = "距离结束：0天 0时0分0秒" // 结束文案
-//				             }
-//				        }
-//				    }, 1000)
-//				
-
-				}
 
 				mui('body').on('tap', '.messageCenter', function() { //消息中心
 					mui.openWindow({
