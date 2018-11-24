@@ -478,14 +478,14 @@
 			
 			.modalCard2{
 				display: inline-block;
-				margin-top: 8vh;
-				width: 8.8rem;
-				height: 13.333rem;
+				margin-top: 4vh;
+				width: 7.84rem;
+				height: 13.92rem;
 				position: relative;
 			}
 			.modelImg{
-				width: 8.8rem;
-				height: 13.333rem;
+				width: 7.84rem;
+				height: 13.92rem;
 				border-radius: 0.18rem;
 			}
 			.modelClose{
@@ -530,7 +530,7 @@
 						<!--TODO 倒计时还未实现-->
 					</div>
 					<div class="textIntroduce">
-						<div class="textShowOne"><strong>【{{ proDetail.product_name }}】</strong></div>
+						<div class="textShowOne"><strong>{{ proDetail.product_name }}</strong></div>
 						<div class="textLabel">
 							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
 							<!--<span>家庭聚会</span>-->
@@ -589,7 +589,7 @@
 										</div>
 										<div class="mui-card-content">
 											<div class="mui-card-content-inner">
-												<p class="textShow"><strong>【{{ items.merchant_name }}】</strong>{{ items.product_name }}
+												<p class="textShow"><strong>{{ items.merchant_name }}</strong>{{ items.product_name }}
 												</p>
 											</div>
 										</div>
@@ -609,7 +609,7 @@
 									</div>
 									<div class="mui-card-content">
 										<div class="mui-card-content-inner">
-											<p class="textShow"><strong>【{{ items.merchant_name }}】</strong>{{ items.product_name }}
+											<p class="textShow"><strong>{{ items.merchant_name }}</strong>{{ items.product_name }}
 											</p>
 										</div>
 									</div>
@@ -680,7 +680,12 @@
 			$(function() {
 				var token = localStorage.getItem("token");
 				var productId = getUrlParam("productId"); //商品id
-
+				
+				var latitude = localStorage.getItem("latitude"); //纬度
+				var longitude = localStorage.getItem("longitude"); //经度
+				var provincecode = localStorage.getItem("provincecode"); //省code
+				var citycode = localStorage.getItem("citycode"); //市code
+				
 				/*======================================================*/
 				var vueData = {
 					showPage: false,
@@ -716,14 +721,20 @@
 				function getProductDetails() {
 					var data = {
 						token: token?token:null,
-						type: 1, //TODO 1未定位 2已定位
+						type: 2, //TODO 1未定位 2已定位
 						pr_id: productId,
-						lat: null,
-						lng: null
+						lat: latitude?latitude:null,
+						lng: longitude?longitude:null
 					};
 					$.ajax({
 						url: API_SERVER + 'Product/ProductDetails',
 						async: false,
+						headers: {
+							"product": "wechat",
+							"platform": browserType, //sreverApi里面设置了全局变量
+							"provincecode": provincecode?provincecode:null,
+							"citycode": citycode?citycode:null
+						},
 						data: data,
 						success: function(data) {
 							log(data)

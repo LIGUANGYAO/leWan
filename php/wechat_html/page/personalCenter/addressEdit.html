@@ -123,6 +123,9 @@
 
 				var secPage = getUrlParam("secPage"); //编辑还是新增
 				var addressId = getUrlParam("addressId"); //编辑地址id
+				var goTo = getUrlParam("goTo"); //0为地址列表过来1，为下单新增地址过来
+				var productId = getUrlParam("productId");
+				var priceId = getUrlParam("priceId");
 				if(secPage === "0") { //编辑地址
 					document.title = '编辑地址';
 					getAddress();
@@ -241,10 +244,15 @@
 						success: function(data) {
 							log(data)
 							if(data.code == 200) {
-								mui.openWindow({
-									url: "shippingAddress.html",
-									id: "shippingAddress.html"
-								})
+								if(goTo == '0'){
+									mui.openWindow({
+										url: "shippingAddress.html"
+									})
+								}else if(goTo == '1'){
+									mui.openWindow({
+										url: "../homePage/OrderPayment.html?productId="+productId+"&priceId="+priceId
+									})
+								}
 							} else {
 								mui.toast(data.message)
 							}

@@ -961,6 +961,8 @@
 								"province": _getParam(items[0], 'value'),
 								"city": _getParam(items[1], 'value')
 							});
+							localStorage.setItem("provincecode", _getParam(items[0], 'value')); //省code
+							localStorage.setItem("citycode", _getParam(items[1], 'value')); //市code
 							getBanner(); //选择城市后获取城市banner
 							pageData.page = 1; //选择城市后，商品列表页数从1开始
 							getProduct(true); //选择之后执行请求商品列表

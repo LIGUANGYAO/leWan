@@ -1,0 +1,433 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>预约发货</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/mui.picker.css" rel="stylesheet" />
+		<link href="../../plugins/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #F8F8F8;
+			}
+			
+			/*列表行间距调节*/
+			
+			.mui-input-row {
+				height: 1.4rem !important;
+				line-height: 1.4rem !important;
+			}
+			
+			.mui-input-row label {
+				line-height: 2;
+			}
+			
+			.mui-input-row input {
+				line-height: 2;
+				height: auto;
+			}
+			
+			
+			.isClick {
+				color: #F77917 !important;
+			}
+			.isClickFalse {
+				color: #999999 !important;
+			}
+			
+			.mui-input-row label {
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: bold;
+			}
+			
+			.mui-input-row input {
+				font-size: 0.426rem;
+			}
+			
+			.postscript label {
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: bold;
+				line-height: 1.1;
+				float: left;
+				width: 35%;
+				padding: 11px 15px;
+			}
+			
+			.postscript textarea {
+				width: 90%;
+				margin: 0 5% 15px 5%;
+				background-color: #F2F2F2;
+				padding: 5px 10px;
+				border-radius: 8px;
+				border: 1px solid #e7e7e7;
+			}
+			/*选择地址*/
+			.secAddressBox {
+				position: relative;
+			}
+			
+			.mui-input-row img {
+				position: absolute;
+				right: 3%;
+				width: 6%;
+				padding: 0.6rem 0;
+				top: 0;
+				bottom: 0;
+				margin: auto;
+			}
+			.content{
+				overflow: hidden;
+			}
+			.mui-input-group{
+				margin-top: 0.3rem;
+			}
+			.mui-input-group:after,.mui-input-group:before{
+				height: 0;
+			}
+			
+			
+			/*选择地址模态窗*/
+			.mui-modal{
+				background-color: rgba(0,0,0,0.5);
+			}
+			.mui-bar-nav{
+				top: 50vh;
+			}
+			.mui-content{
+				height: 50vh;
+				margin-top:50vh;
+				background-color:#FFFFFF;
+				position: relative;
+				overflow-y: auto;
+				padding-bottom: 1.5rem;
+			}
+			.BuyNow{
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				height: 1.226rem;
+				line-height: 1.226rem;
+				text-align: center;
+				font-size: 0.48rem;
+				color: #FFFFFF;
+				font-weight: bold;
+				background-color: #E1B872;
+			}
+			.lw-empty-box{
+				height: 6rem;
+			}
+			.nowAddBox {
+				position: absolute;
+				bottom: 0.2rem;
+				width: 100%;
+				text-align: center;
+			}
+			
+			.nowAdd {
+				display: inline-block;
+				width: 6.56rem;
+				/*height: 1.3rem;*/
+				line-height: 1.333rem;
+				text-align: center;
+				background: linear-gradient(to right, #FF791C 0%, #DC2609 100%);
+				border-radius: 0.666rem;
+				color: #FFFFFF;
+				font-size: 0.426rem;
+				font-weight: 500;
+				box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.3);
+			}
+		
+			.mui-table-view:after,
+			.mui-table-view:before {
+				height: 0;
+			}
+			
+			.addressMes {
+				margin-top: 0.293rem;
+			}
+			
+			.addressMes>span:nth-child(1) {
+				display: inline-block;
+				width: 90%;
+				float: left;
+				font-size: 0.346rem;
+				color: #999999;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			
+			.mui-table-view:after,
+			.mui-table-view:before {
+				height: 0;
+			}
+			
+			.addressBox{
+				width: 90%;
+				float: left;
+			}
+			.addressBtn{
+				float: left;
+				width: 10%;
+				text-align: center;
+				margin-top: 0.3rem;
+				color: #999999;
+			}
+			.addressBtn i{
+				font-size: 0.6rem;
+			}
+			.addressSecBox{
+				height: 30vh;
+				overflow-y: scroll;
+			}
+			.selectIconColor{
+				color: #FC9929;
+			}
+			.footer {
+				background-color: #FFFFFF;
+				width: 100%;
+				text-align: center;
+				padding: 0.8rem 0;
+			}
+			
+			.footerBox {
+				display: inline-block;
+				width: 6.56rem;
+				line-height: 1.333rem;
+				text-align: center;
+				background: linear-gradient(to right, #FF791C 0%, #DC2609 100%);
+				border-radius: 0.666rem;
+				color: #FFFFFF;
+				font-size: 0.426rem;
+				font-weight: 500;
+				box-shadow: 0 0 10px 1px #F8864E;
+			}
+			.textBox{
+				margin-top: 0.3rem;
+				background-color: #FFFFFF;
+				padding: 0.3rem 0.426rem;
+			}
+			.textTitle{
+				text-align: center;
+				font-size: 0.373rem;
+				color: #333333;
+				font-weight: 500;
+			}
+			.textFont{
+				margin-top: 0.2rem;
+				font-size: 0.373rem;
+				color: #666666;
+			}
+			#ssq{
+				padding-right: 1rem;
+			}
+			.userMes {
+				font-size: 0.453rem;
+				color: #333333;
+				font-weight: 600;
+			}
+			
+			.userMes>span:nth-child(2) {
+				margin-left: 1.013rem;
+				font-weight: 600;
+			}
+			.addressMes {
+				margin-top: 0.293rem;
+			}
+			
+			.addressMes>span:nth-child(1) {
+				display: inline-block;
+				width: 90%;
+				float: left;
+				font-size: 0.346rem;
+				color: #999999;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="J_el" v-cloak>
+			<div class="content">
+				<form class="mui-input-group">
+					<div class="mui-input-row secAddressBox">
+						<label>收货地址:</label>
+						<input type="text" id="ssq" secFlag="0" disabled="disabled" placeholder="请选择收货地址">
+						<a href="#modal"><img class="secAddress" src="../../img/personalCenter/adressEdit.png" /></a>
+					</div>
+					<div class="mui-input-row secAddressBox">
+						<label>发货时间:</label>
+						<input type="text" id="time" secFlag="0" disabled="disabled" placeholder="请选择发货时间">
+						<img class="secAddress secTime" src="../../img/personalCenter/adressEdit.png" />
+					</div>
+				</form>
+				<div class="textBox">
+					<div class="textTitle">快递商品物流说明</div>
+					<div class="textFont">
+						 夜，脊柱骨科病房，其中一个患者刚接受腰椎手术，在病床静滴 甘露醇 ，加压输注，值
+						 班护士 忙不过来，没去换瓶，家属也进了洗手间没留意，甘露醇早已经输完，后面
+						 一直在“输”空气，患者都出现烦躁、胸闷、紫绀，血氧血压蹭蹭往下掉，要不是刚好护理
+						 总值护士长夜间查房发现，马上将患者翻身左侧卧，立即进行抢救，后果堪忧！真实案例…
+						 …SO， 作者：mictime 链接：https://www.zhihu.com/question/34344644/answer/44
+						 3326505 来源：知乎 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+					</div>
+				</div>
+				<!--底部按钮-->
+				<div class="footer">
+					<div class="footerBox">确定</div>
+				</div>
+				
+				<!--地址选择-->
+				<div id="modal" class="mui-modal">
+					<header class="mui-bar mui-bar-nav">
+						<h1 class="mui-title">收货地址选择</h1>
+					</header>
+					<div class="mui-content">
+						<ul class="mui-table-view addressSecBox" v-if="addrList.length">
+							<li class="mui-table-view-cell" v-for="(items,index) in addrList" @tap="secDangqian(index,items.ssq,items.address,items.address_id)">
+								<div class="addressBox">
+									<div class="userMes">
+										<span>{{ items.contact }}</span>
+										<span>{{ items.mobile }}</span>
+									</div>
+									<div class="addressMes">
+										<span>{{ items.ssq }}{{ items.address }}</span>
+									</div>
+								</div>
+								<div class="addressBtn" v-bind:dataVal="items.address_id">
+									<i class="selectIcon iconfont icon-xuanzhong"></i>
+								</div>
+							</li>
+						</ul>
+						<div class="lw-empty" style="display: block;" v-else>
+							<div class="lw-empty-box">
+								<div class="lw-empty-flex">
+									<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+									<div class="lw-empty-test">暂无地址 去新增地址吧！</div>
+								</div>
+							</div>
+						</div>
+						<div v-if="addrList.length" class="nowAddBox">
+							<a href="#modal">
+								<div class="nowAdd">确定</div>
+							</a>
+						</div>
+						<div v-else class="nowAddBox">
+							<div class="nowAdd goToAdd">新增收货地址</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/mui.picker.js"></script>
+		<script src="../../plugins/mui.poppicker.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = localStorage.getItem("token");
+				var orderId = getUrlParam("orderId");
+
+				var vueData = {
+					addrList:[],//收货地址
+				};
+				new Vue({
+					el: '#J_el',
+					data: vueData,
+					methods: {
+						secDangqian:secDangqian,	//选择当前地址
+					}
+				});
+				
+				//获取收货地址
+				getList()
+				function getList() {
+					$.ajax({
+						url: API_SERVER + "UserAddress/UserAddressList",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.addrList = data.data;
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
+				}
+				
+				//选择当前地址
+				function secDangqian(index,sheng,shi,id){
+					$('.selectIcon').removeClass('selectIconColor');
+					$('.selectIcon').eq(index).addClass('selectIconColor');
+					$("#ssq").val(sheng+shi);
+					$("#ssq").attr("dataVal",id);
+					$("#ssq").attr("secFlag",1);
+				}
+				
+				//时间选择
+//				var dtPicker = new mui.DtPicker(options)
+				
+			    mui('body').on('tap', '.secTime',function () {
+			        document.activeElement.blur();
+					var optionsJson = $(this).attr('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var picker = new mui.DtPicker(options);
+					picker.show(function(rs) {
+//						$("#demo").text(rs.text).attr('flag', 1)
+						picker.dispose();
+					});
+			    })
+			    
+				/*确定预约*/
+				mui('body').on('tap', '.footerBox', function() {
+//					var data = {
+//						token: token,
+//						order_id: order_id,
+//						address_id: address_id,
+//						day: day,
+//						remark: remark
+//					}
+//					
+					$.ajax({
+						url: API_SERVER + "Wechat/ExpressReservation",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.addrList = data.data;
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
+				})
+				
+				
+				/*新增地址*/
+				mui('body').on('tap', '.goToAdd', function() {
+					mui.openWindow({
+						url: '../personalCenter/addressEdit.html?secPage=1&addressId=0&goTo=2&productId='+productId+'&priceId='+priceId,
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>
