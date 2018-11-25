@@ -283,7 +283,8 @@
 								initBank = data.data.map(function(items) {
 									return {
 										value: items.number,
-										text: items.name,
+										text: items.name+" "+items.number,
+										bankName: items.name,
 										bank_icon: items.icon,
 										tail: items.tail,
 										bankId: items.ub_id
@@ -308,7 +309,7 @@
 						cityPicker.show(function(items) {
 							$(".bankImg").attr("src",items[0].bank_icon);
 							$(".bankImg").attr("bankID",items[0].bankId);
-							$(".bankName").text(items[0].text);
+							$(".bankName").text(items[0].bankName);
 							$(".bankNumberInt").text(items[0].tail);
 							$('.bankImg').attr('dataVal','1')
 						});

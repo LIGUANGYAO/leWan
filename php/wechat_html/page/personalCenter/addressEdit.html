@@ -123,9 +123,10 @@
 
 				var secPage = getUrlParam("secPage"); //编辑还是新增
 				var addressId = getUrlParam("addressId"); //编辑地址id
-				var goTo = getUrlParam("goTo"); //0为地址列表过来1，为下单新增地址过来
-				var productId = getUrlParam("productId");
-				var priceId = getUrlParam("priceId");
+				var goTo = getUrlParam("goTo"); //0为地址列表过来1，为下单新增地址过来2.为预约发货选择地址过来
+				var productId = getUrlParam("productId");	//下单带来的参数
+				var priceId = getUrlParam("priceId");	//下单带来的参数
+				var orderId = getUrlParam("orderId");	//预约发货选择地址带来的参数
 				if(secPage === "0") { //编辑地址
 					document.title = '编辑地址';
 					getAddress();
@@ -251,6 +252,10 @@
 								}else if(goTo == '1'){
 									mui.openWindow({
 										url: "../homePage/OrderPayment.html?productId="+productId+"&priceId="+priceId
+									})
+								}else if(goTo == '2'){
+									mui.openWindow({
+										url: "../reservationCenter/expressAppointment.html?orderId="+orderId
 									})
 								}
 							} else {

@@ -78,9 +78,9 @@
 
 	<body>
 		<div class="header" style="background-image: url(../../img/personalCenter/equity1.png);">
-			<div class="" style="background-image: url(../../img/homePage/eightNav1.png);"></div>
+			<div id="tuijianImg" style="background-image: url(../../img/homePage/eightNav1.png);"></div>
 			<div>您的邀请人</div>
-			<div>冬天的雪</div>
+			<div id="tuijianName">冬天的雪</div>
 			<div>微信昵称</div>
 			<div class="" style="background-image: url(../../img/personalCenter/equity2.png);">权益/佣金比例说明</div>
 		</div>
@@ -100,12 +100,25 @@
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				mui('body').on('tap','#equityExplain',function(){
-					mui.openWindow({
-						url: "equityExplain.html",
-						id: "equityExplain.html"
-					})
-				})
+				var token = localStorage.getItem("token");
+				
+				//获取推荐人信息
+				getUserMessage();
+				function getUserMessage(){
+					$.ajax({
+						url: API_SERVER + "User/UserRefereeData",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$("#tuijianImg").css({"background-image":"url("+data.data.avatar+")"});
+								$("#tuijianName").text(data.data.nickname)
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					});
+				}
 			})
 		</script>
 	</body>

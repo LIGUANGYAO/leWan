@@ -704,7 +704,6 @@
 					homePageBanner: [], //首页banner图
 					eightIn: [], //八大入口动态参数
 					cardList: [], //商品列表
-					cardList: [], //商品列表
 					level: 1,	//用户等级
 				};
 				//第一步===》判断是否有token
@@ -754,7 +753,7 @@
 				//获取地理位置
 				var latitude; // 纬度，浮点数，范围为90 ~ -90
 				var longitude; // 经度，浮点数，范围为180 ~ -180。
-				var isPosition = 1;
+				var isPosition = 1; //1未定位  2.已定位
 				function getPosition() {
 					log("获取微信定位")
 					$.ajax({
@@ -824,7 +823,7 @@
 							getBanner(); //逆解析失败直接获取全国banner
 							pageData.page = 1;  
 							getProduct(true); //逆解析失败获取全国产品
-							alert(JSON.stringify(result))
+							log(JSON.stringify(result))
 						}
 					});
 				}
@@ -832,9 +831,6 @@
 				//==========绑定数据===================================
 				var scroll = mui('.mui-scroll-wrapper').scroll();
 				var scrollTop;
-				document.querySelector('.mui-scroll-wrapper').addEventListener('scroll', function(e) {
-					scrollTop = Math.abs(scroll.y) / 75
-				})
 				var spaceConnet;
 				var showContentHeader;
 				
@@ -858,6 +854,9 @@
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
 						
+						document.querySelector('.mui-scroll-wrapper').addEventListener('scroll', function(e) {
+							scrollTop = Math.abs(scroll.y) / 75
+						})
 //						setInterval(function(){
 //				            for (var key in vueData.cardList) {
 ////				                var aaa = parseInt( vueData.cardList[key]["product_endtime"]*1000 );
@@ -1036,7 +1035,7 @@
 				function jumpToProductList(id, name) {
 					if(isPosition==2 || id == 4){
 						mui.openWindow({
-							url: "productList.html?cateId=" + id + "&cateName=" + name
+							url: "productList.html?cateId=" + id + "&cateName=" + name + "&isPosition=" + isPosition
 						})
 					}else{
 						mui.toast("请授权获取地理位置！")
@@ -1048,7 +1047,7 @@
 					var cateName = $(this).attr("cateName")
 					if(isPosition==2 || cateId == 4){
 						mui.openWindow({
-							url: "productList.html?cateId=" + cateId + "&cateName=" + cateName
+							url: "productList.html?cateId=" + cateId + "&cateName=" + cateName + "&isPosition=" + isPosition
 						})
 					}else{
 						mui.toast("请授权获取地理位置！")
@@ -1138,7 +1137,7 @@
 					}           
 				});
 				//排序方式
-				var isClick = 2;
+				var isClickBtn = 2;
 				mui("body").on("tap", ".filterPar", function() {
 					var clickVal = parseInt($(this).attr('dataVal'));
 					//选中下划线
@@ -1159,8 +1158,8 @@
 						$(".showContentHeader .filterPar").eq(1).attr("salesOrder", 1);
 					}
 					if($(".filterPar").index(this) == 2 || $(".filterPar").index(this) == 6) {
-						isClick++;
-						if(isClick % 2 == 0) {
+						isClickBtn++;
+						if(isClickBtn % 2 == 0) {
 							$(".priceAfter i").eq(0).removeClass("iconActive");
 							$(".priceAfter i").eq(2).removeClass("iconActive");
 							$(".priceAfter i").eq(1).addClass("iconActive");
@@ -1176,7 +1175,7 @@
 							$(".showContentHeader .filterPar").eq(2).attr("priceOrder", 2);
 						}
 					} else {
-						isClick = 0;
+						isClickBtn = 0;
 						$(".priceAfter i").removeClass("iconActive");
 					}
 
@@ -1189,7 +1188,7 @@
 				});
 				
 				function handleScroll() {
-//					log(scrollTop+"==="+spaceConnet+"==="+showContentHeader)
+					log(scrollTop+"==="+spaceConnet+"==="+showContentHeader)
 					if(scrollTop >= spaceConnet - 0.72) {
 						$(".topmenu").css({
 							"opacity": 1,

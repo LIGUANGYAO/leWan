@@ -18,16 +18,19 @@
 				height: 100vh;
 				overflow: auto;
 			}
-			.title{
+			
+			.title {
 				font-size: 0.48rem;
 				color: #FFFFff;
 				font-weight: 500;
 				margin-top: 1.093rem;
 			}
-			.header{
+			
+			.header {
 				text-align: center;
 			}
-			.cardBox{
+			
+			.cardBox {
 				width: 8.826rem;
 				height: 12.426rem;
 				background-repeat: no-repeat;
@@ -38,38 +41,98 @@
 				position: relative;
 				text-align: center;
 			}
-			.myHeader{
+			
+			.myHeader {
 				width: 1.333rem;
 				height: 1.333rem;
 				border-radius: 0.666rem;
 				margin-top: 1.066rem;
 				display: inline-block;
 			}
-			.mycodeText{
+			
+			.mycodeText {
 				font-size: 0.373rem;
 				color: #999999;
 				font-weight: 500;
 				margin-top: 0.24rem;
 			}
-			.myCode{
+			
+			.myCode {
 				font-size: 0.533rem;
 				color: #E1B872;
 				font-weight: 800;
 				margin-top: 0.2rem;
 			}
-			.myQR{
+			
+			.myQR {
 				width: 5.866rem;
 				height: 5.866rem;
 			}
-			.createPoster{
+			
+			.createPoster {
 				margin-top: 0.4rem;
 				font-size: 0.426rem;
 				font-weight: 300;
 				color: #E1B872;
 			}
-			.createPoster>span:nth-child(1){
+			
+			.createPoster>span:nth-child(1) {
 				margin-right: 0.8rem;
 				color: #999999;
+			}
+			/*选择海报*/
+			
+			.modalBox1 {
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 0.4);
+				z-index: 20;
+			}
+			.swiper-container{
+				margin-top: 4vh;
+			}
+			
+			.swiper-wrapper>div{
+				text-align: center;
+			}
+			.swiper-wrapper>div>img{
+				height: 70vh;
+			}
+			
+			
+			.modalBox2 {
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100vw;
+				height: 100vh;
+				z-index: 20;
+				background-color: rgba(0, 0, 0, 0.6);
+				text-align: center;
+			}
+			.modalCard2{
+				display: inline-block;
+				margin-top: 4vh;
+				width: 7.84rem;
+				height: 13.92rem;
+				position: relative;
+			}
+			.modelImg{
+				width: 7.84rem;
+				height: 13.92rem;
+				border-radius: 0.18rem;
+			}
+			.modelClose{
+				position: absolute;
+				right: 0.1rem;
+				top: 0.2rem;
+				font-size: 0.8rem;
+				color: #FFFFFF;
 			}
 		</style>
 	</head>
@@ -80,18 +143,43 @@
 				分 享 邀 请 码
 			</div>
 			<div class="cardBox" style="background-image: url(../../img/personalCenter/inviteFriends1.png);">
-				<img class="myHeader" src="../../img/homePage/eightNav1.png"/>
+				<img class="myHeader" src="../../img/homePage/eightNav1.png" />
 				<div class="mycodeText">
 					我的邀请码
 				</div>
 				<div class="myCode">
 					88888888
 				</div>
-				<img class="myQR" src="../../img/homePage/homePage3.png"/>
+				<img class="myQR" src="../../img/homePage/homePage3.png" />
 				<div class="createPoster">
-					<span>生成海报</span>
-					<span>分享链接</span>
+					<span id="ImgType">选择分享海报样式</span>
+					<!--<span>分享链接</span>-->
 				</div>
+			</div>
+		</div>
+		<div class="modalBox1">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" dataVal="1"><img src="../../img/personalCenter/1.png"/></div>
+					<div class="swiper-slide" dataVal="2"><img src="../../img/personalCenter/2.png"/></div>
+					<div class="swiper-slide" dataVal="3"><img src="../../img/personalCenter/3.png"/></div>
+					<div class="swiper-slide" dataVal="4"><img src="../../img/personalCenter/4.png"/></div>
+					<div class="swiper-slide" dataVal="5"><img src="../../img/personalCenter/5.png"/></div>
+					<div class="swiper-slide" dataVal="6"><img src="../../img/personalCenter/6.png"/></div>
+					<div class="swiper-slide" dataVal="7"><img src="../../img/personalCenter/7.png"/></div>
+					<div class="swiper-slide" dataVal="8"><img src="../../img/personalCenter/8.png"/></div>
+				</div>
+				<!-- 如果需要分页器 -->
+				<div class="swiper-pagination"></div>
+				<!-- 如果需要导航按钮 -->
+				<!--<div class="swiper-button-prev"></div>
+				<div class="swiper-button-next"></div>-->
+			</div>
+		</div>
+		<div class="modalBox2">
+			<div class="modalCard2">
+				<img class="modelImg" src="../../img/personalCenter/1.png" />
+				<i class="modelClose iconfont icon-guanbi" id="closeModelBtn"></i>
 			</div>
 		</div>
 		<script src="../../plugins/flexible.js"></script>
@@ -105,61 +193,92 @@
 				var token = localStorage.getItem("token");
 				//获取头像
 				getUserMessage()
-				function getUserMessage(){
+
+				function getUserMessage() {
 					$.ajax({
 						url: API_SERVER + 'User/UserPersonal',
 						async: false,
-						data:{token: token},
+						data: {
+							token: token
+						},
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
+								$(".myCode").text(data.data.recode)
 								localStorage.setItem("token", data.data.token); //token
 								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
 								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
-								$(".myHeader").attr({"src":data.data.avatar});//用户头像
+								$(".myHeader").attr({
+									"src": data.data.avatar
+								}); //用户头像
 							}
 						}
 					});
 				}
-				//获取二维码与链接
+				//获取二维码
 				getUserQRImg()
-				function getUserQRImg(){
+
+				function getUserQRImg() {
 					$.ajax({
 						url: API_SERVER + 'User/UserQrCode',
 						async: false,
-						data:{
+						data: {
 							token: token,
-							url: 'http://cs.lewan6.ren/wechat_html/page/homePage/register.html',	//二维码跳转路径
+							url: 'http://cs.lewan6.ren/wechat_html/page/homePage/register.html', //二维码跳转路径
 						},
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
-								$(".myQR").attr("src",data.data.url)
-								$(".myCode").text()
-								//TODO 我的邀请码不在??????
+								$(".myQR").attr("src", data.data.url)
 							}
 						}
 					});
 				}
+				
+				
+				//点击选择样式
+				mui('body').on('tap','#ImgType',function(){
+					$('.modalBox1').css({"display":'block'});
+					var mySwiper = new Swiper ('.swiper-container', {
+					    loop: true, // 循环模式选项
+					    // 如果需要分页器
+					    pagination: {
+					      el: '.swiper-pagination',
+					    }
+					})    
+				})
+				
+				var imgType = 1;
+				mui('body').on('tap','.swiper-slide',function(){
+					imgType = $(this).attr("dataVal");
+					$('.modalBox1').css({"display":'none'});
+					$('.modalBox2').css({"display":'block'});
+					getQRImg();
+				})
+				
 				//获取二维码与链接
-				getQRImg()
-				function getQRImg(){
+				function getQRImg() {
 					$.ajax({
 						url: API_SERVER + 'User/UserInviteQRCode',
-						async: false,
-						data:{
+//						async: false,
+						data: {
 							token: token,
-							type: 1,	//邀请函背景 8中邀请背景 1,2,3,4,5,6,7,8
-							url: 'http://cs.lewan6.ren/wechat_html/page/homePage/register.html',	//二维码跳转路径
+							type: imgType, //邀请函背景 8中邀请背景 1,2,3,4,5,6,7,8
+							url: BASE_SERVER + 'wechat_html/page/homePage/register.html', //二维码跳转路径
 						},
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
-								//TODO 这个页面怎么展示 而且报500
+								$('.modelImg').attr('src',data.data.url)
 							}
 						}
 					});
 				}
+				
+				//关闭海报
+				mui('body').on('tap',"#closeModelBtn",function(){
+					$(".modalBox2").css("display",'none');
+				})
 			})
 		</script>
 	</body>

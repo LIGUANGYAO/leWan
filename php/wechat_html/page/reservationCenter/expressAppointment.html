@@ -254,6 +254,68 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
+			/*预约成功弹窗*/
+			.modalTwo {
+				display: none;
+				width: 100vw;
+				height: 100vh;
+				position: fixed;
+				top: 0;
+				left: 0;
+				background-color: rgba(0, 0, 0, 0.7);
+				z-index: 10;
+			}
+			
+			.modalBox2 {
+				margin: 0 auto;
+				margin-top: 3rem;
+				width: 7.226rem;
+				height: 8.266rem;
+				border-radius: 0.2rem;
+				overflow: hidden;
+				background-color: #FFFFFF;
+			}
+			
+			.reSuccess {
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				width: 100%;
+				height: 5.946rem;
+				overflow: hidden;
+			}
+			
+			.reSuccess>div:nth-child(1) {
+				text-align: center;
+				margin-top: 4.293rem;
+				color: #FFFFFF;
+				font-size: 0.506rem;
+				font-weight: 800;
+			}
+			
+			.reSuccess>div:nth-child(2) {
+				text-align: center;
+				margin-top: 0.1rem;
+				color: #FFFFFF;
+				font-size: 0.373rem;
+			}
+			
+			.callBackBox {
+				width: 100%;
+				height: 2.32rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			
+			.callBackHomePage {
+				width: 3.173rem;
+				height: 1.013rem;
+				line-height: 1.013rem;
+				text-align: center;
+				border: 1px solid #F77917;
+				border-radius: 0.56rem;
+				color: #F77917;
+			}
 		</style>
 	</head>
 
@@ -268,8 +330,12 @@
 					</div>
 					<div class="mui-input-row secAddressBox">
 						<label>发货时间:</label>
-						<input type="text" id="time" secFlag="0" disabled="disabled" placeholder="请选择发货时间">
+						<input type="text" id="time" secDate="0" disabled="disabled" placeholder="请选择预约时间">
 						<img class="secAddress secTime" src="../../img/personalCenter/adressEdit.png" />
+					</div>
+					<div class="mui-input-row secAddressBox">
+						<label>备注信息:</label>
+						<input type="text" id="remark" maxlength="20" placeholder="备注信息">
 					</div>
 				</form>
 				<div class="textBox">
@@ -328,6 +394,18 @@
 						</div>
 					</div>
 				</div>
+				<!--预约成功-->
+				<div class="modalTwo">
+					<div class="modalBox2">
+						<div class="reSuccess" style="background-image: url(../../img/reservationCenter/subscribe1.png);">
+							<div>预约发货成功</div>
+							<div>该订单过期不用自动作废</div>
+						</div>
+						<div class="callBackBox">
+							<div class="callBackHomePage">返回首页</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<script src="../../plugins/flexible.js"></script>
@@ -335,12 +413,13 @@
 		<script src="../../plugins/jquery-2.1.4.js"></script>
 		<script src="../../plugins/vue.js"></script>
 		<script src="../../js/mui.min.js"></script>
-		<script src="../../plugins/mui.picker.js"></script>
+		<script src="../../plugins/mui.picker.min.js"></script>
 		<script src="../../plugins/mui.poppicker.js"></script>
 		<script src="../../plugins/swiper-4.3.3.min.js"></script>
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
+				mui.init();
 				var token = localStorage.getItem("token");
 				var orderId = getUrlParam("orderId");
 
@@ -382,39 +461,68 @@
 				}
 				
 				//时间选择
-//				var dtPicker = new mui.DtPicker(options)
-				
 			    mui('body').on('tap', '.secTime',function () {
 			        document.activeElement.blur();
-					var optionsJson = $(this).attr('data-options') || '{}';
-					var options = JSON.parse(optionsJson);
-					var picker = new mui.DtPicker(options);
-					picker.show(function(rs) {
-//						$("#demo").text(rs.text).attr('flag', 1)
-						picker.dispose();
+					
+					//手动设置起止时间
+					var dtpicker = new mui.DtPicker({
+					    type: "datetime",//设置日历初始视图模式 
+					    beginDate: new Date(),//设置开始日期  --月份：索引是0；
+					    endDate: new Date(2020, 10, 20),//设置结束日期 
+					    labels: ['年', '月', '日', '时', '分'],//设置默认标签区域提示语 
+					});
+					dtpicker.show(function(e) {
+					    $('#time').val(e.text);
+					    $("#time").attr("dataVal",Math.round((new Date(e.text).getTime())/1000));
+						$("#time").attr("secDate",1);
 					});
 			    })
 			    
+			    //TODO file not find
 				/*确定预约*/
+				var isClick = false;
 				mui('body').on('tap', '.footerBox', function() {
-//					var data = {
-//						token: token,
-//						order_id: order_id,
-//						address_id: address_id,
-//						day: day,
-//						remark: remark
-//					}
-//					
+					var secFlag = $("#ssq").attr("secFlag");
+					var secDate = $("#time").attr("secDate");
+					var data = {
+						token: token,
+						order_id: orderId,
+						address_id: $("#ssq").attr("dataVal"),
+						day:  $("#time").attr("dataVal"),
+						remark: $("#remark").val() || "无备注信息"
+					}
+					var isOk = validate(
+						[secFlag, [function() {
+								return secFlag == "1"
+							}],
+							['请选择收货地址']
+						],
+						[secDate, [function() {
+								return secDate == "1"
+							}],
+							['请选择预约时间']
+						]
+						
+					);
+					if(!isOk) return;
+					if(isClick) return;
+					isClick = true;
+					
 					$.ajax({
 						url: API_SERVER + "Wechat/ExpressReservation",
-						data: {token: token},
+						data: data,
 						success: function(data) {
 							log(data)
 							if(data.code == 200) {
-								vueData.addrList = data.data;
+								$(".modalTwo").css({"display": "block"}) //预约成功弹出模态窗
 							} else {
-								mui.toast(data.message)
+								mui.toast(data.message);
+								isClick = false;
 							}
+						},
+						error: function(data){
+							isClick = false;
+							mui.toast(data.message);
 						}
 					})
 				})
@@ -423,7 +531,12 @@
 				/*新增地址*/
 				mui('body').on('tap', '.goToAdd', function() {
 					mui.openWindow({
-						url: '../personalCenter/addressEdit.html?secPage=1&addressId=0&goTo=2&productId='+productId+'&priceId='+priceId,
+						url: '../personalCenter/addressEdit.html?secPage=1&addressId=0&goTo=2&orderId='+orderId,
+					})
+				})
+				mui('body').on('tap', '.callBackHomePage', function() { //返回首页
+					mui.openWindow({
+						url: BASE_SERVER + "wechat_html/page/homePage/homePage.html",
 					})
 				})
 			})
