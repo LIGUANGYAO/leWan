@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>收货地址</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #efeff4
+			}
+			/*列表*/
+			
+			.userMes {
+				font-size: 0.453rem;
+				color: #333333;
+				font-weight: 600;
+			}
+			
+			.userMes>span:nth-child(2) {
+				margin-left: 1.013rem;
+				font-weight: 600;
+			}
+			
+			.userMes>span:nth-child(3) {
+				float: right;
+				color: #F56117;
+			}
+			
+			.addressMes {
+				margin-top: 0.293rem;
+			}
+			
+			.addressMes>span:nth-child(1) {
+				display: inline-block;
+				width: 85%;
+				float: left;
+				font-size: 0.346rem;
+				color: #999999;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			
+			.addressMes>span:nth-child(2) {
+				display: inline-block;
+				width: 15%;
+				float: right;
+				text-align: center;
+			}
+			
+			.addressMes>span:nth-child(2) i {
+				text-align: center;
+				font-size: 0.8rem;
+				color: #999999;
+			}
+			
+			.mui-table-view:after,
+			.mui-table-view:before {
+				height: 0;
+			}
+			/*尾部*/
+			
+			.footer {
+				position: fixed;
+				bottom: 40px;
+				width: 100%;
+				text-align: center;
+			}
+			
+			.footerBox {
+				display: inline-block;
+				width: 6.56rem;
+				height: 1.333rem;
+				line-height: 1.333rem;
+				text-align: center;
+				background: linear-gradient(to right, #FF791C 0%, #DC2609 100%);
+				border-radius: 0.666rem;
+				color: #FFFFFF;
+				font-size: 0.426rem;
+				font-weight: 500;
+				box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.3);
+			}
+			
+			.footerBox i {
+				margin: 0.2rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="" id="J_el">
+			<template>
+				<div class="content">
+					<ul class="mui-table-view" v-if="addrList.length">
+						<li class="mui-table-view-cell" v-for="items in addrList">
+							<div class="userMes">
+								<span>{{ items.contact }}</span>
+								<span>{{ items.mobile }}</span>
+								<span class="delAddress" @tap="delAddress(items.address_id)">删除</span>
+							</div>
+							<div class="addressMes">
+								<span>{{ items.ssq }}{{ items.address }}</span>
+								<span class="editAddresss" dataVal="0" @tap="editDetail(0,items.address_id)"><i class="iconfont icon-bianji"></i></span>
+							</div>
+						</li>
+					</ul>
+					<!--空状态时-->
+					<div class="lw-empty" style="display: block;" v-else>
+						<div class="lw-empty-box">
+							<div class="lw-empty-flex">
+								<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+								<div class="lw-empty-test">暂无地址 去新增地址吧！</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="footer">
+					<div class="footerBox editAddresss" dataVal="1" @tap="editDetail(1,0)">
+						<i class="iconfont icon-tianjia"></i><span>新建收货地址</span>
+					</div>
+				</div>
+			</template>
+
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = localStorage.getItem("token");
+
+				var vueData = {
+					addrList: []
+				};
+				new Vue({
+					el: '#J_el',
+					data: vueData,
+					methods: {
+						delAddress: delAddress,
+						editDetail: editDetail
+					}
+				});
+
+				getList()
+
+				function getList() {
+					$.ajax({
+						url: API_SERVER + "UserAddress/UserAddressList",
+						data: {
+							token: token
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.addrList = data.data;
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
+				}
+
+				function delAddress(addressId) { //删除收货地址
+					var btnArray = ['否', '是'];
+					mui.confirm('是否确认删除地址？', '提示', btnArray, function(e) {
+						if(e.index == 1) {
+							$.ajax({
+								url: API_SERVER + "Useraddress/UserReviseAddress",
+								data: {
+									token: token,
+									addressid: addressId
+								},
+								success: function(data) {
+									log(data)
+									if(data.code == 200) {
+										mui.toast(data.message);
+										getList();
+									} else {
+										mui.toast(data.message)
+									}
+								}
+							})
+						} else {
+							mui.toast("取消删除地址")
+						}
+					})
+				}
+
+				function editDetail(secPage,addressId) { //编辑或者新增地址   secPage  "0"为编辑地址，"1"为新增收货地址
+					mui.openWindow({
+						url: "addressEdit.html?secPage=" + secPage + "&addressId=" + addressId+ "&goTo=" + 0,
+						id: "addressEdit.html"
+					})
+				}
+
+			})
+		</script>
+	</body>
+
+</html>
