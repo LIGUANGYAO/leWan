@@ -352,7 +352,7 @@
 						</div>
 
 						<ul class="mui-table-view" v-if="cardList.length">
-							<li class="mui-table-view-cell mui-media" v-for="(items,index) in cardList" @tap="jumpToDetails(items.product_id)">
+							<li class="mui-table-view-cell mui-media" v-for="(items,index) in cardListBox" @tap="jumpToDetails(items.product_id)">
 								<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url(' + items.product_pic + ')'}">
 									<div class="generalize" v-if="index<5">
 										<div>Top</div>
@@ -372,10 +372,7 @@
 										<span v-else="level == 3 || level == 4 || level == 5">返:￥{{ items.temp_commission.fenxiang }}</span>
 										<span>已售{{ items.product_sold }}</span>
 									</p>
-									<div v-if="items.product_timelimit == 1" class="countDown">
-										距结束： {{ items.djs }}
-										<!--距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>-->
-									</div>
+									<div v-if="items.product_timelimit == 1" class="countDown"  v-html="items.djs"></div>
 								</div>
 							</li>
 
@@ -437,6 +434,7 @@
 				var vueData = {
 					homePageBanner: [], //首页banner图
 					cardList: [], //商品列表
+					cardListBox: [], //商品倒计时列表
 					level: 1,	//用户等级
 					scollTop:0,
 				};
@@ -499,36 +497,35 @@
 						InitTime:InitTime
 					},
 					created: function() {
-//						vueData.cardListBox.map(function(obj,index){
-//				            this.$set(
-//				                obj,"djs",InitTime(obj.product_endtime)
-//				            );
-//				        })
-//				        this.cardList = vueData.cardListBox;
+						this.$watch("cardList", function () {
+							vueData.cardList.map((obj, index) => {
+								this.$set(
+									obj, "djs", InitTime(obj.product_endtime)
+								);
+							})
+							this.cardListBox = vueData.cardList;
+						   
+					    })
 					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
 						
-//						setInterval(function(){
-//				            for (var key in vueData.cardList) {
-////				                var aaa = parseInt( vueData.cardList[key]["product_endtime"]*1000 );
-//				                var aaa = new Date('2018/11/28 23:23:23').getTime();
-//				                var bbb = new Date().getTime();
-//				                var rightTime = aaa - bbb;
-//				                if (rightTime > 0) {
-//				                    var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
-//				                    var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
-//				                    var mm = Math.floor((rightTime / 1000 / 60) % 60);
-//				                    var ss = Math.floor((rightTime / 1000) % 60);
-//				                    
-//				                    this.cardList[key]["djs"] = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
-//				                   
-////				                    log(vueData.cardList[key]["djs"])
-////				                    log(vueData.cardList[0].djs)
-//				                }
-//				                log(this.cardList[0].djs)
-//				            }
-//				        }, 1000);
+						setInterval(() => {
+							for(var key in vueData.cardList) {
+								var aaa = parseInt(vueData.cardList[key]["product_endtime"]*1000);
+								var bbb = new Date().getTime();
+								var rightTime = aaa - bbb;
+								if(rightTime > 0) {
+									var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
+									var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
+									var mm = Math.floor((rightTime / 1000 / 60) % 60);
+									var ss = Math.floor((rightTime / 1000) % 60);
+									vueData.cardList[key]["djs"] = "距结束：<span>"+dd+"</span> 天  <span>"+hh+"</span> : <span>"+mm+"</span> : <span>"+ss+"</span>";
+								}else{
+									vueData.cardList[key]["djs"] = "距结束：<span>00</span> 天 <span>00</span> : <span>00</span> : <span>00</span>";
+								}
+							}
+						}, 1000);
 					},
 					updated: function() {
 						if(vueData.scollTop == 0){
@@ -548,19 +545,19 @@
 				}
 				
 				//倒计时方法
-				function InitTime(endtime){
-				    var dd,hh,mm,ss = null;
-				    var time = parseInt(endtime) - new Date().getTime();
-				    if(time<=0){
-				        return '结束'
-				    }else{
-				        dd = Math.floor(time / 60 / 60 / 24);
-				        hh = Math.floor((time / 60 / 60) % 24);
-				        mm = Math.floor((time / 60) % 60);
-				        ss = Math.floor(time  % 60);
-				        var str = dd+"天"+hh+"小时"+mm+"分"+ss+"秒";
-				        return str;
-				    }
+				function InitTime(endtime) {
+					var dd, hh, mm, ss = null;
+					var time = parseInt(endtime) - new Date().getTime();
+					if(time <= 0) {
+						return ' '
+					} else {
+						dd = Math.floor(time / 60 / 60 / 24);
+						hh = Math.floor((time / 60 / 60) % 24);
+						mm = Math.floor((time / 60) % 60);
+						ss = Math.floor(time % 60);
+						var str = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
+						return ' ';
+					}
 				}
 
 				//获取用户个人基本信息

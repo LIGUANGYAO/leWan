@@ -32,12 +32,11 @@
 			
 			.cardBox {
 				width: 8.826rem;
-				height: 12.426rem;
+				height: 14rem;
 				background-repeat: no-repeat;
 				background-size: 100% 100%;
 				margin: 0 auto;
 				margin-top: 0.8rem;
-				border-radius: 0.2rem;
 				position: relative;
 				text-align: center;
 			}
@@ -70,15 +69,19 @@
 			}
 			
 			.createPoster {
-				margin-top: 0.4rem;
+				margin-top: 1rem;
 				font-size: 0.426rem;
-				font-weight: 300;
-				color: #E1B872;
 			}
 			
-			.createPoster>span:nth-child(1) {
-				margin-right: 0.8rem;
-				color: #999999;
+			.createPoster>div{
+				display: inline-block;
+				height: 1.093rem;
+				width: 3.973rem;
+				border-radius: 0.546rem;
+				line-height: 1.093rem;
+				text-align: center;
+				background: linear-gradient(to right, #AD8034 0%,#F1C867 100%);
+				color: #FFFFFF;
 			}
 			/*选择海报*/
 			
@@ -134,6 +137,21 @@
 				font-size: 0.8rem;
 				color: #FFFFFF;
 			}
+			.btnBox{
+				text-align: center;
+				margin-top: 0.746rem;
+			}
+			.btn{
+				display: inline-block;
+				width: 4.72rem;
+				height: 1.12rem;
+				background-color: #E1B872;
+				color: #FFFFFF;
+				line-height: 1.12rem;
+				border-radius: 0.56rem;
+				font-size: 0.426rem;
+				font-weight: 400;
+			}
 		</style>
 	</head>
 
@@ -152,8 +170,7 @@
 				</div>
 				<img class="myQR" src="../../img/homePage/homePage3.png" />
 				<div class="createPoster">
-					<span id="ImgType">选择分享海报样式</span>
-					<!--<span>分享链接</span>-->
+					<div id="ImgType">选择邀请函样式</div>
 				</div>
 			</div>
 		</div>
@@ -170,6 +187,11 @@
 				<!-- 如果需要导航按钮 -->
 				<!--<div class="swiper-button-prev"></div>
 				<div class="swiper-button-next"></div>-->
+			</div>
+			<div class="btnBox">
+				<div class="btn">
+					确 定
+				</div>	
 			</div>
 		</div>
 		<div class="modalBox2">
@@ -233,6 +255,8 @@
 				
 				
 				//点击选择样式
+				var imgurl = '../../img/personalCenter/1.png';
+				var imgType = 1;
 				mui('body').on('tap','#ImgType',function(){
 					$('.modalBox1').css({"display":'block'});
 					var mySwiper = new Swiper ('.swiper-container', {
@@ -242,12 +266,17 @@
 					      el: '.swiper-pagination',
 					    }
 					})    
+					mySwiper.on('slideChangeTransitionEnd', function () {
+						imgurl = $('.swiper-slide-active img').attr("src");
+						imgType = $('.swiper-slide-active').attr("dataVal");
+						console.log("===图片类型："+imgType+"===图片地址："+imgurl);
+					});
 				})
 				
-				var imgType = 1;
-				mui('body').on('tap','.swiper-slide',function(){
-					imgType = $(this).attr("dataVal");
+				mui('body').on('tap','.btn',function(){
+					imgType = $(".swiper-slide-active").attr("dataVal");
 					$('.modalBox1').css({"display":'none'});
+					$('.modelImg').attr({'src': imgurl});
 					$('.modalBox2').css({"display":'block'});
 					getQRImg();
 				})
@@ -259,13 +288,14 @@
 //						async: false,
 						data: {
 							token: token,
-							type: imgType, //邀请函背景 8中邀请背景 1,2,3,4,5,6,7,8
+							type: imgType, //邀请函背景 8中邀请背景 1,2,3,4
 							url: BASE_SERVER + 'wechat_html/page/homePage/register.html', //二维码跳转路径
 						},
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
-								$('.modelImg').attr('src',data.data.url)
+								$('.modelImg').attr('src',imgurl);
+								$('.modelImg').attr('src',data.data.url+"?buyiyang="+new Date().getTime())
 							}
 						}
 					});

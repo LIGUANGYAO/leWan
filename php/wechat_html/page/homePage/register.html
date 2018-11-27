@@ -227,7 +227,7 @@
 				<!--邀请码注册-->
 				<div class="InvitationCode">
 					<div>邀请码</div>
-					<input type="text" maxlength="8" name="" id="InvitationCode" placeholder="请输入8位邀请码" />
+					<input type="text" maxlength="8" name="" id="InvitationCode" placeholder="请输入邀请码" />
 				</div>
 			</div>
 		</div>
@@ -272,7 +272,7 @@
 				}
 				
 				var code = getUrlParam("code");
-				var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
+				var token = localStorage.getItem("token");
 				if(token){
 					$.ajax({
 						url: API_SERVER + 'Wechat/hasToken',
@@ -319,7 +319,7 @@
 				
 				//邀请码输入框实时监听
 				$("#InvitationCode").bind("input propertychange", function() {
-					if($("#InvitationCode").val().length == 8) {
+					if($("#InvitationCode").val().length >= 6) {
 						var d = $("#InvitationCode").val();
 						log(d)
 						showMessage(d)

@@ -13,9 +13,9 @@
 
 	<body>
 		<div id="J_el">
-			<div v-for="(item,index) in list" :key="index" class="act_item">
-				<div class="act_info">
-					<div class="time"></div>
+			<div class="" v-for="items in list">
+				<div class="" v-html="items.djs">
+					
 				</div>
 			</div>
 		</div>
@@ -23,46 +23,68 @@
 		<script src="plugins/vue.js"></script>
 		<script src="plugins/jquery-2.1.4.js"></script>
 		<script type="text/javascript">
+			var vueData = {
+				list: [{
+					"time": "1543331532000"
+				},{
+					"time": "1543306390000"
+				}, {
+					"time": "1543417810000"
+				}],
+				listBox:[]
+			}
 			new Vue({
 				el: '#J_el',
-				data: {
-					time: '',
-					list: [{
-						"time": "1542716420000"
-					}, {
-						"time": "1542711220000"
-					}]
+				data: vueData,
+				created: function() {
+					vueData.list.map((obj, index) => {
+						this.$set(
+							obj, "djs", InitTime(obj.time)
+						);
+					})
+					this.listBox = vueData.list;
 				},
-				methods: function(){
-
+				methods: function() {
+					
 				},
 				mounted: function() {
-					
+					setInterval(() => {
+						for(var key in vueData.list) {
+							var aaa = parseInt(vueData.list[key]["time"]);
+							var bbb = new Date().getTime();
+							var rightTime = aaa - bbb;
+							console.log(rightTime)
+							if(rightTime > 0) {
+								var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
+								var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
+								var mm = Math.floor((rightTime / 1000 / 60) % 60);
+								var ss = Math.floor((rightTime / 1000) % 60);
+								vueData.list[key]["djs"] = "<span>"+dd+"</span> 天 <span>"+hh+"</span> : <span>"+mm+"</span> : <span>"+ss+"</span>";
+							}else{
+								vueData.list[key]["djs"] = "<span>00</span> 天 <span>00</span> : <span>00</span> : <span>00</span>";
+							}
+						}
+					}, 1000);
 				},
 			});
-			
-//			console.log(setInterval(function(){
-//				           console.log(1)
-//				        }, 1000))
-			
-			var data = {
-				token: '0009b229c26fb257ab130cec8f313df6',
-				product_id: 3,
-				price_id: 177
-			};
-			$.ajax({
-				url: 'http://cs.lewan6.ren/api/Mall/confirmPay',
-				async: false,
-				headers: {
-					"product": "wechat",		
-					"platform": 'ios'	//TODO ios判断
-				},
-				data: data,
-				success: function(data) {
-					console.log(data)
-					
+			console.log(new Date().getTime())
+			function InitTime(endtime) {
+				var dd, hh, mm, ss = null;
+				var time = parseInt(endtime) - new Date().getTime();
+				
+				if(time <= 0) {
+//					return '结束'
+					return ' '
+				} else {
+					dd = Math.floor(time / 60 / 60 / 24);
+					hh = Math.floor((time / 60 / 60) % 24);
+					mm = Math.floor((time / 60) % 60);
+					ss = Math.floor(time % 60);
+					var str = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
+//					return str;
+					return ' ';
 				}
-			})
+			}
 		</script>
 	</body>
 

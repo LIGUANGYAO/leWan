@@ -73,10 +73,12 @@
 			
 			.headerSearch>div:nth-child(2)>input {
 				background-color: #FFFFFF;
-				height: 0.773rem;
+				height: 0.9rem;
 				margin-bottom: 0;
 				font-size: 0.346rem;
 				color: #666666;
+				border-radius: 0.45rem;
+				margin-top: 0.163rem;
 			}
 			
 			input::-webkit-input-placeholder {
@@ -128,6 +130,7 @@
 			.mui-slider-indicator .mui-indicator {
 				background-color: #FFFFFF;
 				margin: 1px 3px;
+				box-shadow: none;
 			}
 			
 			.mui-slider-indicator .mui-active.mui-indicator {
@@ -615,7 +618,7 @@
 						</div>
 
 						<ul class="mui-table-view" v-if="cardList.length">
-							<li class="mui-table-view-cell mui-media" v-for="(items,index) in cardList" @tap="jumpToDetails(items.product_id)">
+							<li class="mui-table-view-cell mui-media" v-for="(items,index) in cardListBox" @tap="jumpToDetails(items.product_id)">
 								<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url(' + items.product_pic + ')'}">
 									<div class="generalize" v-if="index<5">
 										<div>Top</div>
@@ -635,10 +638,7 @@
 										<span v-else="level == 3 || level == 4 || level == 5">返:￥{{ items.temp_commission.fenxiang }}</span>
 										<span>已售{{ items.product_sold }}</span>
 									</p>
-									<div v-if="items.product_timelimit == 1" class="countDown">
-										距结束： {{ items.djs }}
-										<!--距结束 &nbsp <span>02</span> 天 <span>15</span> : <span>25</span> : <span>56</span>-->
-									</div>
+									<div v-if="items.product_timelimit == 1" class="countDown"  v-html="items.djs"></div>
 								</div>
 							</li>
 
@@ -714,14 +714,13 @@
 					homePageBanner: [], //首页banner图
 					eightIn: [], //八大入口动态参数
 					cardList: [], //商品列表
-					countDownList: [], //商品倒计时列表
+					cardListBox: [], //商品倒计时列表
 					level: 1, //用户等级
 					scollTop: 0,
 				};
 				//第一步===》判断是否有token
 				var code = getUrlParam("code");
-				var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
-				var subscribe = localStorage.getItem("subscribe");
+				var token = localStorage.getItem("token"); //
 				
 				if(token){
 					$.ajax({
@@ -757,12 +756,6 @@
 								if(data.code == 200) {
 									localStorage.setItem("token", data.data.token); //token
 									token = data.data.token;
-									localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
-									if(data.data.subscribe == 1) {
-										log("我已经关注了")
-									} else {
-										$(".MoreModal").show()
-									}
 									localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
 									vueData.level = data.data.level;
 								} else {
@@ -808,17 +801,11 @@
 											localStorage.setItem("latitude", res.latitude); //纬度
 											longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 											localStorage.setItem("longitude", res.longitude); //经度
-											isPosition = 2;
 											regeoCode(); //执行高德地址逆解析
 										},
 										cancel: function(res) {
-											isPosition = 1;
-											getBanner(); //拒绝定位直接获取全国banner
-											pageData.page = 1;  
-											getProduct(true); //拒绝定位获取礼品
 										}
 									});
-
 								});
 							}
 						}
@@ -842,6 +829,7 @@
 							});
 							localStorage.setItem("provincecode", addressCodeProvince); //省code
 							localStorage.setItem("citycode", addressCodeCity); //市code
+							isPosition = 2;
 							getBanner(); //定位后执行banner()获取当地banner
 							pageData.page = 1;  
 							getProduct(true); //定位获取当前地址商品
@@ -870,38 +858,37 @@
 						InitTime: InitTime
 					},
 					created: function() {
-						//						vueData.cardListBox.map(function(obj,index){
-						//				            this.$set(
-						//				                obj,"djs",InitTime(obj.product_endtime)
-						//				            );
-						//				        })
-						//				        this.cardList = vueData.cardListBox;
+						this.$watch("cardList", function () {
+							vueData.cardList.map((obj, index) => {
+								this.$set(
+									obj, "djs", InitTime(obj.product_endtime)
+								);
+							})
+							this.cardListBox = vueData.cardList;
+					    })
 					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
 						document.querySelector('.mui-scroll-wrapper').addEventListener('scroll', function(e) {
 							scrollTop = Math.abs(scroll.y)
 						})
-						//						setInterval(function(){
-						//				            for (var key in vueData.cardList) {
-						////				                var aaa = parseInt( vueData.cardList[key]["product_endtime"]*1000 );
-						//				                var aaa = new Date('2018/11/28 23:23:23').getTime();
-						//				                var bbb = new Date().getTime();
-						//				                var rightTime = aaa - bbb;
-						//				                if (rightTime > 0) {
-						//				                    var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
-						//				                    var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
-						//				                    var mm = Math.floor((rightTime / 1000 / 60) % 60);
-						//				                    var ss = Math.floor((rightTime / 1000) % 60);
-						//				                    
-						//				                    this.cardList[key]["djs"] = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
-						//				                   
-						////				                    log(vueData.cardList[key]["djs"])
-						////				                    log(vueData.cardList[0].djs)
-						//				                }
-						//				                log(this.cardList[0].djs)
-						//				            }
-						//				        }, 1000);
+						
+						setInterval(() => {
+							for(var key in vueData.cardList) {
+								var aaa = parseInt(vueData.cardList[key]["product_endtime"]*1000);
+								var bbb = new Date().getTime();
+								var rightTime = aaa - bbb;
+								if(rightTime > 0) {
+									var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
+									var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
+									var mm = Math.floor((rightTime / 1000 / 60) % 60);
+									var ss = Math.floor((rightTime / 1000) % 60);
+									vueData.cardList[key]["djs"] = "距结束：<span>"+dd+"</span> 天  <span>"+hh+"</span> : <span>"+mm+"</span> : <span>"+ss+"</span>";
+								}else{
+									vueData.cardList[key]["djs"] = "距结束：<span>00</span> 天 <span>00</span> : <span>00</span> : <span>00</span>";
+								}
+							}
+						}, 1000);
 					},
 					updated: function() {
 						if(vueData.scollTop == 0) {
@@ -913,7 +900,8 @@
 						});
 					}
 				});
-
+				
+				
 				function scollTop() {
 					vueData.scollTop++;
 					spaceConnet = ($('.spaceConnet').offset().top);
@@ -925,14 +913,14 @@
 					var dd, hh, mm, ss = null;
 					var time = parseInt(endtime) - new Date().getTime();
 					if(time <= 0) {
-						return '结束'
+						return ' '
 					} else {
 						dd = Math.floor(time / 60 / 60 / 24);
 						hh = Math.floor((time / 60 / 60) % 24);
 						mm = Math.floor((time / 60) % 60);
 						ss = Math.floor(time % 60);
 						var str = dd + "天" + hh + "小时" + mm + "分" + ss + "秒";
-						return str;
+						return ' ';
 					}
 				}
 
@@ -951,7 +939,6 @@
 								log(data)
 								localStorage.setItem("token", data.data.token); //token
 								token = data.data.token;
-								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
 								if(data.data.subscribe != 1) {
 									$(".MoreModal").show()
 								}
@@ -961,13 +948,6 @@
 						}
 					});
 				}
-				
-				if(subscribe == 1) {
-					log("我已经关注了")
-				} else {
-					$(".MoreModal").show()
-				}
-				
 				
 				//选取开通地址
 				var cityPicker = new mui.PopPicker({

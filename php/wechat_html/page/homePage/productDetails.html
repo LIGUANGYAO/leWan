@@ -548,11 +548,13 @@
 					<div class="addressRight" @tap="getSignature(proDetail.merchant_lat,proDetail.merchant_lng,proDetail.merchant_address)"><i class="mui-icon mui-icon-forward"></i></div>
 				</div>
 				<div class="content">
-					<div class="details">
-						<span class="detailsSec detailsActive">购买须知</span>
-						<span class="detailsSec">特色介绍</span>
+					<div class="">
+						<div class="details">
+							<span class="detailsSec detailsActive" dataVal="1">购买须知</span>
+							<span class="detailsSec" dataVal='2'>特色介绍</span>
+						</div>
 					</div>
-					<div class="contentBox">
+					<div class="contentBox" id="purchaseNotes">
 						<!--购买须知-->
 						<div class="purchaseNotes">
 							<div class="">
@@ -569,7 +571,7 @@
 							</div>
 						</div>
 						<!--特色介绍-->
-						<div class="information">
+						<div class="information" id="information">
 							<div class="informationImg" style="background-image: url(../../img/homePage/productDetail1.png);">特色介绍</div>
 							<div class="informationText" v-html="proDetail.product_description"></div>
 						</div>
@@ -593,9 +595,7 @@
 										</div>
 										<div class="mui-cardFooter">
 											<p><span class="cardTrue">￥{{items.temp_price}}</span><span class="cardFalse"></span></p>
-											<!--TODO 商品原价-->
-											<p><span class="cardText">佣金：</span><span class="cardMoney">￥{{items.temp_commission.fenxiang}}</span></p>
-											<!--TODO 新人未注册不显示佣金-->
+											<p v-if="level == 2 || level == 3 || level == 4 || level == 5"><span class="cardText">佣金：</span><span class="cardMoney">￥{{items.temp_commission.fenxiang}}</span></p>
 										</div>
 									</div>
 								</div>
@@ -614,9 +614,7 @@
 									</div>
 									<div class="mui-cardFooter">
 										<p><span class="cardTrue">￥{{items.temp_price}}</span><span class="cardFalse"></span></p>
-										<!--TODO 商品原价-->
-										<p><span class="cardText">佣金：</span><span class="cardMoney">￥{{items.temp_commission.fenxiang}}</span></p>
-										<!--TODO 新人未注册不显示佣金-->
+										<p v-if="level == 2 || level == 3 || level == 4 || level == 5"><span class="cardText">佣金：</span><span class="cardMoney">￥{{items.temp_commission.fenxiang}}</span></p>
 									</div>
 								</div>
 								<!--空状态时-->
@@ -670,6 +668,7 @@
 		</div>
 		<script src="../../plugins/flexible.js"></script>
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.10&key=b286bfefabeab1fbee7737811fb1ab0c&plugin=AMap.Geocoder"></script>
 		<script src="../../plugins/jquery-2.1.4.js"></script>
 		<script src="../../plugins/vue.js"></script>
 		<script src="../../js/mui.min.js"></script>
@@ -680,18 +679,18 @@
 				var code = getUrlParam("code");
 				var token = localStorage.getItem("token");
 				var productId = getUrlParam("productId"); //商品id
-				var recode = localStorage.setItem("recode", getUrlParam("recode"));
+				if(getUrlParam("recode")) {
+					localStorage.setItem("recode", getUrlParam("recode"))
+				}
+				var recode = localStorage.getItem("recode");
+				
 				
 				var latitude = localStorage.getItem("latitude"); //纬度
 				var longitude = localStorage.getItem("longitude"); //经度
 				var provincecode = localStorage.getItem("provincecode"); //省code
 				var citycode = localStorage.getItem("citycode"); //市code
 				
-				if(getUrlParam("recode")) {
-					localStorage.setItem("recode", getUrlParam("recode"))
-				}else if(localStorage.getItem("recode")){
-					
-				}
+				
 				if(token){
 					$.ajax({
 						url: API_SERVER + 'Wechat/hasToken',
@@ -725,8 +724,8 @@
 							success: function(data) {
 								log(data)
 								if(data.code == 200) {
+									token = data.data.token
 									localStorage.setItem("token", data.data.token);	//token
-									localStorage.setItem("subscribe", data.data.subscribe);	//是否关注公众号==》等于1 用户已关注公众号
 									localStorage.setItem("level", data.data.level);	//用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
 								} else {
 									mui.toast(data.message)
@@ -744,6 +743,7 @@
 					proHotpush: [], //热推商品
 					level: 1
 				};
+				
 				new Vue({
 					el: '#J_el',
 					data: vueData,
@@ -752,9 +752,6 @@
 						jumpToHomePage: jumpToHomePage, //跳转首页
 						shareProduct: shareProduct, //分享商品
 						BuyNow: BuyNow, //立刻购买
-					},
-					mounted: function() {
-
 					},
 					updated: function() {
 						//商品推荐更多
@@ -768,7 +765,7 @@
 				});
 				//获取个人信息
 				getUserMessage();
-				var recode;
+				var myRecode;
 				function getUserMessage(){
 					$.ajax({
 						url: API_SERVER + 'User/UserPersonal',
@@ -777,18 +774,15 @@
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
-								recode = data.data.recode;
+								myRecode = data.data.recode;
 								vueData.level = data.data.level;
 							}
 						}
 					});
 				}
 				//锁粉
-//				alert("开始锁粉")
 				suofen()
 				function suofen(){
-//					alert("邀请码"+ getUrlParam("recode"))
-//					alert("开始请求锁粉")
 					$.ajax({
 						url: API_SERVER + 'User/UserLockPowder',
 						async: false,
@@ -801,9 +795,66 @@
 						}
 					});
 				}
+				
+				getPosition();
+				function getPosition() {
+					$.ajax({
+						url: API_SERVER + 'Wechat/WechatPosition',
+						async: false,
+						data: {
+							token: token,
+							url: location.href.split('#')[0]
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								wx.config({
+									debug: false, // 开启调试模式,调用的所有api的赚回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+									appId: data.data.appId, // 必填，公众号的唯一标识
+									timestamp: data.data.timestamp, // 必填，生成签名的时间戳
+									nonceStr: data.data.nonceStr, // 必填，生成签名的随机串
+									signature: data.data.signature, // 必填，签名
+									jsApiList: ['checkJsApi', 'getLocation'], // 必填，需要使用的JS接口列表
+								});
+								wx.ready(function() {
+									wx.getLocation({
+										type: 'wgs84', // 默认为wgs84的gps坐标，如果要赚回直接给openLocation用的火星坐标，可传入'gcj02'
+										success: function(res) {
+											latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+											localStorage.setItem("latitude", res.latitude); //纬度
+											longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+											localStorage.setItem("longitude", res.longitude); //经度
+											regeoCode(); //执行高德地址逆解析
+										},
+										cancel: function(res) {
+											getPosition();
+										}
+									});
 
-				getProductDetails();
+								});
+							}
+						}
+					});
+				}
 
+				function regeoCode() {
+					var geocoder = new AMap.Geocoder({});
+					var lnglat = [longitude, latitude]
+					geocoder.getAddress(lnglat, function(status, result) {
+						if(status === 'complete' && result.regeocode) {
+							log(result)
+							var addressCode = result.regeocode.addressComponent.adcode; //区code码
+							provincecode = addressCode.substr(0, 2) + "0000"; //当前省code码
+							citycode = addressCode.substr(0, 4) + "00"; //当前市code码
+							localStorage.setItem("provincecode", provincecode); //省code
+							localStorage.setItem("citycode", citycode); //市code
+							getProductDetails();
+						} else {
+							log(JSON.stringify(result))
+						}
+					});
+				}
+				//获取商品详情
 				function getProductDetails() {
 					var data = {
 						token: token?token:null,
@@ -897,7 +948,7 @@
 					wx.ready(function() {
 						wx.onMenuShareTimeline({
 							title: vueData.proDetail.product_name,
-							link: location.href+"&recode="+recode,
+							link: location.href+"&recode="+myRecode,
 							imgUrl: vueData.proDetail.product_pic,
 							trigger: function(res) {
 								// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
@@ -913,7 +964,7 @@
 						wx.onMenuShareAppMessage({
 							title: vueData.proDetail.product_name,
 							desc: vueData.proDetail.product_info,
-							link: location.href+"&recode="+recode,
+							link: location.href+"&recode="+myRecode,
 							imgUrl: vueData.proDetail.product_pic,
 							trigger: function(res) {
 								// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
@@ -950,6 +1001,28 @@
 						})
 					});
 				}
+				
+				//点击滚动到指定位置
+				mui('body').on('tap','.detailsSec',function(){
+					$('.detailsSec').removeClass('detailsActive');
+					$(this).addClass('detailsActive');
+					if($(this).attr('dataVal') == 1){
+						$("html, body").animate({
+							scrollTop: $("#purchaseNotes").offset().top
+						}, {
+							duration: 500,
+							easing: "swing"
+						});
+					}else if($(this).attr('dataVal') == 2){
+						$("html, body").animate({
+							scrollTop: $("#information").offset().top
+						}, {
+							duration: 500,
+							easing: "swing"
+						});
+					}
+					return false;
+				})
 			})
 		</script>
 	</body>

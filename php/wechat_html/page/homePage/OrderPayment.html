@@ -287,15 +287,18 @@
 				background-color: rgba(0,0,0,0.5);
 			}
 			.mui-bar-nav{
-				top: 50vh;
+				position: fixed !important;
+				top: 50vh !important;
+				z-index: 100 !important;
 			}
 			.mui-content{
 				height: 50vh;
 				margin-top:50vh;
 				background-color:#FFFFFF;
 				position: relative;
-				overflow-y: auto;
+				overflow-y: scroll;
 				padding-bottom: 1.5rem;
+				z-index: 99 !important;
 			}
 			.BuyNow{
 				position: fixed;
@@ -309,8 +312,13 @@
 				font-weight: bold;
 				background-color: #E1B872;
 			}
-			.lw-empty-box{
-				height: 6rem;
+			
+			.lw-empty,.lw-empty-box{
+				height: 50vh;
+				margin-top: 50vh;
+			}
+			.spaceBox{
+				height: 1rem;
 			}
 			.nowAddBox {
 				position: absolute;
@@ -436,8 +444,8 @@
 				<!--底部按钮-->
 				<div class="footer">
 					<div>
-						<p class="truePrice">￥{{ proDetail.price_sale*buyNum }}</p>
-						<p class="">￥{{ proDetail.price_market*buyNum }}</p>
+						<p class="truePrice">￥{{ (proDetail.price_sale*buyNum).toFixed(2) }}</p>
+						<p class="">￥{{ (proDetail.price_market*buyNum).toFixed(2) }}</p>
 					</div>
 					<div id="orderDetails">订单明细 <i class="mui-icon mui-icon-arrowup"></i></div>
 					<div id="PayNow" @tap.stop="BuyNow">立即支付</div>
@@ -462,8 +470,8 @@
 					<header class="mui-bar mui-bar-nav">
 						<h1 class="mui-title">收货地址选择</h1>
 					</header>
-					<div class="mui-content">
-						<ul class="mui-table-view addressSecBox" v-if="addrList.length">
+					<div class="mui-content" v-if="addrList.length">
+						<ul class="mui-table-view addressSecBox">
 							<li class="mui-table-view-cell" v-for="(items,index) in addrList" @tap="secDangqian(index,items.ssq,items.address,items.address_id)">
 								<div class="addressBox">
 									<div class="userMes">
@@ -479,23 +487,25 @@
 								</div>
 							</li>
 						</ul>
-						<!--空状态时-->
-						<div class="lw-empty" style="display: block;" v-else>
-							<div class="lw-empty-box">
-								<div class="lw-empty-flex">
-									<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
-									<div class="lw-empty-test">暂无地址 去新增地址吧！</div>
-								</div>
+						
+					</div>
+					<!--空状态时-->
+					<div class="lw-empty" style="display: block;" v-else>
+						<div class="lw-empty-box">
+							<div class="lw-empty-flex">
+								<div class="spaceBox"></div>
+								<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+								<!--<div class="lw-empty-test">暂无地址 去新增地址吧！</div>-->
 							</div>
 						</div>
-						<div v-if="addrList.length" class="nowAddBox">
-							<a href="#modal">
-								<div class="nowAdd">确定</div>
-							</a>
-						</div>
-						<div v-else class="nowAddBox">
-							<div class="nowAdd goToAdd">新增收货地址</div>
-						</div>
+					</div>
+					<div v-if="addrList.length" class="nowAddBox">
+						<a href="#modal">
+							<div class="nowAdd">确定</div>
+						</a>
+					</div>
+					<div v-else class="nowAddBox">
+						<div class="nowAdd goToAdd">新增收货地址</div>
 					</div>
 				</div>
 			</div>
@@ -576,6 +586,13 @@
 							if(data.code == 200) {
 								vueData.proDetail = data.data.product;
 								vueData.showPage = true;
+							}else {
+								mui.toast(data.message);
+								setTimeout(function(){
+									mui.openWindow({
+										url: 'homePage.html'
+									})
+								},1500)
 							}
 						}
 					})
@@ -659,9 +676,13 @@
 														alertMsg('支付失败，请重新支付！');
 													}
 												});
+										}else{
+											mui.toast(data.message);
 										}
 									}
 								})
+							}else{
+								mui.toast(data.message);
 							}
 						}
 					})

@@ -61,57 +61,57 @@
 			}
 			.messContentDetails{
 				font-size: 0.373rem;
+				width: 90%;
 				font-weight: 500;
 				color: #CCCCCC;
 				margin: 0.266rem 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				
 			}
 			.mui-navigate-right:after{
 				font-size: 0.6rem;
 				color: #CCCCCC;
 			}
+			.lw-empty-box{
+				height: 100VH;
+			}
+			.sureRead{
+				color: #999999 !important;
+			}
+			
 		</style>
 	</head>
 
 	<body>
-		<div class="content">
-			<div class="">
-				<div class="messTime">11月08日 15:35:10</div>
-				<ul class="mui-table-view messContent">
-					<li class="mui-table-view-cell">
-						<span class="mui-navigate-right">
-							<div class="messTitle">
-								<i class="iconfont icon-dian"></i>
-								<span>新订单</span>
-							</div>
-							<div class="messContentDetails">您有一条新的预约订单</div>
-						</span>
-					</li>
-				</ul>
+		<div class="content" id="J_el" v-cloak>
+			<div class="" v-if="messageList.length">
+				<div class="" v-for="items in messageList">
+					<div class="messTime">{{getDateTime(items.send_time,"Y-MM-dd hh:mm:ss")}}</div>
+					<ul class="mui-table-view messContent" @tap="jumpToDetails(items.msg_id)">
+						<li class="mui-table-view-cell">
+							<span class="mui-navigate-right">
+								<div class="messTitle">
+									<i class="iconfont icon-dian" :class="{'sureRead':items.isread == 1}"></i>
+									<span>{{items.msg_title}}</span>
+								</div>
+								<div class="messContentDetails">{{items.msg_content}}</div>
+							</span>
+						</li>
+					</ul>
+				</div>
 			</div>
-			<div class="">
-				<div class="messTime">11月08日 15:35:10</div>
-				<ul class="mui-table-view messContent">
-					<li class="mui-table-view-cell">
-						<span class="mui-navigate-right">
-							<div class="messTitle">
-								<i class="iconfont icon-dian"></i>
-								<span>新订单</span>
-							</div>
-							<div class="messContentDetails">您有一条新的预约订单</div>
-						</span>
-					</li>
-				</ul>
-				<ul class="mui-table-view messContent">
-					<li class="mui-table-view-cell">
-						<span class="mui-navigate-right">
-							<div class="messTitle">
-								<i class="iconfont icon-dian"></i>
-								<span>新订单</span>
-							</div>
-							<div class="messContentDetails">您有一条新的预约订单</div>
-						</span>
-					</li>
-				</ul>
+			<!--空状态时-->
+			<div class="lw-empty" style="display: block;" v-else>
+				<div class="lw-empty-box">
+					<div class="lw-empty-flex">
+						<img src="../../img/personalCenter/nullList1.png" alt="" class="lw-empty-img" />
+						<div class="lw-empty-test">暂无消息！</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<script src="../../plugins/flexible.js"></script>
@@ -122,6 +122,87 @@
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
+				/*下拉刷新和上拉加载效果*/
+				mui.init({
+					pullRefresh: {
+						container: '#refreshContainer', //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+						up: {
+							height: 50,
+							auto: false,
+							contentnomore: '没有更多数据了',
+							contentrefresh: '正在加载...',
+							callback: function() {
+								setTimeout(function() {
+									getList();
+								}, 1000);
+							}
+						}
+					}
+				});
+
+				var token = localStorage.getItem("token");
+				var pageData = {
+					page: 1,
+					psize: 10
+				}
+				var vueData = {
+					messageList: [],
+					
+				}
+				new Vue({
+					el: "#J_el",
+					data: vueData,
+					methods: {
+						jumpToDetails: jumpToDetails
+					}
+				})
+
+				getList(true);
+				function getList(empty) {
+					$.ajax({
+						url: API_SERVER + "user/getSysMsg",
+						data: {
+							token: token,
+							page: pageData.page, //页码（默认第一页,默认1）
+							touser: 'web',
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								var lists = data.data.list;
+								empty && vueData.messageList.splice(0);
+								for(var i = 0; i < lists.length; i++) {
+									vueData.messageList.push(lists[i]);
+								}
+								pageData.page++;
+								var pullRefresh = mui('#refreshContainer').pullRefresh();
+								pullRefresh && pullRefresh.endPulldownToRefresh && pullRefresh.endPulldownToRefresh();
+								pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
+								pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < pageData.psize);
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					});
+				}
+				
+				//消息详情
+				function jumpToDetails(id) {
+					$.ajax({
+						url: API_SERVER + "User/readMsg",
+						data: {
+							token: token,
+							msg_id: id
+						},
+						success: function(data) {
+							log(data)
+							mui.openWindow({
+								url: "messageDetails.html?msgId="+id
+							})
+						}
+					});
+				}
+			})
 		</script>
 	</body>
 
