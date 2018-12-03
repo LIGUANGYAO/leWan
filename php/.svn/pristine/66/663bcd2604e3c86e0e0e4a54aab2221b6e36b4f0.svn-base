@@ -53,9 +53,6 @@
 				line-height: 0.933rem;
 				padding: 0 0.32rem;
 			}
-			.newPriceBox{
-				background: linear-gradient(to right, #FE6901 0%,#EE0D73 100%) !important;
-			}
 			.isNumNone{
 				background-color: #999999;
 			}
@@ -71,23 +68,7 @@
 			.countDown {
 				float: right;
 			}
-			.parDuctNumber{
-				height: 0.733rem;
-				line-height: 0.733rem;
-				font-weight: 400;
-				font-size: 0.32rem;
-				background-color: #FFFFFF;
-			}
-			.parKuncun{
-				float: left;
-				color: #333333;
-				margin-left: 0.32rem;
-			}
-			.parYishou{
-				float: right;
-				color: #333333;
-				margin-right: 0.32rem;
-			}
+			
 			.textIntroduce {
 				min-height: 3.5rem;
 				background-color: #FFFFFF;
@@ -559,13 +540,7 @@
 							<!--<div class="mui-indicator"></div>-->
 						</div>
 					</div>
-					<div v-if="isNewPerson == 1" class="priceBox newPriceBox">
-						<span class="realityPrice">¥{{ proPrice.price_sale }}</span>
-						<span class="originalCost">¥{{ proPrice.price_market }}</span>
-						<span class="countDown" v-if="proDetail.sold_out == 0">限首次注册会员免费使用</span>
-						<span class="countDown" v-else-if="proDetail.sold_out == 1">商品已售罄</span>
-					</div>
-					<div v-else class="priceBox" :class="{'isNumNone': proDetail.sold_out == 1}">
+					<div class="priceBox" :class="{'isNumNone': proDetail.sold_out == 1}">
 						<span class="realityPrice">¥{{ proPrice.price_sale }}</span>
 						<span class="originalCost">¥{{ proPrice.price_market }}</span>
 						<span class="countDown" v-if="proDetail.product_timelimit == 1">{{countdown(proDetail.product_starttime,proDetail.product_endtime)}}{{countdownText}}</span>
@@ -573,19 +548,11 @@
 					</div>
 					<div class="textIntroduce">
 						<div class="textShowOne"><strong>{{ proDetail.product_name }}</strong></div>
-						<div v-if="isNewPerson == 1" class="textLabel">
-							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
-							<span v-if="level == 2 || level == 3 || level == 4 || level == 5" class="commission">佣金：<span>￥{{ proPrice.price_sale }}</span></span>
-						</div>
-						<div v-else class="textLabel">
+						<div class="textLabel">
 							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
 							<span v-if="level == 2" class="commission">佣金：<span>¥{{ proPrice.price_commission.zigou }} ~ {{ proPrice.price_commission.fenxiang }}</span></span>
 							<span v-else-if="level == 3 || level == 4 || level == 5" class="commission">佣金：<span>¥{{ proPrice.price_commission.zigou }}</span></span>
 						</div>
-					</div>
-					<div class="parDuctNumber">
-						<div class="parKuncun">库存：{{ proPrice.product_totalnum || 0 }}</div>
-						<div class="parYishou">已售：{{ proPrice.product_buynum || 0 }}</div>
 					</div>
 				</div>
 				<div class="BusinessAddress" @tap="getSignature(proDetail.merchant_lat,proDetail.merchant_lng,proDetail.merchant_address)">
@@ -824,10 +791,6 @@
 					},
 					updated: function() {
 						floatWindowTop = ($('.details').offset().top);
-						/*初始化轮播*/
-						mui('.mui-slider').slider({
-//							interval: 2000 //自动播放周期
-						});
 					}
 				});
 				//获取个人信息
@@ -843,6 +806,7 @@
 								log(data)
 								myRecode = data.data.recode;
 								vueData.level = data.data.level;
+								vueData.freesheet = data.data.freesheet;
 							}
 						}
 					});
@@ -875,7 +839,7 @@
 					};
 					$.ajax({
 						url: API_SERVER + 'Product/ProductDetails',
-						async: true,
+						async: false,
 						headers: {
 							"product": "wechat",
 							"platform": browserType, //sreverApi里面设置了全局变量
@@ -891,9 +855,7 @@
 								vueData.proHotpush = data.data.hotpush;
 								vueData.isNewPerson = data.data.details.product_returnall || 2;
 								vueData.showPage = true;
-								vueData.freesheet = data.data.details.freesheet;
 								sharePYQ();
-								
 								//商品推荐更多
 								var swiper = new Swiper('.swiper-container', {
 									pagination: {
@@ -959,25 +921,12 @@
 							log(data)
 							if(data.code == 200) {
 								$(".modelImg").attr("src",data.data.url);
-								$('.modelImg').load(function(){
-									$(".modalBox2").fadeIn(500);
-//									$(".modalBox2").css("display",'block');
-									$("#ajaxBox").remove();
-								    log("加载完成")// 加载完成    
-								});
 							} else {
-								mui.toast(data.message);
-								$("#ajaxBox").remove();
+								mui.toast(data.message)
 							}
 						},
-						complete: function() {
-							
-						},
-						error: function(err){
-							$("#ajaxBox").remove();
-							mui.toast(err.message)
-						}
 					});
+					$(".modalBox2").css("display",'block')
 				})
 				
 				//关闭分享朋友圈
@@ -1032,16 +981,15 @@
 				var isClickMap = false;
 				function getSignature(lat, lng, address) {
 					log(lat + "==" + lng + "===" + address);
-					var poi = bd2gcj(lng,lat)
-					log(poi.lat + "==" + poi.lng);
+					
 					if(isClickMap) return;
 					isClickMap = true;
 					
 					getWechatSignature(location.href.split('#')[0]);
 					wx.ready(function() {
 						wx.openLocation({
-							latitude: parseFloat(poi.lat),
-							longitude: parseFloat(poi.lng),
+							latitude: parseFloat(lat),
+							longitude: parseFloat(lng),
 							name: '商家地址',
 							address: address,
 							scale: 15,
@@ -1056,20 +1004,6 @@
 							}
 						})
 					});
-				}
-				
-				//百度转火星
-				function bd2gcj(lng,lat) {
-					var M_PI = 3.14159265358979324;
-					var x_pi = M_PI * 3000.0 / 180.0;
-					
-					var poi = {};
-					var x = lng - 0.0065, y = lat - 0.006;
-					var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
-					var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
-					poi.lng = z * Math.cos(theta);
-					poi.lat = z * Math.sin(theta);
-					return poi;
 				}
 				
 				//倒计时

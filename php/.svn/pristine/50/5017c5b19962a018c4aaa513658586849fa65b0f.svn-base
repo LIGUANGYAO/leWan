@@ -83,19 +83,19 @@
 			color:  #333333;
 			font-weight: bold;
 		}
-		.callShowMoney{
+		.footerBox>span:nth-child(2){
 			margin-left: 0.4rem;
 			margin-bottom: 0.346rem;
 			font-size: 0.32rem ;
 			color:  #333333;
 			font-weight:  500;
 		}
-		.callShowMoney>i{
+		.footerBox>span:nth-child(2)>i{
 			color: #FC9929;
 			margin-right: 0.133rem;
 			font-size: 0.5rem;
 		}
-		.GeneratePoster{
+		.footerBox>span:nth-child(3){
 			float: right;
 			margin-right: 0.2rem;
 			margin-top: 0.35rem;
@@ -109,7 +109,7 @@
 			color:  #333333;
 			font-size: 0.346rem;
 		}
-		.GeneratePoster>i{
+		.footerBox>span:nth-child(3)>i{
 			margin-left: 0.106rem;
 			font-size: 0.4rem;
 		}
@@ -186,9 +186,8 @@
 							</div>
 							<div class="footerBox">
 								<span>¥ {{ items.temp_price }}</span>
-								<span v-if="level == 2" class="callShowMoney"><i class="iconfont icon-fenxiang"></i>返 ¥ {{ items.temp_commission.zigou }} ~ {{ items.temp_commission.fenxiang }}</span>
-								<span v-else-if="level == 3 || level == 4 || level == 5" class="callShowMoney"><i class="iconfont icon-fenxiang"></i>返 ¥ {{ items.temp_commission.zigou }}</span>
-								<span id="GeneratePoster" class="GeneratePoster" @tap="GeneratePoster(items.product_id)">生成海报<i class="iconfont icon-fenxiang"></i></span>
+								<span><i class="iconfont icon-fenxiang"></i>分享赚 ¥ {{ items.temp_commission.fenxiang }}</span>
+								<span id="GeneratePoster" @tap="GeneratePoster(items.product_id)">生成海报<i class="iconfont icon-fenxiang"></i></span>
 							</div>
 						</div>
 					</div>
@@ -251,7 +250,6 @@
 				}
 				var vueData = {
 					cardList: [], //商品列表
-					level: 1,	//用户等级
 				};
 				new Vue({
 					el: '#J_el',
@@ -319,21 +317,7 @@
 					});
 					
 				}
-				//获取个人信息
-				detailsGetUserMessage();
-				function detailsGetUserMessage(){
-					$.ajax({
-						url: API_SERVER + 'User/UserPersonal',
-						async: false,
-						data:{token: token},
-						success: function(data) {
-							if(data.code == 200) {
-								log(data)
-								vueData.level = data.data.level;
-							}
-						}
-					});
-				}
+				
 				//模态窗
 				var isClick = false;
 				function GeneratePoster(productId){

@@ -141,6 +141,15 @@ class UserController extends ApiBaseController{
                 $UserData["subscribe"] = $Subscribe["subscribe"];
             }
 
+            if ($UserData["freesheet"] == 1){
+                $Freesheet = UserModel::UserFreesheet($Uid);
+
+                if ($Freesheet){
+                    $UserData["freesheet"] = 2;
+                    UserModel::UserUpdate(array("user_id"=>array("eq",$Uid)),array("freesheet" => 2));
+                }
+            }
+
             switch ($UserData["level"]){
                 case 1:$UserData["username"] = "普通用户"; break;
                 case 2:$UserData["username"] = "超级会员"; break;

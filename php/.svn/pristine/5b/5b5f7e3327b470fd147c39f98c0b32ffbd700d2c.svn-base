@@ -119,10 +119,7 @@
 				color: #999999;
 				font-weight: bold;
 			}
-			.consumeCode{
-				font-weight: 600;
-				color: #E1B872;
-			}
+			
 			.indentDetails {
 				font-size: 0.373rem;
 				color: #999999;
@@ -340,8 +337,8 @@
 							<span class="conName">规格：<span class="conDetails">¥{{indentDetails.price}} * {{indentDetails.num}}份</span></span>
 							<!--<span class="conName floatRight">优惠券：<span class="conDetails">已选8折券</span></span>-->
 						</li>
-						<li class="mui-table-view-cell" v-if="indentDetails.code.length" v-for="(items,index) in indentDetails.code">
-							<span class="conName">电子码：<span class="consumeCode">{{items.consume_code}}</span></span>
+						<li class="mui-table-view-cell" v-if="indentDetails.code_count >= 1" v-for="(items,index) in indentDetails.code.consume_code">
+							<span class="conName">电子码：<span>{{items.consume_code}}</span></span>
 						</li>
 						<li class="mui-table-view-cell">
 							<span class="conName">实付：<span>¥{{indentDetails.payamount}}</span></span>

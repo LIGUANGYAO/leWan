@@ -378,16 +378,13 @@
 						var isSecBank = $(".bankImg").attr("dataVal");
 
 						var isOk = validate(
-							[money, ['required'],
-								['提现金额不能为空']
+							[money, ['required', function() {
+									return money >= minMoney
+								}, function() {
+									return money <= parseFloat($("#cashbalance").text())
+								}],
+								['提现金额不能为空', '最低' + minMoney + '元起提', '请输入正确的提现金额']
 							], //金额
-//							[money, ['required', function() {
-//									return money >= minMoney
-//								}, function() {
-//									return money <= parseFloat($("#cashbalance").text())
-//								}],
-//								['提现金额不能为空', '最低' + minMoney + '元起提', '请输入正确的提现金额']
-//							], //金额
 							[isSecBank, [function() {
 									return isSecBank == "1"
 								}],

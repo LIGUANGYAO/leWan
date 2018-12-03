@@ -372,22 +372,22 @@
 				//立即提现
 				var isClick = false;
 				mui("body").on("tap", "#nowWantMonery", function() {
-					if(initBank.length >= 1) {
+//					if(initBank.length >= 1) {
 						var money = $("#money").val();
 						var ub_id = $(".bankImg").attr("bankID");
 						var isSecBank = $(".bankImg").attr("dataVal");
 
 						var isOk = validate(
-							[money, ['required'],
-								['提现金额不能为空']
-							], //金额
-//							[money, ['required', function() {
-//									return money >= minMoney
-//								}, function() {
-//									return money <= parseFloat($("#cashbalance").text())
-//								}],
-//								['提现金额不能为空', '最低' + minMoney + '元起提', '请输入正确的提现金额']
+//							[money, ['required'],
+//								['提现金额不能为空']
 //							], //金额
+							[money, ['required', function() {
+									return money >= minMoney
+								}, function() {
+									return money <= parseFloat($("#cashbalance").text())
+								}],
+								['提现金额不能为空', '最低' + minMoney + '元起提', '请输入正确的提现金额']
+							], //金额
 							[isSecBank, [function() {
 									return isSecBank == "1"
 								}],
@@ -424,9 +424,9 @@
 								isClick = false;
 							}
 						})
-					} else {
-						mui.toast("请先到个人中心添加银行卡！")
-					}
+//					} else {
+//						mui.toast("请先到个人中心添加银行卡！")
+//					}
 				})
 
 				mui("body").on("tap", "#incomeDetail", function() {

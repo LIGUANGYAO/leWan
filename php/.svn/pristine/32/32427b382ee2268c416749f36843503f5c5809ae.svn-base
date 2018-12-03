@@ -372,7 +372,7 @@
 				//立即提现
 				var isClick = false;
 				mui("body").on("tap", "#nowWantMonery", function() {
-					if(initBank.length >= 1) {
+//					if(initBank.length >= 1) {
 						var money = $("#money").val();
 						var ub_id = $(".bankImg").attr("bankID");
 						var isSecBank = $(".bankImg").attr("dataVal");
@@ -424,9 +424,9 @@
 								isClick = false;
 							}
 						})
-					} else {
-						mui.toast("请先到个人中心添加银行卡！")
-					}
+//					} else {
+//						mui.toast("请先到个人中心添加银行卡！")
+//					}
 				})
 
 				mui("body").on("tap", "#incomeDetail", function() {

@@ -112,12 +112,12 @@
             </div>
         </div>
         <div class="layui-form-item col-sm-10">
-            <label class="layui-form-label">公司员工：</label>
+            <label class="layui-form-label">查看商品：</label>
             <div class="layui-input-block ">
                 <label><input type="radio"  name="lookover"  value="1" title="是"  <if condition="$data.lookover eq 1">checked="checked"</if> ></label>
                 <label><input type="radio"  name="lookover"  value="2"  title="否"  <if condition="$data.lookover eq 2">checked="checked"<elseif condition="$data.lookover eq 0" />checked="checked"</if> ></label>
             </div>
-            <div class="layui-form-mid layui-word-aux">用户是否可以看平台待审核的商品,此功能主要针对公司员工,查看商品是否上传成功</div>
+            <div class="layui-form-mid layui-word-aux">用户是否可以看平台待审核的商品</div>
         </div>
         <if condition="$data.reg_type eq 2">
                 <div class="layui-form-item col-sm-6">

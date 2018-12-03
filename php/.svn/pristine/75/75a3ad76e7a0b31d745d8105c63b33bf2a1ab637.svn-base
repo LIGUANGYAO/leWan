@@ -47,6 +47,7 @@ class ProductController extends ApiBaseController{
                 $Punfu = new PubfunController();
                 $Punfu->UserLoginStatus($Token,$this->headerData);//用户判断
             }
+
             if (!array($Type,array(1,2))){
                 $this->returnApiData('获取失败', 400);
             }
@@ -58,31 +59,24 @@ class ProductController extends ApiBaseController{
                 parent::Tpl_Empty($Lng,"请在手机设置里开启位置",2);
             }
 
-            if ($Token){
-                $User  = UserModel::UserFinds($Token);
-                $Look  = $User["lookover"];
-            }
-
-            if ($Look == 1){
-                $Condition["p.product_reviewstatus"] = array("neq", 1);
-            }else{
-                $Condition["p.product_reviewstatus"] = array("eq", 2);
-                $Condition["p.product_status"]       = array("eq", 1);
-            }
-
             if ($Type == 2 || $Bursting == 1){
                 $Condition[] = array("exp", "((m.merchant_pcode = {$ProCode} and m.merchant_ccode = {$CityCode}) or  m.merchant_pcode = {$ProCode})");
             }else{
-                if (!$Cateids){
-                    $Condition["p.product_cateids"] = array("eq",4);
-                }
+                $Condition[] = ["exp","FIND_IN_SET(4,p.product_cateids)"];
             }
+
+            $Time        = strtotime("-7 day", time());
+            $Condition[] = array("exp"," ((p.product_timelimit = 1 and p.product_endtime > {$Time}) or p.product_timelimit <> 1)");
+            $Condition["r.status"]               = array("eq", 1);
+            $Condition["p.product_reviewstatus"] = array("eq", 2);
+            $Condition["p.product_status"]       = array("eq", 1);
+            $Condition["p.product_del"]          = array("eq", 0);
 
             if ($Cateids){
                 if ($Cateids == 1){
                     $Condition[]=["exp","p.product_cateids = {$Cateids} or p.product_returnall =1 "];
                 }else{
-                    $Condition["p.product_cateids"] = array("eq",$Cateids);
+                    $Condition[]=["exp","p.product_cateids = {$Cateids}"];
                 }
             }else{
                 $Condition["p.product_returnall"]= array("eq",0);
@@ -112,6 +106,7 @@ class ProductController extends ApiBaseController{
                     $Order = "p.sold_out asc";
                 }
             }
+
             if ($Sales) {
                 if ($Sales == 1) {
                     $Order .= ",p.product_sold+p.product_sales_volume desc";
@@ -127,15 +122,13 @@ class ProductController extends ApiBaseController{
                 }
             }
 
-            $Time        = strtotime("-7 day", time());
-            $Condition[] = array("exp"," (p.sold_out = 0 or (p.sold_out = 1 and p.sold_out_time > {$Time}))");
-            $Condition["r.status"]      = array("eq", 1);
-            $Condition["p.product_del"] = array("eq", 0);
+            if ($Token){
+                $User  = UserModel::UserFinds($Token);
+            }
 
             $List      = ProductModel::ShopProductList($Condition,$Field, $Order, $Psize,$Paged);
             $Parameter = UserModel::UserParameterList();
 
-            $P = array();
             foreach ($List as $Key => $Val) {
 
                 if ($Val["product_pic"]) {
@@ -163,7 +156,7 @@ class ProductController extends ApiBaseController{
                     $List[$Key]["temp_commission"] = array();
                 }
 
-                $PriceCondition["product_id"]     = $Val["product_id"];
+                $PriceCondition["price_id"]     = $Val["product_id"];
                 $PriceCondition["price_status"] = 1;
 
                 $Price = ProductModel::ShopProdictPriceFind($PriceCondition);
@@ -255,18 +248,6 @@ class ProductController extends ApiBaseController{
                     $DataFind["numlimitcount"] = 0;
                 }
 
-                if ($DataFind["product_returnall"] == 1){
-
-                        $Freesheet = UserModel::UserFreesheet($Uid,$Prid);
-
-                        if ($Freesheet){
-                            $DataFind["freesheet"] = 2;
-                        }else{
-                            $DataFind["freesheet"] = 1;
-                        }
-                }
-
-
                 if ($DataFind["product_tags"]){
                     $DataFind["product_tags"] = ProductModel::ShopTags(array("tag_id"=>array("in",$DataFind["product_tags"])));
                 }
@@ -325,24 +306,15 @@ class ProductController extends ApiBaseController{
 
                     $PushCondition[]  = array("exp", "((m.merchant_pcode = {$ProCode} and m.merchant_ccode = {$CityCode}) or m.merchant_pcode = {$ProCode})");
                 }else{//未定位礼包商品查询
-                    $PushCondition["p.product_cateids"] = array("eq",4);
+                    $PushCondition[] = array("exp","p.product_cateids = 4");
                     $Order = "p.sold_out asc,p.product_toplevel desc,p.product_sales_volume desc,p.product_uptime desc";
                     $Field = "p.product_id,p.product_pic,p.product_name,p.temp_price,p.temp_commission,p.sold_out,m.merchant_name,r.name as region";
                 }
 
-                if ($Token){
-                    $Look  = $User["lookover"];
-                }
-
-                if ($Look == 1){
-                    $PushCondition["p.product_reviewstatus"] = array("neq", 1);
-                }else{
-                    $PushCondition["p.product_reviewstatus"] = array("eq", 2);
-                    $PushCondition["p.product_status"]       = array("eq", 1);
-                }
-
-                $PushCondition["p.product_id"]  = array("neq", $Prid);
-                $PushCondition["p.product_del"] = array("eq", 0);
+                $PushCondition["p.product_id"]           = array("neq", $Prid);
+                $PushCondition["p.product_reviewstatus"] = array("eq", 2);
+                $PushCondition["p.product_status"]       = array("eq", 1);
+                $PushCondition["p.product_del"]          = array("eq", 0);
 
                 $HotPushList  = ProductModel::ShopProductList($PushCondition,$Field, $Order, 1,8,true);//获取推荐商品
 
