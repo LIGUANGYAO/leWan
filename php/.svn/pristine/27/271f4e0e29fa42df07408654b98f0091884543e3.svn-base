@@ -1,0 +1,78 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('Userbank/BankArea')}" method="post" enctype="multipart/form-data">
+        <input type='hidden'  name="id" value="{$data.ub_id}">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">开户行城市</label>
+            <div class="layui-input-inline">
+                <select name="provence_id" lay-verify="require" lay-filter="provence_id">
+                    <option value="">选择省</option>
+                    <volist name="$province" id="val">
+                        <option value="{$val.code}"<if condition="$data.province eq $val.code">
+                        selected="selected"</if>>{$val.provence}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="city_id" lay-verify="require" lay-filter="city_id">
+                    <option value="">城市</option>
+                    <volist name="$city" id="val">
+                        <option value="{$val.code}"<if condition="$data.city eq $val.code">
+                        selected="selected"</if>>{$val.city}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="area_id" lay-verify="require" lay-filter="area_id">
+                    <option value="">区县</option>
+                    <volist name="$area" id="val">
+                        <option value="{$val.code}"<if condition="$data.area eq $val.code">
+                        selected="selected"</if>>{$val.area}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+        </div>
+    </div>
+
+</form>
+</div>
+
+<script>
+
+
+
+    // $('form').submit(function(){
+    //     var status = $("input[name='status']:checked").val();
+    //     var remark = $("#remark").val();
+    //
+    //     if (status == undefined){
+    //         layer.msg('请选择审核状态', {icon: 2});
+    //         return false;
+    //     }
+    //
+    //     if(status == 1){
+    //         if(remark.length != ""){
+    //             if (remark.length < 10 || remark.length > 30) {
+    //                 layer.msg('驳回原因不能小于10字大于30字', {icon: 2});
+    //                 return false;
+    //             }
+    //         }else{
+    //             layer.msg('请输驳回原因10-30字', {icon: 2});
+    //             return false;
+    //         }
+    //     }
+    //
+    //     return true;
+    // })
+</script>

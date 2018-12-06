@@ -344,8 +344,11 @@
 			
 			.goodsBox {
 				display: flex;
+				display: -webkit-flex;
 				justify-content: center;
+				-webkit-justify-content: center;
 				flex-wrap: wrap;
+				-webkit-flex-wrap: wrap;
 			}
 			
 			.mui-card {
@@ -475,8 +478,11 @@
 				color: #333333;
 				font-weight: 500;
 				display: flex;
+				display: -webkit-flex;
 				justify-content: space-around;
+				-webkit-justify-content: space-around;
 				align-items: center;
+				-webkit-align-items: center;
 				
 			}
 			.modalCard img{
@@ -568,7 +574,7 @@
 					<div v-else class="priceBox" :class="{'isNumNone': proDetail.sold_out == 1}">
 						<span class="realityPrice">¥{{ proPrice.price_sale }}</span>
 						<span class="originalCost">¥{{ proPrice.price_market }}</span>
-						<span class="countDown" v-if="proDetail.product_timelimit == 1">{{countdown(proDetail.product_starttime,proDetail.product_endtime)}}{{countdownText}}</span>
+						<span class="countDown" v-if="proDetail.product_timelimit == 1">{{countdownText}}</span>
 						<span class="countDown" v-else-if="proDetail.sold_out == 1">商品已售罄</span>
 					</div>
 					<div class="textIntroduce">
@@ -609,7 +615,7 @@
 						<!--特色介绍-->
 						<div class="information" id="information">
 							<div class="informationImg" style="background-image: url(../../img/homePage/productDetail1.png);">特色介绍</div>
-							<div class="informationText" v-html="proDetail.product_description"></div>
+							<div class="informationText" id="informationText" v-lazy-container="{ selector: 'img'}" v-html="parDetailsImg"></div>
 						</div>
 						<!--购买须知-->
 						<div class="purchaseNotes" id="purchaseNotes">
@@ -712,9 +718,12 @@
 		<div class="modalBox1">
 			<img class="closeImg" src="../../img/homePage/productDetails3.png"/>
 		</div>
+		<div id="canbox" style="display: none;">
+		    <canvas id="myCanvas"></canvas>
+		</div>
 		<div class="modalBox2">
 			<div class="modalCard2">
-				<img class="modelImg" src="../../img/homePage/homePage3.png" />
+				<img id="avatar" class="modelImg" src="../../img/homePage/homePage3.png" />
 				<i class="modelClose iconfont icon-guanbi" id="closeModelBtn"></i>
 			</div>
 		</div>
@@ -726,6 +735,7 @@
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../plugins/swiper-4.3.3.min.js"></script>
 		<script src="../../plugins/serverApi.js"></script>
+		<script src="../../plugins/vue-lazyload.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				mui.init({
@@ -804,9 +814,11 @@
 					level: 1,	//用户等级
 					countdownText: '',
 					isNewPerson: 2,	//是否是免单产品   1是    2不是
-					freesheet: 2	//用户是否已使用免单 1未使用 2已使用
+					freesheet: 2,	//用户是否已使用免单 1未使用 2已使用
+					parDetailsImg:''	//商品详情图文介绍
 				};
 				
+				var pageUpdate = 0;
 				new Vue({
 					el: '#J_el',
 					data: vueData,
@@ -821,15 +833,33 @@
 					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
+						var _that = this;
+						this.$watch("proDetail", function() {
+							_that.countdown(vueData.proDetail.product_starttime,vueData.proDetail.product_endtime);
+						})
+						this.$watch("parDetailsImg", function() {
+//							log(vueData.parDetailsImg)
+						})
 					},
 					updated: function() {
 						floatWindowTop = ($('.details').offset().top);
-						/*初始化轮播*/
-						mui('.mui-slider').slider({
-//							interval: 2000 //自动播放周期
-						});
+						if(pageUpdate == 0){
+							/*初始化轮播*/
+							mui('.mui-slider').slider({
+								interval: 2000 //自动播放周期
+							});
+						}
+						pageUpdate++;
 					}
 				});
+				Vue.use(VueLazyload, {
+				  preLoad: 1.3,
+				  error: '../../img/vueLazyLoad.png',
+				  loading: '../../img/vueLazyLoad.png',
+				  attempt: 1,
+//				  listenEvents: ['scroll', 'wheel', 'mousewheel', 'resize', 'animationend', 'transitionend']
+				  listenEvents: ['scroll']
+				})
 				//获取个人信息
 				detailsGetUserMessage();
 				var myRecode;
@@ -892,6 +922,7 @@
 								vueData.isNewPerson = data.data.details.product_returnall || 2;
 								vueData.showPage = true;
 								vueData.freesheet = data.data.details.freesheet;
+								vueData.parDetailsImg = data.data.details.product_description.replace(/src/g,"data-src")
 								sharePYQ();
 								
 								//商品推荐更多
@@ -958,7 +989,8 @@
 						success: function(data) {
 							log(data)
 							if(data.code == 200) {
-								$(".modelImg").attr("src",data.data.url);
+								drawAndShareImage(data.data.poster+"?time="+new Date().getTime(),data.data.QRCode+"?time="+new Date().getTime(),20,1185,130,130)
+//								$(".modelImg").attr("src",data.data.url);
 								$('.modelImg').load(function(){
 									$(".modalBox2").fadeIn(500);
 //									$(".modalBox2").css("display",'block');
@@ -979,6 +1011,35 @@
 						}
 					});
 				})
+				
+				//canvas合成图片
+				function drawAndShareImage(maxSrc,minSrc,x,y,width,height){
+				    var canvas = document.createElement("canvas");
+				    canvas.width = 750;
+				    canvas.height = 1334;
+				    var context = canvas.getContext("2d");
+				
+				    context.rect(0 , 0 , canvas.width , canvas.height);
+				    context.fillStyle = "#FFFFFF";
+				    context.fill();
+				
+				    var myImage = new Image();
+				    myImage.src = maxSrc;    //背景图片  你自己本地的图片或者在线图片
+				    myImage.crossOrigin = 'Anonymous';
+				    myImage.onload = function(){
+				        context.drawImage(myImage , 0 , 0 , 750 , 1334);
+				
+				        var myImage2 = new Image();
+				        myImage2.src = minSrc;   //你自己本地的图片或者在线图片
+				        myImage2.crossOrigin = 'Anonymous';
+				        myImage2.onload = function(){
+				            context.drawImage(myImage2 , x , y , width , height);
+				            var base64 = canvas.toDataURL("image/png");  //"image/png" 这里注意一下
+				            var img = document.getElementById('avatar');
+				            img.setAttribute('src',base64);
+				        }
+				    }
+				}
 				
 				//关闭分享朋友圈
 				mui('body').on('tap',".closeImg",function(){
@@ -1073,39 +1134,39 @@
 				}
 				
 				//倒计时
-				function countdown(startTimeIn,endTimeIn) {
+				function countdown(startTimeIn,endTimeIn){
 					var self = this;
-					var timer = setInterval(function() {
-						let nowTime = new Date().getTime();
-						let startTime = startTimeIn * 1000;
-						let endTime = endTimeIn * 1000;
+					var timer = setInterval(function(){
+						var nowTime = new Date().getTime();
+						var startTime = startTimeIn * 1000;
+						var endTime = endTimeIn * 1000;
 						
-						let t = endTime - nowTime;
-						let k = startTime - nowTime;
+						var t = endTime - nowTime;
+						var k = startTime - nowTime;
 						
 						if(k > 0){
-							let day = Math.floor(k / 86400000);
-							let hour = Math.floor((k / 3600000) % 24);
-							let min = Math.floor((k / 60000) % 60);
-							let sec = Math.floor((k / 1000) % 60);
+							var day = Math.floor(k / 86400000);
+							var hour = Math.floor((k / 3600000) % 24);
+							var min = Math.floor((k / 60000) % 60);
+							var sec = Math.floor((k / 1000) % 60);
 							hour = hour < 10 ? "0" + hour : hour;
 							min = min < 10 ? "0" + min : min;
 							sec = sec < 10 ? "0" + sec : sec;
-							let format = '';
-							format = `距离开始：${day}天${hour}小时${min}分${sec}秒`;
+							var format = '';
+							format = "距离开始："+day+"天"+hour+"小时"+min+"分"+sec+"秒";
 							self.countdownText = format;
 						}
 						
 						if(t > 0 && k < 0) {
-							let day = Math.floor(t / 86400000);
-							let hour = Math.floor((t / 3600000) % 24);
-							let min = Math.floor((t / 60000) % 60);
-							let sec = Math.floor((t / 1000) % 60);
+							var day = Math.floor(t / 86400000);
+							var hour = Math.floor((t / 3600000) % 24);
+							var min = Math.floor((t / 60000) % 60);
+							var sec = Math.floor((t / 1000) % 60);
 							hour = hour < 10 ? "0" + hour : hour;
 							min = min < 10 ? "0" + min : min;
 							sec = sec < 10 ? "0" + sec : sec;
-							let format = '';
-							format = `距离结束：${day}天${hour}小时${min}分${sec}秒`;
+							var format = '';
+							format = "距离结束："+day+"天"+hour+"小时"+min+"分"+sec+"秒";
 							self.countdownText = format;
 						} else if(t < 0){
 							clearInterval(timer);

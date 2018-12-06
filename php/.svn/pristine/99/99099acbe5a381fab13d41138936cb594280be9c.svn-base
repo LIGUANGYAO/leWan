@@ -1,0 +1,214 @@
+<?php
+namespace app\api\controller;
+
+use app\api\model\HelpModel;
+use app\api\model\MallOrderModel;
+use app\api\model\NotifyModel;
+use app\common\BaseController;
+use app\common\model\ProcedureModel;
+use think\Config;
+use think\Db;
+
+/**
+ * 订单类
+ * Enter description here ...
+ * @author yihong
+ *
+ */
+class OrderController extends BaseController
+{
+
+    /**
+     * 推送新产品给用户
+     * @return bool
+     */
+    public function createOrder(){
+        $data['buynum'] = $this->post('buynum');
+        $data['concat'] = $this->post('concat');
+        $data['product_id'] = $this->post('product_id');
+        $data['price_id'] = $this->post('price_id');
+        $data['price'] =  $this->post('price');//后台输入结算价
+        $data['remark'] = $this->post('remark');
+        $data['user_id'] = $this->post('user_id');
+        $data['time'] = $this->post('time');
+        $signkey = $this->post('key');
+        if(getSelfSignStr($data) != $signkey){
+            GLog('后台单品下单','签名错误');
+            return array('code'=>400);
+        }
+        $this->submitOrder($data);
+
+    }
+
+    public function createBatchOrder(){
+        $data['concat'] = $this->post('concat');
+        $data['remark'] = $this->post('remark');
+        $data['user_id'] = $this->post('user_id');
+        $data['time'] =$this->post('time');
+        $signkey = $this->post('key');
+        if(getSelfSignStr($data) != $signkey){
+            GLog('后台批量下单','签名错误');
+            return array('code'=>400);
+        }
+        $list = json_decode( $this->post('list'),true);
+        foreach ($list as $val){
+            $price_id = DB::name('product_price')->where(array('product_id'=>$val['product_id']))->value('price_id');
+            $val['price_id'] = $price_id;
+            $val['create_order_type'] = 1;
+            $this->submitOrder(array_merge($val,$data));
+        }
+    }
+
+
+    /**
+     * 提交订单
+     */
+    private function submitOrder($data){
+        //平日价
+        $Condition["type"] = 2;//预约类订单用户信息
+        $Condition["user_id"]    = $data['user_id'];
+        $Condition["status"]     = 1;
+        $userAddrData['contact']  = $data['concat'];
+        $userAddrData['mobile']  = $data['mobile'];
+        $order_no =  HelpModel::makeOrderNumber();
+        Db::startTrans();
+        //锁表
+        Db::name('product_price')->lock(true)->find($data['price_id']);
+        $res = $this->buildOrder1($order_no, $data);
+        if($res){
+            $field = 'o.*, p.product_name, p.product_returnall, p.product_id, p.price_id,
+             p.op_id, p.commission, p.num, p.product_startusetime, p.product_endusetime';
+            $order = Db::name('order o')->field($field)
+                    ->join('jay_order_product p', 'p.order_id = o.order_id', 'left')
+                    ->where(['order_no'=>$order_no])->find();
+
+            //生成电子码
+            $consume_code='';
+            if($order['order_isexpress'] == 1){
+                $mom = new MallOrderModel();
+                $consume_code = $mom->buildConsumeCode($order['order_id'], $order['num'], $order['user_id'], $order['op_id']);
+            }
+
+            if(isset($data['create_order_type'])){ //后台批量下单才有短信通知
+                //短信通知
+                $notify = new NotifyModel();
+                $notify->sendOrderSms($order, $consume_code, $this->CFG);
+            }
+
+            $pm = new ProcedureModel();
+            $res2 = $pm->execute('lewan_order_income', $order['order_id'], '@error');
+            $res3 = $pm->execute('lewan_user_performance', $order['order_id'], '@error');
+            if($res2 && $res3){
+                Db::commit();
+                return array('code'=>200,'下单成功');
+            }
+        }
+        Db::rollback();
+        return array('code'=>400,'下单失败');
+    }
+
+
+    /**
+     * 创建订单-后台购买
+     * @param $order_no
+     * @param $product
+     * @param $attach
+     * @param $user
+     * @return int|string
+     */
+    private function buildOrder1($order_no, $data){
+        $product = Db::name('product p')
+            ->field('c.*, p.product_name, p.product_status, p.product_del, p.product_reviewstatus,
+            p.price_type, p.product_returnall, p.product_reservation, p.product_isexpress, 
+            p.product_timelimit, p.product_numlimit, p.product_numlimit_num, p.product_starttime, p.product_endtime, 
+            p.product_startusetime, p.product_endusetime, p.merchant_id')
+            ->join('product_price c', 'c.product_id = p.product_id', 'left')
+            ->join('merchant m', 'm.merchant_id = p.merchant_id', 'left')
+            ->where(['p.product_id'=>$data['product_id'], 'c.price_id'=>$data['price_id'], 'm.merchant_status'=>2, 'c.price_status'=>1])
+            ->find();
+        $vo['merchant_id'] = $product['merchant_id'];
+        $vo['user_id'] = $data['user_id'];
+        $vo['order_no'] = $order_no;
+        $vo['order_fullname'] = $data['concat'];
+        $vo['order_mobile'] = $data['mobile'];
+        $vo['order_leave'] = $data['remark'];
+        $vo['address_id'] = '';
+        //总金额
+        $vo['order_totalfee'] = $data['price'] * $data['buynum'];//后台输入结算价为准
+        $vo['order_payfee'] = $data['price'] * $data['buynum'];//后台输入结算价为准
+        $vo['order_isexpress'] = $product['product_isexpress'];
+        $vo['order_reservation'] = $product['product_reservation'];
+        $vo['order_payment'] = 5;//后台下单支付状态
+        $vo['order_status'] = 2;
+        $vo['order_paytime'] = time();
+        $vo['order_addtime'] = time();
+        $vo['order_uptime'] = time();
+        $productRs = true;
+        if(($product['product_sku']-$data['buynum'])<1){ //售罄
+            $productData['sold_out'] = 1;
+            $productData['sold_out_time'] = time();
+            $map['product_id'] = $product['product_id'];
+            $productRs = Db::name('product')->where($map)->update($productData);
+        }
+        $orderId = Db::name('order')->insertGetId($vo);
+        //创建附件信息
+        $affiliatId = $this->buildOffiliate($orderId, $vo['order_payfee'], $product['coupon']);
+        //关联商品数据
+        $opId = $this->buildOProduct1($orderId, $product, $data);
+        //更新库存
+        $res = $this->upKucun($product, $data);
+        if($orderId > 0 && $affiliatId > 0 && $opId > 0 && $res !== false && $productRs !== false){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private function buildOffiliate($order_id, $order_payfee, $coupon){
+        $vo['order_id'] = $order_id;
+        if($coupon){
+            $vo['coupon'] = $coupon['coupon_money'];
+            $vo['coupon_id'] = $coupon['user_coupon_id'];
+        }
+        $vo['payamount'] = $order_payfee;
+        return Db::name('order_affiliated')->insertGetId($vo);
+    }
+
+    private function buildOProduct1($order_id, $product, $data){
+        $vo['order_id'] = $order_id;
+        $vo['product_id'] = $product['product_id'];
+        $vo['price_id'] = $product['price_id'];
+        $vo['price_type'] = $product['price_type'];
+        $vo['product_name'] = $product['product_name'];
+        $vo['product_property'] = $product['product_property'];
+        $vo['num'] = $data['buynum'];
+        $vo['price'] = $data['price'];
+        $vo['settle'] = $product['price_settle'];
+        $vo['totalmoney'] = $data['price']*$data['buynum'];
+        $vo['totalsettle'] = $product['price_settle']*$data['buynum'];
+        $vo['product_startusetime'] = $product['product_startusetime'];
+        $vo['product_endusetime'] = $product['product_endusetime'];
+        $vo['product_returnall'] = $product['product_returnall'];
+        $vo['commission'] = $product['price_commission']*$data['buynum'];
+        $opId = Db::name('order_product')->insertGetId($vo);
+        return $opId;
+    }
+
+    /**
+     * 更新库存
+     */
+    private function upKucun($product, $data){
+        $up['product_sales_volume'] = ['exp','product_sales_volume+'.$data['buynum']];
+        //是否售罄
+        if($product['product_buynum']+$data['buynum'] >= $product['product_totalnum']){
+            $up['sold_out'] =1;
+            $up['sold_out_time'] =time();
+        }
+        $res7 = Db::name('product')->where(['product_id'=>$product['product_id']])->update($up);
+        $res8 = Db::name('product_price')->where(['price_id'=>$product['price_id']])->update(['product_buynum'=>['exp','product_buynum+'.$data['buynum']], 'product_dynamicnum'=>['exp','product_dynamicnum+'.$data['buynum']]]);
+        return $res8;
+    }
+
+
+
+}

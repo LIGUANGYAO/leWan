@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="efa23ecc-a15b-4d71-b44e-7c52da1a2509" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../application/api/controller/MallController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/api/controller/MallController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/api/controller/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/api/controller/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/api/controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/api/controller/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/api/controller/UserbankController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/api/controller/UserbankController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/api/controller/YuyueController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/api/controller/YuyueController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/api/model/MallOrderModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/api/model/MallOrderModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/api/model/NotifyModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/api/model/NotifyModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/api/model/ProductModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/api/model/ProductModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/common.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/common.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/common/ImageCut.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/common/ImageCut.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/common/model/CurrencyAction.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/common/model/CurrencyAction.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/AjaxController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/AjaxController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/BannerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/BannerController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/FinanceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/FinanceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/MerchantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/MerchantController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/OrderController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/UseraccountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/UseraccountController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/UserbankController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/UserbankController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/controller/UserwithdrawController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/controller/UserwithdrawController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/model/FinanceModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/model/FinanceModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/model/ProductModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/model/ProductModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/model/UserModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/model/UserModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/model/UserbankModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/model/UserbankModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/model/UserwithdrawModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/model/UserwithdrawModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/banner/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/banner/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/banner/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/banner/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/finance/table.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/finance/table.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/order/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/order/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/product/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/product/add.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/product/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/product/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/product/price1.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/product/price1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/user/account-info.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/user/account-info.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/user/account.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/user/account.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/user/tongji.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/user/tongji.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/userbank/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/userbank/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/userwithdraw/cashdata.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/userwithdraw/cashdata.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/system/view/userwithdraw/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/../application/system/view/userwithdraw/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../application/verification.php" beforeDir="false" afterPath="$PROJECT_DIR$/../application/verification.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index.php" beforeDir="false" afterPath="$PROJECT_DIR$/../index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../static/layui/css/layui1.9.css" beforeDir="false" afterPath="$PROJECT_DIR$/../static/layui/css/layui1.9.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../static/layui/layui.js" beforeDir="false" afterPath="$PROJECT_DIR$/../static/layui/layui.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/leWan.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/leWan.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/everydayFaddish/everydayFaddish.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/everydayFaddish/everydayFaddish.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/homePage/OrderPayment.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/homePage/OrderPayment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/homePage/homePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/homePage/homePage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/homePage/productDetails.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/homePage/productDetails.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/homePage/productList.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/homePage/productList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/personalCenter/addBankCard.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/personalCenter/addBankCard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/personalCenter/incomeDetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/personalCenter/incomeDetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/personalCenter/indentDetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/personalCenter/indentDetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/personalCenter/inviteFriends.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/personalCenter/inviteFriends.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/personalCenter/myIndent.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/personalCenter/myIndent.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/personalCenter/newbieCourse.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/personalCenter/newbieCourse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/personalCenter/personalCenter.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/personalCenter/personalCenter.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/personalCenter/realName.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/personalCenter/realName.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/reservationCenter/appointmentTime.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/reservationCenter/appointmentTime.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/reservationCenter/expressAppointment.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/reservationCenter/expressAppointment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/reservationCenter/indentDetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/reservationCenter/indentDetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/reservationCenter/reservationCenter.html" beforeDir="false" afterPath="$PROJECT_DIR$/page/reservationCenter/reservationCenter.html" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-1076516389">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="6" />
+          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.open.time.8" value="2" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="7" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="html" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="HTML" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/page/homePage/homePage.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="367">
+              <caret line="713" column="26" lean-forward="true" selection-start-line="713" selection-start-column="26" selection-end-line="713" selection-end-column="26" />
+              <folding>
+                <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+                <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#2;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#3;n#body#0;n#html#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="wechat_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="wechat_html" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="wechat_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="wechat_html" type="462c0819:PsiDirectoryNode" />
+              <item name="page" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="wechat_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="wechat_html" type="462c0819:PsiDirectoryNode" />
+              <item name="page" type="462c0819:PsiDirectoryNode" />
+              <item name="homePage" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="efa23ecc-a15b-4d71-b44e-7c52da1a2509" name="Default Changelist" comment="" />
+      <created>1543995899592</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1543995899592</updated>
+      <workItem from="1543995903567" duration="39000" />
+      <workItem from="1543995967149" duration="248000" />
+      <workItem from="1543996238548" duration="101000" />
+      <workItem from="1543996453056" duration="128000" />
+      <workItem from="1543996605482" duration="1068000" />
+      <workItem from="1543998054403" duration="99000" />
+      <workItem from="1544082697225" duration="621000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2304000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14014752" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/page/homePage/homePage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="713" column="26" lean-forward="true" selection-start-line="713" selection-start-column="26" selection-end-line="713" selection-end-column="26" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="n#nav#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#2;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#3;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
