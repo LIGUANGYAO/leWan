@@ -12,6 +12,10 @@
 	</head>
 
 	<body>
+		<div class="">
+			<p style="white-space: normal; font-size: 13.3333px; text-align: center; color: rgb(51, 51, 51);"><strong><br/></strong></p>
+			<p style="white-space: normal;">&lt;p font-size:14px;text-align:center;background-color:#ffffff;&quot;=&quot;&quot; style=&quot;font-size: 13.3333px; white-space: normal; text-align: center; color: rgb(51, 51, 51);&quot;&gt;<strong>当然，安全性能也很重要！</strong></p>
+		</div>
 		<div id="J_el">
 			<div class="htmlText">
 
@@ -19,83 +23,7 @@
 		</div>
 
 		<script src="plugins/vue.js"></script>
-		<script src="plugins/jquery-2.1.4.js"></script><script type="text/javascript">
-			/*
-			 * Summary: lyz.delayLoading 1.0
-			 * Date: 2011
-			 * Emial: c_sharp@live.cn
-			 */
-			jQuery.fn.extend({
-				delayLoading: function(a) {
-					function g(d) {
-						var b, c;
-						if(a.container === undefined || a.container === window) {
-							b = $(window).scrollTop();
-							c = $(window).height() + $(window).scrollTop()
-						} else {
-							b = $(a.container).offset().top;
-							c = $(a.container).offset().top + $(a.container).height()
-						}
-						return d.offset().top + d.height() + a.beforehand >= b & ; & ;
-						c >= d.offset().top - a.beforehand
-					}
-
-					function h(d) {
-						var b, c;
-						if(a.container === undefined || a.container === window) {
-							b = $(window).scrollLeft();
-							c = $(window).width() + $(window).scrollLeft()
-						} else {
-							b = $(a.container).offset().left;
-							c = $(a.container).offset().left + $(a.container).width()
-						}
-						return d.offset().left + d.width() + a.beforehand >= b & ; & ;
-						c >= d.offset().left - a.beforehand
-					}
-
-					function f() {
-						e.filter("img[" + a.imgSrcAttr + "]").each(function(d, b) {
-							if($(b).attr(a.imgSrcAttr) !== undefined & ; & ; $(b).attr(a.imgSrcAttr) !== null & ; & ; $(b).attr(a.imgSrcAttr) !== "" & ; & ; g($(b)) & ; & ; h($(b))) {
-								var c = new Image;
-								c.onload = function() {
-									$(b).attr("src", c.src);
-									a.duration !== 0 & ; & ;
-									$(b).hide().fadeIn(a.duration);
-									$(b).removeAttr(a.imgSrcAttr);
-									a.success($(b))
-								};
-								c.onerror = function() {
-									$(b).attr("src",
-										a.errorImg);
-									$(b).removeAttr(a.imgSrcAttr);
-									a.error($(b))
-								};
-								c.src = $(b).attr(a.imgSrcAttr)
-							}
-						})
-					}
-					a = jQuery.extend({
-						defaultImg: "",
-						errorImg: "",
-						imgSrcAttr: "originalSrc",
-						beforehand: 0,
-						event: "scroll",
-						duration: "normal",
-						container: window,
-						success: function() {},
-						error: function() {}
-					}, a || {});
-					if(a.errorImg === undefined || a.errorImg === null || a.errorImg === "") a.errorImg = a.defaultImg;
-					var e = $(this);
-					if(e.attr("src") === undefined || e.attr("src") === null || e.attr("src") === "") e.attr("src", a.defaultImg);
-					f();
-					$(a.container).bind(a.event, function() {
-						f()
-					})
-				}
-			});
-		</script>
-	
+		<script src="plugins/jquery-2.1.4.js"></script>
 		<script type="text/javascript">
 			new Vue({
 				el: '#J_el',
@@ -110,48 +38,36 @@
 
 				},
 			});
-			
+
 			getProductDetails();
-				function getProductDetails() {
-					var data = {
-						token: null,
-						type: 2, // 1未定位 2已定位
-						pr_id: 10,
-						lat: 103.10,
-						lng: 30.12
-					};
-					$.ajax({
-						url: 'http://cs.lewan6.ren/api/' + 'Product/ProductDetails',
-						async: true,
-						headers: {
-							"product": "wechat",
-							"platform": 'ios', //sreverApi里面设置了全局变量
-							"provincecode": 510000,
-							"citycode": 510100
-						},
-						data: data,
-						success: function(data) {
-							console.log(data)
-							if(data.code == 200) {
-								$('.htmlText').html(data.data.details.product_description)
-							}
+
+			function getProductDetails() {
+				var data = {
+					token: null,
+					type: 2, // 1未定位 2已定位
+					pr_id: 10,
+					lat: 103.10,
+					lng: 30.12
+				};
+				$.ajax({
+					url: 'http://cs.lewan6.ren/api/' + 'Product/ProductDetails',
+					async: true,
+					headers: {
+						"product": "wechat",
+						"platform": 'ios', //sreverApi里面设置了全局变量
+						"provincecode": 510000,
+						"citycode": 510100
+					},
+					data: data,
+					success: function(data) {
+						console.log(data)
+						if(data.code == 200) {
+							$('.htmlText').html(data.data.details.product_description)
 						}
-					});
-				}
-			$(function () {
-	            $("img").delayLoading({
-	                defaultImg: "images/loading.png",   // 预加载前显示的图片  
-	                errorImg: "",   // 读取图片错误时替换图片(默认:与defaultImg一样)  
-	                imgSrcAttr: "originalSrc",//记录图片路径的属性(默认:originalSrc,页面img的src属性也要替换为originalSrc)  
-	                beforehand: 0,  // 预先提前多少像素加载图片(默认:0)  
-	                event: "scroll", // 触发加载图片事件(默认:scroll)  
-	                duration: "normal", // 三种预定淡出(入)速度之一的字符串("slow", "normal", or "fast")或表示动画时长的毫秒数值(如:1000),默认:"normal"  
-	                container: window,     // 对象加载的位置容器(默认:window)  
-	                success: function (imgObj) { }, // 加载图片成功后的回调函数(默认:不执行任何操作)  
-	                error: function (imgObj) { }  // 加载图片失败后的回调函数(默认:不执行任何操作)  
-	            });
-	        });
+					}
+				});
+			}
 		</script>
-		</body>
+	</body>
 
 </html>
