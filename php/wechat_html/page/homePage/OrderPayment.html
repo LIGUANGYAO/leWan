@@ -445,12 +445,12 @@
 							<label>购买数量：</label>
 							<div class="numBox">
 								<!--TODO-->
-								<div v-if="proDetail.product_isexpress==1 && proDetail.product_returnall != 1" class="mui-numbox" data-numbox-step='1' data-numbox-min='0' :data-numbox-max='proDetail.product_sku'>
+								<div v-if="proDetail.product_returnall != 1" class="mui-numbox" data-numbox-step='1' data-numbox-min='0' :data-numbox-max='proDetail.product_sku'>
 									<div class="jia mui-btn mui-numbox-btn-minus" ><i :class="{'isClick': buyNum>1}" class="iconfont icon-jian"></i></div>
 									<input class="mui-numbox-input" v-model="buyNum" id="buyNumber" type="number" />
 									<div class="jian mui-btn mui-numbox-btn-plus"><i :class="{'isClick': buyNum<proDetail.product_sku}" class="iconfont icon-wuuiconxiangjifangda"></i></div>
 								</div>
-								<div v-else-if="proDetail.product_isexpress==2 || proDetail.product_returnall == 1" class="kuaidiNumber">1</div>
+								<div v-else-if="proDetail.product_returnall == 1" class="kuaidiNumber">1</div>
 							</div>
 						</div>
 						<div class="mui-input-row">

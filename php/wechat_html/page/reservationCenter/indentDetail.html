@@ -408,6 +408,11 @@
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
+				mui.init({
+				    gestureConfig: {
+				        longtap: true
+				    }
+				});
 				var token = localStorage.getItem("token");
 				var orderId = getUrlParam("orderId");
 
