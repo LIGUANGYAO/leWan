@@ -1,0 +1,58 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form" action="{:url('Usersms/SmsPush')}" method="post" enctype="multipart/form-data">
+
+        <div class="layui-form-item ">
+            <label class="layui-form-label">推送方式:</label>
+            <div class="layui-input-inline" style="width:350px">
+                <label><input type="radio"  onclick="teststatus(1)" name="status" value="1" title="输入电话"  checked="checked"></label>
+                <label><input type="radio"  onclick="teststatus(2)" name="status" value="2" title="用户选择"  ></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item" id="mobile">
+            <label class="layui-form-label">推送电话:</label>
+            <div class="layui-input-block layui-col-sm2">
+                <input type="text" name="mobile"  class="layui-input" >
+                <div class="layui-form-mid layui-word-aux">指定推送用户,多个以英文,隔开如(18602884742,18602884743)</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item " id="level" style="display: none">
+            <label class="layui-form-label">推送用户:</label>
+            <div class="layui-input-inline">
+                <select name="level"  lay-filter="position">
+                    <option value="0" >请选择用户等级</option>
+                    <!--<option value="1" <if condition="$obj.position eq 1"> selected="selected"</if>>普通用户</option>-->
+                    <option value="2" >超级会员</option>
+                    <option value="3" >分享达人</option>
+                    <option value="4" >运营达人</option>
+                    <option value="5" >玩主</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item col-sm-10" id="reasons" >
+            <label class="layui-form-label"><span style="color:red">*</span>推送内容：</label>
+            <div class="layui-input-block">
+                <textarea name="message" placeholder="【乐玩联盟】短信内容..." class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+</form>
+
+</div>
+<script>
+    function teststatus(s) {
+        if(s == 1){
+            $('#mobile').css('display','block');
+            $('#level').css('display','none');
+        }else{
+            $('#mobile').css('display','none');
+            $('#level').css('display','block');
+        }
+    }
+</script>

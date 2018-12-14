@@ -1,0 +1,22 @@
+<div class="layui-tab-item" title="用户上级">
+    <table class="layui-table view">
+        <tr>
+            <th>头像</th>
+            <th>联系电话</th>
+            <th>昵称</th>
+            <th>用户等级</th>
+        </tr>
+        <volist name="$user" id="val">
+            <tr>
+                <td>
+                    <if condition="$val.avatar">
+                        <img src="{$val.avatar}" class="avatar">
+                    </if>
+                </td>
+                <td>{$val.mobile}</td>
+                <td>{$val.nickname}</td>
+                <td>{$val.level}</td>
+            </tr>
+        </volist>
+    </table>
+</div>

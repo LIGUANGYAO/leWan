@@ -1,0 +1,85 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2018/12/14
+ * Time: 14:10
+ * 用户全部好友查询模型
+ * 肖亚子
+ */
+
+namespace app\system\model;
+use think\Db;
+
+class UserfriendModel extends BaseModel{
+    static private  $NewUser = array();//当天新用户
+
+    public static function TableName(){
+        return Db::name("user");
+    }
+
+    /**
+     * @param $Mobile  用户电话
+     * @param $Stime   开始时间
+     * @param $Etime   结束时间
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取查询用户全部好友
+     * 肖亚子
+     */
+    public static function UserFind($Mobile,$Stime,$Etime){
+        $User = self::TableName()->field("user_id,level,floor")->where("mobile","=",$Mobile)->find();
+
+        if ($User && $User["level"] > 1){
+            $Floor = $User["floor"] + 2;
+
+            if (in_array($User["level"],array(2,3))){//超级达人/营销达人 全部好友 查推荐的下两级用户,独立出去的用户团队不查
+                $UnderCondition[] = array("exp"," level <= 3 and floor <= {$Floor}");
+            }elseif($User["level"] == 4){//运营达人看自己的下级,独立出去的用户团队不查
+                $UnderCondition["level"] = array("elt",3);
+            }else{//玩主查看全部的推荐用户,玩主团队不查
+                $UnderCondition["level"] = array("elt",4);
+            }
+
+            self::UserOperateList($UnderCondition,$Stime,$Etime,$User["user_id"]);//获取最新全部好友人数
+        }
+
+        return self::$NewUser;
+    }
+
+    /**
+     * @param $Condition 查询条件
+     * @param $Stime     开始时间
+     * @param $Etime     结束时间
+     * @param int $Uid   用户id
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取用户选择时间内全部好友
+     * 肖亚子
+     */
+    public static function UserOperateList($Condition,$Stime,$Etime,$Uid = 0){
+
+        if ($Uid){
+            $Condition["reid"] = $Uid;
+        }
+
+        $List  = Db::name("user")->field("user_id,mobile,nickname,avatar,level,reg_time")->where($Condition)->select();
+
+        foreach ($List as $key=>$value)
+        {
+
+            if ($value["reg_time"] > $Stime && $value["reg_time"] < $Etime){
+                self::$NewUser[] = $value;
+            }
+
+            $Condition["reid"] = $value["user_id"];
+
+            self::UserOperateList($Condition,$Stime,$Etime,0); //调用函数，传入参数，继续查询下级
+        }
+    }
+
+
+}

@@ -1,0 +1,21 @@
+<if condition="$data.address_id">
+    <div class="layui-tab-item" title="收获地址">
+        <table class="layui-table view">
+            <thead>
+            <tr>
+                <th >收获人</th>
+                <th >联系电话</th>
+                <th >地区</th>
+                <th >详细地址</th>
+            </tr>
+            </thead>
+
+            <tr>
+                <td >{$data.contact}</td>
+                <td >{$data.amobile}</td>
+                <td >{$data.ssq}</td>
+                <td >{$data.address}</td>
+            </tr>
+        </table>
+    </div>
+</if>

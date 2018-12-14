@@ -1,0 +1,163 @@
+<if condition="$data.order_isexpress eq 1">
+    <if condition="$data.order_reservation eq 1">
+        <if condition="$reservation">
+            <div class="layui-tab-item" title="电子码预约信息">
+                <table class="layui-table view">
+                    <thead>
+                    <tr>
+                        <th >消费码</th>
+                        <th >消费码状态</th>
+                        <th >消费码使用时间</th>
+                        <th >预约日期</th>
+                        <th >预约日价格</th>
+                        <th >周几</th>
+                        <th >预约状态</th>
+                        <th >更新时间</th>
+                        <th >添加时间</th>
+                    </tr>
+                    </thead>
+                    <volist name="$reservation" id="val">
+                        <tr>
+                            <td >{$val.consume_code}</td>
+                            <td >
+                                <if condition="$val.status eq 1">
+                                    未使用
+                                    <elseif condition="$val.status eq 2"/>
+                                    已使用
+                                    <elseif condition="$val.status eq 3" />
+                                    已过期
+                                    <elseif condition="$val.status eq 4" />
+                                    冻结
+                                </if>
+                            </td>
+                            <td >
+                                <if condition="!empty($val.uptime)">
+                                    {$val.uptime|date='Y-m-d H:i',###}
+                                </if>
+                            </td>
+                            <td >{$val.calendar}</td>
+                            <td >{$val.addprice}</td>
+                            <td >{$val.week}</td>
+                            <td >
+                                <if condition="$val.reservation_status eq 0">
+                                    <if condition="$val.reservation_no">
+                                        未支付
+                                        <else />
+                                        未预约
+                                    </if>
+                                    <elseif condition="$val.reservation_status eq 1"/>
+                                    预约成功
+                                    <elseif condition="$val.reservation_status eq 2"/>
+                                    预约完成
+                                    <elseif condition="$val.reservation_status eq 3"/>
+                                    预约过期
+                                    <elseif condition="$val.reservation_status eq 4"/>
+                                    取消预约
+                                </if>
+                            </td>
+                            <td >
+                                <if condition="!empty($val.reservation_uptime)">
+                                    {$val.reservation_uptime|date='Y-m-d H:i',###}
+                                </if>
+                            <td >
+                                <if condition="!empty($val.reservation_addtime)">
+                                    {$val.reservation_uptime|date='Y-m-d H:i',###}
+                                </if>
+                            </td>
+                        </tr>
+                    </volist>
+                </table>
+            </div>
+        </if>
+        <if condition="$ordermarkup">
+            <if condition="$reservation">
+                <div class="layui-tab-item" title="订单预约加价信息">
+                    <table class="layui-table view">
+                        <thead>
+                        <tr>
+                            <th >消费码</th>
+                            <th >加价订单号</th>
+                            <th >第三方订单号</th>
+                            <th >支付方式</th>
+                            <th >加价价格</th>
+                            <th >支付状态</th>
+                            <th >加价支付时间</th>
+                        </tr>
+                        </thead>
+                        <volist name="$ordermarkup" id="val">
+                            <tr>
+                                <td >{$val.consume_code}</td>
+                                <td >{$val.reservation_no}</td>
+                                <td >{$val.reservation_transaction_id}</td>
+                                <td ><label class="layui-badge {$data.paycss}"> {$data.payname}</label></td>
+                                <td >{$val.reservation_addprice}</td>
+                                <td >
+                                    <if condition="$val.reservation_status eq 0">
+                                        未支付
+                                        <else/>
+                                        已支付
+                                    </if>
+                                </td>
+                                <td >
+                                    <if condition="!empty($val.reservation_paytime)">
+                                        {$val.reservation_paytime|date='Y-m-d H:i',###}
+                                    </if>
+                                </td>
+                            </tr>
+                        </volist>
+                    </table>
+                </div>
+            </if>
+        </if>
+    </if>
+
+    <if condition="$data.order_reservation eq 2">
+        <if condition="$reservation">
+            <div class="layui-tab-item" title="商品日历价格信息">
+                <table class="layui-table view">
+                    <thead>
+                    <tr>
+                        <th >日期</th>
+                        <th >市场价</th>
+                        <th >销售价</th>
+                        <th >佣金总额</th>
+                        <th >库存数量</th>
+                        <th >已售数量</th>
+                    </tr>
+                    </thead>
+                    <volist name="$calendar" id="val">
+                        <tr>
+                            <td >{$val.ymd|date='Y-m-d',###}</td>
+                            <td >{$val.price_market}</td>
+                            <td >{$val.price_sale}</td>
+                            <td >{$val.price_commission}</td>
+                            <td >{$val.product_num}</td>
+                            <td >{$val.product_buynum}</td>
+                        </tr>
+                    </volist>
+                </table>
+            </div>
+        </if>
+
+        <div class="layui-tab-item" title="购买日历价格信息">
+            <table class="layui-table view">
+                <thead>
+                <tr>
+                    <th >日期</th>
+                    <th >价格</th>
+                    <th >佣金</th>
+                </tr>
+                </thead>
+                <volist name="$goods.pricecalendar" id="val">
+                    <tr>
+                        <td >{$val.name}</td>
+                        <td >{$val.price}</td>
+                        <td >{$val.commission}</td>
+                    </tr>
+                </volist>
+            </table>
+        </div>
+
+    </if>
+
+</if>

@@ -1,0 +1,22 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form" action="{:url('Userphone/PhoneSms')}" method="post" enctype="multipart/form-data">
+
+        <div class="layui-form-item" id="mobile">
+            <label class="layui-form-label">手机号码:</label>
+            <div class="layui-input-block " style="width: 500px;">
+                <input type="text" name="mobile"  class="layui-input"  >
+                <div class="layui-form-mid layui-word-aux">手机号码获取验证码成功,验证码为手机号后6位</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script>
+
+</script>

@@ -1,0 +1,62 @@
+<div class="layui-tab-item layui-show" title="基本信息">
+    <table class="layui-table view">
+        <tr>
+            <td class="label">平台订单号：</td>
+            <td class="content">{$data.order_no}</td>
+        </tr>
+        <tr>
+            <td class="label">用户：</td>
+            <td class="content">昵称: {$data.nickname} / 手机号: {$data.mobile}</td>
+        </tr>
+        <tr>
+            <td class="label">订单联系：</td>
+            <td class="content">联系人: {$data.order_fullname} / 联系电话: {$data.order_mobile}</td>
+        </tr>
+        <tr>
+            <td class="label">总金额：</td>
+            <td class="content">
+                {$data.order_totalfee}
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label">实际金额：</td>
+            <td class="content">
+                {$data.order_payfee}
+            </td>
+        </tr>
+        <tr>
+            <td class="label">商品类型：</td>
+            <td class="content">
+                <label class="layui-badge {$data.typename}"> {$data.typename}</label>
+                <label class="layui-badge {$data.recss}"> {$data.rename}</label>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">支付方式：</td>
+            <td class="content">
+                <label class="layui-badge {$data.paycss}"> {$data.payname}</label>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">订单状态：</td>
+            <td class="content">
+                <label class="layui-badge {$data.statuscss}"> {$data.statusname}</label>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">付款时间：</td>
+            <td class="content">
+                <if condition="$data.order_paytime">
+                    {$data.order_paytime|date='Y-m-d H:i',###}
+                </if>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">下单时间：</td>
+            <td class="content">
+                {$data.order_addtime|date='Y-m-d H:i',###}
+            </td>
+        </tr>
+    </table>
+</div>

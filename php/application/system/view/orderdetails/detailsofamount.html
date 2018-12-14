@@ -1,0 +1,24 @@
+<div class="layui-tab-item" title="订单金额详情">
+    <table class="layui-table view">
+        <tr>
+            <td class="label">现金币金额：</td>
+            <td class="content">{$data.cash|default=0}</td>
+        </tr>
+        <tr>
+            <td class="label">积分数量：</td>
+            <td class="content">{$data.points|default=0}</td>
+        </tr>
+        <tr>
+            <td class="label">佣金数量：</td>
+            <td class="content">{$data.commission|default=0}</td>
+        </tr>
+        <tr>
+            <td class="label">优惠券面额：</td>
+            <td class="content">{$data.coupon|default=0}</td>
+        </tr>
+        <tr>
+            <td class="label">第三方支付金额：</td>
+            <td class="content">{$data.payamount|default=0}</td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="layui-field-title "></div>
+<div class="page">
+    <div class="clear"></div>
+    <div class="layui-field-title"></div>
+
+    <form class="layui-form " action="{:url('Orderdetails/Orderdetail')}" method="get" >
+
+        <div class="layui-form-item ">
+            <div class="layui-input-block layui-col-sm4">
+                <input type="text" name="number"  placeholder="请输入平台订单号"  class="layui-input" value="{$number}">
+            </div>
+            <span class="input-group-btn layui-input-block">
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                  <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+            </span>
+        </div>
+
+    </form>
+
+    <div class="clear"></div>
+
+    <if condition="$data">
+            <div class="layui-form ">
+                <div class="page" style="padding:20px 0px 0px 0px;">
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">订单信息</li>
+                            <li>订单金额详情</li>
+                            <li>商品信息</li>
+
+                            <if condition="$ordercode">
+                                <li>电子码</li>
+                            </if>
+                            <if condition="$data.order_isexpress eq 1">
+                                <if condition="$data.order_reservation eq 1">
+                                    <if condition="$reservation">
+                                        <li>电子码预约信息</li>
+                                    </if>
+
+                                    <if condition="$ordermarkup">
+                                        <li>订单预约加价信息</li>
+                                    </if>
+                                </if>
+
+                                <if condition="$data.order_reservation eq 2">
+                                    <if condition="$goods.price_type eq 2">
+                                        <li>商品日历价格信息</li>
+                                        <li>购买日历价格信息</li>
+                                    </if>
+                                </if>
+                            </if>
+                            <if condition="$data.order_isexpress eq 2">
+                                <li>预约发货信息</li>
+                            </if>
+
+                            <if condition="$data.address_id">
+                                <li>收获地址</li>
+                            </if>
+                            <li>用户上级</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <include  file="orderdetails/data" />
+
+                            <include  file="orderdetails/detailsofamount" />
+
+                            <include  file="orderdetails/goods" />
+
+                            <include  file="orderdetails/ordercode" />
+
+                            <include  file="orderdetails/shop" />
+
+                            <include  file="orderdetails/delivery" />
+
+                            <include  file="orderdetails/takedelivery" />
+
+                            <include  file="orderdetails/user" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    暂无数据w(ﾟДﾟ)w
+                </div>
+            </div>
+    </if>
+
+<div class="layui-input-block"></div>
+</div>
+</div>
+
+<script>
+</script>
