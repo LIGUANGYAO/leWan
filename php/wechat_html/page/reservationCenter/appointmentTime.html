@@ -6,6 +6,8 @@
 		<title>预约时间</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../plugins/mui.picker.css" rel="stylesheet" />
+		<link href="../../plugins/mui.poppicker.css" rel="stylesheet" />
 		<link href="../../css/leWan.css" rel="stylesheet" />
 		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
 		<link href="../../fonts/iconfont.css" rel="stylesheet" />
@@ -13,8 +15,37 @@
 			body {
 				padding: 0;
 				margin: 0;
-				background-color: #efeff4
+				background-color: #F5F6FA;
+				margin-bottom: 0 !important;
 			}
+			/*页头*/
+			.merchantBox{
+				width: 9.333rem;
+				height: 1.6rem;
+				line-height: 1.6rem;
+				background-color: #FFFFFF;
+				margin: 0 auto;
+				margin-top: 0.533rem;
+				text-align: center;
+			}
+			.merName{
+				color: #FF8B30;
+				font-size: 0.426rem;
+				font-weight: 800;
+				margin-left: 0.8rem;
+			}
+			.lookMore{
+				color: #999999;
+				font-size: 0.32rem;
+				font-weight: 300;
+				float: right;
+				padding-right: 0.3rem;
+				padding-left: 0.1rem;
+			}
+			.lookMore i{
+				margin-right: 0.15rem;
+			}
+			
 			/*列表*/
 			
 			.content {
@@ -256,64 +287,69 @@
 				border-radius: 0.56rem;
 				color: #F77917;
 			}
+			.lw-empty-box{
+				background-color: #F5F6FA;
+			}
 		</style>
 	</head>
 
 	<body>
 		<div id="J_el" v-cloak>
-			<div v-if="showPage">
-				<div class="content">
-					<div class="contentBox" v-if="codeList.length">
-						<div class="timeList" @tap="popupModel(items.reservationday_id,items.day)" v-for="items in codeList">
-							<div class="timeDate">{{ items.day }}</div>
-							<div class="timeWeek">{{ items.week }}</div>
-							<div class="indentNum">剩{{items.lastnumber}}</div>
-						</div>
+			<div class="content">
+				<div class="merchantBox">
+					<span class="merName">店铺名称</span>
+					<span v-if="merchantList.length>1" class="lookMore" id="selMerchant"><i class="iconfont icon-xiala1"></i>更换</span>
+				</div>
+				<div class="contentBox" v-if="codeList.length">
+					<div class="timeList" @tap="popupModel(items.reservationday_id,items.day)" v-for="items in codeList">
+						<div class="timeDate">{{ items.day }}</div>
+						<div class="timeWeek">{{ items.week }}</div>
+						<div class="indentNum">剩{{items.lastnumber}}</div>
 					</div>
-					<!--空状态时-->
-					<div class="lw-empty" style="display: block;" v-else>
-						<div class="lw-empty-box">
-							<div class="lw-empty-flex">
-								<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
-								<div class="lw-empty-test">商家暂无可预约商品！</div>
-							</div>
+				</div>
+				<!--空状态时-->
+				<div class="lw-empty" style="display: block;" v-else>
+					<div class="lw-empty-box">
+						<div class="lw-empty-flex">
+							<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+							<div class="lw-empty-test">商家暂无可预约商品！</div>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<div class="modalOne">
-					<div class="modalBox1">
-						<div class="modalHeader">消费日期：2018/10/20</div>
-						<p>商品规格</p>
-						<div class="indentBox">
-							<div class="indentList" v-for="items in yuyueList">
-								<div class="listLeft">
-									<!--TODO 接口后期修改-->
-									<div>【{{ items.property }}】 </div>
-									<div>{{ items.property }}</div>
-									<div>可约数量：{{ items.lastnumber }}</div>
-								</div>
-								<div class="listRight">
-									<div v-if="items.lastnumber > 0" class="subscribeBtn" @tap="subscribe(items.id)">预约</div>
-									<div class="ewaijiashou">额外加收:{{ items.addprice }}元</div>
-								</div>
+			<div class="modalOne">
+				<div class="modalBox1">
+					<div class="modalHeader">消费日期：2018/10/20</div>
+					<p>商品规格</p>
+					<div class="indentBox">
+						<div class="indentList" v-for="items in yuyueList">
+							<div class="listLeft">
+								<!--TODO 接口后期修改-->
+								<div>{{ items.product_name }}</div>
+								<div>{{ items.property }}</div>
+								<div>可约数量：{{ items.lastnumber }}</div>
 							</div>
-
+							<div class="listRight">
+								<div v-if="items.lastnumber > 0" class="subscribeBtn" @tap="subscribe(items.id)">预约</div>
+								<div class="ewaijiashou">额外加收:{{ items.addprice }}元</div>
+							</div>
 						</div>
-					</div>
-					<div class="closeBtn">
-						<i class="iconfont icon-guanbi" id="closeModelBtn"></i>
+
 					</div>
 				</div>
-				<div class="modalTwo">
-					<div class="modalBox2">
-						<div class="reSuccess" style="background-image: url(../../img/reservationCenter/subscribe1.png);">
-							<div>预约成功</div>
-							<div>该订单过期不用自动作废</div>
-						</div>
-						<div class="callBackBox">
-							<div class="callBackHomePage">返回首页</div>
-						</div>
+				<div class="closeBtn">
+					<i class="iconfont icon-guanbi" id="closeModelBtn"></i>
+				</div>
+			</div>
+			<div class="modalTwo">
+				<div class="modalBox2">
+					<div class="reSuccess" style="background-image: url(../../img/reservationCenter/subscribe1.png);">
+						<div>预约成功</div>
+						<div>该订单过期不用自动作废</div>
+					</div>
+					<div class="callBackBox">
+						<div class="callBackHomePage">返回首页</div>
 					</div>
 				</div>
 			</div>
@@ -322,16 +358,20 @@
 		<script src="../../plugins/jquery-2.1.4.js"></script>
 		<script src="../../plugins/vue.js"></script>
 		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/mui.picker.min.js"></script>
+		<script src="../../plugins/mui.poppicker.js"></script>
 		<script src="../../plugins/swiper-4.3.3.min.js"></script>
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				var token = localStorage.getItem("token");
 				var code = getUrlParam("code");
+				var orderId = getUrlParam("orderId");
 				
 				//获取日历表
 				var vueData = {
-					showPage: false,
+					merchantList:[],
+					fenDianIndex: 0,
 					codeList: [],
 					yuyueList:[],
 				}
@@ -343,15 +383,61 @@
 						subscribe: subscribe,
 					}
 				})
-
+				
+				//选取分店名称
+				var cityPicker = new mui.PopPicker({
+					layer: 1
+				});
+				var initMerchant;
+				//获取分店列表
+				getFendian()
+				function getFendian() {
+					$.ajax({
+						url: API_SERVER + "Yuyue/getFenDian",
+						async: false,
+						data: {
+							token: token,
+							order_id: orderId,
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.merchantList = data.data;
+								$('.merName').text(data.data[0].merchant_name);
+								getRili(data.data[0].merchant_id);
+								initMerchant = data.data.map(function(items) {
+									return {
+										value: items.merchant_id,
+										text: items.merchant_name
+									}
+								})
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					});
+				}
+				//选取分店
+				cityPicker.setData(initMerchant);
+				mui('body').on('tap', '#selMerchant', function() {
+					document.activeElement.blur(); //选择城市时隐藏输入键盘
+					var _getParam = function(obj, param) {
+						return obj[param] || '';
+					};
+					cityPicker.show(function(items) {
+						log(items)
+						$(".merName").text(_getParam(items[0], 'text'))
+						getRili(_getParam(items[0], 'value'))
+					});
+				});
 				//获取日历表
-				getRili()
-				function getRili() {
+				function getRili(merchantId) {
 					$.ajax({
 						url: API_SERVER + "Yuyue/calandar",
 						data: {
 							token: token,
 							code: code,
+							fen_merchant_id: merchantId
 						},
 						success: function(data) {
 							log(data)

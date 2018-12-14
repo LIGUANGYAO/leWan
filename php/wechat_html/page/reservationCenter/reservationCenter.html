@@ -300,8 +300,8 @@
 										<div v-if="items.express == 1" class="">
 											<span class="caLeft">消费电子码：</span>
 											<span v-if="index == 0" v-for="(item,index) in items.code" class="caRight">{{ item.consume_code }}</span>
-											<div v-if="items.express == 1 && items.code_count>1" class="goToBtn" @tap="goToShow(items.code)" >去查看</div>
-											<div v-else class="goToBtn" @tap="goToYuyue(items.code[0].consume_code)">去预约</div>
+											<div v-if="items.express == 1 && items.code_count>1" class="goToBtn" @tap="goToShow(items.code,items.order_id)" >去查看</div>
+											<div v-else class="goToBtn" @tap="goToYuyue(items.code[0].consume_code,items.order_id)">去预约</div>
 										</div>
 										<div v-else-if="items.express == 2" class="">
 											<span class="caLeft">预约发货：</span>
@@ -374,7 +374,7 @@
 							<ul class="mui-table-view codeBox">
 								<li class="mui-table-view-cell" :class="{'isGuoqi' : items.status != 1 }" v-for="items in showList">
 									<span>{{ items.consume_code }}</span>
-									<span v-if="items.status == 1" @tap="goToYuyue(items.consume_code)">去预约</span>
+									<span v-if="items.status == 1" @tap="goToYuyue(items.consume_code,orderId)">去预约</span>
 									<span class="isGuoqi2" v-else >{{ items.status == 2 ? "已使用" : items.status == 3 ? "已过期" : items.status == 4 ? "冻结" : "无状态" }}</span>
 								</li>
 							</ul>
@@ -519,6 +519,7 @@
 					modalType: 1,	//1为查看电子码详情，2为查看订单详情
 					noDetails: {}, //电子码详情
 					yesDetails: {}, //快递详情
+					orderId:0,	//订单ID	
 				};
 				new Vue({
 					el: '#J_el',
@@ -613,8 +614,9 @@
 				
 				
 				//查看更多电子码
-				function goToShow(list){
+				function goToShow(list,orderId){
 					vueData.showList = list;
+					vueData.orderId = orderId;
 					log(list);
 					$('.modalBox').css('display', 'block');
 				}
@@ -659,10 +661,10 @@
 				}
 				
 				//电子码预约==》电子码传code下的consume_code
-				function goToYuyue(code){
+				function goToYuyue(code,orderId){
 					log(code);
 					mui.openWindow({
-						url: "appointmentTime.html?code=" + code
+						url: "appointmentTime.html?code=" + code + "&orderId=" + orderId
 					})
 				}
 				

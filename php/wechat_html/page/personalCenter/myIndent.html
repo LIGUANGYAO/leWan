@@ -159,7 +159,7 @@
 						<div class="contentBox" v-if="indentList.length">
 							
 							<div class="contentList" v-for="items in indentList" @tap="jumpToDetails(items.order_id)">
-								<div class="indentNum"><span>订单号:{{items.order_no}}</span><span> </span><span>{{statusText[items.order_status]}}</span></div>
+								<div class="indentNum"><span>订单号:{{items.order_no}}</span><span>X{{items.num}} </span><span>{{statusText[items.order_status]}}</span></div>
 								<div class="indentName">{{items.product_name}}</div>
 								<p class="indentAddress"><i class="iconfont icon-dingwei"></i>{{items.region}}</p>
 								<div class="indentPrice">总价：<span class="money">￥{{items.order_totalfee}}</span></div>

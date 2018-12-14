@@ -148,14 +148,7 @@
 				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
 			}
-			.lastEr{
-				height: auto;
-				padding: 12px 15px;
-				border-bottom: 1px solid #f2f2f2;
-			}
-			.lastEr i{
-				font-size: 0.5rem;
-			}
+			
 			.mui-table-view .mui-table-view-cell:last-child {
 				height: auto;
 				padding: 12px 15px;
@@ -179,15 +172,7 @@
 				margin-left: 0.2rem;
 				font-weight: bold;
 			}
-			.lastBox{
-				height: 0.586rem;
-				line-height: 0.586rem;
-			}
-			.lastBox>span:nth-child(1) {
-				font-size: 0.373rem;
-				color: #333333;
-				font-weight: bold;
-			}
+			
 			.lastTwo {
 				font-size: 0.426rem;
 				color: #333333;
@@ -196,34 +181,11 @@
 				line-height: 0.586rem;
 				margin-top: 0.506rem;
 			}
-			.lastTwoEr{
-				font-size: 0.426rem;
-				color: #999999;
-				font-weight: 400;
-				line-height: 0.586rem;
-				margin-top: 0.506rem;
-				padding-bottom: 0.3rem;
-				border-bottom: 1px solid #f2f2f2;
-			}
-			.lastTwoEr span,.lastThreeEr span{
-				color: #FF8B30;
-				font-size: 0.373rem;
-				font-weight: 400;
-				float: right;
-				margin-right: 0.3rem;
-			}
+			
 			.lastThree {
 				font-size: 0.426rem;
 				color: #333333;
 				font-weight: bold;
-				height: 0.586rem;
-				line-height: 0.586rem;
-				margin-top: 0.266rem;
-			}
-			.lastThreeEr{
-				font-size: 0.426rem;
-				color: #999999;
-				font-weight: 400;
 				height: 0.586rem;
 				line-height: 0.586rem;
 				margin-top: 0.266rem;
@@ -396,16 +358,9 @@
 						<li class="mui-table-view-cell indentDetails">
 							下单时间：{{getDateTime(indentDetails.addtime,"Y-MM-dd hh:mm:ss")}}
 						</li>
-						<li class="lastEr">
+						<li class="mui-table-view-cell">
 							<div class="lastOne">
 								<span></span>
-								<span>联系商家</span>
-							</div>
-							<div class="lastTwoEr" @tap="getSignature(indentDetails.merchant_lat,indentDetails.merchant_lng,indentDetails.merchant_address)"><i class="mui-icon mui-icon-map"></i>{{ indentDetails.merchant_address }}<span>导航</span></div>
-							<div class="lastThreeEr" @tap="callPhone(indentDetails.merchant_400tel)"><i class="mui-icon mui-icon-phone"></i>{{ indentDetails.merchant_400tel }}<span>拨打</span></div>
-						</li>
-						<li class="mui-table-view-cell">
-							<div class="lastBox">
 								<span>联系人信息</span>
 							</div>
 							<div class="lastTwo">联系人：{{ indentDetails.fullname }}</div>
@@ -446,7 +401,6 @@
 			</div>
 		</div>
 		<script src="../../plugins/flexible.js"></script>
-		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 		<script src="../../plugins/jquery-2.1.4.js"></script>
 		<script src="../../plugins/vue.js"></script>
 		<script src="../../js/mui.min.js"></script>
@@ -472,9 +426,7 @@
 					el: "#J_el",
 					data: vueData,
 					methods: {
-						countdown: countdown,
-						getSignature: getSignature,
-						callPhone: callPhone,
+						countdown: countdown
 					}
 				})
 				
@@ -588,55 +540,7 @@
 						}
 					})
 				}
-				//商家地址
-				var isClickMap = false;
-				function getSignature(lat, lng, address) {
-					log(lat + "==" + lng + "===" + address);
-					var poi = bd2gcj(lng,lat)
-					log(poi.lat + "==" + poi.lng);
-					if(isClickMap) return;
-					isClickMap = true;
-					
-					getWechatSignature(location.href.split('#')[0]);
-					wx.ready(function() {
-						wx.openLocation({
-							latitude: parseFloat(poi.lat),
-							longitude: parseFloat(poi.lng),
-							name: '商家地址',
-							address: address,
-							scale: 15,
-							infoUrl: '',
-							success: function(res) {
-								log('打开了微信地图');
-								isClickMap = false;
-							},
-							fail: function(res) {
-								isClickMap = false
-								alert(JSON.stringify(res));
-							}
-						})
-					});
-				}
 				
-				//百度转火星
-				function bd2gcj(lng,lat) {
-					var M_PI = 3.14159265358979324;
-					var x_pi = M_PI * 3000.0 / 180.0;
-					
-					var poi = {};
-					var x = lng - 0.0065, y = lat - 0.006;
-					var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
-					var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
-					poi.lng = z * Math.cos(theta);
-					poi.lat = z * Math.sin(theta);
-					return poi;
-				}
-				//联系客服
-				function callPhone(phNumber){
-					window.location.href = 'tel://' + phNumber;
-				};
-				
-				//倒计时
 				function countdown(timestamp) {
 					var self = this;
 					var timer = setInterval(function() {

@@ -146,6 +146,14 @@
 			font-size: 0.8rem;
 			color: #FFFFFF;
 		}
+		.cardText{
+			-webkit-touch-callout:inherit !important;
+			-webkit-user-select:text !important;
+			-khtml-user-select:text !important;
+			-moz-user-select:text !important;
+			-ms-user-select:text !important;
+			user-select:text !important;
+		}  
 		</style>
 	</head>
 
@@ -227,7 +235,7 @@
 				/*下拉刷新和上拉加载效果*/
 				mui.init({
 					pullRefresh: {
-						container: '#refreshContainer', //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+						container: '#refreshContainer',
 						up: {
 							height: 50,
 							auto: false,
@@ -240,9 +248,15 @@
 							}
 						}
 					},
-					gestureConfig: {
-					    longtap: true
-					}
+					gestureConfig : {
+			            tap: true, //单击屏幕//默认为 true
+			            doubletap: false, //双击屏幕//默认为 false
+			            longtap: true, //长按屏幕//默认为 false
+			            swipe: true, //滑动//默认为 true
+			            drag: true, //拖动//默认为 true
+			            hold:true, //按住屏幕//默认为 false，不监听
+			            release:true //离开屏幕//默认为 false，不监听
+			        }
 				});
 				
 				var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
@@ -259,7 +273,7 @@
 					el: '#J_el',
 					data: vueData,
 					methods: {
-						GeneratePoster:GeneratePoster
+						GeneratePoster:GeneratePoster,
 					}
 				});
 				

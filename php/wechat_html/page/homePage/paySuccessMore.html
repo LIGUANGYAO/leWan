@@ -297,7 +297,8 @@
 								<span class="realityPrice">￥{{ proDetail.price }}</span>
 								<span class="originalCost">￥{{ proDetail.settle }}</span>
 							</div>
-							<div class="cardBox3">商品有效期限：{{ getDateTime(proDetail.startusetime,'Y-MM-dd') }}至{{ getDateTime(proDetail.endusetime,'Y-MM-dd') }}</div>
+							<div v-if="proDetail.product_isexpress==1" class="cardBox3">商品有效期限：{{ getDateTime(proDetail.startusetime,'Y-MM-dd') }}至{{ getDateTime(proDetail.endusetime,'Y-MM-dd') }}</div>
+							<div v-else-if="proDetail.product_isexpress==2" class="cardBox3">收到商品后，请到订单详情确认收货</div>
 						</div>
 					</div>
 					<form class="mui-input-group">

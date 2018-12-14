@@ -154,65 +154,46 @@
 				font-weight: 500;
 				letter-spacing: -0.02rem
 			}
-			/*商品规格*/
-			.secAddressBox{
-				height: 1.12rem;
-				line-height: 1.12rem;
-				border-bottom: 1px solid #F5F6FA;
-				border-top: 1px solid #F5F6FA;
-				background-color: #FFFFFF;
-				padding-left: 0.2rem;
-				color: #999999;
-				font-weight: bold;
-			}
-			.selSPEC{
-				color: #333333;
-				margin-left: 0.2rem;
-			}
-			.secAddressBox img{
-				width: 0.6rem;
-				float: right;
-				margin-right: 0.2rem;
-				margin-top: 0.5rem;
-			}
-			
-			
 			/*商家地址*/
 			
 			.BusinessAddress {
 				background-color: #FFFFFF;
+				margin-top: 0.266rem;
 				font-weight: bold;
 				color: #999999;
-				height: 1.12rem;
-				line-height: 1.12rem;
+				padding: 0.14rem 0.32rem;
 				overflow: hidden;
 			}
 			
 			.BusinessAddress img {
-				width: 0.4rem;
-				height: 0.45rem;
+				width: 0.5rem;
+				height: 0.6rem;
+				margin-right: 0.1rem;
 				display: inline-block;
 				vertical-align: middle;
-				margin-left: 0.2rem;
 			}
 			
 			.addressLeft {
 				display: inline-block;
 				width: 90%;
 				float: left;
-				height: 1.12rem;
-				padding-left: 0.2rem;
 			}
 			
+			.addressLeft>div:first-child {
+				font-size: 0.426rem;
+			}
+			
+			.addressLeft>div:last-child {
+				margin-top: 0.16rem;
+			}
 			
 			.addressDetail {
 				display: inline-block;
 				vertical-align: middle;
-				width: 70%;
+				width: 90%;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
-				color: #333333;
 			}
 			
 			.addressRight {
@@ -220,8 +201,8 @@
 				width: 10%;
 				float: right;
 				text-align: center;
+				padding: 0.3rem 0;
 			}
-			
 			/*商品详情*/
 			
 			.content {
@@ -566,97 +547,6 @@
 				font-size: 0.8rem;
 				color: #FFFFFF;
 			}
-			/*规格*/
-			.mui-modal{
-				z-index: 5;
-				background-color: rgba(0,0,0,0.3);
-			}
-			.modalBox3{
-				width: 100%;
-				height: 8rem;
-				position: fixed;
-				bottom: 1.25rem;
-				background-color: #FFFFFF;
-				border-top-left-radius: 0.2rem;
-				border-top-right-radius: 0.2rem;
-				overflow: hidden;
-				padding: 0.2rem;
-				padding-bottom: 0;
-			}
-			.guigeBox{
-				overflow: hidden;
-				border-bottom: 1px solid #F2F2F2;
-			}
-			.closeModal3{
-				color: #999999;
-				position: absolute;
-				top: 0.2rem;
-				right: 0.2rem;
-			}
-			.leftImage {
-			    background-repeat: no-repeat;
-			    background-size: 100% 100%;
-			    width: 2.5rem;
-			    height: 2rem;
-			    border-radius: 0.2rem;
-			    float: left;
-			}
-			.rightPrice {
-			    width: 6.5rem;
-			    height: 2.4rem;
-			    float: right;
-			}
-			.shouJia{
-				font-size: 0.426rem;
-				color: #F77917;
-				font-weight: 500;
-			}
-			.proName{
-				font-size: 0.426rem;
-				color: #333333;
-				width: 6.5rem;
-				font-weight: 500;
-				margin-top: 0.15rem;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow:ellipsis;
-			}
-			.detailBox{
-				margin-top: 0.15rem;
-				font-size: 0.373rem;
-				color: #999999;
-				font-weight: 400;
-			}
-			.detailBox>span:nth-child(1){
-				float: left;
-			}
-			.detailBox>span:nth-child(2){
-				float: right;
-			}
-			.selGuigeBox{
-				height: 5.3rem;
-				overflow-y: scroll;
-			}
-			.mui-table-view-cell:after,.mui-table-view:after{
-				height: 0;
-			}
-			.mui-table-view-radio .mui-table-view-cell{
-				padding-right: 0.1rem;
-			}
-			.mui-table-view-cell{
-				display: inline-block;
-				font-size: 0.32rem;
-				color: #999999;
-				background-color: #F6F6F6;
-				padding: 0.1rem 0.3rem !important;
-				border-radius: 0.15rem;
-				margin-top: 0.373rem;
-				margin-left: 0.373rem;
-			}
-			.mui-selected{
-				color: #FFFFFF;
-				background-color: #FF8B30;
-			}
 		</style>
 	</head>
 
@@ -686,14 +576,14 @@
 						</div>
 					</div>
 					<div v-if="isNewPerson == 1" class="priceBox newPriceBox">
-						<span class="realityPrice">¥{{ proPrice[priceIndex].price_sale }}</span>
-						<span class="originalCost">¥{{ proPrice[priceIndex].price_market }}</span>
+						<span class="realityPrice">¥{{ proPrice.price_sale }}</span>
+						<span class="originalCost">¥{{ proPrice.price_market }}</span>
 						<span class="countDown" v-if="proDetail.sold_out == 0">限首次注册会员免费使用</span>
 						<span class="countDown" v-else-if="proDetail.sold_out == 1">商品已售罄</span>
 					</div>
 					<div v-else class="priceBox" :class="{'isNumNone': proDetail.sold_out == 1}">
-						<span class="realityPrice">¥{{ proPrice[priceIndex].price_sale }}</span>
-						<span class="originalCost">¥{{ proPrice[priceIndex].price_market }}</span>
+						<span class="realityPrice">¥{{ proPrice.price_sale }}</span>
+						<span class="originalCost">¥{{ proPrice.price_market }}</span>
 						<span class="countDown countDownTimeShow" v-if="proDetail.product_timelimit == 1"></span>
 						<span class="countDown" v-else-if="proDetail.sold_out == 1">商品已售罄</span>
 					</div>
@@ -701,31 +591,26 @@
 						<div class="textShowOne"><strong>{{ proDetail.product_name }}</strong></div>
 						<div v-if="isNewPerson == 1" class="textLabel">
 							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
-							<span v-if="level == 2 || level == 3 || level == 4 || level == 5" class="commission">佣金：<span>￥{{ proPrice[priceIndex].price_sale }}</span></span>
+							<span v-if="level == 2 || level == 3 || level == 4 || level == 5" class="commission">佣金：<span>￥{{ proPrice.price_sale }}</span></span>
 						</div>
 						<div v-else class="textLabel">
 							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
-							<span v-if="level == 2" class="commission">佣金：<span>¥{{ proPrice[priceIndex].price_commission.zigou }}~{{ proPrice[priceIndex].price_commission.fenxiang }}</span></span>
-							<span v-else-if="level == 3 || level == 4 || level == 5" class="commission">佣金：<span>¥{{ proPrice[priceIndex].price_commission.zigou }}</span></span>
+							<span v-if="level == 2" class="commission">佣金：<span>¥{{ proPrice.price_commission.zigou }}~{{ proPrice.price_commission.fenxiang }}</span></span>
+							<span v-else-if="level == 3 || level == 4 || level == 5" class="commission">佣金：<span>¥{{ proPrice.price_commission.zigou }}</span></span>
 						</div>
 					</div>
 					<div class="parDuctNumber">
-						<div class="parKuncun">库存：{{ proPrice[priceIndex].product_totalnum || 0 }}</div>
-						<div class="parYishou">已售：{{ proPrice[priceIndex].product_buynum || 0 }}</div>
+						<div class="parKuncun">库存：{{ proPrice.product_totalnum || 0 }}</div>
+						<div class="parYishou">已售：{{ proPrice.product_buynum || 0 }}</div>
 					</div>
 				</div>
-				<a href="#modal">
-					<div class="secAddressBox">
-						<span>规格:</span>
-						<span class="selSPEC">{{proPrice[priceIndex].product_property}}</span>
-						<img class="secAddress" src="../../img/personalCenter/adressEdit.png" />
-					</div>
-				</a>
 				<div class="BusinessAddress" @tap="getSignature(proDetail.merchant_lat,proDetail.merchant_lng,proDetail.merchant_address)">
 					<div class="addressLeft">
-						<span>商家：</span>
-						<img src="../../img/homePage/address.jpg" />
-						<span class="addressDetail" :lat="proDetail.merchant_lat" :lng="proDetail.merchant_lng">{{ proDetail.merchant_address }}</span>
+						<div>商家地址</div>
+						<div>
+							<img src="../../img/homePage/address.jpg" />
+							<span class="addressDetail" :lat="proDetail.merchant_lat" :lng="proDetail.merchant_lng">{{ proDetail.merchant_address }}</span>
+						</div>
 					</div>
 					<div class="addressRight"><i class="mui-icon mui-icon-forward"></i></div>
 				</div>
@@ -827,29 +712,8 @@
 				<div v-else class="downBtn">
 					<div class="downBtnOne" @tap="jumpToHomePage">首页</div>
 					<div v-if="proDetail.sold_out == 0" class="downBtnTwo" @tap="shareProduct()">分享</div>
-					<div v-if="proDetail.sold_out == 0" class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice[priceIndex].price_id)">立即购买</div>
+					<div v-if="proDetail.sold_out == 0" class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice.price_id)">立即购买</div>
 					<div v-if="proDetail.sold_out == 1" class="downBtnFour">已售罄</div>
-				</div>
-				<!--规格选择-->
-				<div id="modal" class="mui-modal">
-					<div class="modalBox3">
-						<a class="mui-icon mui-icon-close mui-pull-right closeModal3" href="#modal"></a>
-						<div class="guigeBox">
-							<div class="leftImage" :style="{backgroundImage: 'url(' + proDetail.product_pic + ')'}"></div>
-							<div class="rightPrice">
-								<div class="shouJia"> ¥ {{ proPrice[priceIndex].price_sale }}</div>
-								<div class="proName">{{ proDetail.product_name }}</div>
-								<div class="detailBox">
-									<span>库存 {{ proPrice[priceIndex].product_totalnum ||0 }}</span>
-									<span>已售 {{ proPrice[priceIndex].product_buynum || 0 }}</span>
-								</div>
-							</div>
-						</div>
-						<ul class="mui-table-view mui-table-view-radio selGuigeBox">
-							<li class="mui-table-view-cell" :class="{'mui-selected':index == 0}" @tap="selGuige(index)" v-for="(item,index) in proPrice">{{item.product_property}}</li>
-							
-						</ul>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -959,8 +823,7 @@
 				var vueData = {
 					showPage: false,
 					proDetail: {}, //商品详情
-					proPrice: [], //商品规格
-					priceIndex: 0,	//默认选中第一个
+					proPrice: {}, //商品规格
 					proHotpush: [], //热推商品
 					level: 1,	//用户等级
 					isNewPerson: 2,	//是否是免单产品   1是    2不是
@@ -977,7 +840,6 @@
 						getSignature: getSignature, //地图查看
 						jumpToHomePage: jumpToHomePage, //跳转首页
 						shareProduct: shareProduct, //分享商品
-						selGuige:selGuige,	//选中规格
 						BuyNow: BuyNow, //立刻购买
 						countdown:countdown,	//倒计时
 						jumpToDetails: jumpToDetails,	//商品详情跳转
@@ -1018,10 +880,6 @@
 //				  listenEvents: ['scroll', 'wheel', 'mousewheel', 'resize', 'animationend', 'transitionend']
 				  listenEvents: ['scroll' , 'animationend', 'transitionend']
 				})
-				//规格变化
-				function selGuige(index){
-					vueData.priceIndex = index;
-				}
 				//获取个人信息
 				detailsGetUserMessage();
 				var myRecode;
@@ -1079,7 +937,7 @@
 							log(data)
 							if(data.code == 200) {
 								vueData.proDetail = data.data.details;
-								vueData.proPrice = data.data.price;
+								vueData.proPrice = data.data.price[0];
 								vueData.proHotpush = data.data.hotpush;
 								vueData.isNewPerson = data.data.details.product_returnall || 2;
 								vueData.showPage = true;

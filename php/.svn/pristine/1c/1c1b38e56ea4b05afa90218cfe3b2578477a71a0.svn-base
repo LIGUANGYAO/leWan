@@ -435,8 +435,7 @@
 							<span class="realityPrice">￥{{ proDetail.price_sale }}</span>
 							<span class="originalCost">￥{{ proDetail.price_market }}</span>
 						</div>
-						<div v-if="proDetail.product_isexpress==1" class="cardBox3">商品有效期限：{{ getDateTime(proDetail.product_startusetime,'Y-MM-dd') }} 至 {{ getDateTime(proDetail.product_endusetime,'Y-MM-dd') }}</div>
-						<div v-else-if="proDetail.product_isexpress==2" class="cardBox3">收到商品后，请到订单详情确认收货</div>
+						<div class="cardBox3">商品有效期限：{{ getDateTime(proDetail.product_startusetime,'Y-MM-dd') }} 至 {{ getDateTime(proDetail.product_endusetime,'Y-MM-dd') }}</div>
 					</div>
 				</div>
 
@@ -453,10 +452,6 @@
 								</div>
 								<div v-else-if="proDetail.product_returnall == 1" class="kuaidiNumber">1</div>
 							</div>
-						</div>
-						<div class="mui-input-row">
-							<label>商品规格：</label>
-							<input type="text" readonly="readonly" v-model="property">
 						</div>
 						<div class="mui-input-row">
 							<label>联系人名：</label>
@@ -491,7 +486,7 @@
 				<div class="motaiBox">
 					<div class="orderDetailsView">
 						<ul class="mui-table-view">
-							<li v-if="proDetail.product_isexpress==1" class="mui-table-view-cell">
+							<li class="mui-table-view-cell">
 								<p>商品有效期</p>
 								<div>{{ getDateTime(proDetail.product_startusetime,'Y-MM-dd') }} 至 {{ getDateTime(proDetail.product_endusetime,'Y-MM-dd') }}</div>
 							</li>
@@ -565,7 +560,6 @@
 					showPage: false,
 					proDetail: {}, //商品详情
 					buyNum: 1,
-					property: '',	//规格
 					concat: '', //人名
 					mobile: '', //手机号
 					remark: '', //备注
@@ -629,7 +623,6 @@
 								vueData.proDetail = data.data.product;
 								vueData.concat = vueData.proDetail.concat || '';
 								vueData.mobile = vueData.proDetail.mobile || '';
-								vueData.property = vueData.proDetail.product_property || '';
 								vueData.showPage = true;
 							}else {
 								mui.toast(data.message);
