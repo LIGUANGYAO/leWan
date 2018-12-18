@@ -344,12 +344,7 @@
 				color: #FFFFFF;
 				background-color: #F77917;
 			}
-			.downBtnThree a{
-				display: inline-block;
-				width: 100%;
-				color: #FFFFFF;
-				background-color: #F77917;
-			}
+			
 			.downBtnFour {
 				width: 65%;
 				color: #FFFFFF;
@@ -832,7 +827,7 @@
 				<div v-else class="downBtn">
 					<div class="downBtnOne" @tap="jumpToHomePage">首页</div>
 					<div v-if="proDetail.sold_out == 0" class="downBtnTwo" @tap="shareProduct()">分享</div>
-					<div v-if="proDetail.sold_out == 0" class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice[priceIndex].price_id)"><a href="#modal">立即购买</a></div>
+					<div v-if="proDetail.sold_out == 0" class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice[priceIndex].price_id)">立即购买</div>
 					<div v-if="proDetail.sold_out == 1" class="downBtnFour">已售罄</div>
 				</div>
 				<!--规格选择-->
@@ -1104,27 +1099,24 @@
 				}
 				//立刻购买
 				function BuyNow(productId,priceId) {
-					if ($('#modal').hasClass("mui-active")) {
-						if (vueData.isNewPerson == 2) {		  //新人免单产品   1是    2不是
-							mui.openWindow({
-								url: "OrderPayment.html?productId="+productId+"&priceId="+priceId
-							})
-						} else if(vueData.isNewPerson == 1){	//新人免单产品   1是    2不是
-							if (vueData.level != 1) {  //用户等级 1为普通用户
-								if (vueData.freesheet == 1) {  // 1未使用 2已使用
-									mui.openWindow({
-										url: "OrderPayment.html?productId="+productId+"&priceId="+priceId
-									})
-								} else if(vueData.freesheet == 2){  // 1未使用 2已使用
-									mui.toast("您已使用过免单机会，去邀请更多好友进行注册！免费送他一份吃喝玩乐，你省他也赚！")
-								}
-							} else{
-								mui.toast("您还未注册，暂不能享受免单机会，去找邀请码进行注册！")
+					if (vueData.isNewPerson == 2) {		  //新人免单产品   1是    2不是
+						mui.openWindow({
+							url: "OrderPayment.html?productId="+productId+"&priceId="+priceId
+						})
+					} else if(vueData.isNewPerson == 1){	//新人免单产品   1是    2不是
+						if (vueData.level != 1) {  //用户等级 1为普通用户
+							if (vueData.freesheet == 1) {  // 1未使用 2已使用
+								mui.openWindow({
+									url: "OrderPayment.html?productId="+productId+"&priceId="+priceId
+								})
+							} else if(vueData.freesheet == 2){  // 1未使用 2已使用
+								mui.toast("您已使用过免单机会，去邀请更多好友进行注册！免费送他一份吃喝玩乐，你省他也赚！")
 							}
+						} else{
+							mui.toast("您还未注册，暂不能享受免单机会，去找邀请码进行注册！")
 						}
-					} else{
-						log("弹起模态窗")
 					}
+					
 				}
 				//分享商品
 				function shareProduct(title, url, imgUrl) {

@@ -972,6 +972,7 @@
 					freesheet: 2,	//用户是否已使用免单 1未使用 2已使用
 					parDetailsImg:'',	//商品详情图文介绍
 					pageRefresh: true,	//页面数据变化
+					bayNow: false,	//是否显示模态窗
 				};
 				
 				var pageUpdate = 0;

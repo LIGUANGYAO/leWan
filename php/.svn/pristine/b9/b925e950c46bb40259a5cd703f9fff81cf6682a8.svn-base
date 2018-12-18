@@ -234,20 +234,20 @@
 			$(document).ready(function() {
 				/*下拉刷新和上拉加载效果*/
 				mui.init({
-//					pullRefresh: {
-//						container: '#refreshContainer',
-//						up: {
-//							height: 50,
-//							auto: false,
-//							contentnomore: '没有更多数据了',
-//							contentrefresh: '正在加载...',
-//							callback: function() {
-//								setTimeout(function() {
-//									getProduct();
-//								}, 1000);
-//							}
-//						}
-//					},
+					pullRefresh: {
+						container: '#refreshContainer',
+						up: {
+							height: 50,
+							auto: false,
+							contentnomore: '没有更多数据了',
+							contentrefresh: '正在加载...',
+							callback: function() {
+								setTimeout(function() {
+									getProduct();
+								}, 1000);
+							}
+						}
+					},
 					gestureConfig : {
 			            tap: true, //单击屏幕//默认为 true
 			            doubletap: false, //双击屏幕//默认为 false
