@@ -219,6 +219,13 @@
 				color: #E1B872;
 				font-weight: 800;
 			}
+			/*排序方式*/
+			/*.content{
+				position: relative;
+			}
+			.mui-scroll-wrapper{
+				margin-top: 1rem;
+			}*/
 			
 			.spaceConnet {
 				height: 0.2rem;
@@ -437,9 +444,6 @@
 				background-color: #E1B872;
 				border-radius: 0.1rem;
 			}
-			.jukaishi{
-				color: #FA472B !important;
-			}
 			/*新人关注二维码*/
 			
 			.MoreModal {
@@ -591,6 +595,9 @@
 								<div class="mui-slider-item" v-for="items in homePageBanner">
 									<img :src="items.pic" />
 								</div>
+								<!--<div class="mui-slider-item">
+									<img src="../../img/homePage/banner2.png" />
+								</div>
 								<!--支持循环，需要重复图片节点-->
 								<div class="mui-slider-item kaishi mui-slider-item-duplicate" v-for="items in homePageBanner.slice(0,1)">
 									<img :src="items.pic" />
@@ -705,9 +712,10 @@
 		<script src="../../plugins/serverApi.js"></script>
 		<script type="text/javascript">
 			$(function() {
+				/*下拉刷新和上拉加载效果*/
 				mui.init({
 					pullRefresh: {
-						container: '#refreshContainer',
+						container: '#refreshContainer', //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
 						up: {
 							height: 50,
 							auto: false,
@@ -737,7 +745,7 @@
 				
 				//第一步===》判断是否有token
 				var code = getUrlParam("code");
-				var token = localStorage.getItem("token");
+				var token = localStorage.getItem("token"); //
 				
 				if(getUrlParam("recode")) {
 					localStorage.setItem("homePageRecode", getUrlParam("recode"))
@@ -747,7 +755,9 @@
 					$.ajax({
 						url: API_SERVER + 'Wechat/hasToken',
 						async: false,
-						data: {token: token},
+						data: {
+							token: token
+						},
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
@@ -771,14 +781,14 @@
 							async: false,
 							data: {
 								code: code + "&state",
-								recode: localStorage.getItem("homePageRecode") || null,
+								recode: localStorage.getItem("homePageRecode") || null,	//用户邀请码
 							},
 							success: function(data) {
 								log(data)
 								if(data.code == 200) {
 									localStorage.setItem("token", data.data.token); //token
 									token = data.data.token;
-									localStorage.setItem("level", data.data.level);
+									localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
 									vueData.level = data.data.level;
 								} else {
 									mui.toast(data.message)
@@ -795,7 +805,7 @@
 						async: false,
 						data:{
 							token: token,
-							recode: localStorage.getItem("homePageRecode") || null
+							recode: localStorage.getItem("homePageRecode") || 'WT0901'
 						},
 						success: function(data) {
 							log(data)
@@ -847,13 +857,14 @@
 								var aaa = parseInt(vueData.cardList[key]["product_endtime"] * 1000);
 								var ccc = parseInt(vueData.cardList[key]["product_starttime"] * 1000);
 								var bbb = new Date().getTime();
+
 								var leftTime = ccc - bbb;
 								if(leftTime > 0) {
 									var dd = Math.floor(leftTime / 1000 / 60 / 60 / 24);
 									var hh = Math.floor((leftTime / 1000 / 60 / 60) % 24);
 									var mm = Math.floor((leftTime / 1000 / 60) % 60);
 									var ss = Math.floor((leftTime / 1000) % 60);
-									vueData.cardList[key]["djs"] = " <wupan class='jukaishi'>距开始：</wupan><span>" + dd + "</span> 天  <span>" + hh + "</span> : <span>" + mm + "</span> : <span>" + ss + "</span>";
+									vueData.cardList[key]["djs"] = "距开始：<span>" + dd + "</span> 天  <span>" + hh + "</span> : <span>" + mm + "</span> : <span>" + ss + "</span>";
 								}
 
 								var rightTime = aaa - bbb;
@@ -1183,6 +1194,7 @@
 				});
 
 				function handleScroll() {
+					//					log(scrollTop+"==="+spaceConnet+"==="+showContentHeader)
 					if(scrollTop >= spaceConnet - $(".topmenu").height()) {
 						$(".topmenu").css({
 							"opacity": 1,
@@ -1259,6 +1271,7 @@
 					geocoder.getAddress(lnglat, function(status, result) {
 						if(status === 'complete' && result.regeocode) {
 							log(result)
+//							log(JSON.stringify(result))
 							var address = result.regeocode.formattedAddress; //详细地址
 							var cityname = result.regeocode.addressComponent.city; //市名字
 							var addressCode = result.regeocode.addressComponent.adcode; //区code码
@@ -1268,6 +1281,7 @@
 							if(addressCodeCity != localStorage.getItem("citycode")) {
 								mui.confirm('是否切换', '当前定位为' + cityname, ['否', '是'], function(e) {
 									if(e.index == 1) {
+
 										vueData.cityname = cityname;
 										localStorage.setItem("cityname", cityname);
 										localStorage.setItem("latitude", latitude); //纬度
@@ -1290,6 +1304,7 @@
 						}
 					});
 				}
+				
 			})
 		</script>
 	</body>

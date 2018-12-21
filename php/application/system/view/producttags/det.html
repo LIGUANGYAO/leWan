@@ -1,0 +1,32 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/Producttags/TagsDet')}" id="myform" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{$data.tag_id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标签名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="tag_name" lay-verify="require" value="{$data.tag_name}" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn sub-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+<script>
+    $('#myform .sub-btn').click(function () {
+//        $.post("{:url('system/Product/productCategoryEdit')}",$('#myform'),function (data) {
+//            if(data.code == 200){
+//             layui.message(data.message);
+//            }else{
+//
+//            }
+//        })
+    })
+</script>

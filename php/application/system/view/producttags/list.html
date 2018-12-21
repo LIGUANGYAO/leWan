@@ -1,0 +1,47 @@
+<div class="page">
+    <div class="l">
+        <a href="javascript:openWindow('添加标签','/system/Producttags/TagsDet', '40%', '60%')" class="layui-btn"><i class="fa fa-plus"></i> 添加标签
+        </a>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th nowrap="nowrap">标签名称</th>
+                <th nowrap="nowrap">添加时间</th>
+                <th nowrap="nowrap" width="100">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="data" id="val">
+                <tr>
+                    <td>{$val.tag_name}</td>
+                    <td>{$val.tag_addtime|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <a href="javascript:openWindow('修改标签', '{:url(\'system/Producttags/TagsDet\', array(\'id\'=>$val.tag_id))}')"
+                           class="editIcon" title="修改标签">修改标签</a>
+                        <!--&nbsp;-->
+                        <!--<a href="javascript:sure('确定删除这条数据？', '{:url(\'system/Product/productCategoryEdit\', array(\'id\'=>$val[\'category_id\'],\'type\'=>\'del\'))}')"-->
+                           <!--class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>-->
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div class="tabletool">
+            <!-- 工具按钮 -->
+            <!--<div class="l">-->
+            <!--<a href="" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>-->
+            <!--</div>-->
+
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(' .layui-table td, .layui-table th').css({'border': 'none', 'border-bottom': '1px solid #e2e2e2'})
+</script>

@@ -1,0 +1,51 @@
+<div class="page">
+    <div style=" line-height: 25px; color: #009688;">{$title}</div>
+    <div style="">商品名称：{$product.product_name}</div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+            <tr>
+                <th class="nowrap" >排名</th>
+                <th class="nowrap">销售数量/份</th>
+                <th class="nowrap">销售金额</th>
+                <th class="nowrap">达人昵称</th>
+                <th class="nowrap">达人手机号</th>
+                <th class="nowrap">达人等级</th>
+                <th class="nowrap">达人上级用户</th>
+                <th class="nowrap">达人上级用户手机号</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="list" id="val">
+                <tr>
+                    <td class="nowrap">{$i}</td>
+                    <td class="nowrap">{$val.num}</td>
+                    <td class="nowrap">{$val.order_payfee}</td>
+                    <td class="nowrap">{$val.nickname}</td>
+                    <td class="nowrap">{$val.mobile}</td>
+                    <td class="nowrap">{$val.level}</td>
+                    <td class="nowrap">{$val.parentnickname}</td>
+                    <td class="nowrap">{$val.parentmobile}</td>
+                </tr>
+            </volist>
+
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    function exportExcel() {
+        var param = $("form[name='sform']").serialize();
+        window.open('/system/finance/exportOrder.html?'+param);
+    }
+</script>
