@@ -440,7 +440,7 @@
 					<div v-if="indentDetails.status == 0"      dataVal='0' class="footerBtn">联系我们</div>
 					<div v-else-if="indentDetails.status == 1" dataVal='1' class="footerBtn">立即支付</div>
 					<div v-else-if="indentDetails.status == 2" dataVal='2' class="footerBtn">商家发货中</div>
-					<div v-else-if="indentDetails.status == 3" dataVal='3' class="footerBtn">预约发货</div>
+					<div v-else-if="indentDetails.status == 3" dataVal='3' class="footerBtn">去预约</div>
 					<div v-else-if="indentDetails.status == 4" dataVal='4' class="footerBtn">确认收货</div>
 					<div v-else-if="indentDetails.status == 5" dataVal='5' class="footerBtn">待使用</div>
 					<div v-else-if="indentDetails.status == 6" dataVal='6' class="footerBtn">去预约</div>
@@ -482,7 +482,7 @@
 				var vueData = {
 					indentDetails: {},
 					content: '',
-					statusText:["已过期","待付款","待发货","待预约发货","待收货","待使用","待预约","已完成","取消订单","已取消","申请换货"]
+					statusText:["已过期","待付款","待发货","待预约","待收货","待使用","待预约","已完成","取消订单","已取消","申请换货"]
 					//0订单过期 1待付款 2待发货 3待预约发货 4待收货 5待使用 6待预约 7已完成 8取消订单 9已取消 10 申请换货 
 				}
 				new Vue({

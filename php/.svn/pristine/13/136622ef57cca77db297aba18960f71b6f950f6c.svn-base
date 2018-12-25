@@ -1,0 +1,360 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>预约中心</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/leWan.css" rel="stylesheet" />
+	<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+	<link href="../../fonts/iconfont.css" rel="stylesheet" />
+	<style type="text/css">
+		body {
+			padding: 0;
+			margin: 0;
+			background-color: #FFFFFF;
+		}
+		/*头部*/
+		
+		.headerBox {
+			background-color: #F5F6FA;
+			height: 1.3rem;
+			overflow: hidden;
+		}
+		
+		.headerBox input {
+			width: 86%;
+			margin-left: 7% !important;
+			margin-top: 0.2rem !important;
+			height: 0.9rem !important;
+			background-color: #FFFFFF;
+			font-size: 0.4rem;
+			color: #333333;
+			font-weight: 400;
+		}
+		.headerBox input::-webkit-input-placeholder {
+			font-size: 0.32rem;
+			color: #CCCCCC;
+		}
+		/*三个标签*/
+		.headerTitle{
+			display: flex;
+			display: -webkit-flex;
+			justify-content:  space-around;
+			-webkit-justify-content: space-around;
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+		}
+		.headerTitle>div{
+			text-align: center;
+			color: #333333;
+			font-size: 0.373rem;
+			font-weight: 400;
+		}
+		.headerTitle img{
+			width: 2.133rem;
+			height: 2.133rem;
+			display: block;
+		}
+		.mui-content{
+			background-color: #FFFFFF;
+		}
+		/*商品列表*/
+		.listBox{
+			/*padding: 0.32rem;*/
+		}
+		.boxHeader{
+			height: 0.8rem;
+			line-height: 0.8rem;
+			padding-left: 0.35rem;
+		}
+		.boxHeader>span:nth-child(1){
+			display: inline-block;
+			width: 0.16rem;
+			height: 0.4rem;
+			background-color: #333333;
+			margin-right: 0.2rem;
+		}
+		.boxHeader>span:nth-child(2){
+			font-size: 0.373rem;
+		}
+		.mui-table-view:before{
+			height: 0;
+		}
+		.mui-active{
+			background-color: #FFFFFF !important;
+		}
+		.mui-media{
+			display: flex; 
+			display: -webkit-flex;
+    		align-items: center;
+    		-webkit-align-items: center;
+		}
+		.listLeft{
+			width: 70%;
+			float: left;
+			font-weight: 400;
+			font-size: 0.426rem;
+			color: #333333;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 3;
+			-webkit-box-orient: vertical;
+		}
+		.listRight{
+			width: 30%;
+			float: right;
+			text-align: right;
+		}
+		.listRight>div{
+			display: inline-block;
+			width: 2.026rem;
+			height: 0.773rem;
+			line-height: 0.773rem;
+			border-radius: 0.2rem;
+			border: 1px solid #FF8B30;
+			color: #FF8B30;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<!--底部导航-->
+	<nav class="mui-bar mui-bar-tab">
+		<a class="mui-tab-item" id="homePage">
+			<span class="mui-icon"><i class="iconfont icon-shouye"></i></span>
+			<span class="mui-tab-label">首页</span>
+		</a>
+		<a class="mui-tab-item" id="everydayFaddish">
+			<span class="mui-icon"><i class="iconfont icon-huo"></i></span>
+			<span class="mui-tab-label">分享圈</span>
+		</a>
+		<a class="mui-tab-item mui-active">
+			<span class="mui-icon"><i class="iconfont icon-chakantiezishijian"></i></span>
+			<span class="mui-tab-label">预约中心</span>
+		</a>
+		<a class="mui-tab-item" id="personalCenter">
+			<span class="mui-icon"><i class="iconfont icon-wode"></i></span>
+			<span class="mui-tab-label">我的</span>
+		</a>
+	</nav>
+	<div class="mui-bar mui-bar-nav headerBox">
+		<input type="search" id="title" placeholder="输入商品名称进行查询">
+	</div>
+	<div class="mui-content mui-scroll-wrapper" id="refreshContainer">
+		<div class="mui-scroll">
+			<div class="" id="J_el" v-cloak>
+				<div class="headerTitle">
+					<div class="reservationList">
+						<img src="../../img/reservationCenter/reservationCenter1.jpg"/>
+						<div>我的预约</div>
+					</div>
+					<div class="myIndent">
+						<img src="../../img/reservationCenter/reservationCenter2.jpg"/>
+						<div>我的订单</div>
+					</div>
+					<div class="commonQuestion">
+						<img src="../../img/reservationCenter/reservationCenter3.jpg"/>
+						<div>常见问题</div>
+					</div>
+				</div>
+				<div class="listBox">
+					<div class="boxHeader">
+						<span></span>
+						<span>预约商品</span>
+					</div>
+					<ul class="mui-table-view" v-if="showList.length">
+						<li class="mui-table-view-cell mui-media" v-for="item in showList">
+							<div class="listLeft">{{item.product_name}}</div>
+							<div class="listRight">
+								<div class="subscribeBtn" @tap="jumpToYuyueDetails(item.product_id)">点击预约</div>
+							</div>
+						</li>
+					</ul>
+					<!--空状态时-->
+					<div class="lw-empty" style="display: block;" v-else>
+						<div class="lw-empty-box">
+							<div class="lw-empty-flex">
+								<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+								<div class="lw-empty-test">暂无可预约商品 敬请期待！</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../../plugins/flexible.js"></script>
+	<script src="../../plugins/jquery-2.1.4.js"></script>
+	<script src="../../plugins/vue.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../plugins/swiper-4.3.3.min.js"></script>
+	<script src="../../plugins/serverApi.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			/*下拉刷新和上拉加载效果*/
+			mui.init({
+				pullRefresh: {
+					container: '#refreshContainer', //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					up: {
+						height: 50,
+						auto: false,
+						contentnomore: '没有更多数据了',
+						contentrefresh: '正在加载...',
+						callback: function() {
+							setTimeout(function() {
+								getList();
+							}, 1000);
+						}
+					}
+				}
+			});
+			var token = localStorage.getItem("token");
+			var code = getUrlParam("code");
+			
+			var provincecode = localStorage.getItem("provincecode") || 510000; //省code
+			var citycode = localStorage.getItem("citycode") || 510100; //市code
+			
+			if(token){
+				$.ajax({
+					url: API_SERVER + 'Wechat/hasToken',
+					async: false,
+					data:{token:token},
+					success: function (data){
+						if(data.code == 200) {
+							log(data)
+							if(data.data.count == 0){
+								localStorage.setItem("token","")
+								window.location.href = location.href;
+							}
+						}
+					}
+				});
+			}
+			//获取code
+			if(token == 'undefined' || token == null || token == "") {
+				if(code == 'undefined' || code == null || code == "") {
+					var redirectUrl = BASE_SERVER + "wechat_html/page/reservationCenter/reservationCenter.html"
+					window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid='+APPID+'&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
+				} else {
+					//获取token
+					$.ajax({
+						url: API_SERVER + "Wechat/WechatAuthorize",
+						async: false,
+						data: {
+							code: code + "&state",
+							recode: localStorage.getItem("recode") || null,	//用户邀请码
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								localStorage.setItem("token", data.data.token);	//token
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
+				}
+			}
+			
+			var pageData = {
+				page: 1,
+				psize: 10
+			}
+			var vueData = {
+				showList:[],	
+			};
+			new Vue({
+				el: '#J_el',
+				data: vueData,
+				mounted: function() {
+					
+				},
+				methods: {
+					jumpToYuyueDetails: jumpToYuyueDetails
+				}
+			});
+			
+			//预约列表
+			getList(true);
+
+			function getList(empty) {
+				$.ajax({
+					url: API_SERVER + 'Yuyue/ConsumeBookedProduct',
+					headers: {
+							"product": "wechat",
+							"platform": browserType, //sreverApi里面设置了全局变量
+							"provincecode": provincecode,
+							"citycode": citycode
+						},
+					data: {
+						token: token,
+						type: 2,
+						paging: pageData.page,
+						title: $('#title').val() || null
+					},
+					success: function(data) {
+						log(data)
+						if(data.code == 200) {
+							var lists = data.data;
+							empty && vueData.showList.splice(0);
+							for(var i = 0; i < lists.length; i++) {
+								vueData.showList.push(lists[i]);
+							}
+							pageData.page++;
+							var pullRefresh = mui('#refreshContainer').pullRefresh();
+							pullRefresh && pullRefresh.endPulldownToRefresh && pullRefresh.endPulldownToRefresh();
+							pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
+							pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < pageData.psize);
+						} else {
+							mui.toast(data.message)
+						}
+					}
+				})
+			};
+			
+			//软键盘搜索框
+			$("#title").on('keypress', function(e)  {               
+				if(e.keyCode == '13')  {  
+					document.activeElement.blur(); //收起虚拟键盘
+					e.preventDefault();                       //请求搜索接口  
+					pageData.page = 1;                    
+					getList(true);
+					$(this).val("");                  
+				}           
+			});
+			
+			//跳转常见问题
+			mui('body').on('tap','.commonQuestion',function(){
+				mui.openWindow({
+					url: 'commonQuestion.html'
+				})
+			})
+			
+			//我的预约
+			mui('body').on('tap','.reservationList',function(){
+				mui.openWindow({
+					url: 'reservationList.html'
+				})
+			})
+			//我的订单
+			mui('body').on('tap','.myIndent',function(){
+				mui.openWindow({
+					url: '../personalCenter/myIndent.html'
+				})
+			})
+			
+			
+			//跳转预约详情
+			function jumpToYuyueDetails(id){
+				mui.openWindow({
+					url: 'reservationDetails.html?pId=' + id
+				})
+			}
+		})
+	</script>
+</body>
+</html>

@@ -904,6 +904,7 @@
 
 				//获取用户个人基本信息
 				getUSerMessage();
+
 				function getUSerMessage() {
 					$.ajax({
 						url: API_SERVER + 'User/UserPersonal',
@@ -914,7 +915,6 @@
 						success: function(data) {
 							if(data.code == 200) {
 								log(data)
-								var myRecode = data.data.recode;
 								localStorage.setItem("token", data.data.token); //token
 								token = data.data.token;
 								if(data.data.subscribe != 1) {
@@ -922,7 +922,6 @@
 								}
 								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
 								vueData.level = data.data.level;
-								sharePYQ(myRecode);
 							}
 						}
 					});
@@ -1100,36 +1099,6 @@
 					mui.openWindow({
 						url: "productDetails.html?productId=" + productId
 					})
-				}	
-				//分享朋友圈
-				
-				function sharePYQ(myRecode) {
-					getWechatSignature(location.href.split('#')[0]);
-					wx.ready(function() {
-						wx.onMenuShareTimeline({
-							title: '乐玩联盟--最懂你的吃喝玩乐小助手',
-							link: location.href.split('?')[0]+"?recode="+myRecode,
-							imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
-							trigger: function(res) {
-								// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
-							},
-							fail: function(res) {
-								mui.toast(res);
-							}
-						});
-						wx.onMenuShareAppMessage({
-							title: '乐玩联盟',
-							desc: '最懂你的吃喝玩乐小助手,更多精彩尽在乐玩联盟！快来体验吧，你省他也赚！',
-							link: location.href.split('?')[0]+"?recode="+myRecode,
-							imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
-							trigger: function(res) {
-								// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
-							},
-							fail: function(res) {
-								mui.toast(res);
-							}
-						});
-					});
 				}
 				//关闭二维码
 				mui('body').on('tap', '#closeModal', function() { //关闭关注公众号
