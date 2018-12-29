@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+            <tr>
+                <th class="nowrap">商家名</th>
+                <th class="nowrap">商品名称</th>
+                <th class="nowrap" >订单号</th>
+                <th class="nowrap">金额</th>
+                <th class="nowrap">联系人</th>
+                <th class="nowrap">联系手机号</th>
+                <th class="nowrap">支付时间</th>
+                <th class="nowrap">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="data.list" id="val">
+                <tr>
+                    <td class="nowrap">{$val.merchant_name}</td>
+                    <td style="min-width: 200px; max-width: 200px;">{$val.product_name}</td>
+                    <td class="nowrap">{$val.order_no}</td>
+                    <td class="nowrap">
+                        总金额:{$val.order_totalfee}<br/>
+                        实际支付金额:{$val.order_payfee}<br/>
+                        单价:{$val.price}<br/>
+                        购买数量:{$val.num}<br/>
+                    </td>
+                    <td class="nowrap">{$val.order_fullname}</td>
+                    <td class="nowrap">{$val.order_mobile}</td>
+                    <td class="nowrap">{$val.order_paytime|date='Y-m-d H:i',###}</td>
+                    <td class="nowrap">
+                        <a href="javascript:openCreateOrdersPanl({$val.order_id});" class="editIcon" title="确认发码" style="margin-top: 5px;">确认发码</a>
+                    </td>
+                </tr>
+            </volist>
+
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+</div>
+
+<div class="createOrderPanl hide">
+    <form class="layui-form" enctype="multipart/form-data" method="post"  action="/system/Distribution/OrderHairCode" style="padding: 20px 10px;">
+        <input type="hidden" name="order_id" id="orderid" value=""/>
+        <div class="layui-form-item">
+            <span style="color: red;">请仔细输入发送消费码的信息内容,防止用户理解或者发送内容错误</span>
+        </div>
+
+        <div class="layui-form-item col-sm-10" id="reasons" >
+            <label class="layui-form-label"><span style="color:red">*</span>推送内容：</label>
+            <div class="layui-input-block">
+                <textarea name="message" placeholder="请输入消费码后面内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">确认发码</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function openCreateOrdersPanl(id) {
+        $("#orderid").attr("value",id);
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['40%', '40%'], //宽高
+            content: $('.createOrderPanl').html()
+        });
+    }
+</script>

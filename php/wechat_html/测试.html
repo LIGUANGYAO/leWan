@@ -1,72 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 	<head>
-		<meta charset="UTF-8">
-		<title>地图接入</title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-
-		<style type="text/css">
-
-		</style>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	</head>
 
 	<body>
-		<html>
-	<head>
-		
-		<div id="J_el">
-			<div class="htmlText">
-
-			</div>
-		</div>
-
-		<script src="plugins/vue.js"></script>
-		<script src="plugins/jquery-2.1.4.js"></script>
-		<script type="text/javascript">
-			new Vue({
-				el: '#J_el',
-				data: {},
-				created: function() {
-
-				},
-				methods: function() {
-
-				},
-				mounted: function() {
-
-				},
-			});
-
-//			getProductDetails();
-
-			function getProductDetails() {
-				var data = {
-					token: null,
-					type: 2, // 1未定位 2已定位
-					pr_id: 10,
-					lat: 103.10,
-					lng: 30.12
-				};
-				$.ajax({
-					url: 'http://cs.lewan6.ren/api/' + 'Product/ProductDetails',
-					async: true,
-					headers: {
-						"product": "wechat",
-						"platform": 'ios', //sreverApi里面设置了全局变量
-						"provincecode": 510000,
-						"citycode": 510100
-					},
-					data: data,
-					success: function(data) {
-						console.log(data)
-						if(data.code == 200) {
-							$('.htmlText').html(data.data.details.product_description)
-						}
-					}
-				});
-			}
-		</script>
+		<p>演示带有不同参数的 fadeOut() 方法。</p>
+		<button class="dl">点击这里,使红色矩形1淡出(fadeOut)</button>
+		<br><br>
+		<div id="div1" style="width:80px;height:80px;background-color:red;"></div>
+		<br><br>
+		<button class="dll">点击这里,使红色矩形2隐藏(hide)</button>
+		<br><br>
+		<div id="div2" style="width:80px;height:80px;background-color:red;"></div>
 	</body>
-
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".dl").click(function() {
+				$("#div1").fadeOut(3000);
+			});
+		});
+		$(document).ready(function() {
+			$(".dll").click(function() {
+				$("#div2").hide(3000);
+			});
+		});
+	</script>
 </html>

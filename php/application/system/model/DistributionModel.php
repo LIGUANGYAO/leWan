@@ -1,0 +1,188 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2018/12/26
+ * Time: 17:26
+ * 电子码模型
+ * 肖亚子
+ */
+namespace  app\system\model;
+
+use Think\Db;
+
+class DistributionModel extends BaseModel{
+
+    public static function TableName(){
+        return Db::name("product_distribution_code");
+    }
+
+    /**
+     * @param array $Condition  查询条件
+     * @param int $Psize        分页数
+     * @param int $PageSize     分页条数
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取分销电子码数据
+     * 肖亚子
+     */
+    public static function ProductCodeList($Condition = array(),$Psize = 1,$PageSize = 20){
+        $Count = self::TableName()
+                    ->alias("c")
+                    ->field("c.*, m.merchant_alias as merchant_name, p.product_name,o.order_no,o.order_fullname,o.order_mobile")
+                    ->join("product p", "p.product_id = c.product_id", "left")
+                    ->join("merchant m", "m.merchant_id = p.merchant_id", "left")
+                    ->join("order o","o.order_id = c.order_id","left")
+                    ->where($Condition)
+                    ->count();
+
+        $PageCount = ceil($Count/$PageSize);
+
+        $List = self::TableName()
+                    ->alias("c")
+                    ->field("c.*, m.merchant_alias as merchant_name, p.product_name,o.order_no,o.order_fullname,o.order_mobile")
+                    ->join("product p", "p.product_id = c.product_id", "left")
+                    ->join("merchant m", "m.merchant_id = p.merchant_id", "left")
+                    ->join("order o","o.order_id = c.order_id","left")
+                    ->where($Condition)
+                    ->page($Psize, $PageSize)
+                    ->order('c.id desc')
+                    ->select();
+
+        $PaginaTion = parent::Paging($Count,$Psize,$PageCount,$List);
+
+        return $PaginaTion;
+    }
+
+    /**
+     * @param array $Condition  查询条件
+     * @param int $Psize        分页数
+     * @param int $PageSize     分页条数
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取其它平台商品订单,并且需要进行发码
+     * 肖亚子
+     */
+    public static function OrderDistributionList($Condition = array(),$Psize = 1,$PageSize = 20){
+        $Field = "o.order_id,o.order_no,o.order_totalfee,o.order_payfee,o.order_fullname,o.order_mobile,o.order_paytime,op.num,op.price,p.product_name,m.merchant_alias as merchant_name";
+        $Count = Db::name("order")
+                    ->alias("o")
+                    ->field($Field)
+                    ->join("order_product op","op.order_id = o.order_id","left")
+                    ->join("product p","p.product_id = op.product_id","left")
+                    ->join("merchant m","m.merchant_id = o.merchant_id","left")
+                    ->where($Condition)
+                    ->count();
+
+        $PageCount = ceil($Count/$PageSize);
+
+        $List = Db::name("order")
+                    ->alias("o")
+                    ->field($Field)
+                    ->join("order_product op","op.order_id = o.order_id","left")
+                    ->join("product p","p.product_id = op.product_id","left")
+                    ->join("merchant m","m.merchant_id = o.merchant_id","left")
+                    ->where($Condition)
+                    ->page($Psize, $PageSize)
+                    ->order('o.order_id desc')
+                    ->select();
+
+        $PaginaTion = parent::Paging($Count,$Psize,$PageCount,$List);
+
+        return $PaginaTion;
+    }
+
+    /**
+     * @param array $Condition  查询条件
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取订单发码信息
+     * 肖亚子
+     */
+    public static function OrderDistributionFind($Condition = array()){
+        $Field = "o.order_status,o.order_fullname,o.order_mobile,p.product_id,p.product_name,op.num,m.merchant_alias as merchant_name";
+        $Data = Db::name("order")
+                    ->alias("o")
+                    ->field($Field)
+                    ->join("order_product op","op.order_id = o.order_id","left")
+                    ->join("product p","p.product_id = op.product_id","left")
+                    ->join("merchant m","m.merchant_id = o.merchant_id","left")
+                    ->where($Condition)
+                    ->order('o.order_id desc')
+                    ->find();
+
+        return $Data;
+    }
+
+    /**
+     * @param $Product_Id  商品id
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取该商品的消费码
+     * 肖亚子
+     */
+    public static function ProductDistributionCodeList($Product_Id){
+        $Condition["product_id"] = array("eq",$Product_Id);
+        $Condition["order_id"]   = array("eq",0);
+
+        $List = self::TableName()
+                    ->field("id,consome_code")
+                    ->where($Condition)
+                    ->select();
+
+        return $List;
+    }
+
+    /**
+     * @param $Id  消费码id
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 查询消费码
+     * 肖亚子
+     */
+    public static function ProductDistributionCodeFind($Id){
+        $Condition["id"]       = array("eq",$Id);
+        $Condition["order_id"] = array("eq",0);
+        $Data = self::TableName()->where($Condition)->find();
+
+        return $Data;
+    }
+
+    /**
+     * @param $Id     修改消费码id
+     * @param $Data   修改内容
+     * @return int|string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     * 修改消费码内容
+     * 肖亚子
+     */
+    public static function ProductDistributionCodeUp($Id,$Data){
+        $Data = self::TableName()->where("id","=",$Id)->update($Data);
+
+        return $Data;
+    }
+
+    /**
+     * @param $OrderId  订单id
+     * @return int|string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     * 订单发码成功订单更改为完成状态
+     * 肖亚子
+     */
+    public static function OrderUpdate($OrderId){
+        $Data = Db::name("order")->where("order_id","=",$OrderId)->update(array("order_status"=>4,"distributionsendcode" => 1));
+
+        return $Data;
+    }
+}

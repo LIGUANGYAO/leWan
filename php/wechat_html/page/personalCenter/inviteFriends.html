@@ -1,116 +1,121 @@
 <!doctype html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title>邀请好友</title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../../css/mui.min.css" rel="stylesheet" />
-		<link href="../../css/leWan.css" rel="stylesheet" />
-		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
-		<link href="../../fonts/iconfont.css" rel="stylesheet" />
-		<style type="text/css">
-			body {
-				padding: 0;
-				margin: 0 !important;
-				background-color: #F5CA7F;
-				width: 100vw;
-				height: 100vh;
-				overflow: auto;
-			}
-			
-			.title {
-				font-size: 0.48rem;
-				color: #FFFFff;
-				font-weight: 500;
-				margin-top: 1.093rem;
-			}
-			
-			.header {
-				text-align: center;
-			}
-			
-			.cardBox {
-				width: 8.826rem;
-				height: 14rem;
-				background-repeat: no-repeat;
-				background-size: 100% 100%;
-				margin: 0 auto;
-				margin-top: 0.8rem;
-				position: relative;
-				text-align: center;
-			}
-			
-			.myHeader {
-				width: 1.333rem;
-				height: 1.333rem;
-				border-radius: 0.666rem;
-				margin-top: 1.066rem;
-				display: inline-block;
-			}
-			
-			.mycodeText {
-				font-size: 0.373rem;
-				color: #999999;
-				font-weight: 500;
-				margin-top: 0.24rem;
-			}
-			
-			.myCode {
-				font-size: 0.533rem;
-				color: #E1B872;
-				font-weight: 800;
-				margin-top: 0.2rem;
-			}
-			
-			.myQR {
-				width: 5.866rem;
-				height: 5.866rem;
-			}
-			
-			.createPoster {
-				margin-top: 1rem;
-				font-size: 0.426rem;
-			}
-			
-			.createPoster>div{
-				display: inline-block;
-				height: 1.093rem;
-				width: 3.973rem;
-				border-radius: 0.546rem;
-				line-height: 1.093rem;
-				text-align: center;
-				background: linear-gradient(to right, #AD8034 0%,#F1C867 100%);
-				color: #FFFFFF;
-			}
-			/*选择海报*/
-			
-			.modalBox1 {
-				display: none;
-				position: fixed;
-				left: 0;
-				top: 0;
-				width: 100%;
-				height: 100%;
-				background-color: rgba(0, 0, 0, 0.4);
-				z-index: 20;
-			}
-			.swiper-container{
-				margin-top: 5vh;
-			}
-			
-			.swiper-wrapper>div{
-				text-align: center;
-			}
-			.swiper-wrapper>div>img{
-				height: 90vh;
-				border-radius: 6px;
-			}
-			
-		</style>
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<title>邀请好友</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/leWan.css" rel="stylesheet" />
+	<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+	<link href="../../fonts/iconfont.css" rel="stylesheet" />
+	<style type="text/css">
+		body {
+			padding: 0;
+			margin: 0 !important;
+			background-color: #F5CA7F;
+			width: 100vw;
+			height: 100vh;
+			overflow: auto;
+		}
+		
+		.title {
+			font-size: 0.48rem;
+			color: #FFFFff;
+			font-weight: 500;
+			margin-top: 1.093rem;
+		}
+		
+		.header {
+			text-align: center;
+		}
+		
+		.cardBox {
+			width: 8.826rem;
+			height: 14rem;
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
+			margin: 0 auto;
+			margin-top: 0.8rem;
+			position: relative;
+			text-align: center;
+		}
+		
+		.myHeader {
+			width: 1.333rem;
+			height: 1.333rem;
+			border-radius: 0.666rem;
+			margin-top: 1.066rem;
+			display: inline-block;
+		}
+		
+		.mycodeText {
+			font-size: 0.373rem;
+			color: #999999;
+			font-weight: 500;
+			margin-top: 0.24rem;
+		}
+		
+		.myCode {
+			font-size: 0.533rem;
+			color: #E1B872;
+			font-weight: 800;
+			margin-top: 0.2rem;
+		}
+		
+		.myQR {
+			width: 5.866rem;
+			height: 5.866rem;
+		}
+		
+		.createPoster {
+			margin-top: 1rem;
+			font-size: 0.426rem;
+		}
+		
+		.createPoster>div {
+			display: inline-block;
+			height: 1.093rem;
+			width: 3.973rem;
+			border-radius: 0.546rem;
+			line-height: 1.093rem;
+			text-align: center;
+			background: linear-gradient(to right, #AD8034 0%, #F1C867 100%);
+			color: #FFFFFF;
+		}
+		/*选择海报*/
+		
+		.modalBox1 {
+			display: none;
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.4);
+			z-index: 20;
+		}
+		
+		.swiper-container {
+			margin-top: 5vh;
+		}
+		
+		.swiper-wrapper>div {
+			text-align: center;
+		}
+		
+		.swiper-wrapper>div>img {
+			height: 90vh;
+			border-radius: 6px;
+		}
+		.showPage{
+			display: none;
+		}
+	</style>
+</head>
 
-	<body>
+<body>
+	<div class="showPage">
 		<div class="header">
 			<div class="title">
 				分 享 邀 请 码
@@ -121,7 +126,7 @@
 					我的邀请码
 				</div>
 				<div class="myCode">
-					88888888
+					lewan88
 				</div>
 				<img class="myQR" src="../../img/homePage/homePage3.png" />
 				<div class="createPoster">
@@ -132,140 +137,183 @@
 		<div class="modalBox1">
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide"><img id="avatar0" class="imgUrl" src="../../img/personalCenter/1.png"/></div>
-					<div class="swiper-slide"><img id="avatar1" class="imgUrl" src="../../img/personalCenter/2.png"/></div>
-					<div class="swiper-slide"><img id="avatar2" class="imgUrl" src="../../img/personalCenter/3.png"/></div>
-					<div class="swiper-slide"><img id="avatar3" class="imgUrl" src="../../img/personalCenter/4.png"/></div>
+					<div class="swiper-slide"><img id="avatar0" class="imgUrl" src="../../img/personalCenter/1.png" /></div>
+					<div class="swiper-slide"><img id="avatar1" class="imgUrl" src="../../img/personalCenter/2.png" /></div>
+					<div class="swiper-slide"><img id="avatar2" class="imgUrl" src="../../img/personalCenter/3.png" /></div>
+					<div class="swiper-slide"><img id="avatar3" class="imgUrl" src="../../img/personalCenter/4.png" /></div>
 				</div>
 				<!-- 如果需要分页器 -->
 				<div class="swiper-pagination"></div>
 				<!-- 如果需要导航按钮 -->
 				<!--<div class="swiper-button-prev"></div>
-				<div class="swiper-button-next"></div>-->
+			<div class="swiper-button-next"></div>-->
 			</div>
 		</div>
 		<div id="canbox" style="display: none;">
-		    <canvas id="myCanvas"></canvas>
+			<canvas id="myCanvas"></canvas>
 		</div>
-		
-		<script src="../../plugins/flexible.js"></script>
-		<script src="../../plugins/jquery-2.1.4.js"></script>
-		<script src="../../plugins/vue.js"></script>
-		<script src="../../js/mui.min.js"></script>
-		<script src="../../plugins/swiper-4.3.3.min.js"></script>
-		<script src="../../plugins/serverApi.js"></script>
-		<script type="text/javascript">
-			$(function() {
-				var token = localStorage.getItem("token");
-				
-				var uesrQRSrc;
-				//获取头像
-				getUserMessage()
+	</div>
+	<script src="../../plugins/flexible.js"></script>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script src="../../plugins/jquery-2.1.4.js"></script>
+	<script src="../../plugins/vue.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../plugins/swiper-4.3.3.min.js"></script>
+	<script src="../../plugins/serverApi.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var token = localStorage.getItem("token");
 
-				function getUserMessage() {
-					$.ajax({
-						url: API_SERVER + 'User/UserPersonal',
-						async: true,
-						data: {
-							token: token
+			var uesrQRSrc;
+			//获取头像
+			getUserMessage()
+
+			function getUserMessage() {
+				$.ajax({
+					url: API_SERVER + 'User/UserPersonal',
+					async: true,
+					data: {
+						token: token
+					},
+					success: function(data) {
+						if(data.code == 200) {
+							log(data)
+							$(".myCode").text(data.data.recode)
+							localStorage.setItem("token", data.data.token); //token
+							localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
+							localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+							$(".myHeader").attr({
+								"src": data.data.avatar
+							}); //用户头像
+							$('.showPage').css({'display':'block'});
+							sharePYQ(data.data.recode)
+						}
+					}
+				});
+			}
+
+			//分享朋友圈				
+			function sharePYQ(myRecode) {
+				var shareUrl;
+				if(myRecode){
+					shareUrl = BASE_SERVER + 'wechat_html/page/homePage/register.html' + "?recode=" + myRecode
+				}else{
+					shareUrl = BASE_SERVER + 'wechat_html/page/homePage/register.html'
+				}
+				getWechatSignature(location.href.split('#')[0]);
+				wx.ready(function() {
+					wx.onMenuShareTimeline({
+						title: ' 邀请您加入乐玩联盟平台 ',
+						link: shareUrl,
+						imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
+						trigger: function(res) {
+							// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
 						},
-						success: function(data) {
-							if(data.code == 200) {
-								log(data)
-								$(".myCode").text(data.data.recode)
-								localStorage.setItem("token", data.data.token); //token
-								localStorage.setItem("subscribe", data.data.subscribe); //是否关注公众号==》等于1 用户已关注公众号
-								localStorage.setItem("level", data.data.level); //用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
-								$(".myHeader").attr({
-									"src": data.data.avatar
-								}); //用户头像
-							}
+						fail: function(res) {
+							mui.toast(res);
 						}
 					});
-				}
-				//获取二维码
-				getUserQRImg()
-
-				function getUserQRImg() {
-					$.ajax({
-						url: API_SERVER + 'User/UserQrCode',
-						async: false,
-						data: {
-							token: token,
-							url: BASE_SERVER + 'wechat_html/page/homePage/register.html', //二维码跳转路径
+					wx.onMenuShareAppMessage({
+						title: ' 邀请您加入乐玩联盟平台 ',
+						desc: '【分享】 加入乐玩联盟，送他(她)一份吃喝玩乐，你省他也赚。自购更享优惠折扣',
+						link: shareUrl,
+						imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
+						trigger: function(res) {
+							// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
 						},
-						success: function(data) {
-							if(data.code == 200) {
-								log(data)
-								$(".myQR").attr("src", data.data.url);
-								uesrQRSrc = data.data.url+"?time="+new Date().getTime();
-							}
+						fail: function(res) {
+							mui.toast(res);
 						}
 					});
-				}
-				
-				
-				//点击选择样式
-				mui('body').on('tap','#ImgType',function(){
-					$('.modalBox1').css({"display":'block'});
-					var mySwiper = new Swiper ('.swiper-container', {
-					    loop: true, // 循环模式选项
-					    // 如果需要分页器
-					    pagination: {
-					      el: '.swiper-pagination',
-					    }
-					})    
-					
+				});
+			}
+
+			//获取二维码
+			getUserQRImg()
+
+			function getUserQRImg() {
+				$.ajax({
+					url: API_SERVER + 'User/UserQrCode',
+					async: false,
+					data: {
+						token: token,
+						url: BASE_SERVER + 'wechat_html/page/homePage/register.html', //二维码跳转路径
+					},
+					success: function(data) {
+						if(data.code == 200) {
+							log(data)
+							$(".myQR").attr("src", data.data.url);
+							uesrQRSrc = data.data.url + "?time=" + new Date().getTime();
+						}
+					}
+				});
+			}
+
+			//点击选择样式
+			mui('body').on('tap', '#ImgType', function() {
+				$('.modalBox1').css({
+					"display": 'block'
+				});
+				var mySwiper = new Swiper('.swiper-container', {
+					loop: true, // 循环模式选项
+					// 如果需要分页器
+					pagination: {
+						el: '.swiper-pagination',
+					}
 				})
-				//合成邀请海报
-				joinPoster()
-				function joinPoster(){
-					var slide = $('.swiper-slide');
-					var imgUrl = $('.imgUrl');
-					for(var i = 0;i<slide.length; i++){
-						drawAndShareImage(imgUrl.eq(i).attr('src'),uesrQRSrc,250,834,250,250,i)
+
+			})
+			//合成邀请海报
+			joinPoster()
+
+			function joinPoster() {
+				var slide = $('.swiper-slide');
+				var imgUrl = $('.imgUrl');
+				for(var i = 0; i < slide.length; i++) {
+					drawAndShareImage(imgUrl.eq(i).attr('src'), uesrQRSrc, 250, 834, 250, 250, i)
+				}
+			}
+
+			//canvas合成图片
+			function drawAndShareImage(maxSrc, minSrc, x, y, width, height, id) {
+				var canvas = document.createElement("canvas");
+				canvas.width = 750;
+				canvas.height = 1334;
+				var context = canvas.getContext("2d");
+
+				context.rect(0, 0, canvas.width, canvas.height);
+				context.fillStyle = "#FFFFFF";
+				context.fill();
+
+				var myImage = new Image();
+				myImage.src = maxSrc; //背景图片  你自己本地的图片或者在线图片
+				myImage.crossOrigin = 'Anonymous';
+				myImage.onload = function() {
+					context.drawImage(myImage, 0, 0, 750, 1334);
+
+					var myImage2 = new Image();
+					myImage2.src = minSrc; //你自己本地的图片或者在线图片
+					myImage2.crossOrigin = 'Anonymous';
+					myImage2.onload = function() {
+						context.drawImage(myImage2, x, y, width, height);
+						var base64 = canvas.toDataURL("image/png",0.6); //"image/png" 这里注意一下
+						log(id)
+						$('#avatar' + id).attr('src', base64);
 					}
 				}
-					
-				
-				//canvas合成图片
-				function drawAndShareImage(maxSrc,minSrc,x,y,width,height,id){
-				    var canvas = document.createElement("canvas");
-				    canvas.width = 750;
-				    canvas.height = 1334;
-				    var context = canvas.getContext("2d");
-				
-				    context.rect(0 , 0 , canvas.width , canvas.height);
-				    context.fillStyle = "#FFFFFF";
-				    context.fill();
-				
-				    var myImage = new Image();
-				    myImage.src = maxSrc;    //背景图片  你自己本地的图片或者在线图片
-				    myImage.crossOrigin = 'Anonymous';
-				    myImage.onload = function(){
-				        context.drawImage(myImage , 0 , 0 , 750 , 1334);
-				
-				        var myImage2 = new Image();
-				        myImage2.src = minSrc;   //你自己本地的图片或者在线图片
-				        myImage2.crossOrigin = 'Anonymous';
-				        myImage2.onload = function(){
-				            context.drawImage(myImage2 , x , y , width , height);
-				            var base64 = canvas.toDataURL("image/png");  //"image/png" 这里注意一下
-				            log(id)
-				            $('#avatar'+id).attr('src',base64);
-				        }
-				    }
-				}
-				//关闭生成海报
-				mui('body').on('tap','.modalBox1',function(){
-					$('.modalBox1').css({"display":'none'});
-					
-				})
-				$('.imgUrl').on('tap',function(event){
-					event.stopPropagation()
-				})
+			}
+			//关闭生成海报
+			mui('body').on('tap', '.modalBox1', function() {
+				$('.modalBox1').css({
+					"display": 'none'
+				});
+
 			})
-		</script>
-	</body>
+			$('.imgUrl').on('tap', function(event) {
+				event.stopPropagation()
+			})
+		})
+	</script>
+</body>
 
 </html>

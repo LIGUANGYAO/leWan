@@ -1,0 +1,473 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>预约时间</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #FFFFFF;
+				margin-bottom: 0 !important;
+			}
+			/*页头*/
+			
+			.merchantBox {
+				background-color: #FFFFFF;
+			}
+			
+			.merName {
+				height: 0.8rem;
+				line-height: 0.8rem;
+				color: #333333;
+				font-size: 0.426rem;
+				font-weight: 400;
+				margin-left: 0.32rem;
+			}
+			
+			.mui-table-view-cell:after,
+			.mui-table-view:before {
+				height: 0;
+			}
+			
+			.mui-table-view-radio {
+				padding-bottom: 0.3rem;
+			}
+			
+			.mui-table-view-radio .mui-table-view-cell {
+				padding-right: 0.1rem;
+			}
+			
+			.mui-table-view-cell {
+				display: inline-block;
+				font-size: 0.34rem;
+				color: #999999;
+				background-color: #F6F6F6;
+				padding: 0.1rem 0.3rem !important;
+				border-radius: 0.15rem;
+				margin-top: 0.3rem;
+				margin-left: 0.3rem;
+			}
+			
+			.mui-selected {
+				color: #FFFFFF;
+				background-color: #FF8B30;
+			}
+			/*列表*/
+			
+			.content {
+				overflow: hidden;
+				min-height: 100vh;
+			}
+			
+			.contentBox {
+				margin: 0.533rem 0.32rem;
+				background-color: #FFFFFF;
+				overflow: hidden;
+				font-size: 0.373rem;
+			}
+			
+			.timeList {
+				border: 1px solid #F2F2F2;
+				width: 25%;
+				height: 2.32rem;
+				color: #333333;
+				float: left;
+				font-weight: bold;
+			}
+			
+			.timeDate {
+				margin: 0.2rem 0 0 0.373rem;
+			}
+			
+			.timeWeek {
+				margin: 0.14rem 0 0 0.373rem;
+			}
+			
+			.timeList>div:last-child {
+				color: #F77917;
+				margin: 0.08rem 0 0 0.373rem;
+			}
+			
+			.timeListActive {
+				background-color: #F77917;
+			}
+			
+			.timeListActive>div {
+				color: #FFFFFF !important;
+			}
+			
+			.lw-empty {
+				min-height: 100vh;
+			}
+			/*模态框1*/
+			
+			.modalOne {
+				display: none;
+				width: 100vw;
+				height: 100vh;
+				position: fixed;
+				top: 0;
+				left: 0;
+				background-color: rgba(0, 0, 0, 0.7);
+				z-index: 10;
+			}
+			
+			.modalBox1 {
+				margin: 0 auto;
+				margin-top: 1.6rem;
+				width: 8.266rem;
+				height: 10.133rem;
+				border-radius: 0.2rem;
+				overflow: hidden;
+				background-color: #FFFFFF;
+			}
+			
+			.modalHeader {
+				width: 100%;
+				height: 1rem;
+				line-height: 1rem;
+				text-align: center;
+				background-color: #F77917;
+				color: #FFFFFF;
+				font-size: 0.426rem;
+				font-weight: bold;
+			}
+			
+			.modalBox1>p {
+				margin: 0.266rem 0 0 0.733rem;
+				font-size: 0.373rem;
+				color: #999999;
+			}
+			
+			.closeBtn {
+				color: #999999;
+				text-align: center;
+				margin-top: 0.9rem;
+			}
+			
+			.closeBtn i {
+				font-size: 1.5rem;
+			}
+			
+			.indentBox {
+				height: 7.44rem;
+				margin: 0.1rem 0.3rem;
+				overflow-y: auto;
+			}
+			
+			.indentList {
+				padding: 0.266rem 0;
+				overflow: hidden;
+				border-bottom: 1px solid #F2F2F2;
+			}
+			
+			.listLeft {
+				float: left;
+				width: 60%;
+				height: 1.9rem;
+				position: relative;
+			}
+			
+			.listRight {
+				float: left;
+				width: 40%;
+				height: 1.9rem;
+				text-align: center;
+				position: relative;
+			}
+			
+			.listLeft>div,
+			.listRight>div {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			
+			.listLeft>div:nth-child(1) {
+				font-size: 0.37rem;
+				color: #333333;
+				font-weight: bold;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
+			.listLeft>div:nth-child(2) {
+				font-size: 0.37rem;
+				color: #333333;
+				font-weight: bold;
+			}
+			
+			.listLeft>div:nth-child(3) {
+				font-size: 0.37rem;
+				color: #333333;
+				font-weight: 500;
+				position: absolute;
+				bottom: 0;
+			}
+			
+			.subscribeBtn {
+				display: inline-block;
+				width: 2.133rem;
+				height: 0.773rem;
+				line-height: 0.773rem;
+				font-weight: bold;
+				border: 1px solid #F77917;
+				border-radius: 0.2rem;
+				font-size: 0.48rem;
+				color: #F77917;
+			}
+			
+			.ewaijiashou {
+				font-size: 0.37rem;
+				color: #333333;
+				font-weight: 500;
+				position: absolute;
+				bottom: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="J_el" v-cloak>
+			<div class="content">
+				<div class="merchantBox">
+					<div class="merName">选择店铺：</div>
+					<ul class="mui-table-view mui-table-view-radio">
+						<li class="mui-table-view-cell" @tap="selMerchant(item.merchant_id,item.merchant_name)" v-for="(item,index) in merchantList">{{item.merchant_name}}</li>
+					</ul>
+				</div>
+				<div class="contentBox" v-if="codeList.length">
+					<div class="timeList" @tap="popupModel(items.reservationday_id,items.day)" v-for="items in codeList">
+						<div class="timeDate">{{ items.day }}</div>
+						<div class="timeWeek">{{ items.week }}</div>
+						<div class="indentNum">剩{{items.lastnumber}}</div>
+					</div>
+				</div>
+				<!--空状态时-->
+				<div class="lw-empty" style="display: block;" v-else>
+					<div class="lw-empty-box">
+						<div class="lw-empty-flex">
+							<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+							<div class="lw-empty-test">暂无可预约商品！</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modalOne">
+				<div class="modalBox1">
+					<div class="modalHeader">消费日期：2018/10/20</div>
+					<p>商品规格</p>
+					<div class="indentBox">
+						<div class="indentList" v-for="items in yuyueList">
+							<div class="listLeft">
+								<div>{{ items.product_name }}</div>
+								<div>{{ items.property }}</div>
+								<div>可约数量：{{ items.lastnumber }}</div>
+							</div>
+							<div class="listRight">
+								<div v-if="items.lastnumber > 0" class="subscribeBtn" @tap="subscribe(items.id,items.product_property,items.property,items.addprice)">预约</div>
+								<div class="ewaijiashou">额外加收:{{ items.addprice }}元</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="closeBtn">
+					<i class="iconfont icon-guanbi" id="closeModelBtn"></i>
+				</div>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = getUrlParam("token");
+				var code = getUrlParam("code");
+				var orderId = getUrlParam("orderId");
+
+				//获取日历表
+				var vueData = {
+					merchantList: [],
+					merchant_name: '',
+					codeList: [],
+					yuyueList: [],
+				}
+				new Vue({
+					el: "#J_el",
+					data: vueData,
+					methods: {
+						popupModel: popupModel,
+						subscribe: subscribe,
+						selMerchant: selMerchant,
+					}
+				})
+
+				//获取分店列表
+				getFendian()
+
+				function getFendian() {
+					$.ajax({
+						url: API_SERVER + "Yuyue/getFenDian",
+						async: false,
+						data: {
+							token: token,
+							order_id: orderId,
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.merchantList = data.data;
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					});
+				}
+
+				//选择分店
+				function selMerchant(merchantId, merchantName) {
+					vueData.merchant_name = merchantName;
+					getRili(merchantId)
+				}
+
+				//获取日历表
+				function getRili(merchantId) {
+					$.ajax({
+						url: API_SERVER + "Yuyue/calandar",
+						data: {
+							token: token,
+							code: code,
+							fen_merchant_id: merchantId
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.showPage = true;
+								vueData.codeList = data.data;
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					});
+				}
+
+				function popupModel(id, day) { //点击当前默认选中
+					$.ajax({
+						url: API_SERVER + "Yuyue/getCase",
+						data: {
+							token: token,
+							reservationday_id: id,
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.yuyueList = data.data;
+								$(".modalHeader").text("消费日期：" + day)
+								$(".timeList").removeClass("timeListActive");
+								$(this).addClass("timeListActive");
+								$(".modalOne").css({
+									"display": "block"
+								})
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					});
+				}
+
+				//预约流程
+				function subscribe(id, guige, guigeName, jiaShou) {
+					mui.confirm('预约店铺：' + vueData.merchant_name + '</br>预约规格：' + guige + '</br>规格名称：' + guigeName + '</br>预约加收：' + jiaShou, '是否确定预约', ['否', '是'], function(e) {
+						if(e.index == 1) {
+							$.ajax({
+								url: API_SERVER + "Yuyue/submit",
+								data: {
+									token: token,
+									reservationprice_id: id,
+									code: code, //电子码
+								},
+								success: function(data) {
+									log(data)
+									if(data.code == 200) {
+										if(data.data.needpay == 0) { //0不需要支付，直接预约成功；1需要支付
+											mui.toast(data.message)
+											mui.openWindow({
+												url: 'smsReservationSuccess.html?code=' + code
+											})
+										} else if(data.data.needpay == 1) {
+											plusMoney(data.data.orderNo);
+										}
+
+									} else {
+										mui.toast(data.message)
+									}
+								}
+							});
+						} else {
+							log("我不同意预约！")
+						}
+					})
+				}
+
+				//加收付款流程
+				function plusMoney(orderNo) {
+					$.ajax({
+						url: API_SERVER + 'Yuyue/payNow', //获取微信验签
+						async: false,
+						data: {
+							token: token,
+							orderNo: orderNo,
+							payway: 1, //支付方式：1微信公众号支付 2支付宝app；3银行卡；4微信APP
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								var json = JSON.parse(data.data.jsApiParameters)
+								WeixinJSBridge.invoke('getBrandWCPayRequest', {
+										"appId": json.appId, //公众号名称，由商户传入
+										"timeStamp": json.timeStamp, //时间戳，自1970年以来的秒数
+										"nonceStr": json.nonceStr, //随机串
+										"package": json.package,
+										"signType": json.signType, //微信签名方式：
+										"paySign": json.paySign
+										//微信签名 
+									},
+									function(res) {
+										WeixinJSBridge.log(res.err_msg);
+										//由于官方申明：使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+										//所以在返回ok的时候，只进行成功提示（即使是支付失败，但是返回是ok）
+										if(res.err_msg == "get_brand_wcpay_request:ok") {
+											mui.toast(data.message)
+											mui.openWindow({
+												url: 'smsReservationSuccess.html?code=' + code
+											})
+										} else {
+											alertMsg('支付失败，请重新支付！');
+										}
+									}
+								);
+							}
+						}
+					})
+				}
+
+				mui('body').on('tap', '#closeModelBtn', function() { //关闭预约模态窗
+					$(".modalOne").css({
+						"display": "none"
+					})
+				})
+
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+    <form class="layui-form" action="{:url('system/distribution/index')}">
+        <div class="layui-form-item ">
+            <div class="layui-input-block layui-col-sm4">
+                <input type="text" name="title"  placeholder="商品名称/商户名称"  class="layui-input" value="{$title}">
+            </div>
+            <span class="input-group-btn">
+           <button type="submit" class="layui-btn"><i class="fa fa-search"></i> 搜索</button>
+            <if condition="$status eq 3">
+                <button type="submit" class="layui-btn layui-btn-small" name="excel" value="1">导出excel</button>
+            </if>
+        </span>
+        </div>
+    </form>
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+            <tr>
+                <th class="nowrap">商家名称</th>
+                <th>商品名称</th>
+                <th class="nowrap">电子码</th>
+                <th class="nowrap">平台订单</th>
+                <th class="nowrap">联系人</th>
+                <th class="nowrap">联系手机号</th>
+                <th class="nowrap">导入时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="data.list" id="val">
+                <tr>
+                    <td class="nowrap">[{$val.merchant_name}]</td>
+                    <td style="min-width: 200px; max-width: 200px;">{$val.product_name}</td>
+                    <td class="nowrap">{$val.consome_code}</td>
+                    <td class="nowrap">{$val.order_no}</td>
+                    <td class="nowrap">{$val.order_fullname}</td>
+                    <td class="nowrap">{$val.order_mobile}</td>
+                    <td class="nowrap">{$val.product_addtime|date='Y-m-d H:i',###}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+</script>
