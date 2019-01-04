@@ -111,7 +111,7 @@ class YuyueController extends ApiBaseController
                     $Data["product_name"] = $Val["product_name"];
                     $Data["startusetime"] = $Val["product_startusetime"];
                     $Data["endusetime"]   = $Val["product_endusetime"];
-                    $Data["endtime"]      = 1;
+                    $Data["endtime"]      = $EndTime;
 
                     if (!$Express){
                         $OrderAll[] = $Data;
@@ -490,10 +490,8 @@ class YuyueController extends ApiBaseController
 
             $Uid = UserModel::UserFindUid($Token);
 
-            $Condition["cc.user_id"]          = array("eq",$Uid);
-            $Condition["cc.consume_code"]     = array("eq",$Code);
-            $Condition["o.order_isexpress"]   = array("eq",1);
-            $Condition["o.order_reservation"] = array("eq",1);
+            $Condition["cc.user_id"] = array("eq",$Uid);
+            $Condition["cc.consume_code"] = array("eq",$Code);
 
             $Order = OrderModel::OrderCodeFind($Condition);
 
@@ -501,14 +499,26 @@ class YuyueController extends ApiBaseController
                 $this->returnApiData("获取失败", 400);
             }
 
-            $ReCondition["r.user_id"]         = array("eq",$Uid);
-            $ReCondition["r.order_id"]        = array("eq",$Order["order_id"]);
-            $ReCondition["r.consume_code_id"] = array("eq",$Order["consume_code_id"]);
+            if ($Order["isexpress"] == 1 && $Order["reservation"] == 1){
+                $ReCondition["r.user_id"]         = array("eq",$Uid);
+                $ReCondition["r.order_id"]        = array("eq",$Order["order_id"]);
+                $ReCondition["r.consume_code_id"] = array("eq",$Order["consume_code_id"]);
 
-            $ReservationData = OrderModel::OrderReservationFind($ReCondition);
+                $ReservationData = OrderModel::OrderReservationFind($ReCondition);
 
-            if (!$ReservationData){
-                $this->returnApiData("未预约", 400);
+                if (!$ReservationData){
+                    $this->returnApiData("未预约", 400);
+                }
+            }else{
+                $ReCondition["order_id"] = array("eq",$Order["order_id"]);
+
+                $PriceData = OrderModel::OrderProductFind($ReCondition,"price_type,product_property");
+
+                if (!$PriceData){
+                    $this->returnApiData("未预约", 400);
+                }else{
+                    $ReservationData["property"] = $PriceData["product_property"];
+                }
             }
 
             $this->returnApiData("获取成功", 200,$ReservationData);

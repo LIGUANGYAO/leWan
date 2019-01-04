@@ -1,8 +1,7 @@
 <link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
 <div class="page">
 
-    <form class="layui-form" action="{:url('product/mchindex')}">
-        <input type="hidden" name="merchant_id" value="{$merchant.merchant_id}"/>
+    <form class="layui-form" action="{:url('product/index')}">
 
         <div class="layui-form-item ">
             <div class="layui-input-block layui-col-sm4">
@@ -109,7 +108,7 @@
         </div>
     </form>
 
-    <div class="l">
+    <div class="r">
         <notempty name="addbtn">
             <if condition="$addbtn.type eq '1'">
                 <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
@@ -157,96 +156,96 @@
                 </table>
 
                 <table class='layui-table' lay-skin="line" style="background:#efefef">
-                    <tr>
-                        <td width="120">
-                            <p>售价：{$val.temp_price}</p>
-                            <p>佣金：{$val.temp_commission}</p>
-                        </td>
-                        <td width="110">
-                            <volist name="$val.catestr" id="cate">
-                                <label class="layui-badge layui-bg-green">{$cate}</label>
-                            </volist>
-                        </td>
-                        <td width="160">
-                            <volist name="$val.tagstr" id="tag">
-                                <label class="layui-badge layui-bg-blue">{$tag}</label>
-                            </volist>
-                        </td>
-                        <td width="80">
-                            <if condition="$val.product_returnall eq 1">
-                                <label class="layui-badge layui-bg-green">免单</label>
-                                <else />
-                                <label class="layui-badge layui-bg-cyan">不免单</label>
-                            </if>
-                        </td>
-                        <td width="100">
-                            <if condition="$val.product_explosion eq 1">
-                                <label class="layui-badge layui-bg-green">是</label>
-                                <else />
-                                <label class="layui-badge layui-bg-cyan">否</label>
-                            </if>
-                        </td>
-                        <td width="80">
-                            <if condition="$val.product_numlimit eq 1">
-                                <label class="layui-badge layui-bg-red">限购</label>
-                                <p style="color: #FF5722">数量：{$val.product_numlimit_num}</p>
-                                <else />
-                                <label class="layui-badge layui-bg-green">不限购</label>
-                            </if>
-                        </td>
+                <tr>
+                    <td width="120">
+                        <p>售价：{$val.temp_price}</p>
+                        <p>佣金：{$val.temp_commission}</p>
+                    </td>
+                    <td width="110">
+                        <volist name="$val.catestr" id="cate">
+                             <label class="layui-badge layui-bg-green">{$cate}</label>
+                        </volist>
+                    </td>
+                    <td width="160">
+                        <volist name="$val.tagstr" id="tag">
+                            <label class="layui-badge layui-bg-blue">{$tag}</label>
+                        </volist>
+                    </td>
+                    <td width="80">
+                        <if condition="$val.product_returnall eq 1">
+                            <label class="layui-badge layui-bg-green">免单</label>
+                        <else />
+                            <label class="layui-badge layui-bg-cyan">不免单</label>
+                        </if>
+                    </td>
+                    <td width="100">
+                        <if condition="$val.product_explosion eq 1">
+                            <label class="layui-badge layui-bg-green">是</label>
+                            <else />
+                            <label class="layui-badge layui-bg-cyan">否</label>
+                        </if>
+                    </td>
+                    <td width="80">
+                        <if condition="$val.product_numlimit eq 1">
+                            <label class="layui-badge layui-bg-red">限购</label>
+                            <p style="color: #FF5722">数量：{$val.product_numlimit_num}</p>
+                        <else />
+                            <label class="layui-badge layui-bg-green">不限购</label>
+                        </if>
+                    </td>
 
-                        <td width="100">
-                            <if condition="$val.product_isexpress eq 1">
-                                <label class="layui-badge layui-bg-green">到店消费</label><br/>
-                                <else />
-                                <label class="layui-badge layui-bg-blue">快递邮寄</label><br/>
-                            </if>
-                            <if condition="$val.product_reservation eq 1">
-                                <label class="layui-badge layui-bg-red">预约制</label>
-                                <else />
-                                <label class="layui-badge layui-bg-orange">免预约</label>
-                            </if>
-                        </td>
-                        <td width="100">
-                            <if condition="$val.product_toplevel eq 3">
-                                三级置顶
-                                <elseif condition="$val.product_toplevel eq 2" />
-                                二级置顶
-                                <elseif condition="$val.product_toplevel eq 1" />
-                                一级置顶
-                                <else/>
-                                不置顶
-                            </if>
-                        </td>
-                        <td width="80">
-                            <input type="checkbox" name="product_status" lay-skin="switch" lay-text="上架|下架" lay-filter="switchAjax"  <if condition="$val.product_status eq 1">checked="checked"</if> tbname="product" idkey="product_id" itemid="{$val.product_id}" filed="product_status" url="/system/product/switching"  >
-                        </td>
-                        <td width="200">
-                            <notempty name="val.product_startusetime">
-                                <p>使用开始：{$val.product_startusetime|date="Y-m-d",###}</p>
-                                <p>使用结束：{$val.product_endusetime|date="Y-m-d",###}</p>
+                    <td width="100">
+                        <if condition="$val.product_isexpress eq 1">
+                            <label class="layui-badge layui-bg-green">到店消费</label><br/>
+                            <else />
+                            <label class="layui-badge layui-bg-blue">快递邮寄</label><br/>
+                        </if>
+                        <if condition="$val.product_reservation eq 1">
+                            <label class="layui-badge layui-bg-red">预约制</label>
+                         <else />
+                            <label class="layui-badge layui-bg-orange">免预约</label>
+                        </if>
+                    </td>
+                    <td width="100">
+                        <if condition="$val.product_toplevel eq 3">
+                            三级置顶
+                            <elseif condition="$val.product_toplevel eq 2" />
+                            二级置顶
+                            <elseif condition="$val.product_toplevel eq 1" />
+                            一级置顶
+                            <else/>
+                            不置顶
+                        </if>
+                    </td>
+                    <td width="80">
+                        <input type="checkbox" name="product_status" lay-skin="switch" lay-text="上架|下架" lay-filter="switchAjax"  <if condition="$val.product_status eq 1">checked="checked"</if> tbname="product" idkey="product_id" itemid="{$val.product_id}" filed="product_status" url="/system/product/switching"  >
+                    </td>
+                    <td width="200">
+                        <notempty name="val.product_startusetime">
+                            <p>使用开始：{$val.product_startusetime|date="Y-m-d",###}</p>
+                            <p>使用结束：{$val.product_endusetime|date="Y-m-d",###}</p>
+                        </notempty>
+                    </td>
+                    <td width="250">
+                        <if condition="$val.product_timelimit eq 1">
+                            <label class="layui-badge layui-bg-green">开启限时</label>
+                            <notempty name="val.product_starttime">
+                                <p>限时开始：{$val.product_starttime|date="Y-m-d",###}</p>
+                                <p>限时结束：{$val.product_endtime|date="Y-m-d",###}</p>
                             </notempty>
-                        </td>
-                        <td width="250">
-                            <if condition="$val.product_timelimit eq 1">
-                                <label class="layui-badge layui-bg-green">开启限时</label>
-                                <notempty name="val.product_starttime">
-                                    <p>限时开始：{$val.product_starttime|date="Y-m-d",###}</p>
-                                    <p>限时结束：{$val.product_endtime|date="Y-m-d",###}</p>
-                                </notempty>
-                                <else/>
-                                <label class="layui-badge layui-bg-black">关闭限时</label>
-                            </if>
-                        </td>
-                        <td width="250">
-                            <if condition="$val.sold_out eq 0">
-                                <label class="layui-badge layui-bg-green">未售罄</label>
-                                <else />
-                                <label class="layui-badge layui-bg-black">已售罄</label><br/>
-                                售罄时间：{$val.product_addtime|date="Y-m-d H:i:s",###}
-                            </if>
-                        </td>
-                    </tr>
+                            <else/>
+                            <label class="layui-badge layui-bg-black">关闭限时</label>
+                        </if>
+                    </td>
+                    <td width="250">
+                        <if condition="$val.sold_out eq 0">
+                            <label class="layui-badge layui-bg-green">未售罄</label>
+                        <else />
+                            <label class="layui-badge layui-bg-black">已售罄</label><br/>
+                            售罄时间：{$val.product_addtime|date="Y-m-d H:i:s",###}
+                        </if>
+                    </td>
+                </tr>
                 </table>
 
                 <table class='layui-table' lay-skin="line" style="margin-top: -9px;background:#efefef">
@@ -257,6 +256,12 @@
                             <if condition="$val.sold_out neq 1">
                                 <a href="javascript:createOrder('{$val.product_id}');" class="editIcon" style="background-color: #FFB800" title="下单" id="create_order" data-id="{$val['product_id']}">下单</a>
                             </if>
+                            <a href="javascript:openDownOrderInfo('{$val.product_id}');" class="editIcon" title="导出该商品下单数据" style="margin-top: 5px;">导出下单数据</a>
+
+                            <if condition="$val.distributiontag eq 1">
+                                <a href="javascript:void(0)" class="editIcon" onclick="openCreateOrdersPanl({$val.product_id})">导入消费码</a>
+                            </if>
+
                             <a href="{:url('product/edit', array('id'=>$val['product_id']))}" class="normalIcon" title="编辑" style="margin-top: 5px;">
                                 <if condition="$val.sold_out eq 1">
                                     查看基本信息&nbsp;
@@ -264,7 +269,7 @@
                                     编辑基本信息&nbsp;
                                 </if>
                             </a>
-                            <a href="javascript:openWindow('编辑规格-{$val.product_name}', '{:url(\'system/product/editprice\', array(\'id\'=>$val[\'product_id\']))}', '900px', '600px');" class="delIcon" style="margin-top: 5px;" title="编辑规格">编辑规格</a><br>
+                            <a href="javascript:openWindow('编辑规格-{$val.product_name}', '{:url(\'system/product/editprice\', array(\'id\'=>$val[\'product_id\']))}', '900px', '600px');" class="delIcon" style="margin-top: 5px;" title="编辑规格">编辑规格</a><br/>
                             <if condition="$val.product_reservation eq 1">
                                 <volist name="val.prices" id="pp">
                                     <volist name="val.mchlist" id="fd">
@@ -288,11 +293,52 @@
     </div>
 
 </div>
+
+<!--导出-->
+<div class="downOrderInfoPanl hide">
+    <form class="layui-form" enctype="multipart/form-data" method="post"  action="/system/order/downOrderInfo" style="padding: 20px 10px;">
+        <input type="hidden" name="product_id"  value="">
+        <div class="layui-form-item ">
+            <label class="layui-form-label">下单时间:</label>
+            <div class="layui-input-inline" style="width: 160px;">
+                <input class="layui-input" name="starttime" value="{$query['starttime']}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+            <div class="layui-input-inline" style="width: 160px;">
+                <input class="layui-input" name="endtime" value="{$query['endtime']}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <span class="input-group-btn layui-input-block">
+                  <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 确认并导出数据</button>
+            </span>
+        </div>
+
+    </form>
+</div>
+
+<!--消费码导入-->
+<div class="createOrderPanl hide">
+    <form class="layui-form" enctype="multipart/form-data" method="post"  action="/system/Product/ProcuctCodeExcel" style="padding: 20px 10px;">
+        <input type="hidden" name="id" id="pr_id" value=""/>
+        <div class="layui-form-item">
+            <span  style="color: red;">*上传模板必须按照《消费码模板》模型创建数据，否则可能导致导入失败！</span>
+        </div>
+        <div class="layui-form-item">
+            <input type="file" name="excel" style="border: none;" placeholder="请选择模板" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">消费码导入</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 <script>
     function sendMsgToWx($id) {
         var url = '/system/product/sendMsgToWechat';
         $.get(url,{'id':$id},function (data) {
-            layer.msg('推送成功', {icon: 2});
+            layer.msg('推送成功', {icon: 1});
         })
     }
 
@@ -320,6 +366,24 @@
 
     }
 
+    function openDownOrderInfo(product_id) {
+        $('.downOrderInfoPanl form input[name=product_id]').val(product_id);
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['480px', '240px'], //宽高
+            content: $('.downOrderInfoPanl').html()
+        });
+    }
 
+    function openCreateOrdersPanl(id) {
+        $("#pr_id").attr("value",id);
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['420px', '300px'], //宽高
+            content: $('.createOrderPanl').html()
+        });
+    }
 
 </script>

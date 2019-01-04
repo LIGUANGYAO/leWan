@@ -281,12 +281,9 @@ class OrderModel{
      * 肖亚子
      */
     public function OrderReservationFind($Condition = array()){
-        $Field = "op.product_id,r.reservation_calendar as calendar,r.reservation_week as week,r.reservation_property as property,
-        r.reservation_addprice as addprice,r.reservation_paytime as paytime,op.product_property,m.merchant_alias as merchant_name,
-        m.merchant_ssq,m.merchant_address,m.merchant_lng,m.merchant_lat";
         $Data = Db::name("order_user_reservation")
                     ->alias("r")
-                    ->field($Field)
+                    ->field("m.merchant_alias as merchant_name,r.reservation_calendar as calendar,r.reservation_week as week,r.reservation_property as property,r.reservation_addprice as addprice,r.reservation_paytime as paytime,op.product_property")
                     ->join("order_consume_code c","c.consume_code_id = r.consume_code_id","left")
                     ->join("order_product op","op.order_id = r.order_id","left")
                     ->join("merchant m","m.merchant_id = c.fen_merchant_id","left")

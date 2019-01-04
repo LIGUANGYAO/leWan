@@ -247,16 +247,32 @@ class UserController extends ApiBaseController{
             $C_Condition[] = array("exp","sid = {$Uid} and reid = 0 and reg_time > {$Time}");
 
             $Condition["reid"] = array("eq",$Uid);
-            $NCondition[]       = array("exp"," reid = {$Uid} and reg_time > {$Time}");
-            $UnderCondition[]   = array("exp","find_in_set($Uid,path)");
-            $NewCondition[]     = array("exp","find_in_set($Uid,path) and reg_time >$Time");
+            $NCondition[]      = array("exp"," reid = {$Uid} and reg_time > {$Time}");
 
-            $UseFriendsr["customer"]    = UserModel::UserCount(array("sid"=>array("eq",$Uid),"reid"=>array("eq",0)));//获取客户人数
-            $UseFriendsr["newcustomer"] = UserModel::UserCount($C_Condition);//获取最新客户人数
-            $UseFriendsr["directly"]    = UserModel::UserCount($Condition);//获取直属好友人数并且没独立出去
-            $UseFriendsr["newdirectly"] = UserModel::UserCount($NCondition);//获取最新直属好友人数
-            $UseFriendsr["whole"]       = UserModel::UserAllMyFriends($UnderCondition,$Uid,$Fecode["level"],$Floor);//获取全部好友人数
-            $UseFriendsr["newwhole"]    = UserModel::UserAllMyFriends($NewCondition,$Uid,$Fecode["level"],$Floor,2);//获取最新全部好友人数
+            if (in_array($Fecode["level"],array(2,3))){//超级达人/营销达人 全部好友 查推荐的下两级用户,独立出去的用户团队不查
+                $UnderCondition[] = array("exp"," level <= 3 and floor <= {$Floor}");
+                $NewCondition[]   = array("exp"," level <= 3 and floor <= {$Floor}");
+            }elseif($Fecode["level"] == 4){//运营达人看自己的下级,独立出去的用户团队不查
+                $UnderCondition["level"] = array("elt",3);
+                $NewCondition[]          = array("exp"," level <= 3 ");
+            }else{//玩主查看全部的推荐用户,玩主团队不查
+                $UnderCondition["level"] = array("elt",4);
+                $NewCondition[]          = array("exp"," level <= 4 ");
+            }
+
+            $Customer    = UserModel::UserCount(array("sid"=>array("eq",$Uid),"reid"=>array("eq",0)));//获取客户人数
+            $NewCustomer = UserModel::UserCount($C_Condition);//获取最新客户人数
+            $Directly    = UserModel::UserCount($Condition);//获取直属好友人数并且没独立出去
+            $NewDirectly = UserModel::UserCount($NCondition);//获取最新直属好友人数
+            $Whole       = UserModel::UserOperateCount($UnderCondition,$Uid);//获取全部好友人数
+            $NewWhole    = UserModel::UserOperateCount($NewCondition,$Uid,2);//获取最新全部好友人数
+
+            $UseFriendsr["customer"]    = $Customer;
+            $UseFriendsr["newcustomer"] = $NewCustomer;
+            $UseFriendsr["directly"]    = $Directly;
+            $UseFriendsr["newdirectly"] = $NewDirectly;
+            $UseFriendsr["whole"]       = $Whole;
+            $UseFriendsr["newwhole"]    = $NewWhole;
 
             $this->returnApiData("获取成功", 200,$UseFriendsr);
         }catch (Exception $e){
@@ -505,6 +521,7 @@ class UserController extends ApiBaseController{
      * author@yihong
      */
     public function UserFriendsList(){
+
         try{
             $Token = input("post.token","","htmlspecialchars,strip_tags");
             $Status = intval(input("post.type",1));//状态 1全部好友，2 我的客户 ，3直属好友
@@ -512,17 +529,41 @@ class UserController extends ApiBaseController{
             $Psize  = intval(input("post.psize",10));//分页条数默认10条
             $Punfu = new PubfunController();
             $Punfu->UserLoginStatus($Token,$this->headerData);//用户判断
-            //$Punfu->UserLevelPower($Token);//用户权限验证
+            $Punfu->UserLevelPower($Token);//用户权限验证
+
             //获取我的好友
+            $Time   = strtotime(date("Y-m-d",time()));
             $Fecode = UserModel::UserDataFind(array("u.token"=>array("eq",$Token)),"u.user_id,u.recode,u.floor,u.level");
             $Uid    = $Fecode["user_id"];
             $Floor  = $Fecode["floor"] + 2;
+
+            $C_Condition[] = array("exp","sid = {$Uid} and reid = 0 and reg_time > {$Time}");
+            $Condition["reid"] = array("eq",$Uid);
+            $NCondition[]      = array("exp"," reid = {$Uid} and reg_time > {$Time}");
+
+            if (in_array($Fecode["level"],array(2,3))){//超级达人/营销达人 全部好友 查推荐的下两级用户,独立出去的用户团队不查
+                $UnderCondition[] = array("exp"," level <= 3 and floor <= {$Floor}");
+                $NewCondition[]   = array("exp"," level <= 3 and floor <= {$Floor} and reg_time > {$Time}");
+            }elseif($Fecode["level"] == 4){//运营达人看自己的下级,独立出去的用户团队不查
+                $UnderCondition["level"] = array("elt",3);
+                $NewCondition[]          = array("exp"," level <= 3 and reg_time > {$Time}");
+            }else{//玩主查看全部的推荐用户,玩主团队不查
+                $UnderCondition["level"] = array("elt",4);
+                $NewCondition[]          = array("exp"," level <= 4 and reg_time > {$Time}");
+            }
+
             $filed = "user_id,nickname,username,avatar,userthumb,level";
             if($Status == UserModel::ALL_USER_FRIEND){ //全部好友
-                $Where[] = array("exp","find_in_set($Uid,path)");
-                $userid = UserModel::UserAllMyFriends($Where,$Uid,$Fecode["level"],$Floor,3);
-                $count= count($userid);
-                $List = UserModel::UserOperateListByUserIds($userid,$filed,$Page,$Psize);//获取全部好友
+                if (in_array($Fecode["level"],array(2,3))){//超级达人/营销达人 全部好友 查推荐的下两级用户,独立出去的用户团队不查
+                    $Where[] = array("exp"," level <= 3 and floor <= {$Floor}");
+                }elseif($Fecode["level"] == 4){//运营达人看自己的下级,独立出去的用户团队不查
+                    $Where["level"] = array("elt",3);
+                }else{//玩主查看全部的推荐用户,玩主团队不查
+                    $Where["level"] = array("elt",4);
+                }
+                $count  = UserModel::UserOperateCount($Where,$Uid);//获取全部好友人数
+                $reids  = [];
+                $List = UserModel::UserOperateList($Where,$Uid,$filed,$reids,$Page,$Psize);//获取全部好友
             }elseif ($Status == UserModel::USER_CUSTOMER){ //我的客户
                 $Where = array("sid"=>array("eq",$Uid),"reid"=>array("eq",0));
                 $count    = UserModel::UserCount($Where);//获取客户人数
@@ -534,22 +575,6 @@ class UserController extends ApiBaseController{
             }
 
             foreach ($List as $Key => $Val){
-                if($Status != UserModel::ALL_USER_FRIEND && $Status!=USER_CUSTOMER){
-                    //获取好友直属数量
-                    if($Val && $Val['user_id']){
-                        $map["reid"] = array("eq",$Val['user_id']);
-                        $count    = UserModel::UserCount($map);//获取直属好友人数并且没独立出去
-                        $List[$Key]['order_count'] = $count;
-                    }
-                }else{
-                    //获取好友下单数量
-                    if($Val && $Val['user_id']){
-                        $List[$Key]['order_count'] = OrderModel::GetOrderCountByUserId($Val['user_id']);
-                    }
-                }
-
-                $List[$Key]['level'] = UserModel::getLeveName($Val['level']); //好友级别
-
                 if ($Val["username"]){
                     $List[$Key]["nickname"] = $Val["username"];
                     unset($List[$Key]["username"]);
@@ -808,7 +833,7 @@ class UserController extends ApiBaseController{
                 }
 
             }elseif ($Val["order_isexpress"] == 2 && $Val["order_reservation"] == 1){
-                $OrderFahuo = OrderModel::OrderReservationFahuoFind(array("rf.order_id"=>array("eq",$Val["order_id"])));
+                $OrderFahuo = OrderModel::OrderReservationFahuoFind(array("order_id"=>array("eq",$Val["order_id"])));
 
                 if ($OrderFahuo){
                     if ($Val["order_status"] == 3){
@@ -950,7 +975,7 @@ class UserController extends ApiBaseController{
             }
 
         } elseif ($Data["isexpress"] == 2 && $Data["reservation"] == 1){
-            $OrderFahuo = OrderModel::OrderReservationFahuoFind(array("rf.order_id"=>array("eq",$Data["order_id"])));
+            $OrderFahuo = OrderModel::OrderReservationFahuoFind(array("order_id"=>array("eq",$Data["order_id"])));
             if ($OrderFahuo){
                 if ($Data["status"] == 3){
                     $Data["status"] = 4;

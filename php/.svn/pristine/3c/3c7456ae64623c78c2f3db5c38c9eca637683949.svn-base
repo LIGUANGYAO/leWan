@@ -79,8 +79,6 @@ class NotifyController extends BaseController
                 $nm = new NotifyModel();
                 $pm = new ProcedureModel();
                 Db::startTrans();
-                //锁表
-                Db::name('order')->where(['order_no'=>$this->notifyparams['out_trade_no']])->lock(true)->find();
                 $res = $nm->notifyMall($order, $this->notifyparams, $this->paymethod, $this->CFG);
                 $res2 = $pm->execute('lewan_order_income', $order['order_id'], '@error');
                 $res3 = $pm->execute('lewan_user_performance', $order['order_id'], '@error');

@@ -41,7 +41,7 @@ class NotifyModel
             $res6 = $arm->add($order['user_id'], $order['order_id'], Currency::Cash, CurrencyAction::CashWechatResume, -$order['order_payfee'], $arm->getRecordAttach($order['order_id'], $order['order_fullname'], $order['order_no']), '微信消费');
             $uporder['order_payment'] = 2;
         }
-        $res1 = Db::name('order')->where(['order_id'=>$order['order_id'], 'order_status'=>1])->update($uporder);
+        $res1 = Db::name('order')->where(['order_id'=>$order['order_id']])->update($uporder);
 
         //2.新人免单全返到佣金
         $res2 = true;
@@ -104,8 +104,8 @@ class NotifyModel
             $codearray = explode(',', $consume_code);
             $yyurl='';
             foreach($codearray as $k=>$v){
-                $nativeurl= $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/wechat_html/page/smsAppointment/smsVerify.html?code='.$v;
-                $yyurl .= createShortUrl($nativeurl)."\r\n；";
+                $nativeurl= 'http://'.$cfg['domain'].'/wechat_html/page/reservationCenter/reservationCenter.html?code='.$v;
+                $yyurl .= createShortUrl($nativeurl).';';
             }
             $content = str_replace('{yyurl}', $yyurl, $content);
             $content = str_replace('{yxq1}', date('Y-m-d', $order['product_startusetime']), $content);
