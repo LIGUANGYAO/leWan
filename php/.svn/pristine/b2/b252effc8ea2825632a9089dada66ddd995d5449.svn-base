@@ -1,0 +1,21 @@
+<form class="layui-form " id="myform" method="post">
+    <input type='hidden'  name="product_id" value="{$product_id}">
+    <br>
+    <br>
+    <div class="layui-form-item">
+        <label class="layui-form-label">推送城市</label>
+        <div class="layui-input-inline" style="width:80%;">
+            <volist name="citylist" id="val">
+                <input type="checkbox" name="city[]" value="{$val.id}" lay-filter="city" lay-skin="primary" title="{$val.shortname}">
+            </volist>
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block layui-input-block">
+            <button type="submit" class="layui-btn ">确定推送</button>
+        </div>
+    </div>
+</form>

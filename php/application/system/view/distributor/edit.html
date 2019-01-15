@@ -1,0 +1,42 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+	<form class="layui-form " action="{:url('system/distributor/edit')}" method="post" enctype="multipart/form-data">
+		<div class="layui-form-item">
+			<label class="layui-form-label">登录账号</label>
+			<div class="layui-input-inline">
+				<input type="text" name="loginname" value="{$obj.loginname}" autocomplete="off" lay-verify="require" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">登录密码</label>
+			<div class="layui-input-inline">
+				<input type="password" name="password" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">分销商名称</label>
+			<div class="layui-input-inline">
+				<input type="text" name="merchant_name" value="{$obj.merchant_name}" autocomplete="off" lay-verify="require" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">角色</label>
+			<div class="layui-input-inline">
+				<select name="role_id" lay-verify="require">
+					<volist name="rolelist" id="val">
+						<option value="{$val.id}"  <if condition="$obj.role_id eq $val['role_id']">selected</if> >{$val.role_name}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+			</div>
+		</div>
+		<input type="hidden" value="{$obj.merchant_id}" name="id">
+	</form>
+
+</div>
+<script>
+</script>

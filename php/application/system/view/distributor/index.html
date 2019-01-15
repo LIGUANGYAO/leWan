@@ -1,0 +1,67 @@
+<div class="page">
+
+    
+    <div class="r">
+        <notempty name="addbtn">
+        <if condition="$addbtn.type eq '1'">
+        <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        <else/>
+        <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+        </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th nowrap="nowrap" width="20"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+            <th nowrap="nowrap">登录账号</th>
+            <th nowrap="nowrap">商家名称</th>
+            <th nowrap="nowrap">角色</th>
+            <th nowrap="nowrap">上次登录时间</th>
+            <th nowrap="nowrap">添加时间</th>
+            <th nowrap="nowrap" width="100">操作</th>
+          </tr> 
+        </thead>
+        <tbody>
+        
+        <volist name="data" id="val">
+          <tr>
+            <td nowrap="nowrap"><input type="checkbox" name="id[]" value="{$val.merchant_id}" lay-skin="primary" lay-filter="idchoose" <if condition="$val.id eq 100">disabled="disabled"</if>></td>
+            <td nowrap="nowrap">{$val.loginname}</td>
+            <td nowrap="nowrap">{$val.merchant_name}</td>
+            <td nowrap="nowrap"><if condition="$val.id eq '100'">超级用户<else/>{$val.role_name}</if></td>
+            <td nowrap="nowrap">{$val.last_login_time|date2='Y-m-d H:i:s',###}</td>
+            <td nowrap="nowrap">{$val.addtime|date2='Y-m-d H:i:s',###}</td>
+            <td nowrap="nowrap">
+                <a href="javascript:openWindow('修改', '{:url('system/distributor/edit', array('id'=>$val['merchant_id']))}', '600px', '550px')" class="editIcon" title="修改"><i class="fa fa-edit"></i></a>
+                &nbsp; 
+                <if condition="$val.id neq 100">
+                <a href="javascript:sure('确定删除这条数据？', '{:url('system/distributor/delete', array('id'=>$val['merchant_id']))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+                </if>
+            </td>
+          </tr>
+          </volist>
+          
+        </tbody>
+      </table>
+      <div class="tabletool">
+         <!-- 工具按钮 -->
+         <div class="l">
+            <a href="" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+         </div>
+         
+         <!-- 分页工具 -->
+         <div id="limitpage" class="r"></div>
+         <div class="clear"></div>
+      </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+</script>

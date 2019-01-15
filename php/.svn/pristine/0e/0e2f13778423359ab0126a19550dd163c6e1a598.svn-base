@@ -1,0 +1,441 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2018/10/29
+ * Time: 16:12
+ */
+
+namespace app\api\model;
+use app\common\model\AccountRecordModel;
+use app\common\model\Currency;
+use app\common\model\CurrencyAction;
+use think\Db;
+
+/**
+ * 佣金计算
+ * Class CommissionModel
+ * @package app\api\model
+ */
+class CommissionModel
+{
+
+
+    public function test(){
+        $userId = intval($_POST['userId']);
+        $end = $userId+20;
+        for($i = $userId; $i < $end; $i++){
+            $user = Db::name('user')->find($i);
+            if(!$user){
+                continue;
+            }
+            $order['order_id'] = $i;
+            $order['user_id'] = $user['user_id'];
+            $order['order_fullname'] = 'name'.$i;
+            $order['order_mobile'] = 'mobile'.$i;
+            $order['product_name'] = 'product'.$i;
+            $order['commission'] = 100 + $i;
+            $order['path'] = $user['path'];
+            $order['reid'] = $user['reid'];
+            $order['sid'] = $user['sid'];
+            $order['level'] = $user['level'];
+            $pathUser = self::getParentUserList($order);
+            $reward = self::getReward($order['commission']);
+            $rewardUserData = self::getRewardUser($pathUser, $order['level'], $reward);
+            self::execReward($rewardUserData, $order);
+        }
+    }
+
+
+    /**
+     * 佣金主函数
+     * @param $orderId
+     */
+    public function build($orderId, $consume_code=''){
+        //1.验证订单数据
+        $where['o.order_id'] = $orderId;
+        $where['o.order_status'] = 2;
+        $where['o.order_refundstatus'] = 0;
+        $where['o.order_exchangestatus'] = 0;
+        $where['o.order_del'] = 1;
+        $order = Db::name('order o')
+                ->field('o.order_id, o.order_no, o.user_id, o.order_status,o.order_payfee,o.order_fullname,o.order_mobile,o.order_no,p.product_name,p.product_property,p.num,p.commission,p.product_returnall,o.order_reservation as product_reservation,p.op_id,u.path, u.reid, u.sid, u.level')
+                ->join('jay_order_product p', 'p.order_id = o.order_id', 'left')
+                ->join('jay_user u', 'u.user_id = o.user_id', 'left')
+                ->where($where)
+                ->find();
+        if(!$order){
+            file_put_contents('./runtime/commisstion_error.log', "\n订单不存在id=$orderId", FILE_APPEND);
+            return false;
+        }
+        if($order['product_returnall'] == 1){
+            //新人免单，不分佣金
+            return true;
+        }
+        $pathUser = self::getParentUserList($order);
+        $rewardUserData = self::getRewardUser($pathUser, $order['level'], $order['commission']);
+        $res1 = self::execReward($rewardUserData, $order);
+        if($res1){
+            $accessToken = Db::name('access_token')->find(1);
+            $this->tplReward($rewardUserData, $order, $accessToken['access_token']);
+            $this->tplself($order, $consume_code, $accessToken['access_token']);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * 上线佣金推送
+     * @param $rewardUserData
+     * @param $order
+     */
+    private function tplReward($rewardUserData, $order, $accessToken){
+        $otm = new OpenTmModel();
+        foreach ($rewardUserData as $k=>$v){
+            if($v['reward'] < 0.01){
+                continue;
+            }
+            $data['title'] = '您的店铺有客户成功下单';
+            $data['keyword1'] = $order['product_name'];
+            $data['keyword2'] = $order['order_no'];
+            if($v['action'] <= 602){
+                $mobile = $order['order_mobile'];
+            }else{
+                $mobile = substr($order['order_mobile'],0,3).'****'.substr($order['order_mobile'],7,4);
+            }
+            $data['keyword3'] = $v['reward']."元\r\n客户姓名：".$order['order_fullname']."\r\n客户电话：".$mobile."\r\n商品数量：".$order['num']."份";
+            $data['remark'] = '店铺佣金实际到账以返佣记录为准';
+            //查询openid
+            $openid = Db::name('user_connect')->where(['user_id'=>$v['user_id'], 'platform'=>'wechat'])->value('openid');
+            $otm->sendTplmsg5($openid, $data, $accessToken);
+        }
+    }
+
+    /**
+     * 支付成功通知
+     * @param $rewardUserData
+     * @param $order
+     */
+    private function tplself($order, $consume_code, $accessToken){
+        $userconect = Db::name('user_connect')->where(['user_id'=>$order['user_id'], 'platform'=>'wechat'])->find();
+        $otm = new OpenTmModel();
+        $data['title'] = '您的订单已支付成功';
+        $data['keyword1'] = $order['product_name'];
+        $data['keyword2'] = $order['order_no'];
+        if($consume_code){
+            $data['keyword2'] = $order['order_no']."\r\n电子码：".$consume_code;
+        }
+        $data['keyword3'] = $order['order_payfee'];
+        $data['keyword4'] = date('Y-m-d H:i:s');
+        $data['remark'] = '欢迎再次购买';
+        $otm->sendTplmsg3($userconect['openid'], $data, $accessToken);
+    }
+
+    /**
+     * 发放佣金
+     * @param $rewardUserData
+     */
+    private function execReward($rewardUserData, $order){
+        $arm = new AccountRecordModel();
+        $opdata = [];
+        foreach ($rewardUserData as $k=>$reward){
+            if($reward['reward'] >= 0.01){
+                $res = $arm->add($reward['user_id'], $order['order_id'], Currency::Commission, $reward['action'], $reward['reward'], $arm->getRecordAttach($reward['user_id'], $order['order_fullname'], $order['order_no']), $reward['rewardlabel'], 1);
+            }
+            switch ($reward['action']){
+                case CurrencyAction::CommissionFirst:
+                    $opdata['commis_first'] = $reward['reward'];
+                    $opdata['userid_first'] = $reward['user_id'];
+                    break;
+                case CurrencyAction::CommissionSecond:
+                    $opdata['commis_second'] = $reward['reward'];
+                    $opdata['userid_second'] = $reward['user_id'];
+                    break;
+                case CurrencyAction::CommissionOperations:
+                    $opdata['commis_operations'] = $reward['reward'];
+                    $opdata['userid_operations'] = $reward['user_id'];
+                    break;
+                case CurrencyAction::CommissionOperationsChilds:
+                    $opdata['commis_operations_child'] = $reward['reward'];
+                    $opdata['userid_operations_child'] = $reward['user_id'];
+                    break;
+                case CurrencyAction::CommissionPlayerhostChild:
+                    $opdata['commis_playerhost_child'] = $reward['reward'];
+                    $opdata['userid_playerhost_child'] = $reward['user_id'];
+                case CurrencyAction::CommissionPlayerhostZhishu:
+                    $opdata['commis_playerhost_zhishu'] = $reward['reward'];
+                    $opdata['userid_playerhost_zhishu'] = $reward['user_id'];
+            }
+        }
+        //2.更新订单分佣记录
+        if($opdata){
+            $res = Db::name('order_product')->where(['op_id'=>$order['op_id']])->update($opdata);
+            if($res !== false){
+                return true;
+            }
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+
+    private function getRewardUser($pathUser, $buyerLevel=1, $commission){
+        $rewardUser = [];
+        $hasYunying = false; //运营佣金标志
+        $hasYunyjiang = false; //运营奖金标志
+        $hashoster = false; //玩主奖金标志
+        $yydruser_id = 0;  //拿运营佣金的会员id
+        $hosteruser_id = 0; //玩主id
+        $hoser = [];
+        $parentlen = count($pathUser);
+        /**
+         * 1=A玩主->B玩主->C玩主->D玩主团队发生购买；D有可能30%运营佣金；C拿D运营佣金的8%；玩主直接等级不是玩主跳过
+         * 2=A玩主->B玩主->C玩主->D运营达人->E运营达人团队发生购买，E拿运营佣金；D拿E的佣金8%（直属运营奖）；C拿E的佣金4%（玩主奖）；B拿C玩主奖金的30%（直属玩主奖）;
+         * 3=A玩主->B玩主->C玩主->D运营达人团队发生购买，D拿运营佣金30%；C拿D佣金的8%（直属运营奖）；C拿D佣金的4%（玩主奖）；B拿C的玩主奖30%（直属玩主奖）
+         */
+        $hosttype = 0;
+        $hosteryyyj = false;  //如果是玩主拿运营佣金
+
+        if($parentlen == 0){
+            return $rewardUser;
+        }
+        //1.********一级佣金第一个人拿********
+        $vo = $pathUser[0];
+        $vo['action'] = CurrencyAction::CommissionFirst;
+        $vo['reward'] = 0;
+        $vo['user_id'] = $pathUser[0]['user_id'];
+        $firstuser_id = $pathUser[0]['user_id'];
+        $rewardUser[] = $vo;
+
+        //2.********上级佣金********
+        //上线只有1个人，并且购买人是普通会员或者分享，运营，玩主，上级佣金第一个人拿
+        if($parentlen == 1){
+            if($buyerLevel != 2){
+                $vo = $pathUser[0];
+                $vo['action'] = CurrencyAction::CommissionSecond;
+                $vo['reward'] = 0;
+                $vo['user_id'] = $pathUser[0]['user_id'];
+                $rewardUser[] = $vo;
+            }
+        }else{
+            if($buyerLevel == 1){
+                //2.1购买者是普通会员，
+                //一级佣金是超级会员
+                if($pathUser[0]['level']==2){
+                    if($pathUser[1]['level']>2){
+                        //第二个人等级大于超级会员 第二个人拿上级佣金
+                        $vo = $pathUser[1];
+                        $vo['action'] = CurrencyAction::CommissionSecond;
+                        $vo['reward'] = 0;
+                        $vo['user_id'] = $pathUser[1]['user_id'];
+                        $rewardUser[] = $vo;
+                    }else{
+                        //第2个人 也是 超级会员 第1个人拿上级佣金
+                        $vo = $pathUser[0];
+                        $vo['action'] = CurrencyAction::CommissionSecond;
+                        $vo['reward'] = 0;
+                        $vo['user_id'] = $pathUser[0]['user_id'];
+                        $rewardUser[] = $vo;
+                    }
+                }else{
+                    //如果第一个人等级是分享达人、运营达人、玩主，则他们拿上级佣金
+                    $vo = $pathUser[0];
+                    $vo['action'] = CurrencyAction::CommissionSecond;
+                    $vo['reward'] = 0;
+                    $vo['user_id'] = $pathUser[0]['user_id'];
+                    $rewardUser[] = $vo;
+                }
+            }elseif($pathUser[0]['level']==2){
+                //2.2一级是会员，上级佣金=第二个人拿
+                $vo = $pathUser[1];
+                $vo['action'] = CurrencyAction::CommissionSecond;
+                $vo['reward'] = 0;
+                $vo['user_id'] = $pathUser[1]['user_id'];
+                $rewardUser[] = $vo;
+            }elseif($pathUser[0]['level']>2){
+                //2.3一级是分销达 及 级别以上人，上级佣金=一级的人拿
+                $vo = $pathUser[0];
+                $vo['action'] = CurrencyAction::CommissionSecond;
+                $vo['reward'] = 0;
+                $vo['user_id'] = $pathUser[0]['user_id'];
+                $rewardUser[] = $vo;
+            }
+        }
+        foreach ($pathUser as $i=>$user){
+            //3.********运营佣金********
+            if(!$hasYunying && ($user['level'] == 4 || $user['level'] == 5)){
+                $hasYunying = true;
+                $yydruser_id = $user['user_id'];
+                if($user['level'] == 5){//如果玩主拿了运营佣金，则上级玩主拿佣金30%;
+                    $hosteryyyj = true;
+                    $hosttype = 1;
+                }
+                $vo = $user;
+                $vo['action'] = CurrencyAction::CommissionOperations;
+                $vo['reward'] = 0;
+                $vo['user_id'] = $user['user_id'];
+                $rewardUser[] = $vo;
+                continue;
+            }
+            //4.1********运营奖金********
+            if($hosteryyyj){//如果玩主拿运营佣金，则玩主上面的玩主拿运营奖金
+                if($user['level'] == 5){
+                    $vo = $user;
+                    $vo['action'] = CurrencyAction::CommissionOperationsChilds;
+                    $vo['reward'] = 0;
+                    $vo['user_id'] = $user['user_id'];
+                    $rewardUser[] = $vo;
+                    $hasYunyjiang = true;
+                    $hashoster = true;
+                    break;
+                }
+            }
+            //4.2********运营奖金********
+            if($hasYunying && !$hasYunyjiang && !$hosteryyyj && $yydruser_id > 0 && $firstuser_id != $user['user_id'] && $user['level'] >= 4){
+                $vo = $user;
+                $vo['action'] = CurrencyAction::CommissionOperationsChilds;
+                $vo['reward'] = 0;
+                $vo['user_id'] = $user['user_id'];
+                $rewardUser[] = $vo;
+                $hasYunyjiang = true;
+                if($user['level'] == 5){ //如果是玩主拿的运营奖金,则同时还拿玩主奖金4%
+                    $hashoster = true;
+                    $hosttype = 3;
+                    $hoser = $user;
+                    $vo = $user;
+                    $vo['action'] = CurrencyAction::CommissionPlayerhostChild;
+                    $vo['reward'] = 0;
+                    $vo['user_id'] = $user['user_id'];
+                    $hosteruser_id = $user['user_id'];
+                    $rewardUser[] = $vo;
+                }
+            }
+            //5.********玩主奖金********
+            if(!$hashoster && $hasYunying && !$hosteryyyj && $user['level'] == 5 && $firstuser_id != $user['user_id']){
+                $hashoster = true;
+                $hosttype = 2;
+                $hoser = $user;
+                $vo = $user;
+                $vo['action'] = CurrencyAction::CommissionPlayerhostChild;
+                $vo['reward'] = 0;
+                $vo['user_id'] = $user['user_id'];
+                $hosteruser_id = $user['user_id'];
+                $rewardUser[] = $vo;
+            }
+            //6.直属玩主奖
+            if($hosttype>1 && $hosteruser_id != $user['user_id']){
+                if($user['level'] == 5){
+                    $hashoster = true;
+                    $hoser = $user;
+                    $vo = $user;
+                    $vo['action'] = CurrencyAction::CommissionPlayerhostZhishu;
+                    $vo['reward'] = 0;
+                    $vo['user_id'] = $user['user_id'];
+                    $hosteruser_id = $user['user_id'];
+                    $rewardUser[] = $vo;
+                    break;
+                }
+            }
+        }
+        $config = Db::name('parameter')->column('value', 'key');
+        $yyyj = 0;
+        foreach ($rewardUser as $k=>$v){
+            $rewardUser[$k]['rewardlabel'] = CurrencyAction::getLabel($v['action']);
+            if($v['action'] == CurrencyAction::CommissionFirst){
+                $rewardUser[$k]['reward'] = floor($commission * $config['first_com_per'])/100;
+            }elseif($v['action'] == CurrencyAction::CommissionSecond){
+                $rewardUser[$k]['reward'] = floor($commission * $config['second_com_per'])/100;
+            }elseif($v['action'] == CurrencyAction::CommissionOperations){
+                $rewardUser[$k]['reward'] = floor($commission * $config['operations_com_per'])/100;
+            }
+            if($v['user_id'] == $yydruser_id){
+                $yyyj+= $rewardUser[$k]['reward'];
+            }
+        }
+        $wzjj = 0;//玩主奖金金额
+        foreach ($rewardUser as $k=>$v){
+            if($v['action'] == CurrencyAction::CommissionOperationsChilds){
+                $rewardUser[$k]['reward'] = floor($yyyj * $config['operations_child_per'])/ 100;
+            }elseif($v['action'] == CurrencyAction::CommissionPlayerhostChild){
+                $rewardUser[$k]['reward'] = floor($yyyj * $config['playerhost_child_per'])/ 100;
+                $wzjj = $rewardUser[$k]['reward'];
+            }
+        }
+        //直属玩主奖
+        foreach ($rewardUser as $k=>$v){
+            if($v['action'] == CurrencyAction::CommissionPlayerhostZhishu){
+                $rewardUser[$k]['reward'] = floor($wzjj * $config['playerhost_child_zhishu_per'])/ 100;
+            }
+        }
+        return $rewardUser;
+    }
+
+
+    /**
+     * @param $commission  商品佣金
+     * @param $userlevel   用户等级数
+     * @param $params      表参数
+     * @return int
+     */
+    public static function getRewardByUser($commission, $userlevel, $params){
+        $return = [];
+        if($userlevel == 2){
+            //超级会员显示自购和分享
+            $return['zigou'] = sprintf('%.2f', floor($commission * $params['first_com_per'])/100);
+            $return['fenxiang'] = sprintf('%.2f', $return['zigou']+floor($commission * $params['second_com_per'])/100);
+        }elseif($userlevel > 2){
+            //超级会员以上显示自购
+            if($userlevel == 3) {
+                $return['zigou'] = sprintf('%.2f', floor($commission * $params['first_com_per']) / 100 + floor($commission * $params['second_com_per']) / 100);
+            }else{
+                $return['zigou'] = sprintf('%.2f', floor($commission * $params['first_com_per']) / 100 + floor($commission * $params['second_com_per']) / 100 + floor($commission * $params['operations_com_per']) / 100);
+            }
+            $return['fenxiang'] = '0';
+        }else{
+            $return['zigou'] = '0';
+            $return['fenxiang'] = '0';
+        }
+        return $return;
+    }
+
+
+    /**
+     * 获取上级用户列表
+     * @param $order
+     */
+    private function getParentUserList($order){
+        $data = [];
+        //普通会员主动购买，不分佣金
+        if($order['level'] == 1 && $order['sid'] == 0){
+            return $data;
+        }
+        $where = ' u.reg_type=1 and u.purchasetype !=1 ';
+        //普通会员购买,点击分享链接后随时购买
+        if($order['level'] == 1 && $order['sid'] > 0){
+            $suser = Db::name('user')->where(['user_id'=>$order['sid']])->find();
+            if(!$suser){
+                return $data;
+            }
+            if($suser['level'] == 1){
+                //一级也是普通会员，不发佣金
+                return $data;
+            }else{
+                $repath = $suser['path'].$suser['user_id'].',';
+                $where = "FIND_IN_SET(u.user_id, '".$repath."')";
+            }
+        }elseif($order['level'] > 1){
+            //超级达人、营销达人、运营，玩主购买
+            $where = "FIND_IN_SET(u.user_id, '".$order['path'].$order['user_id'].",')";
+        }else{
+            return $data;
+        }
+        $data = Db::name('user u')
+                ->field('u.user_id, u.recode, u.mobile, u.`path`, u.`reid`, u.`sid`, u.`level`, u.`floor`, u.`status`')
+                ->where($where)->order('u.floor desc')->select();
+        return $data;
+    }
+
+}
