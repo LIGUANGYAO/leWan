@@ -1,0 +1,107 @@
+<form class="layui-form"  enctype="multipart/form-data"  action="{:url('system/distributor/createorder')}" id="myform" method="post">
+    <br>
+    <br>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width:100px;">分销(商/用户)</label>
+        <div class="layui-input-inline" style="width: 80%;">
+            <input type="text" name="user_name" value="" onkeyup="loadOrdinaryUser(this)" lay-verify="require" tips="用户不存在，请重新选择" autocomplete="off" class="layui-input" placeholder="请输入分销用户名/电话">
+            <input type="hidden" name="user_id" value="">
+            <div class="chooselayer chooselayer1" style="height: 150px;background: #FFFFff;overflow: auto;">
+                <div class="mm"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width:100px;">分销商品</label>
+        <div class="layui-input-inline" style="width: 80%;">
+            <input type="text" name="product_name" value="" onkeyup="loadProduct(this)"  lay-verify="require" tips="商品不存在，请重新选择" autocomplete="off" class="layui-input" placeholder="请输入商品名/商品ID">
+            <input type="hidden" name="product_id" value="">
+            <div class="chooselayer chooselayer2" style="height: 150px;background: #FFFFff;overflow: auto;">
+                <div class="mm"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width:100px;">导入Excel</label>
+        <div class="layui-input-inline" style="width: 80%;">
+            <input type="file" name="excel" style="border: none;background: none" placeholder="请选择文件" class="layui-input">
+            <span  style="color: red;">*上传必须按照 <a href="/static/分销模板.xlsx" style="color: #0AA6E0" title="点击下载分销模板">《分销模板》</a>模型创建数据，否则可能导致导入失败！</span>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block layui-input-block">
+            <button type="submit" class="layui-btn ">确定发码</button>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    $(function () {
+        $('.chooselayer1 .mm').live('click', function () {
+            $("input[name='user_id']").val($(this).attr('val'));
+            $("input[name='user_name']").val($(this).text());
+            $('.chooselayer1').hide();
+        });
+
+        $('.chooselayer2 .mm').live('click', function () {
+            $("input[name='product_id']").val($(this).attr('val'));
+            $("input[name='product_name']").val($(this).text());
+            $('.chooselayer2').hide();
+        });
+    })
+
+    function loadOrdinaryUser(obj) {
+        var keys = obj.value;
+        $.ajax({
+            type: "POST",
+            url: "/system/ajax/loadOrdinaryUser",
+            data:"key="+keys,
+            dataType:'json',
+            success: function(res){
+                list = res.data;
+                $html = '';
+                $("input[name='user_id']").val('');
+                if(list.length > 0){
+                    $('.chooselayer1').show();
+                }else{
+                    layer.msg('没有查询到用户');
+                }
+                for(var i = 0; i< list.length; i++){
+                    txt = list[i].nickname +'['+list[i].mobile+']';
+                    $html += '<div class="mm" val="'+ list[i].user_id +'" >'+ txt +'</div>';
+                }
+                $('.chooselayer1').html($html);
+            }
+        });
+    }
+    function loadProduct(obj) {
+        var keys = obj.value;
+        $.ajax({
+            type: "POST",
+            url: "/system/ajax/loadProduct",
+            data:"key="+keys,
+            dataType:'json',
+            success: function(res){
+                list = res.data;
+                $html = '';
+                $("input[name='product_id']").val('');
+                if(list.length > 0){
+                    $('.chooselayer2').show();
+                }else{
+                    layer.msg('没有查询到商品');
+                }
+                for(var i = 0; i< list.length; i++){
+                    txt = '[商品ID'+list[i].product_id+']&nbsp;&nbsp;&nbsp;&nbsp;'+list[i].product_name;
+                    $html += '<div class="mm" val="'+ list[i].product_id +'" >'+ txt +'</div>';
+                }
+                $('.chooselayer2').html($html);
+            }
+        });
+    }
+
+
+</script>

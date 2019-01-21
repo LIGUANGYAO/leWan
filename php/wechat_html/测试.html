@@ -4,28 +4,31 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	</head>
-
+	<style type="text/css">
+		#image{
+			width: 100%;
+			font-size: 40px;
+		}
+	</style>
 	<body>
-		<p>演示带有不同参数的 fadeOut() 方法。</p>
-		<button class="dl">点击这里,使红色矩形1淡出(fadeOut)</button>
-		<br><br>
-		<div id="div1" style="width:80px;height:80px;background-color:red;"></div>
-		<br><br>
-		<button class="dll">点击这里,使红色矩形2隐藏(hide)</button>
-		<br><br>
-		<div id="div2" style="width:80px;height:80px;background-color:red;"></div>
+		<input type="file" name="opposite" id="image" value="选择上传的图片" />
 	</body>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$(".dl").click(function() {
-				$("#div1").fadeOut(3000);
-			});
-		});
-		$(document).ready(function() {
-			$(".dll").click(function() {
-				$("#div2").hide(3000);
-			});
-		});
+		$('#image').on('change',function(){
+			var formData = new FormData();
+			formData.append('positive', $('input[name=opposite]')[0].files[0]);
+        	$.ajax({
+        		url: "http://weixin.lewan6.ren/api/Upload/upStreamUserAuthenticatePicToOss",
+        		method: 'POST',
+				data: formData,
+				contentType: false, // 注意这里应设为false
+				processData: false,
+				cache: false,
+				success: function(data) {
+					console.log(data)
+				}
+        	});
+		})
 	</script>
 </html>

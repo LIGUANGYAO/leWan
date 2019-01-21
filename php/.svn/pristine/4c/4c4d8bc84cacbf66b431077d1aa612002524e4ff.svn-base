@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+    <div class="layui-field-title"></div>
+
+    <div class="l" >
+        <form class="layui-form" action="{:url('productfx/ProductOrder')}">
+            <input type="text" name="id" value="{$id}" hidden="hidden">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">日期时间:</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="starttime" value="{$query['trialstarttime']|default=''}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: false, format: 'YYYY-MM-DD'})">
+                </div>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="endtime" value="{$query['trialendtime']|default=''}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: false, format: 'YYYY-MM-DD'})">
+                </div>
+                <span class="input-group-btn">
+                      <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+                </span>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="clear"></div>
+    <div class="layui-field-title"></div>
+
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+
+    <div class="layui-form">
+        <if condition="!empty($list)">
+            <table class="layui-table" lay-skin="line" >
+                <thead>
+                <tr>
+                    <th >日期</th>
+                    <th width="300">商品名</th>
+                    <th >产品负责人</th>
+                    <th >营销负责人</th>
+                    <th >营业额</th>
+                    <th >销量</th>
+                    <th >顺差</th>
+                    <th >毛利</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <volist name="$list" id="val">
+                    <tr class="">
+                        <td >{$val.date}</td>
+                        <td >{$val.product_name}</td>
+                        <td>
+                            <label class="layui-badge layui-bg-blue">微信信息</label><br/>
+                            <if condition="!empty($val.avatar)">
+                                <img src="{$val.avatar}" class="avatar"><br/>
+                            </if>
+                            {$val.nickname}<br/>
+                            <label class="layui-badge ">平台信息</label><br/>
+                            <if condition="$val.userthumb">
+                                <img src="{$val.userthumb}" class="avatar"><br/>
+                            </if>
+                            {$val.username} {$val.userthumb}
+                        </td>
+                        <td>
+                            <label class="layui-badge layui-bg-blue">微信信息</label><br/>
+                            <if condition="!empty($val.maavatar)">
+                                <img src="{$val.maavatar}" class="avatar"><br/>
+                            </if>
+                            {$val.mamanickname}<br/>
+                            <label class="layui-badge ">平台信息</label><br/>
+                            <if condition="$val.mauserthumb">
+                                <img src="{$val.mauserthumb}" class="avatar"><br/>
+                            </if>
+                            {$val.mausername}
+                        </td>
+                        <td >{$val.totalfee}</td>
+                        <td >{$val.num}</td>
+                        <td >{$val.surplus}</td>
+                        <td >{$val.profit}</td>
+                    </tr>
+                </volist>
+
+                <td ></td>
+                <td >商品剩余库存:{$count.totalnum}</td>
+                <td></td>
+                <td></td>
+
+                <td >总营业额:{$count.totalfee}</td>
+                <td >总销量:{$count.num}</td>
+                <td >总顺差:{$count.surplus}</td>
+                <td >总毛利:{$count.profit}</td>
+                </tbody>
+            </table>
+            <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    暂无认证数据w(ﾟДﾟ)w
+                </div>
+            </div>
+        </if>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+</div>
+<script>
+
+</script>

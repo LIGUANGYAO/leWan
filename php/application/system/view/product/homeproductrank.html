@@ -1,0 +1,228 @@
+<style>
+    ul,
+    ol {
+        padding: 0;
+        margin: 0 0 10px 25px
+    }
+    ul ul,
+    ul ol,
+    ol ol,
+    ol ul {
+        margin-bottom: 0
+    }
+
+    li {
+        line-height: 20px
+    }
+
+    .tree {
+        min-height:20px;
+        padding:19px;
+        margin-bottom:20px;
+        -webkit-border-radius:4px;
+        -moz-border-radius:4px;
+        border-radius:4px;
+        -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05)
+    }
+    .tree li {
+        list-style-type:none;
+        margin:0;
+        padding:10px 5px 0 5px;
+        position:relative
+    }
+    .tree li::before, .tree li::after {
+        content:'';
+        left:-20px;
+        position:absolute;
+        right:auto
+    }
+    .tree li::before {
+        border-left:1px solid #999;
+        bottom:50px;
+        height:100%;
+        top:0;
+        width:1px
+    }
+    .tree li::after {
+        border-top:1px solid #999;
+        height:20px;
+        top:25px;
+        width:25px ;
+    }
+    .tree li span {
+        -moz-border-radius:5px;
+        -webkit-border-radius:5px;
+        border:1px solid #999;
+        border-radius:5px;
+        display:inline-block;
+        padding:3px 8px;
+        text-decoration:none
+    }
+    .tree li.parent_li>span {
+        cursor:pointer
+    }
+    .tree>ul>li::before, .tree>ul>li::after {
+        border:0
+    }
+    .tree li:last-child::before {
+        height:30px
+    }
+    .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+        background:#eee;
+        border:1px solid #94a0b4;
+        color:#000
+    }
+    .avatar {
+        width: 25px;
+        height: 25px;
+    }
+</style>
+<div class="page">
+    <div class="layui-tab">
+
+        <ul class="layui-tab-title">
+            <li onclick="$('.layui-tab-item').html(''); layer.load(1, { shade: [0.1,'#fff'] });window.location.href='?type=city'" <if condition="$type eq 'city'"> class="layui-this" </if>>同城</li>
+            <li onclick="$('.layui-tab-item').html('');layer.load(1, { shade: [0.1,'#fff'] });window.location.href='?type=province'" <if condition="$type eq 'province'"> class="layui-this" </if>>省</li>
+        </ul>
+        <p style="padding-left: 50px;">*排序规则：根据数字从大到小排序</p>
+        <div class="layui-tab-content">
+            <div <if condition="$type eq 'city'">class="layui-tab-item tree well layui-show"<else/>class="layui-tab-item " </if>>
+                <ul>
+                    <volist name="$list" id="val">
+                        <li class="city_li">
+                            <span data-citycode="{$val.city_code}" onselectstart="return false;"><i class="fa fa-plus-circle"></i>{$val.name}</span>
+                            <ul class="child">
+                            </ul>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+            <div <if condition="$type eq 'province'">class="layui-tab-item layui-show tree well"<else/>class="layui-tab-item" </if>>
+                <ul>
+                    <volist name="$list" id="val">
+                        <li class="province_li">
+                            <span data-provenceid="{$val.provence_code}" onselectstart="return false;"><i class="fa fa-plus-circle"></i>{$val.name}</span>
+                            <ul class="child">
+                            </ul>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $('.tree li:has(ul)').addClass('parent_li');
+        $('.tree li.parent_li > span').click(function(e) {
+            var children = $(this).parent('li.parent_li').find(' > ul > li');
+            if (children.is(":visible")) {
+                children.hide('fast');
+                $(this).find(' > i').addClass('fa-plus-circle').removeClass('fa-minus-circle');
+            } else {
+                $('li.parent_li').find(' > ul > li').hide('fast');
+                children.show('fast');
+                if('{$type}'=='city'){
+                    var citycode = $(this).data('citycode');
+                    getProductByCityCode($(this).siblings('.child'),citycode);
+                }else{
+                    var provenceid = $(this).data('provenceid');
+                    getProductByProvenceCode($(this).siblings('.child'),provenceid);
+                }
+
+                $(this).find(' > i').addClass('fa-minus-circle').removeClass('fa-plus-circle');
+            }
+            e.stopPropagation();
+        });
+    });
+
+    /**
+     *获取省数据
+     */
+    function getProductByProvenceCode(obj,provenceid) {
+        var loading = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+
+        var $html = '';
+        $.ajax({
+            type: "POST",
+            url: '/system/ajax/getProductByProvenceCode',
+            data: {'provenceid':provenceid},
+            dataType:'json',
+            success: function(res){
+                layer.close(loading);
+                var list = res.data;
+                if(list.length){
+                    for(var i = 0; i<list.length; i++){
+                        $html += '<li class="parent_li"><span onselectstart="return false;"><input type="text"  class="layui-input" style="width: 50px;display: inline-block" value="'+list[i].product_sort+'" onblur="rank(this,'+list[i].id+','+list[i].provence_code+',\'provence\')">&nbsp;&nbsp;&nbsp;&nbsp;编号:'+list[i].product_id+'&nbsp;&nbsp;&nbsp;&nbsp;<img width="35" src="'+list[i].product_pic+'" alt="">&nbsp;&nbsp;&nbsp;&nbsp;'+list[i].product_name+'</span></li>';
+                    }
+                    obj.html($html);
+                }else{
+                    layer.msg('暂时没有商品', {icon: 2,time:1500});
+                    return false;
+                }
+            }
+        });
+    }
+
+    /**
+     *获取城市数据
+     */
+    function getProductByCityCode(obj,citycode) {
+        var loading = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+
+        var $html = '';
+        $.ajax({
+            type: "POST",
+            url: '/system/ajax/getProductByCityCode',
+            data: {'citycode':citycode},
+            dataType:'json',
+            success: function(res){
+                layer.close(loading);
+                var list = res.data;
+                if(list.length){
+                    for(var i = 0; i<list.length; i++){
+                        $html += '<li class="parent_li"><span onselectstart="return false;"><input type="text"  class="layui-input" style="width: 50px;display: inline-block" value="'+list[i].product_sort+'" onblur="rank(this,'+list[i].id+','+list[i].city_code+',\'city\')">&nbsp;&nbsp;&nbsp;&nbsp;编号:'+list[i].product_id+'&nbsp;&nbsp;&nbsp;&nbsp;<img width="35" src="'+list[i].product_pic+'" alt="">&nbsp;&nbsp;&nbsp;&nbsp;'+list[i].product_name+'</span></li>';
+                    }
+                    obj.html($html);
+                }else{
+                    layer.msg('暂时没有商品', {icon: 2,time:1500});
+                    return false;
+                }
+            }
+        });
+    }
+
+    /**
+     * 排序
+     * @param that
+     * @param id
+     * @param citycode
+     * @param type
+     */
+    function rank(that,id,citycode,type) {
+        $.ajax({
+            type: "POST",
+            url: '/system/ajax/rankHomeProduct',
+            data: {'id':id,'rank':$(that).val(),'type':type},
+            dataType:'json',
+            success: function(res){
+                if(type =='city'){
+                    getProductByCityCode($(that).parents('.parent_li').find('.child'),citycode)
+                }else{
+                    getProductByProvenceCode($(that).parents('.parent_li').find('.child'),citycode)
+                }
+
+            }
+        });
+    }
+</script>
