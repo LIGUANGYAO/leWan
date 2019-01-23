@@ -1,0 +1,70 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/user/staffEdit')}" method="post" enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户</label>
+            <div class="layui-input-inline" style="width:70%; position: relative;">
+                <input type="text" name="user_name" value="{$obj.nickname}" onkeyup="loadPurchase(this)" autocomplete="off" class="layui-input" placeholder="输入会员姓名/电话">
+                <input type="text" name="user_id" value="{$obj.user_id|default=0}" style="width: 0px; height: 0px; opacity: 0">
+                <div class="chooselayer">
+                    <div class="mm"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+              <label class="layui-form-label">用户名</label>
+              <div class="layui-input-inline" style="width:70%;">
+                <input type="text" name="staff_name" lay-verify="require" value="{$obj.staff_name|default=''}" class="layui-input">
+              </div>
+        </div>
+        <div class="layui-form-item">
+             <label class="layui-form-label">联系电话</label>
+             <div class="layui-input-inline" style="width:70%;">
+                 <input type="text" name="staff_tel" lay-verify="require" value="{$obj.staff_tel|default=''}" class="layui-input">
+             </div>
+        </div>
+
+		<div class="layui-form-item">
+		    <div class="layui-input-block">
+		        <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+		    </div>
+	    </div>
+		<input type="hidden" value="{$obj.staff_id|default=''}" name="staff_id">
+    </form>
+
+</div>
+<script>
+    $(function () {
+        $('.chooselayer .mm').live('click', function () {
+            $("input[name='user_id']").val($(this).attr('val'));
+            $("input[name='user_name']").val($(this).text());
+            $('.chooselayer').hide();
+        });
+    });
+
+    function loadPurchase(t) {
+        keys = t.value;
+        $.ajax({
+            type: "POST",
+            url: "/system/ajax/loadUser",
+            data:{'key':keys},
+            dataType:'json',
+            success: function(res){
+                list = res.data;
+                html = '';
+                $("input[name='user_id']").val(0);
+                if(list.length > 0){
+                    $('.chooselayer').show();
+                }else{
+                    layer.msg('没有查询到用户');
+                }
+                for(var i = 0; i< list.length; i++){
+                    txt = list[i].nickname ;
+                    html += '<div class="mm" val="'+ list[i].user_id +'" >'+ txt +'</div>';
+                }
+                $('.chooselayer').html(html);
+            }
+        });
+    }
+
+
+</script>

@@ -23,12 +23,31 @@
 				font-size: 0.426rem;
 				color: #333333;
 				font-weight: 400;
-				overflow: hidden;
+				/*overflow: hidden;
 				text-overflow: ellipsis;
 				display: -webkit-box;
 				-webkit-line-clamp: 3;
-				-webkit-box-orient: vertical;
+				-webkit-box-orient: vertical;*/
 			}
+			.tagsBox{
+				padding: 0.2rem 0.2rem;
+				background-color: #FFFFFF;
+			}
+			.tagsBox>span {
+				display: inline-block;
+				border: 1px solid #F7AE31;
+				border-radius: 0.15rem;
+				padding: 0.026rem 0.133rem;
+				color: #F7AE31;
+				font-size: 0.293rem;
+				font-weight: 500;
+				margin-right: 0.15rem;
+			}
+			
+			.tagsBox>span:first-child {
+				margin-left: 0.2rem;
+			}
+			
 			.address{
 				background-color: #FFFFFF;
 				height: 1.4rem;
@@ -229,6 +248,9 @@
 		<div class="" id="J_el" v-cloak>
 			<div class="">
 				<div class="titleBox">{{proDetail.product_name}}</div>
+				<div class="tagsBox">
+					<span v-for="item in proDetail.product_tags">{{ item.tag_name }}</span>
+				</div>
 				<div class="address">消费地址：{{proDetail.merchant_ssq}}{{proDetail.merchant_address}}</div>
 				<div class="content">
 					<div class="detailsBox">
@@ -257,7 +279,7 @@
 									<div class="timeList" @tap="popupModel(index)" v-for="(items,index) in riliList">
 										<div class="timeDate">{{ items.day }}</div>
 										<div class="timeWeek">{{ items.week }}</div>
-										<div class="indentNum">剩{{items.lastnumber}}</div>
+										<div class="indentNum">剩{{items.lastnumber >= 0 ? items.lastnumber : 0}}</div>
 									</div>
 								</div>
 								<!--空状态时-->

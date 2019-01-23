@@ -1,0 +1,456 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/mui.picker.css" rel="stylesheet" />
+		<link href="../../plugins/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+				background-color: #F5F6FA;
+			}
+			/*页头*/
+			.titleBox{
+				background-color: #FFFFFF;
+				padding: 0.3rem 0.4rem;
+				font-size: 0.426rem;
+				color: #333333;
+				font-weight: 400;
+				/*overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;*/
+			}
+			.address{
+				background-color: #FFFFFF;
+				height: 1.4rem;
+				padding-left: 0.5rem;
+				font-size: 0.373rem;
+				color: #F77917;
+				font-weight: 400;
+				word-wrap:break-word;
+			}
+			/*日历*/
+			.timeList {
+				border: 1px solid #F2F2F2;
+				width: 25%;
+				height: 2.32rem;
+				color: #333333;
+				float: left;
+				font-weight: bold;
+			}
+			
+			.timeDate {
+				margin: 0.2rem 0 0 0.373rem;
+			}
+			
+			.timeWeek {
+				margin: 0.14rem 0 0 0.373rem;
+			}
+			
+			.timeList>div:last-child {
+				color: #F77917;
+				margin: 0.08rem 0 0 0.373rem;
+			}
+			.timeListActive {
+				background-color: #F77917;
+			}
+			
+			.timeListActive>div {
+				color: #FFFFFF !important;
+			}
+			
+			
+			/*详情*/
+			.content {
+				background-color: #FFFFFF;
+				margin-top: 0.5rem;
+			}
+			.detailsBox{
+				height: 44px;
+			}
+			.details {
+				width: 100%;
+				height: 44px;
+				color: #333333;
+				font-size: 0.426rem;
+				padding: 0.346rem 0 0.1rem 0;
+				border-bottom: 1px solid #F2F2F2;
+				text-align: center;
+				background-color: #FFFFFF;
+			}
+			.details>span{
+				display: inline-block;
+				width: 49%;
+				text-align: center;
+				float: left;
+			}
+			
+			.detailsFixd{
+				position: fixed !important;
+				top: 0 !important;
+			}
+			.detailsActive {
+				/*选中时的状态*/
+				position: relative;
+				color: #F77917;
+			}
+			
+			.detailsActive:before {
+				content: "";
+				position: absolute;
+				left: 40%;
+				bottom: -0.24rem;
+				width: 20%;
+				height: 4px;
+				background-color: #F77917;
+			}
+			
+			.contentBox {
+				padding: 0 0.2rem;
+			}
+			
+			.contentBox span {
+				max-width: 100%;
+			}
+			.information{
+				overflow: hidden;
+			}
+			.purchaseNotes>div>p {
+				font-size: 0.4rem;
+				color: #333333;
+				font-weight: bold;
+				margin: 0.266rem;
+			}
+			
+			.purchaseNotesText {
+				padding: 0 0.2rem;
+				font-size: 0.346rem;
+				color: #999999 !important;
+			}
+			
+			.selbox{
+				border: 1px solid #F2F2F2;
+				border-radius: 0.2rem;
+				font-size: 0.373rem;
+				font-weight: 500;
+				margin-top: 0.25rem;
+			}
+			.selHeader{
+				height: 0.8rem;
+				line-height: 0.8rem;
+				color: #333333;
+				font-size: 0.426rem;
+				font-weight: 400;
+				margin-left: 0.32rem;
+			}
+			.mui-table-view-cell:after,.mui-table-view:before,.mui-table-view:after{
+				height: 0;
+			}
+			.mui-table-view-radio{
+				padding-bottom: 0.2rem;
+			}
+			.mui-table-view-radio .mui-table-view-cell{
+				padding-right: 0.1rem;
+			}
+			.mui-table-view-cell{
+				display: inline-block;
+				font-size: 0.34rem;
+				color: #999999;
+				background-color: #F6F6F6;
+				padding: 0.1rem 0.3rem !important;
+				border-radius: 0.15rem;
+				margin-top: 0.3rem;
+				margin-left: 0.3rem;
+			}
+			.mui-selected{
+				color: #FFFFFF;
+				background-color: #FF8B30;
+			}
+			
+			/*模态窗*/
+			.modal{
+				display: none;
+				width: 100vw;
+				height: 100vh;
+				position: fixed;
+				top: 0;
+				left: 0;
+				background-color: rgba(0, 0, 0, 0.7);
+				z-index: 10;
+			}
+			.modalBox{
+				width: 8.2rem;
+				height: 5rem;
+				background-color: #FFFFFF;
+				margin-left: 0.9rem;
+				margin-top: 3rem;
+				border-radius: 0.2rem;
+				text-align: center;
+			}
+			.modalHeader{
+				height: 3.7rem;
+				padding-top: 1.2rem;
+				padding-left: 0.8rem;
+				padding-right: 0.8rem;
+				color: #333333;
+				font-weight: 400;
+				font-size: 0.426rem;
+			}
+			.modalBtn{
+				height: 1.3rem;
+				line-height: 1.3rem;
+				color: #FF8B30;
+				font-weight: 500;
+				font-size: 0.426rem;
+				border-top: 1px solid #F2F2F2;
+			}
+			.selRili{
+				margin-top: 0.4rem;
+			}
+			.purchaseNotes{
+				overflow: hidden;
+			}
+			.purchaseNotes img{
+				width: 100% !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="" id="J_el" v-cloak>
+			<div class="">
+				<div class="titleBox">{{proDetail.product_name}}</div>
+				<div class="address">消费地址：{{proDetail.merchant_ssq}}{{proDetail.merchant_address}}</div>
+				<div class="content">
+					<div class="detailsBox">
+						<div class="details">
+							<span class="detailsSec detailsActive" dataVal='2'>日历库存</span>
+							<span class="detailsSec" dataVal="1">产品详情</span>
+						</div>
+					</div>
+					<div class="contentBox">
+						<!--特色介绍-->
+						<div class="information" id="information">
+							<div class="informationText">
+								<div class="selbox">
+									<div class="selHeader">选择店铺：</div>
+									<ul class="mui-table-view mui-table-view-radio">
+										<li class="mui-table-view-cell" :class="{'mui-selected':index == 0}" @tap="selMerchant(item.merchant_id)" v-for="(item,index) in shopList">{{item.merchant_name}}</li>
+									</ul>
+								</div>
+								<div class="selbox">
+									<div class="selHeader">选择规格：</div>
+									<ul class="mui-table-view mui-table-view-radio">
+										<li class="mui-table-view-cell" :class="{'mui-selected':index == 0}" @tap="selGuige(item.price_id)" v-for="(item,index) in guigeList">{{item.product_property}}</li>
+									</ul>
+								</div>
+								<div class="selRili" v-if="riliList.length">
+									<div class="timeList" @tap="popupModel(index)" v-for="(items,index) in riliList">
+										<div class="timeDate">{{ items.day }}</div>
+										<div class="timeWeek">{{ items.week }}</div>
+										<div class="indentNum">剩{{items.lastnumber >= 0 ? items.lastnumber : 0}}</div>
+									</div>
+								</div>
+								<!--空状态时-->
+								<div class="lw-empty" style="display: block;" v-else>
+									<div class="lw-empty-box">
+										<div class="lw-empty-flex">
+											<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+											<div class="lw-empty-test">暂无可预约商品！请重新选择</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--购买须知-->
+						<div class="purchaseNotes" id="purchaseNotes">
+							<div class="">
+								<p>【产品详情】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_info"></div>
+							</div>
+							<div class="">
+								<p>【使用方法】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_useinfo"></div>
+							</div>
+							<div class="">
+								<p>【温馨提示】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_notice"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal">
+				<div v-if="proDetail.booked == 2" class="modalBox">
+					<div class="modalHeader">您还未购买该商品，是否进入商品详情进行购买</div>
+					<div class="modalBtn" @tap='goToShop(proDetail.product_id)'>去购买</div>
+				</div>
+				<div v-if="proDetail.booked == 1" class="modalBox">
+					<div class="modalHeader">您已购买该商品，是否进入预约中心进行预约消费</div>
+					<div class="modalBtn" @tap='goToYuyue()'>去预约</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/mui.picker.js"></script>
+		<script src="../../plugins/mui.poppicker.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script src="../../plugins/getTokenCommon.js"></script>
+		<script src="../../plugins/vue-lazyload.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = localStorage.getItem("token");
+				var pId = getUrlParam("pId");
+				
+				var vueData = {
+					proDetail: {}, //商品详情
+					shopList: [],	//商家列表
+					guigeList: [],	//规格列表
+					riliList: [],	//日历列表
+					pId: 0,	//商品id
+					mId: 0,	//商户id
+					prId: 0	//价格id
+				};
+				
+				new Vue({
+					el: '#J_el',
+					data: vueData,
+					methods: {
+						popupModel: popupModel,
+						goToShop: goToShop,
+						goToYuyue: goToYuyue,
+						selMerchant: selMerchant,
+						selGuige: selGuige,
+					}
+				});
+				
+				//获取商品详情
+				getProductDetails();
+				function getProductDetails() {
+					var data = {
+						token: token,
+						pr_id: pId,
+					};
+					$.ajax({
+						url: API_SERVER + 'Yuyue/ConsumeBookedProductDet',
+						data: data,
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.proDetail = data.data;
+								vueData.pId = data.data.product_id;
+								vueData.mId = data.data.shop[0].merchant_id;
+								vueData.prId = data.data.price[0].price_id;
+								vueData.shopList = data.data.shop;
+								vueData.guigeList = data.data.price;
+								getRiliList()
+							}
+						}
+					});
+				}
+				//获取日历
+				function getRiliList() {
+					var data = {
+						token: token,
+						pr_id: vueData.pId,
+						merchant_id: vueData.mId,
+						price_id: vueData.prId
+					};
+					$.ajax({
+						url: API_SERVER + 'Yuyue/ConsumeBookedProductCalendar',
+						data: data,
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.riliList = data.data;
+							}
+						}
+					});
+				}
+				
+				//切换商家
+				function selMerchant(merId){
+					vueData.mId = merId;
+					getRiliList();
+				}
+				
+				//切换规格
+				function selGuige(guigeId){
+					vueData.prId = guigeId;
+					getRiliList();
+				}
+				
+				//打开模态窗
+				function popupModel(index){
+					$(".timeList").removeClass("timeListActive");
+					$(".timeList").eq(index).addClass("timeListActive");
+					$(".modal").css({
+						"display": "block"
+					})
+				}
+				
+				function goToShop(productId){
+					mui.openWindow({
+						url: '../homePage/productDetails.html?productId=' + productId
+					})
+				}
+				function goToYuyue(){
+					mui.openWindow({
+						url: 'reservationList.html'
+					})
+				}
+				
+				//点击滚动到指定位置
+				mui('body').on('tap','.detailsSec',function(){
+					$('.detailsSec').removeClass('detailsActive');
+					$(this).addClass('detailsActive');
+					if($(this).attr('dataVal') == 1){
+						$("html, body").animate({
+							scrollTop: $("#purchaseNotes").offset().top - 44
+						}, {
+							duration: 500,
+							easing: "swing"
+						});
+					}else if($(this).attr('dataVal') == 2){
+						$("html, body").animate({
+							scrollTop: $("#information").offset().top - 44
+						}, {
+							duration: 500,
+							easing: "swing"
+						});
+					}
+					return false;
+				})
+				
+				mui('body').on('tap','.modal',function(){
+					$(".modal").css({
+						"display": "none"
+					})
+				})
+				mui('body').on('tap', '.modalBox', function(event) { //冒泡
+					event.stopPropagation();
+				})
+				//点击跳转商品详情
+				function jumpToDetails(id){
+					mui.openWindow({
+						url: 'productDetails.html?productId='+id
+					})
+				}
+			})
+		</script>
+	</body>
+
+</html>

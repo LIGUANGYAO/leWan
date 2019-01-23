@@ -128,6 +128,15 @@
 				color: #333333;
 				font-weight: 800;
 			}
+			.conName>span{
+				float: left;
+			}
+			.shopName{
+				width: 75%;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
 			.listLabel{
 				font-size: 0.426rem;
 				color: #666666;
@@ -141,9 +150,21 @@
 				font-weight: 800;
 				color: #333333;
 			}
+			.qrcodeBox{
+				display: inline-block;
+				height: 1.6rem;
+				width: 1.1rem;
+				text-align: center;
+				margin-left: 0.3rem;
+			}
+			.qrcodeBtn{
+				width: 0.7rem;
+				margin-top: 0.45rem;
+				height: 0.7rem;
+			}
 			.consumeStatus{
-				float: right;
-				width: 2.266rem;
+				float: right !important;
+				width: 2.1rem;
 				height: 0.96rem;
 				line-height: 0.96rem;
 				text-align: center;
@@ -185,8 +206,24 @@
 			.conDetails {
 				color: #333333;
 				font-size: 0.426rem;
+				height: 1.6rem;
+				width: 80%;
 			}
-			
+			.conDetails >span{
+				float: left;
+			}
+			.condetailsText{
+				display: inline-block;
+				width: 50%;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				margin-right: 10%;
+			}
+			.condetailsGuige{
+				display: inline-block;
+				width: 40%;
+			}
 			.lastEr{
 				height: auto;
 				padding: 10px 12px;
@@ -327,9 +364,40 @@
 				color: #FFFFFF;
 				background-color: #FF8B30;
 			}
-			
-			
-			
+			/*生成二维码*/
+			.QRBox{
+				display: none;
+				width: 100vw;
+				height: 100vh;
+				position: fixed;
+				top: 0;
+				left: 0;
+				background-color: rgba(0, 0, 0, 0.8);
+				z-index: 120;
+				text-align: center;
+			}
+			.QRCode{
+				display: inline-block;
+				width: 290px;
+				height: 290px;
+				padding: 40px;
+				margin-top: 3rem;
+				background-color: #FFFFFF;
+				border-top-left-radius: 0.15rem;
+				border-top-right-radius: 0.15rem;
+			}
+			.QRTitle{
+				display: inline-block;
+				width: 290px;
+				height: 50px;
+				line-height: 50px;
+				background-color: #FFFFFF;
+				font-size: 0.4rem;
+				font-weight: bold;
+				color: #FF8B30;
+				border-bottom-left-radius: 0.15rem;
+				border-bottom-right-radius: 0.15rem;
+			}
 			/*关注公众号*/
 			
 			.attentionNum {
@@ -543,7 +611,7 @@
 						</div>
 					</div>
 					<div class="headerHeader">
-						<div class="proName">{{indentDetails.product_name}}</div>
+						<div class="proName" @tap="jumpToDetails(indentDetails.product_id)">{{indentDetails.product_name}}</div>
 						<div v-if="indentDetails.isexpress == 1" class="useDate">商品有效期：{{getDateTime(indentDetails.startusetime,"Y-MM-dd")}} 至 {{getDateTime(indentDetails.endusetime,"Y-MM-dd")}}</div>
 						<div v-else class="useDate">收到商品后，请点击确认收货</div>
 					</div>
@@ -552,7 +620,13 @@
 				<div class="content">
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
-							<span class="conName"><span class="listLabel">规格：</span><span class="conDetails">{{indentDetails.product_property}} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp ¥{{indentDetails.price}} * {{indentDetails.num}}份</span></span>
+							<span class="conName">
+								<span class="listLabel">规格：</span>
+								<span class="conDetails">
+									<span class="condetailsText">{{indentDetails.product_property}}</span>
+									<span class="condetailsGuige">¥{{indentDetails.price}} * {{indentDetails.num}}份</span>
+								</span>
+							</span>
 						</li>
 						<li v-if="indentDetails.express_firm" class="mui-table-view-cell indentDetails">
 							<span class="listLabel">物流公司：</span>{{ indentDetails.express_firm }}
@@ -561,8 +635,10 @@
 							<span class="listLabel">物流单号：</span>{{ indentDetails.express_no }}
 						</li>
 						<li class="mui-table-view-cell" v-if="indentDetails.code.length" v-for="(items,index) in indentDetails.code">
-							<span class="conName"><span class="listLabel">消费码：</span>
+							<span class="conName">
+								<span class="listLabel">消费码：</span>
 								<span class="consumeCode">{{items.consume_code}}</span>
+								<span class="qrcodeBox" @tap="createQR(items.consume_code)"><img class="qrcodeBtn" src="../../img/personalCenter/indentDetail1.jpg"/></span>
 								<span class="consumeStatus" :class="{'consumeOverdue': items.consume_status == 3 || items.consume_status == 4}" v-if="indentDetails.reservation == 1" @tap="jumpPage(items.consume_status,items.consume_type,items.consume_code)">
 									{{items.consume_status == 1? (items.consume_type == 2 ?'已预约' : '未预约') : items.consume_status == 2? '已使用':items.consume_status == 3? '已过期': '冻结' }}
 								</span>
@@ -570,7 +646,11 @@
 							</span>
 						</li>
 						<li class="mui-table-view-cell showAddress">
-							<span class="conName"><span class="listLabel">店铺：</span>{{indentDetails.shop[shopIndex].merchant_ssq}}{{indentDetails.shop[shopIndex].merchant_name}} <i class="iconfont icon-xiala"></i></span>
+							<span class="conName">
+								<span class="listLabel">店铺：</span>
+								<span class="shopName">{{indentDetails.shop[shopIndex].merchant_ssq}}{{indentDetails.shop[shopIndex].merchant_name}}</span>
+								<i class="iconfont icon-xiala"></i>
+							</span>
 						</li>
 						<div class="addressIphoneBox">
 							<div class="lastTwoEr" @tap="getSignature(indentDetails.shop[shopIndex].merchant_lat,indentDetails.shop[shopIndex].merchant_lng,indentDetails.shop[shopIndex].merchant_address)">
@@ -639,6 +719,11 @@
 				</div>
 			</div>
 		</div>
+		<!--二维码-->
+		<div class="QRBox">
+			<div class="QRCode"></div>
+			<div class="QRTitle">向商家出示</div>
+		</div>
 		<!--新人关注二维码-->
 		<div class="MoreModal">
 			<div class="modalContent">
@@ -660,6 +745,7 @@
 		<script src="../../plugins/flexible.js"></script>
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
 		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/jquery.qrcode.min.js"></script>
 		<script src="../../plugins/vue.js"></script>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../plugins/swiper-4.3.3.min.js"></script>
@@ -717,6 +803,8 @@
 						callPhone: callPhone,
 						selAddress: selAddress,
 						jumpPage: jumpPage,
+						createQR: createQR,
+						jumpToDetails:jumpToDetails,
 					}
 				})
 
@@ -881,7 +969,12 @@
 						}
 					}, 1000);
 				}
-
+				//跳转商品详情
+				function jumpToDetails(id){
+					mui.openWindow({
+						url: BASE_SERVER + "wechat_html/page/homePage/productDetails.html?productId=" + id
+					})
+				}
 				mui('body').on('tap', '.callBackHomePage', function() { //返回首页
 					mui.openWindow({
 						url: BASE_SERVER + "wechat_html/page/homePage/homePage.html",
@@ -919,7 +1012,26 @@
 						mui.toast("该消费码已冻结，如有疑问，请联系乐玩客服噢！")
 					}
 				}
-				//打开二维码
+				//生成二维码
+				function createQR(consumerCode){
+					$('.QRBox').show(0);
+					$('.QRCode').qrcode({
+						width: 210,
+						height: 210,
+						correctLevel:3,
+						text: BASE_SERVER + "wechat_html/page/merchant/merchantVerification.html?consumerCode=" + consumerCode
+					});
+				}
+				//关闭消费码二维码
+				mui('body').on('tap', '.QRBox', function() { 
+					$(".QRBox").hide(0);
+					$('.QRCode').html('');
+				})
+				//关闭消费码二维码冒泡
+				mui('body').on('tap', '.QRCode', function(e) {
+					e.stopPropagation();
+				})
+				//打开关注二维码
 				mui('body').on('tap', '#openModal', function() { //打开关注公众号
 					$(".MoreModal").css({
 						"display": "block"

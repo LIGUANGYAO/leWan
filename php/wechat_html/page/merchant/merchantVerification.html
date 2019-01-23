@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>预约订单</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/leWan.css" rel="stylesheet" />
+	<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+	<link href="../../fonts/iconfont.css" rel="stylesheet" />
+	<style type="text/css">
+		body{
+			margin-bottom: 1.4rem !important;
+		}
+		header{
+			width: 100%;
+			height: 0.746rem;
+			line-height: 0.746rem;
+			font-size: 0.373rem;
+			font-weight: 400;
+			color: #FFFFFF;
+			background-color: #C8051D;
+			transition: all linear 3s;
+		}
+		section{
+			background-color: #139F97;
+			padding: 0.32rem !important;
+			min-height: 100vh;
+		}
+		.header,.footer{
+			background-color: #FFFFFF;
+		}
+		.header>div{
+			color: #333333;
+			height: 1.253rem;
+			line-height: 1.253rem;
+			font-size: 0.373rem;
+			font-weight: 400;
+			border-bottom: 1px solid #F2F2F2;
+			margin-left: 0.3rem;
+			padding-left: 0.1rem;
+			padding-right: 0.2rem;
+		}
+		.header>div:last-child{
+			border: none !important;
+		}
+		.header{
+			border-top-left-radius: 0.1rem;
+			border-top-right-radius: 0.1rem;
+		}
+		.footer{
+			color: #139F97;
+			padding: 0.3rem 0.3rem 0.2rem 0.3rem;
+			border-bottom-left-radius: 0.1rem;
+			border-bottom-right-radius: 0.1rem;
+		}
+		.header>.shopName{
+			padding-top: 0.2rem;
+			height: auto !important;
+			line-height: 0.8rem !important; 
+		}
+		.header>.code{
+			color: #139F97;
+			font-weight: 500;
+		}
+		.guigeName{
+			margin-left: 0.2rem;
+		}
+		section>img{
+			width: 100%;
+			display: block;
+		}
+		
+		.footer>div:first-child{
+			height: 1.253rem;
+			line-height: 1.253rem;
+			font-size: 0.426rem;
+			font-weight: 600;
+			border-bottom: 1px solid #F2F2F2;
+		}
+		.footer>div:nth-child(2){
+			padding: 0.2rem 0;
+		}
+		.footer>div:nth-child(2)>span:nth-child(1){
+			font-size: 0.373rem;
+			font-weight: 600;
+		}
+		.footer>div:nth-child(2)>span:nth-child(2){
+			font-size: 0.32rem;
+			font-weight: 400;
+		}
+		.merMes{
+			width: 100%;
+			height: 3.546rem;
+			margin-top: 0.533rem;
+			border-radius: 0.1rem;
+			background-color: #FFFFFF;
+			font-size: 0.36rem;
+			font-weight: 400;
+			padding: 0.2rem;
+		}
+		footer{
+			width: 100%;
+			height: 1.4rem;
+			font-size: 0.426rem;
+			font-weight: 600;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			z-index: 10;
+		}
+		.yuyueApplication{
+			width: 37%;
+			float: left;
+			color: #FFFFFF;
+			background-color: #E1B872;
+			line-height: 1.4rem;
+		}
+		.sureDestroy{
+			width: 63%;
+			float: left;
+			color: #FFFFFF;
+			background-color: #FF8B30;
+			line-height: 1.4rem;
+		}
+		.mui-toast-container {
+			bottom: 50% !important;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="J_el" v-cloak>
+		<header class="mui-text-center headerBox" v-if="codeDetails.reservation_status_tit">{{codeDetails.reservation_status_tit || null}}</header>
+		<section>
+			<div class="header">
+				<div class="shopName">商品名称： {{codeDetails.product_name}}</div>
+				<div class="code">消费电子码： {{codeDetails.consume_code}}</div>
+				<div class="">订单编号： {{codeDetails.order_no}}</div>
+				<div class="">支付时间： {{getDateTime(codeDetails.order_paytime,"Y年MM月dd日 hh:mm:ss")}}</div>
+				<div class="">预约日期： {{codeDetails.reservation_calendar == 0? '未预约' : getDateTime(codeDetails.reservation_calendar,"Y年MM月dd日")}} <span class="guigeName">{{codeDetails.reservation_property || null}}</span></div>
+				<div class="">额外加收： {{codeDetails.addprice}}元</div>
+			</div>
+			<img src="../../img/merchant/merchantVerification1.jpg"/>
+			<div class="footer">
+				<div class="">
+					<span class="mui-pull-left">姓名：{{codeDetails.order_fullname}}</span>
+					<span class="mui-pull-right">电话：{{codeDetails.order_mobile}}</span>
+				</div>
+				<div class="">
+					<span>用户备注: </span>
+					<span>{{codeDetails.order_leave || '无备注信息'}}</span>
+				</div>
+			</div>
+			<textarea class="merMes" placeholder="填写备注信息" v-model="textareaText"></textarea>
+		</section>
+		<footer class="" v-if="codeDetails.status==1">
+			<div class="mui-text-center yuyueApplication">预约申请</div>
+			<div class="mui-text-center sureDestroy" @tap="destroyCode(codeDetails.order_id,codeDetails.consume_code_id)">确认安排</div>
+		</footer>
+	</div>
+	<script src="../../plugins/flexible.js"></script>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script src="../../plugins/jquery-2.1.4.js"></script>
+	<script src="../../plugins/vue.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../plugins/swiper-4.3.3.min.js"></script>
+	<script src="../../plugins/serverApi.js?t=201901161450"></script>
+	<script src="../../plugins/getTokenCommon.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = localStorage.getItem("token");
+				var consumerCode = getUrlParam("consumerCode");
+				var isCancel = getUrlParam("isCancel") || 2;
+				var reservation_id = getUrlParam("reservation_id") || null;
+				
+				var vueData = {
+					codeDetails: {},
+					textareaText:'',
+				}
+				new Vue({
+					el: "#J_el",
+					data: vueData,
+					methods: {
+						destroyCode: destroyCode,
+					}
+				})
+				//电子码查询
+				getCodeMes()
+				function getCodeMes(){
+					$.ajax({
+						url: SELLER_SERVER + "/api/index/searchOrder",
+						async: false,
+						data: {
+							token: token,
+							code: consumerCode,
+							isCancel: isCancel,//是否是取消预约操作:1是；2不是
+							reservation_id: reservation_id,//预约ID
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.codeDetails = data.data;
+							} else {
+								mui.toast(data.message, {duration: 'long',type: 'div'})
+							}
+						}
+					});
+				}
+				//核销电子码
+				function destroyCode(order_id,codeid){
+					$.ajax({
+						url: SELLER_SERVER + "/api/index/destroyOrder",
+						data: {
+							token: token,
+							order_id: order_id,
+							codeid: codeid,
+							oredr_remark: vueData.textareaText
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								mui.openWindow({
+									url:"merchantCenter.html"
+								})
+							} else {
+								mui.toast(data.message, {duration: 'long',type: 'div'})
+							}
+						}
+					});
+				}
+				
+			})
+		</script>
+</body>
+</html>

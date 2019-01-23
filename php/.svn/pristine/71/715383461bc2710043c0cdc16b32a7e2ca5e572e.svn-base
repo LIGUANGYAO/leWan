@@ -1,0 +1,100 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+
+    <form class="layui-form" action="{:url('User/staff')}">
+        <div class="layui-form-item ">
+            <label class="layui-form-label">关键字:</label>
+            <div class="layui-input-inline ">
+                <input type="text" name="title"  placeholder="请输入用户/电话"  class="layui-input" value="{$keywords|default=''}">
+            </div>
+
+            <span class="input-group-btn layui-input-block">
+                  <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+                <!--<button type="submit" class="layui-btn layui-btn-small" name="excel" value="1">导出excel</button>-->
+            </span>
+        </div>
+    </form>
+
+    <div class="r">
+        <notempty name="addbtn">
+            <if condition="$addbtn.type eq '1'">
+                <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+                <else/>
+                <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+            </if>
+        </notempty>
+    </div>
+    <div class="clear"></div>
+    <div class="layui-field-title"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+                <tr>
+                    <th class="nowrap">头像</th>
+                    <th class="nowrap">昵称</th>
+                    <th class="nowrap">姓名</th>
+                    <th class="nowrap">电话</th>
+                    <th width="130">添加时间</th>
+                    <th width="110">操作</th>
+                </tr>
+            </thead>
+            <if condition="!empty($list)">
+                <volist name="list" id="val">
+                    <tbody>
+                        <tr class=" staff_row_{$val.staff_id}">
+                            <td ><img src="{$val.avatar}" width="35" alt=""></td>
+                            <td >{$val.nickname}</td>
+                            <td >{$val.staff_name}</td>
+                            <td >{$val.staff_tel}</td>
+                            <td >{$val['addtime']|date2="Y-m-d H:i",###}</td>
+                            <td >
+                                <a href="javascript:openWindow('编辑员工信息', '{:url(\'user/staffEdit\', array(\'staffid\'=>$val[\'staff_id\']))}', '500px', '380px')" class="layui-btn layui-btn-sm layui-bg-blue" style="margin-top: 5px;">编辑</a>
+                                <a href="javascript:delStaff('{$val.staff_id}')" class="layui-btn layui-btn-sm layui-bg-red" title="退款管理" style="margin-top: 5px;">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </volist>
+            <else />
+                <tr>
+                    <td colspan="6">
+                        <div class="layui-field-title"></div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                暂无数据w(ﾟДﾟ)w
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </if>
+        </table>
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+      
+    </div>
+
+</div>
+
+<script>
+
+    function delStaff($id) {
+        //询问框
+        layer.confirm('确定删除该员工？', {
+            btn: ['确定','取消'] //按钮
+        }, function(e){
+            var url = '/system/user/delStaff';
+            $.post(url,{'staff_id':$id},function (data) {
+                if(data.code==200){
+                    $('.staff_row_'+$id).remove();
+                    layer.msg('删除成功', {icon: 1});
+                }else{
+                    layer.msg('删除失败', {icon: 2});
+                }
+            })
+        });
+    }
+
+</script>

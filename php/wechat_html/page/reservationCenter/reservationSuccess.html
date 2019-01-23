@@ -77,6 +77,117 @@
 				font-size: 0.373rem;
 				font-weight: bold;
 			}
+			.footerBtnZreo{
+				text-align: center;
+				position: fixed;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+			}
+			.footerBtnOne{
+				width: 28%;
+				float: left;
+				height: 1.173rem;
+				background-color: #FFFFFF;
+				color: #999999;
+				font-size: 0.373rem;
+			}
+			.footerBtnOne>i{
+				display: inline-block;
+				height: 0.473rem;
+				line-height: 0.473rem;
+				font-size: 0.5rem;
+			}
+			.footerBtnOne>span{
+				width: 100%;
+				display: inline-block;
+				height: 0.7rem;
+				line-height: 0.5rem;
+			}
+			.footerBtnTwo{
+				width: 72%;
+				height: 1.173rem;
+				line-height: 1.173rem;
+				background-color: #FF8B30;
+				color: #FFFFFF;
+				font-size: 0.373rem;
+				font-weight: bold;
+				float: left;
+			}
+			/*联系商家*/
+			.modalBox4{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.4);
+				z-index: 30;
+			}
+			.modalCard4{
+				width: 8.613rem;
+				height: 2rem;
+				margin: 0 auto;
+				margin-top: 5rem;
+				border-radius: 0.2rem;
+				overflow: hidden;
+				background-color: #FFFFFF;
+			}
+			
+			.modalBox4Content{
+				height: 2rem;
+				border-radius: 0.2rem;
+				overflow-y: scroll;
+			}
+			.modalBox4Content:after,.modalBox4Content:before{
+				height: 0;
+			}
+			.modalBox4List{
+				height: 1.84rem !important;
+			}
+			.listLeft{
+				float: left;
+				width: 75%;
+			}
+			.shopName4{
+				margin-left: 0.74rem;
+				margin-top: 0.266rem;
+				color: #999999;
+				font-size: 0.32rem;
+				font-weight: 500;
+			}
+			.shopNum4{
+				margin-top: 0.16rem;
+			}
+			.shopNum4>span:nth-child(1){
+				display: inline-block;
+				vertical-align: middle;
+				width: 0.1rem;
+				height: 0.1rem;
+				border-radius: 0.05rem;
+				background-color: #FF8B30;
+				margin-left: 0.3rem;
+			}
+			.shopNum4>span:nth-child(2){
+				display: inline-block;
+				vertical-align: middle;
+				color: #333333;
+				font-size: 0.34rem;
+				font-weight: 700;
+				margin-left: 0.25rem;
+			}
+			.listRight{
+				float: right;
+				height: 1.84rem;
+				text-align: center;
+				width: 25%;
+			}
+			.listRight>img{
+				width: 0.8rem;
+				height: 0.8rem;
+				margin-top: 0.502rem;
+			}
 		</style>
 	</head>
 
@@ -107,11 +218,37 @@
 						请准时到店消费，超时请与商家协调服务时间，次日作废，预约当日内所有可预约时段有效 次日作废。
 					</div>
 				</div>
-				<div v-if="type == 1 || type == 2" class="footerBtn" @tap="jumpTopMap(yuyueMessage.merchant_lat,yuyueMessage.merchant_lng,yuyueMessage.merchant_address)">
-					<i class="iconfont icon-dingwei"></i>
-					地图导航
+				<div v-if="type == 1 || type == 2" class="footerBtnZreo">
+					<div class="footerBtnOne" @tap="cancelYuyue(yuyueMessage.reservation_id)">
+						<i class="iconfont icon-wode"></i>
+						<span>取消预约</span>
+					</div>
+					<div class="footerBtnTwo" @tap="jumpTopMap(yuyueMessage.merchant_lat,yuyueMessage.merchant_lng,yuyueMessage.merchant_address)">
+						<i class="iconfont icon-dingwei"></i>
+						地图导航
+					</div>
 				</div>
 				<div v-else-if="type == 3" class="footerBtn" @tap="jumpTopPro(yuyueMessage.product_id)">再来一单</div>
+			</div>
+			<!--联系商家-->
+			<div class="modalBox4">
+				<div class="modalCard4">
+					<div class="modalBox4Content">
+						<div class="modalBox4List" @tap="callPhone(yuyueMessage.merchant_400tel)">
+							<div class="listLeft">
+								<div class="shopName4">{{yuyueMessage.merchant_name}}</div>
+								<div class="shopNum4">
+									<span></span>
+									<span>{{yuyueMessage.merchant_400tel}}</span>
+								</div>
+							</div>
+							<div class="listRight">
+								<img src="../../img/homePage/productDetails5.png"/>
+							</div>
+						</div>
+						
+					</div>
+				</div>
 			</div>
 		</div>
 		<script src="../../plugins/flexible.js"></script>
@@ -139,6 +276,8 @@
 					methods: {
 						jumpTopMap:jumpTopMap,
 						jumpTopPro:jumpTopPro,
+						cancelYuyue: cancelYuyue,
+						callPhone: callPhone,
 					}
 				})
 
@@ -163,7 +302,42 @@
 						}
 					});
 				}
-				
+				//拨打电话
+				function callPhone(phone){
+					window.location.href = 'tel://' + phone;
+				}
+				//用户取消预约
+				function cancelYuyue(reId){
+					mui.confirm('如需取消预约请致电商家进行沟通，若商家同意取消预约，您可再次选择其他时段进行预约消费，取消预约以商家沟通为准', '提示', ['否', '是'], function(e) {
+						if(e.index == 1) {
+							$.ajax({
+								url: API_SERVER + "Yuyue/ConsumeBookedCancel",
+								data: {
+									token: token,
+									r_id: reId,
+									url: BASE_SERVER + "wechat_html/page/merchant/merchantVerification.html?consumerCode=" + code
+								},
+								success: function(data) {
+									log(data)
+									if(data.code == 200) {
+										mui.toast(data.message, {duration: 'long',type: 'div'})
+									} else {
+										mui.toast(data.message, {duration: 'long',type: 'div'})
+									}
+									$('.modalBox4').css({'display':'block'})
+								}
+							});
+						} else {
+							log("我不同意取消！")
+						}
+					})
+				}
+				mui('body').on('tap', '.modalBox4', function() { //商家电话模态窗
+					$('.modalBox4').hide();
+				})
+				mui('body').on('tap', '.modalCard4', function(event) { //商家电话模态窗冒泡
+					event.stopPropagation();
+				})
 				//判断从预约中心过来还是订单详情
 				function pageBian(){
 					if(type === "1") { //预约中心

@@ -1,0 +1,26 @@
+<div class="page" style="position: relative">
+    <select id="level" >
+        <option value="1">普通用户</option>
+        <option value="2" selected>超级会员</option>
+        <option value="3">分享达人</option>
+        <option value="4">运营达人</option>
+        <option value="5">玩主</option>
+    </select>
+    <select id="daytag" >
+        <option value="0" selected>不限</option>
+        <option value="1">今日活跃</option>
+        <option value="2">最近7天</option>
+        <option value="3">最近1月</option>
+    </select>
+    <div style="color: red; font-size: 13px;">只统计活跃用户</div>
+    <div id="bdMap" style="width: 90%; height: 91%; position: absolute; left: 10px; top: 50px; "></div>
+</div>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=e2a0Lh64d7GZMlcKD7fCxLG4GdDWHQUk"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+<script type="text/javascript" src="/static/js/MarkerClusterer.js"></script>
+<title>点聚合</title>
+<script type="text/javascript" src="/static/js/mapSeek.js"></script>
+<script>
+    var city = '成都市琉璃路';
+    var ajaxUrl = "{:url('usermap/loaddata')}";
+</script>

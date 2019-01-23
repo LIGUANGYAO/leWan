@@ -1,0 +1,15 @@
+<form class="layui-form" enctype="multipart/form-data" method="post"  action="/system/product/deliveryOrderSku" style="padding: 20px 10px;">
+    <input type="hidden" name="product_id"  value="{$product_id}">
+    <volist name="mchlist" id="fd">
+        <div class="layui-form-item">
+            <label class="layui-label">店铺:{$fd.merchant_name}</label>
+            <input type="hidden" name="merchant_id[]"  value="{$fd.merchant_id}">
+            <p>库存 <input type="text" class="layui-input" name="num[]" value="{$fd.kucun|default=''}" style="width: 75%;display: inline-block;" placeholder="请填写每日开放预约库存"></p>
+        </div>
+    </volist>
+    <div class="layui-form-item">
+        <div class="layui-input-block layui-input-block">
+            <button type="submit" class="layui-btn ">确定提交</button>
+        </div>
+    </div>
+</form>

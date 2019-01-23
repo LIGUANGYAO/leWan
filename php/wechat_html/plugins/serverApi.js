@@ -3,10 +3,16 @@
  */
 
 var log = console.log.bind(console); //简写打印台
-//域名
+//正式域名
+//var API_SERVER = "http://weixin.lewan6.ren/api/"
+//var BASE_SERVER = "http://weixin.lewan6.ren/"
+//window.APPID = 'wx9639c4a683f9ce86'
+//var SELLER_SERVER = 'http://seller.lewan6.ren'
+//测试域名
 var API_SERVER = "http://cs.lewan6.ren/api/"
 var BASE_SERVER = "http://cs.lewan6.ren/"
 window.APPID = 'wx3bd7ca56f72a05aa'
+var SELLER_SERVER = 'http://seller.lewan6.com'
 
 //时间戳转年月日
 //getDateTime(时间戳, 'Y/MM/dd hh:mm:ss')   getDateTime(1536278730, "Y年MM月dd日 hh时mm分ss秒")
