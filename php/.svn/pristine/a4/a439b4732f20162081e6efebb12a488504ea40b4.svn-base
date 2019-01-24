@@ -947,14 +947,6 @@
 								initexpress()
 							}, 1000)
 						})
-						this.$watch("homePageBanner", function() { 
-							setTimeout(function(){
-								mui('.mui-slider').slider({
-									interval: 2000 //自动播放周期
-								});
-								log("轮播初始化了！")
-							}, 200)
-						})
 					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
@@ -991,6 +983,11 @@
 					},
 					updated: function() {
 						if(vueData.scollTop == 0) {
+							/*初始化轮播*/
+							mui('.mui-slider').slider({
+								interval: 2000 //自动播放周期
+							});
+							log("轮播初始化了！")
 							scollTop()
 						}
 					}

@@ -21,7 +21,6 @@
 			font-weight: 400;
 			color: #FFFFFF;
 			background-color: #C8051D;
-			transition: all linear 3s;
 		}
 		section{
 			background-color: #139F97;
@@ -110,16 +109,9 @@
 			left: 0;
 			z-index: 10;
 		}
-		.yuyueApplication{
-			width: 37%;
-			float: left;
-			color: #FFFFFF;
-			background-color: #E1B872;
-			line-height: 1.4rem;
-		}
+		
 		.sureDestroy{
-			width: 63%;
-			float: left;
+			width: 100%;
 			color: #FFFFFF;
 			background-color: #FF8B30;
 			line-height: 1.4rem;
@@ -132,7 +124,9 @@
 
 <body>
 	<div id="J_el" v-cloak>
-		<header class="mui-text-center headerBox" v-if="codeDetails.reservation_status_tit">{{codeDetails.reservation_status_tit || null}}</header>
+		<header class="mui-text-center headerBox" v-if="codeDetails.reservation_status_tit">
+			<marquee behavior="alternate" scrollamount="3" direction="left">{{codeDetails.reservation_status_tit || null}}</marquee>
+		</header>
 		<section>
 			<div class="header">
 				<div class="shopName">商品名称： {{codeDetails.product_name}}</div>
@@ -156,7 +150,6 @@
 			<textarea class="merMes" placeholder="填写备注信息" v-model="textareaText"></textarea>
 		</section>
 		<footer class="" v-if="codeDetails.status==1">
-			<div class="mui-text-center yuyueApplication">预约申请</div>
 			<div class="mui-text-center sureDestroy" @tap="destroyCode(codeDetails.order_id,codeDetails.consume_code_id)">确认安排</div>
 		</footer>
 	</div>
@@ -172,7 +165,7 @@
 			$(function() {
 				var token = localStorage.getItem("token");
 				var consumerCode = getUrlParam("consumerCode");
-				var isCancel = getUrlParam("isCancel") || 2;
+				var isCancel = getUrlParam("isCancel") || null;
 				var reservation_id = getUrlParam("reservation_id") || null;
 				
 				var vueData = {
@@ -221,16 +214,18 @@
 						success: function(data) {
 							log(data)
 							if(data.code == 200) {
-								mui.openWindow({
-									url:"merchantCenter.html"
-								})
+								mui.toast(data.message)
+								setTimeout(function(){
+									mui.openWindow({
+										url:"merchantCenter.html"
+									})
+								},2000)
 							} else {
 								mui.toast(data.message, {duration: 'long',type: 'div'})
 							}
 						}
 					});
 				}
-				
 			})
 		</script>
 </body>

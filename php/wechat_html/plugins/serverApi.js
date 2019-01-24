@@ -161,6 +161,7 @@ if(browser.versions.android) {
 		var _opt = $.extend({
 			type: "POST",
 			cache: false,
+			timeout: 10000, //超时时间设置，单位毫秒
 			dataType: "json", //默认后不显示图片上传中
 			headers: {
 				"product": "wechat",
@@ -173,6 +174,10 @@ if(browser.versions.android) {
 			complete: function(XHR, TS) {
 				//请求完成后回调函数 (请求成功或失败之后均调用)。
 				$("#ajaxBox").remove();
+				if(TS == 'timeout'){//超时,status还有success,error等值的情况
+		 　　　　　 ajaxTimeoutTest.abort();
+		　　　　　  mui.toast("请求超时");
+		　　　　}
 			},
 			error: function(d) {
 				console.log(d)

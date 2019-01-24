@@ -7,6 +7,8 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/mui.picker.css" rel="stylesheet" />
+		<link href="../../plugins/mui.poppicker.css" rel="stylesheet" />
 		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
 		<link href="../../fonts/iconfont.css" rel="stylesheet" />
 		<style type="text/css">
@@ -471,6 +473,15 @@
 							<input type="text" id="ssq" secFlag="0" readonly="readonly" placeholder="请选择收货地址">
 							<a href="#modal"><img class="secAddress" src="../../img/personalCenter/adressEdit.png" /></a>
 						</div>
+						<div v-if="proDetail.eden==2" class="mui-input-row">
+							<label>身份证号：</label>
+							<input class="advertisingTitle1" type="text" v-model="IDCard" maxlength="20" placeholder="请输入您的身份证号">
+						</div>
+						<div v-if="proDetail.eden==2" class="mui-input-row secTimeBox">
+							<label>消费时间:</label>
+							<input type="text" id="time" secFlag="0" readonly="readonly" placeholder="请选择消费时间">
+							<img class="secTime" src="../../img/personalCenter/adressEdit.png" />
+						</div>
 						<div class="postscript">
 							<label>备注信息：</label>
 							<textarea v-model="remark" rows="4" maxlength="100" placeholder="请输入备注信息"></textarea>
@@ -553,6 +564,8 @@
 		<script src="../../plugins/jquery-2.1.4.js"></script>
 		<script src="../../plugins/vue.js"></script>
 		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/mui.picker.min.js"></script>
+		<script src="../../plugins/mui.poppicker.js"></script>
 		<script src="../../plugins/swiper-4.3.3.min.js"></script>
 		<script src="../../plugins/serverApi.js"></script>
 		<script src="../../plugins/getTokenCommon.js"></script>
@@ -571,6 +584,7 @@
 					mobile: '', //手机号
 					remark: '', //备注
 					addrList:[],//收货地址
+					IDCard: '',//身份证号码
 				};
 				new Vue({
 					el: '#J_el',
@@ -603,6 +617,25 @@
 						}
 					})
 				}
+				//时间选择
+				mui('body').on('tap', '.secTimeBox', function() {
+					document.activeElement.blur();
+					//手动设置起止时间
+					var nowDate = new Date().getTime();
+					var startDate = vueData.proDetail.product_startusetime*1000;
+					var dtpicker = new mui.DtPicker({
+						type: "date", //设置日历初始视图模式 
+						beginDate: nowDate>startDate?new Date(nowDate):new Date(startDate), //设置开始日期  --月份：索引是0；
+						endDate: new Date(vueData.proDetail.product_endusetime*1000), //设置结束日期 
+						labels: ['年', '月', '日'], //设置默认标签区域提示语 
+					});
+					dtpicker.show(function(e) {
+						log(e)
+						$('#time').val(e.text);
+						$("#time").attr("dataVal", e.y.text + '/' + e.m.text + '/' + e.d.text + ' ' + e.h.text + ':' + e.i.text + ':' + '00');
+						$("#time").attr("secDate", 1);
+					});
+				})
 				//选择当前地址
 				function secDangqian(index,sheng,shi,id){
 					$('.selectIcon').removeClass('selectIconColor');
@@ -670,6 +703,20 @@
 						mui.toast("请选择收货地址！")
 						return
 					}
+					if(vueData.proDetail.eden == 2){
+						var secDate = $("#time").attr("secDate");
+						var isLeYuan = validate(
+							[vueData.IDCard, ['required', 'idCard'],
+								['身份证号码不能为空', '请输入正确的身份证号码']
+							], //手机号码
+							[secDate, [function() {
+									return secDate == "1"
+								}],
+								['请选择消费时间']
+							]
+						);
+						if(!isLeYuan) return;
+					}
 					if(isClick) return;
 					isClick = true;
 					var data = {
@@ -680,6 +727,8 @@
 						buynum: $('#buyNumber').val(),
 						concat: vueData.concat,
 						mobile: vueData.mobile,
+						idcard: vueData.IDCard,
+						appointment_date: Math.round((new Date($("#time").attr("dataVal")).getTime()) / 1000),
 						remark: vueData.remark ? vueData.remark : "无备注信息",
 					}
 					var orderNumber; //订单号
