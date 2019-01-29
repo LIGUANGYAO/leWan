@@ -1,0 +1,121 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+    <div class="layui-field-title"></div>
+
+    <form class="layui-form" action="{:url('Reservationcancel/CancelList')}">
+
+        <div class="layui-form-item ">
+            <div class="layui-input-block layui-col-sm4">
+                <input type="text" name="title"  placeholder="商户名/用户(昵称/电话)/订单(订单号/联系人/联系电话)/消费码"  class="layui-input" value="{$query.title}">
+            </div>
+
+            <label class="layui-form-label">申请时间:</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="starttime" value="{$query['starttime']}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="endtime" value="{$query['endtime']}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+
+            <label class="layui-form-label">申请状态:</label>
+            <div class="layui-input-inline ">
+                <select name="status" lay-verify="require">
+                    <option value="0">全部申请</option>
+                    <option value="1" <if condition="$query.status eq 1"> selected="selected"</if>>申请中</option>
+                    <option value="2" <if condition="$query.status eq 2"> selected="selected"</if>>申请完成</option>
+                    <option value="3" <if condition="$query.status eq 3"> selected="selected"</if>>申请驳回</option>
+                </select>
+            </div>
+
+            <span class="input-group-btn ">
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+            </span>
+
+        </div>
+    </form>
+
+    <div class="clear"></div>
+
+    <!-- 模板样式 -->
+    <div class="layui-form" style="width: 120%">
+        <if condition="$data.list">
+            <table class="layui-table" lay-skin="line">
+                <thead>
+                <tr>
+                    <th width="200">商户</th>
+                    <th width="200">用户</th>
+                    <th width="300">商品名</th>
+                    <th class="nowrap">订单号信息</th>
+                    <th width="200">预约信息</th>
+                    <th class="nowrap">取消原因</th>
+                    <th class="nowrap">驳回原因</th>
+                    <th class="nowrap">申请状态</th>
+                    <th width="150">申请时间</th>
+                    <th class="nowrap" >操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="$data.list" id="val">
+                    <tr>
+                        <td >
+                            主店商家：{$val.merchant_name}<br>
+                            预约商家：{$val.merchant_cname}<br>
+                            消费码：{$val.consume_code}
+                        </td>
+                        <td >
+                            微信昵称：{$val.nickname} <br>
+                            平台昵称：{$val.username} <br>
+                            电话：{$val.mobile}
+                        </td>
+                        <td >{$val.product_name}</td>
+                        <td >
+                            订单号：{$val.order_no}<br>
+                            联系人：{$val.order_fullname}<br>
+                            电  话：{$val.order_mobile}
+                        </td>
+                        <td >
+                            到店：{$val.reservation_calendar|date='Y-m-d H:i',###}<br>
+                            规格：{$val.reservation_property}<br>
+                            周几：{$val.reservation_week}<br>
+                        </td>
+                        <td >{$val.remark}</td>
+                        <td >{$val.bremark}</td>
+                        <td >
+                            <label class="layui-badge {$val.statuscss}">{$val.statusname}</label>
+                        </td>
+                        <td >{$val.addtime|date='Y-m-d H:i',###}</td>
+                        <td >
+                            <if condition="$val.status eq 2">
+                                <div class="layui-btn-group">
+                                    <a href="javascript:openWindow('取消预约', '{:url(\'system/Reservationcancel/CancelRevise\', array(\'id\'=>$val[\'id\'],\'rid\'=>$val[\'reservation_id\']))}', '40%', '50%')" class="layui-btn layui-btn-sm" title="取消预约">
+                                        <i class="layui-icon"></i>
+                                    </a>
+                                </div>
+                            </if>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    暂无数据w(ﾟДﾟ)w
+                </div>
+            </div>
+        </if>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="l"></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+</div>
+</div>
+<script>
+
+</script>

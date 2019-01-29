@@ -14,6 +14,7 @@ var BASE_SERVER = "http://cs.lewan6.ren/"
 window.APPID = 'wx3bd7ca56f72a05aa'
 var SELLER_SERVER = 'http://seller.lewan6.com'
 
+var token = localStorage.getItem("token"); 
 //时间戳转年月日
 //getDateTime(时间戳, 'Y/MM/dd hh:mm:ss')   getDateTime(1536278730, "Y年MM月dd日 hh时mm分ss秒")
 function getDateTime(timestamp, format) {
@@ -187,15 +188,6 @@ if(browser.versions.android) {
 		return _ajax(_opt);
 	};
 })(jQuery);
-
-//每个页面获取token
-var token = localStorage.getItem("token"); //0009b229c26fb257ab130cec8f313df6
-//log(location.href)
-//if(token == 'undefined' || token == null || token == "") {
-//	localStorage.setItem("currentPageUrl",location.href)
-//	var redirectUrl = BASE_SERVER + "wechat_html/index.html"
-//	window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9639c4a683f9ce86&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
-//}
 
 //获取微信签名方法/*必传获取签名页面地址****location.href.split('#')[0]****/
 function getWechatSignature(reqUrl){

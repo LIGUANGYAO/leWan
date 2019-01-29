@@ -1,0 +1,248 @@
+<script src="/ueditor/ueditor.config.js"></script>
+<script src="/ueditor/ueditor.all.min.js"></script>
+<div class="page" style="padding: 20px 0px 0px 0px;">
+	<form class="layui-form " action="{$action}" method="post" enctype="multipart/form-data" onsubmit="return fromsubmit()">
+
+		<if condition="$obj && $obj.parent_id neq 0">
+			<input type="hidden" name="parent_id" value="{$obj.parent_id}"  class="layui-input">
+			<div class="layui-form-item">
+				<label class="layui-form-label">主店名称</label>
+				<div class="layui-input-inline" style="width: 390px;">
+					<input type="text" name="merchant_name" value="{$obj.main_name}" disabled class="layui-input">
+				</div>
+			</div>
+		</if>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">商家名称</label>
+			<div class="layui-input-inline" style="width: 390px;">
+				<input type="text" name="merchant_name" onkeyup="$('input[name=merchant_alias]').val($(this).val())" value="{$obj.merchant_name}" autocomplete="off" lay-verify="require" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">商家别名</label>
+			<div class="layui-input-inline" style="width: 390px;">
+				<input type="text" name="merchant_alias" value="{$obj.merchant_alias}" autocomplete="off" lay-verify="require" class="layui-input" placeholder="商家别名，用于显示分店名称">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">所属类型</label>
+			<div class="layui-input-inline">
+				<select name="dboss_id" lay-verify="require" lay-filter="dboss_id" status="1">
+					<volist name="dboss" id="val">
+						<option value="{$val.id}"<if condition="is_numeric($obj.dboss_id) && $obj.dboss_id eq $val['id']"> selected="selected"</if>>{$val.dboss_name}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">登录账号</label>
+			<div class="layui-input-inline" >
+				<input type="text" name="loginname" value="{$obj.loginname|default=''}" autocomplete="off" lay-verify="require" class="layui-input">
+			</div>
+			<div class="layui-input-inline" style="color: #666; line-height: 35px;" ></div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">登录密码</label>
+			<div class="layui-input-inline" >
+				<input type="password" name="password" value="" class="layui-input" <notempty name="obj">placeholder="为空表示不修改密码"</notempty> >
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">联系人姓名</label>
+			<div class="layui-input-inline" >
+				<input type="text" name="merchant_contact" value="{$obj.merchant_contact|default=''}" autocomplete="off" lay-verify="require" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">联系人手机</label>
+			<div class="layui-input-inline" >
+				<input type="text" name="merchant_contactmobile" value="{$obj.merchant_contactmobile|default=''}" autocomplete="off" lay-verify="require" class="layui-input" maxlength="11">
+			</div>
+			<div class="layui-input-inline" style="color: #666; line-height: 35px;" ></div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">商家地址</label>
+			<div class="layui-input-inline">
+				<select name="provence_id" lay-verify="require" lay-filter="provence_id" status="1">
+					<option value="">选择省</option>
+					<volist name="provence" id="val">
+						<option value="{$val.code|default=''}"<if condition="is_numeric($obj.merchant_pcode) && $obj.merchant_pcode eq $val['code']">
+						selected="selected"</if>>{$val.provence}
+						</option>
+					</volist>
+				</select>
+			</div>
+			<div class="layui-input-inline">
+				<select name="city_id" lay-verify="require" lay-filter="city_id" status="1">
+					<option value="">城市</option>
+					<volist name="city" id="val">
+						<option value="{$val.code}"<if condition="is_numeric($obj.merchant_ccode) && $obj.merchant_ccode eq $val['code']">
+						selected="selected"</if>>{$val.city}
+						</option>
+					</volist>
+				</select>
+			</div>
+			<div class="layui-input-inline">
+				<select name="area_id" lay-verify="require" lay-filter="area_id">
+					<option value="">区县</option>
+					<volist name="area" id="val">
+						<option value="{$val.code}"<if condition="is_numeric($obj.merchant_acode) && $obj.merchant_acode eq $val['code']">
+						selected="selected"</if>>{$val.area}
+						</option>
+					</volist>
+				</select>
+			</div>
+			<div class="layui-input-inline" style="width: 300px;">
+				<input type="text" name="address" value="{$obj.merchant_address|default=''}" placeholder="输入地址后自动定位" autocomplete="off"  onkeyup="getPoints()" lay-verify="require" class="layui-input">
+			</div>
+			<input type="hidden" name="ssq" value="{$obj.merchant_ssq|default=''}">
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">地图定位</label>
+			<div class="layui-input-inline" style="width: 800px;">
+				<a class="layui-btn layui-btn-normal"  href="javascript:toggleMap()">地图定位</a> &nbsp; <span style="color: #666;" id="points">{$obj.merchant_lng|default=''},{$obj.merchant_lat|default=''}. 请点击地图，自动拾取经纬度</span>
+				<div class="map">
+					<div id="allmap" style="width: 895px; height: 460px;"></div>
+				</div>
+			</div>
+			<input type="hidden" name="merchant_lng" value="{$obj.merchant_lng|default=''}">
+			<input type="hidden" name="merchant_lat" value="{$obj.merchant_lat|default=''}">
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">门店电话</label>
+			<div class="layui-input-inline">
+				<input type="text" name="merchant_400tel" value="{$obj.merchant_400tel|default=''}" autocomplete="off" lay-verify="require" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">商家logo</label>
+			<div class="layui-input-inline">
+				<input type="file" name="img" textname="merchant_logo" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="点击上传">
+				<input type="hidden" name="merchant_logo" value="{$obj.merchant_logo|default=''}">
+				<div class="img_preview merchant_logo" title="图片预览">
+					<img src="{$obj.merchant_logo|default=''}">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">营业执照</label>
+			<div class="layui-input-inline">
+				<input type="file" name="img" textname="merchant_license" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="点击上传">
+				<input type="hidden" name="merchant_license" value="{$obj.merchant_license|default=''}">
+				<div class="img_preview merchant_license" title="图片预览">
+					<img src="{$obj.merchant_license|default=''}">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">环境图片</label>
+			<div class="layui-input-inline" style="width: auto;">
+				<include  file="public:batchuploadimg" />
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">广告语</label>
+			<div class="layui-input-inline" style="width:80%;">
+				<textarea class="layui-textarea" id="merchant_slogan" autocomplete="off" name="merchant_slogan" style="width: 670px; height: 80px;">{$obj.merchant_slogan|default=''}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">内容介绍</label>
+			<div class="layui-input-inline" style="width: 860px;">
+				<textarea class="ckeditor" style="width: 800px;height: 500px" id="merchant_description" name="merchant_description"  rows="10">{$obj.merchant_description|default=''}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注信息</label>
+			<div class="layui-input-inline" style="width:80%;">
+				<textarea class="layui-textarea" id="merchant_remark" name="merchant_remark" style="width: 670px; height: 50px;">{$obj.merchant_remark|default=''}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+			</div>
+		</div>
+		<input type="hidden" value="{$obj.merchant_id|default=''}" name="id">
+	</form>
+
+</div>
+
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=lWkv6t1TRk3jcGxLLEOedOty"></script>
+<script>
+    UE.getEditor('merchant_description')
+
+
+/**
+ * 创建地图 
+ */
+var map = new BMap.Map("allmap");
+map.enableDragging();
+map.enableScrollWheelZoom();
+point = new BMap.Point('{$obj.merchant_lng|default=104.086302}', '{$obj.merchant_lat|default=30.661057}');
+map.centerAndZoom(point, 12);
+//创建地址解析器实例     
+var myGeo = new BMap.Geocoder();
+
+function initMaker() {
+    map.clearOverlays();
+    map.addOverlay(new BMap.Marker(point));
+}
+initMaker();
+
+//单击获取点击的经纬度
+map.addEventListener("click",function(e){
+  map.clearOverlays();
+  lng = e.point.lng;
+  lat = e.point.lat;
+  map.addOverlay(new BMap.Marker(e.point));
+  $('#points').html(lng+', '+lat);
+  $("input[name='merchant_lng']").val(lng);
+  $("input[name='merchant_lat']").val(lat);
+});
+var mapstatus = 1;
+function toggleMap(){
+  if(mapstatus == 0){
+      $('.map').show();
+      mapstatus = 1;
+  }else{
+      //关闭地图
+      $('.map').hide();
+      mapstatus = 0;
+  }
+}
+<notempty name="obj">toggleMap();</notempty>
+function getPoints(){
+   map.clearOverlays();
+   p = $("select[name='provence_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+   c = $("select[name='city_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+   a = $("select[name='area_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+  address = $("input[name='address']").val();
+  myGeo.getPoint(p+c+a+address, function(point){      
+      if (point) {      
+          map.centerAndZoom(point, 16);      
+          map.addOverlay(new BMap.Marker(point));
+          lng = point.lng;
+          lat = point.lat;
+          $('#points').html(lng+', '+lat);
+      }      
+   }, 
+  "北京市");
+}
+
+function fromsubmit(){
+	p = $("select[name='provence_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+    c = $("select[name='city_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+    a = $("select[name='area_id']").siblings('.layui-form-select').find('.layui-anim-upbit').find('.layui-this').text();
+    
+     $("input[name='ssq']").val(p+c+a);
+     return true;
+}
+
+</script>

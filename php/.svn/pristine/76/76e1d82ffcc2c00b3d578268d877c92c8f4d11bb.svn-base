@@ -1,5 +1,0 @@
-/*全局方法
- * 
- */
-
-var log = console.log.bind(console); //简写打印台

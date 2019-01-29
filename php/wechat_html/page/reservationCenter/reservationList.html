@@ -292,7 +292,8 @@
 										<div class="goToBtn" @tap="goToFahuo(items.order_id)">去预约</div>
 									</div>
 								</div>
-								<div class="shopTime">商品期限：{{getDateTime(items.startusetime,"Y-MM-dd")}} 至 {{getDateTime(items.endusetime,"Y-MM-dd")}}</div>
+								<div class="shopTime" v-if="items.startusetime">商品期限：{{getDateTime(items.startusetime,"Y-MM-dd")}} 至 {{getDateTime(items.endusetime,"Y-MM-dd")}}</div>
+								<div class="shopTime" v-else>收到商品后，请到订单详情确认收货</div>
 							</div>
 							<div v-if="items.endtime == 2" class="haveExpired">
 								<img src="../../img/reservationCenter/reservationCenter1.png" />
@@ -334,7 +335,8 @@
 										<div class="goToBtn" @tap="goToINdentDetails(2,items.order_id)">已使用</div>
 									</div>
 								</div>
-								<div class="shopTime">商品期限：{{getDateTime(items.startusetime,"Y-MM-dd")}} 至 {{getDateTime(items.endusetime,"Y-MM-dd")}}</div>
+								<div class="shopTime" v-if="items.startusetime">商品期限：{{getDateTime(items.startusetime,"Y-MM-dd")}} 至 {{getDateTime(items.endusetime,"Y-MM-dd")}}</div>
+								<div class="shopTime" v-else>收到商品后，请到订单详情确认收货</div>
 							</div>
 							<div v-if="items.endtime == 2" class="haveExpired">
 								<img src="../../img/reservationCenter/reservationCenter1.png" />
@@ -522,7 +524,7 @@
 				})
 			};
 			//获取已预约列表
-			getListYes(true);
+//			getListYes(true);
 
 			function getListYes(empty) {
 				$.ajax({
@@ -571,6 +573,10 @@
 					pageData.page[1] = 1;
 					getListYes(true);
 				}
+				$(".mui-scroll").css({
+		        	"transform": "translate3d(0px, 0px, 0px)",
+		        	"transition-duration": "100ms"
+                })
 			})
 			
 			

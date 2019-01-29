@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	</head>
+	<style type="text/css">
+		body {
+			padding: 1rem;
+		}
+		textarea{
+			width: 100%;
+		}
+		input {
+			width: 100%;
+			font-size: 0.533rem;
+			margin-top: 0.4rem;
+		}
+		img{
+			width: 90%;
+			margin-left: 5%;
+		}
+	</style>
+
+	<body>
+		<input class="uploadImg1" type="file" name="positive" accept="image/*" value="身份证接口" />
+		<br/>
+		<textarea cols="" rows="5" id="biao1">用户定义的代码区域</textarea>
+		<input type="button" onClick="copyUrl2()" value="点击复制代码" />
+		<br/>
+		<input class="select" type="file" accept="image/*" onchange="change(this)">
+		<br/>
+		<img id="showImg" src=""/>
+	</body>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript">
+		$('.uploadImg1').on('change', function(e) {
+			var formData = new FormData();
+			formData.append('positive', $('input[name=positive]')[0].files[0]);
+			$.ajax({
+				url: "http://cs.lewan6.ren/api/Upload/upUserAuthenticatePicToOss",
+				method: 'POST',
+				data: formData,
+				contentType: false, // 注意这里应设为false
+				processData: false,
+				cache: false,
+				success: function(data) {
+					console.log(data)
+					$("#biao1").val(data.data.url);
+					$("#showImg").attr({'src':data.data.url});
+				}
+			})
+		});
+
+		function copyUrl2() {
+			var Url2 = document.getElementById("biao1");
+			Url2.select(); // 选择对象
+			document.execCommand("Copy"); // 执行浏览器复制命令
+			console.log($("#biao1").val());
+		}
+		function change (obj) {
+		    if (!obj.files.length) return;
+		    if (obj.files.length > 1) {
+		        alert("只允许上传一张图片!");
+		        return;
+		    }
+		    var file = obj.files[0];
+		    var reader = new FileReader();
+			    reader.onload = function () {
+			        var result = this.result;    //data:base64     
+			        $.ajax({
+						url: "http://cs.lewan6.ren/api/Upload/upStreamUserAuthenticatePicToOss",
+						method: 'POST',
+						data: {
+							scope: "html",
+							stream: result,
+						},
+						success: function(data) {
+							console.log(data)
+							$("#biao1").val(data.data.url);
+							$("#showImg").attr({'src':data.data.url});
+						}
+					})
+			    };
+			    reader.readAsDataURL(file);
+		}
+	</script>
+</html>
