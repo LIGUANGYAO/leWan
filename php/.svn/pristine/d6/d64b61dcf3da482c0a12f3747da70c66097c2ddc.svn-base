@@ -409,6 +409,7 @@ class ProductController extends AdminBaseController {
                 $this->error('发布商品失败');
             }
         }
+
         //1、选择商家；2编辑
         $Cate["category_status"] = array("eq",1);
         $Cate["category_del"]    = array("eq",0);
@@ -433,7 +434,10 @@ class ProductController extends AdminBaseController {
         $obj['product_endtime'] = time()+2592000;
         $obj['product_startusetime'] = time();
         $obj['product_endusetime'] = time()+31536000;
+        $goodsstatus = 1;
+
         $this->assign('obj', $obj);
+        $this->assign('goodsstatus', $goodsstatus);
         $this->assign('action',  url('system/product/add'));
         return $this->display('product/add', true);
     }
@@ -523,12 +527,24 @@ class ProductController extends AdminBaseController {
             $product['maketing'] = Db::name('staff')->field('staff_id,staff_name,staff_tel')->where($umap)->find();
         }
 
+        if ($product["product_isexpress"] == 2){
+            $goodsstatus = 1;
+        }else{
+            if ($product["product_reservation"] == 1){
+                $goodsstatus = 2;
+            }else{
+                $goodsstatus = 1;
+            }
+        }
+
+        $this->assign('goodsstatus', $goodsstatus);
         $this->assign('obj', $product);
         $this->assign('product_id', $this->get('id', 0));
 
         $Cate["category_status"] = array("eq",1);
         $Cate["category_del"]    = array("eq",0);
         $Cate["category_id"]     = array("neq",1);
+
 
         $cates = Db::name('product_category')->field('category_id, category_name')->where($Cate)->select();
         $this->assign('cates', $cates);

@@ -1,0 +1,26 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form" action="{$action}" method="post" enctype="multipart/form-data">
+        <input type="hidden" value="{$id}" name="id">
+
+        <div class="layui-form-item layui-col-sm3">
+            <label class="layui-form-label">退款方式:</label>
+            <div class="layui-input-block">
+                <label><input type="radio"  name="status" value="1" title="退款并退佣金"  checked="checked"></label>
+                <label><input type="radio"  name="status" value="2" title="退佣金不退款" ></label>
+                <label><input type="radio"  name="status" value="3" title="退款不退佣金" ></label>
+            </div>
+        </div>
+
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+    </div>
+</div>
+
+<input type="hidden" value="{$obj.id}" name="id">
+</form>
+
+</div>
+<script>
+
+</script>

@@ -1,0 +1,46 @@
+<div class="page">
+
+
+    <div class="l">
+        <a href="javascript:openWindow('添加新版本','{:url(\'system/Edition/EditionEdit\')}', '40%', '60%')" class="layui-btn"><i class="fa fa-plus"></i> 添加新版本</a>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th nowrap="nowrap">版本型号</th>
+                <th nowrap="nowrap">是否强制更新</th>
+                <th nowrap="nowrap">添加时间</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <volist name="list" id="val">
+                <tr>
+                    <td nowrap="nowrap">{$val.versionnumber}</td>
+                    <td nowrap="nowrap">
+                        <if condition="$val.status eq 1">
+                            否<else />是
+                        </if>
+                    </td>
+                    <td nowrap="nowrap">{$val.addtime|date="Y-m-d H:i:s",###}</td>
+                </tr>
+            </volist>
+
+            </tbody>
+        </table>
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+</script>

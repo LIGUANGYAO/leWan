@@ -1,0 +1,29 @@
+<Request>
+    <transactionName>GET_ORDER</transactionName>
+    <header>
+        <application>getorder</application>
+    </header>
+    <Orders>
+        <main_sn>10001</main_sn>
+        <orders_price>100.00</orders_price>
+        <ticketOrders>
+            <ticketOrder>
+                <order_sn>t2014120400223601</order_sn>
+                <price>100.00</price>
+                <name>测试员</name>
+                <phone>18200535820</phone>
+                <idcard>513435199107270613</idcard>
+                <pay>vm</pay>
+                <nums>1</nums>
+                <appointment>true</appointment>
+                <appointment_date>2019-01-29</appointment_date>
+                <goodsCode>DYT19700101222</goodsCode>
+                <remark>备注</remark>
+            </ticketOrder>
+        </ticketOrders>
+    </Orders>
+    <identityInfo>
+        <corpcode>36542</corpcode>
+        <dealername>lewan</dealername>
+    </identityInfo>
+</Request>

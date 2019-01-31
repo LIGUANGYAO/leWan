@@ -1,0 +1,53 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/useraccount/recharge')}" method="post" enctype="multipart/form-data">
+        <div class="layui-form-item">
+            <label class="layui-form-label">会员账号</label>
+            <div class="layui-input-inline" style="line-height: 37px; color: #2a8a00">
+                {$user.nickname}/{$user.mobile}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">现金余额</label>
+            <div class="layui-input-inline" style="line-height: 37px; color:red;">
+                {$account.account_cash_balance}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">佣金余额</label>
+            <div class="layui-input-inline" style="line-height: 37px; color:red;">
+                {$account.account_commission_balance}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择钱包</label>
+            <div class="layui-input-block">
+                <input type="radio" name="currency" value="cash" title="现金" checked>
+                <input type="radio" name="currency" value="commission" title="佣金" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" >操作类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="act" value="1" title="后台扣款" checked>
+                <input type="radio" name="act" value="2" title="后台充值" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">操作金额</label>
+            <div class="layui-input-inline">
+                <input type="text" name="money" value='' autocomplete="off" placeholder="0" class="layui-input" lay-verify="money">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+
+        <input type="hidden" value="{$user.user_id}" name="user_id">
+    </form>
+
+</div>
+<script>
+</script>

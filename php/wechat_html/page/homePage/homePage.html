@@ -645,15 +645,15 @@
 						<div class="mui-slider">
 							<div class="mui-slider-group mui-slider-loop">
 								<!--支持循环，需要重复图片节点-->
-								<div class="mui-slider-item zuihou mui-slider-item-duplicate" @tap="gotoBanner(items.jump,items.position,items.pr_id,items.route)" v-for="items in homePageBanner.slice(homePageBanner.length-1)">
+								<div class="mui-slider-item zuihou mui-slider-item-duplicate" @tap="gotoBanner(items.jump,items.position,items.pr_id,items.cat_id,items.alt,items.route)" v-for="items in homePageBanner.slice(homePageBanner.length-1)">
 									<img :src="items.pic" />
 								</div>
 
-								<div class="mui-slider-item" @tap="gotoBanner(items.jump,items.position,items.pr_id,items.route)" v-for="items in homePageBanner">
+								<div class="mui-slider-item" @tap="gotoBanner(items.jump,items.position,items.pr_id,items.cat_id,items.alt,items.route)" v-for="items in homePageBanner">
 									<img :src="items.pic" />
 								</div>
 								<!--支持循环，需要重复图片节点-->
-								<div class="mui-slider-item kaishi mui-slider-item-duplicate" @tap="gotoBanner(items.jump,items.position,items.pr_id,items.route)" v-for="items in homePageBanner.slice(0,1)">
+								<div class="mui-slider-item kaishi mui-slider-item-duplicate" @tap="gotoBanner(items.jump,items.position,items.pr_id,items.route,items.cat_id,items.alt,items.route)" v-for="items in homePageBanner.slice(0,1)">
 									<img :src="items.pic" />
 								</div>
 							</div>
@@ -1003,7 +1003,7 @@
 				}
 				
 				//banner跳转
-				function gotoBanner(isJump,isPosition,prId,outerUrl){
+				function gotoBanner(isJump,isPosition,prId,catId,alt,outerUrl){
 					if(isJump == 1){	//是否跳转  1是 2否
 						if(isPosition == 1){	//跳转位置：1商品详情 2外部跳转
 							mui.openWindow({
@@ -1012,6 +1012,10 @@
 						}else if(isPosition == 2){
 							mui.openWindow({
 								url: outerUrl
+							})
+						}else if(isPosition == 3){
+							mui.openWindow({
+								url: "productList.html?cateId=" + catId + "&cateName=" + alt
 							})
 						}
 					}else{
