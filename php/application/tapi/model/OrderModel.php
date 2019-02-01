@@ -12,9 +12,18 @@ namespace app\tapi\model;
 use think\Db;
 
 class OrderModel{
-    const happy_valley_host = 'http://test.123wlx.cn'; //123门票api url
-    const client_id = 'lewan';
-    const client_secret = 'lewan123';
+
+    const happy_valley_host = 'http://api.123menpiao.com'; //123门票api url
+    const client_id = 'fba100bb';//123门票网
+    const client_secret = 'c1bbde2b953e';//123门票网
+//    const happy_valley_host = 'http://test.123wlx.cn'; //123门票api url(测试环境)
+//    const client_id = 'lewan';//123门票网(测试环境)
+//    const client_secret = 'lewan123';//123门票网（测试环境）
+
+    const cloud_getorder_url = 'http://o2o.9uhd.com/v2/ota/getorder'; //欢乐云下单api url
+    const cloud_appid = 'lewan';//欢乐云
+    const corpcode = '36542';//欢乐云企业编号
+    const cloud_secret = '_bP63iCEgqCn4OhseIUYWslB6P_aan7KMR4E073OYsZJJ1FliItFFI3A';//欢乐云
 
     /**
      * 欢乐谷（123门票下单）
@@ -46,4 +55,5 @@ class OrderModel{
             GLog('123门票网分销失败:', Db::name('order')->getLastSql());
         }
     }
+
 }

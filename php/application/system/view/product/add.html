@@ -138,9 +138,9 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">预约类型</label>
                     <div class="layui-input-inline" style="width: 80%">
-                        <label><input type="radio" title="预约制" name="product_reservation" value="1"<if condition="$obj.product_reservation eq '1'"> checked</if> lay-filter="radio1"> </label>
-                        <label><input type="radio" title="免预约" name="product_reservation" value="2"<if condition="$obj.product_reservation eq '2' "> checked</if> lay-filter="radio1"> </label>
-                        <label><input type="radio" title="电话预约" name="product_reservation" value="3"<if condition="$obj.product_reservation eq '3' || !$obj.product_reservation "> checked</if> lay-filter="radio1"> </label>
+                        <label><input type="radio" title="预约制" name="product_reservation" value="1" <if condition="$obj.product_reservation eq '1'"> checked</if> lay-filter="radio1"> </label>
+                        <label><input type="radio" title="免预约" name="product_reservation" value="2" <if condition="$obj.product_reservation eq 2 || !$obj.product_reservation"> checked</if> lay-filter="radio1"> </label>
+                        <label id="phone" class="<if condition="$goodsstatus eq 1 and ($obj.product_isexpress eq 2 or !$obj.product_reservation)">hidden</if>"><input type="radio" title="电话预约" name="product_reservation" value="3" <if condition="$obj.product_reservation eq '3'"> checked</if> lay-filter="radio1"> </label>
                     </div>
                 </div>
 
@@ -153,7 +153,7 @@
                         </if>
                     </div>
                 </div>
-                <div class="layui-form-item <if condition="$obj.product_isexpress eq '2' OR ($obj.product_reservation eq '2' OR $obj.product_reservation eq '3')">hidden</if>" title="product_reservation">
+                <div class="layui-form-item <if condition="$goodsstatus eq 1">hidden</if>" title="product_reservation">
                     <label class="layui-form-label">预约型号</label>
                     <div class="layui-input-inline" style="width:668px;">
                         <input type="text" name="reservationStr" value="{$obj.reservationStr}" placeholder="如：午餐|晚餐；9:00-10:00|14:00-16:00 多个套餐用‘|’分隔" autocomplete="off" class="layui-input">
@@ -164,7 +164,7 @@
                     </div>
                 </div>
                 <!--<div class="layui-form-item <if condition="$obj.product_isexpress neq '1'">hidden</if>" title="product_isexpress">-->
-                <div class="layui-form-item" title="product_isexpress">
+                <div class="layui-form-item <if condition="$goodsstatus eq '1' and ($obj.product_isexpress eq 2 or !$obj.product_reservation)">hidden</if>" title="product_isexpress">
                     <label class="layui-form-label">使用时间</label>
                     <div class="layui-input-inline" style="width: 500px;">
                         <input class="layui-input" name="product_startusetime"  value="{$obj.product_startusetime|date2='Y-m-d',###}" onclick="layui.laydate({elem: this, istime: false, format: 'YYYY-MM-DD'})"placeholder="开始时间" style="width: 120px; display: inline;">
@@ -377,15 +377,25 @@
         });
 
         form.on('radio(radio1)', function(data){
+
             if(data.elem.name == 'product_isexpress'){
                 //到店
                 var yuyue = $('input[name="product_reservation"]:checked').val();
                 if(data.value == 1 && yuyue ==1){
-                    //$("div[title='product_isexpress']").removeClass('hidden');
                     $("div[title='product_reservation']").removeClass('hidden');
+                    $("div[title='product_isexpress']").removeClass('hidden');
+                    $("#phone").removeClass('hidden');
                 }else{
-                    //$("div[title='product_isexpress']").addClass('hidden');
                     $("div[title='product_reservation']").addClass('hidden');
+                    $("div[title='product_isexpress']").removeClass('hidden');
+                    $("#phone").removeClass('hidden');
+                }
+
+                if (data.value == 2){
+                    $("input[name='product_reservation']")[2].checked=false;
+                    $("input[name='product_reservation']")[1].checked=true;
+                    $("div[title='product_isexpress']").addClass('hidden');
+                    $("#phone").addClass('hidden');
                 }
             }
             if(data.elem.name == 'product_reservation'){

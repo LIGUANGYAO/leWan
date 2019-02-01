@@ -13,7 +13,7 @@ use think\Db;
  *  修改备注: [说明本次修改内容]
  */
 class HappyvalleyController extends BaseController {
-    
+
     /**
      * 123门票核销通知处理乐玩订单状态
      */
@@ -44,7 +44,7 @@ class HappyvalleyController extends BaseController {
                 $where['dboss_main_orderno'] = $order_number;
                 $order = Db::name('order')->field('order_status,order_id')->where($where)->find();
                 if(empty($order)){
-                    $this->returnApiData('未找到订单信息'.$sign, 1000002);
+                    $this->returnApiData('未找到订单信息', 1000002);
                 }
                 if($order['order_status'] ==2 ||$order['order_status']==3){
                     $res = Db::table('jay_order')->where(['order_id'=>$order['order_id']])->update(['order_status'=>4,'order_uptime'=>time()]);
@@ -70,9 +70,9 @@ class HappyvalleyController extends BaseController {
                 $this->returnApiData('签名错误！',1000002);
             }
         }else{
-            $this->refund($data);
-
-            #$this->returnApiData('暂不支持其他操作！',1000002);
+          #  $this->refund($data);
+            $this->returnApiData('接收成功！',1000001);
+//            $this->returnApiData('暂不支持其他操作！',1000002);
         }
     }
 

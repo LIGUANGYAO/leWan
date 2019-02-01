@@ -76,7 +76,6 @@ class FinanceModel
         if((isset($_GET['starttime']) && $_GET['starttime']=='') && (isset($_GET['endtime']) && $_GET['endtime']=='')){
             Db::name('manage_finance')->where(['total_tag'=>0])->update($return['zongji']);
         }
-
         $pagination = new PaginationModel();
         $return['page'] = $pagination->getPage($count, $pagenow, $pagesize);
         return $return;

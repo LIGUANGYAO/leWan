@@ -528,8 +528,9 @@ class UserController extends ApiBaseController{
                 $List    = UserModel::getUserFriendList($Where,$filed, $Page,$Psize);//获取我的好友
             }else{ //我的直属好友
                 $Where["reid"] = array("eq",$Uid);
-                $count    = UserModel::UserCount($Where);//获取直属好友人数并且没独立出去
-                $List    = UserModel::getUserFriendList($Where,$filed, $Page,$Psize);//获取我的好友
+                $filed .= ",mobile";
+                $count  = UserModel::UserCount($Where);//获取直属好友人数并且没独立出去
+                $List   = UserModel::getUserFriendList($Where,$filed, $Page,$Psize);//获取我的好友
             }
 
             foreach ($List as $Key => $Val){

@@ -131,6 +131,15 @@ class NotifyModel
             $content = str_replace('{code}', str_replace(',', "\r\n,",$consume_code), $content);
             $content = str_replace('{yxq1}', date('Y-m-d', $order['product_startusetime']), $content);
             $content = str_replace('{yxq2}', date('Y-m-d', $order['product_endusetime']), $content);
+        }elseif($order['order_reservation'] == 3 && $order['order_isexpress'] == 1){
+            //到店电话预约类短信
+            $content = config('cdxx_sms.content_order_by_tel_yuyue');
+            $content = str_replace('{name}', $order['order_fullname'], $content);
+            $content = str_replace('{product}', $order['product_name'], $content);
+            $content = str_replace('{num}', $order['num'], $content);
+            $content = str_replace('{code}', str_replace(',', "\r\n,",$consume_code), $content);
+            $content = str_replace('{yxq1}', date('Y-m-d', $order['product_startusetime']), $content);
+            $content = str_replace('{yxq2}', date('Y-m-d', $order['product_endusetime']), $content);
         }elseif($order['order_reservation'] == 2 && $order['order_isexpress'] == 2){
             //快递商品,免预约
             $content = config('cdxx_sms.content_ordersuccesskuaidi');

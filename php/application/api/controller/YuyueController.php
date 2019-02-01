@@ -40,30 +40,20 @@ class YuyueController extends ApiBaseController
 
             $Punfu = new PubfunController();
             $Punfu->UserLoginStatus($Token,$this->headerData);//用户判断
+            $Uid   = UserModel::UserFindUid($Token);
 
             $OrderAll = array();
+            $OrderId  = "";
 
-            $Uid = UserModel::UserFindUid($Token);
-
-            $Condition[] = array("exp","o.order_status >= 2 and o.order_status < 4");
+            $Condition[] = array("exp","o.order_status = 2");
             $Condition["o.user_id"]           = $Uid;
             $Condition["o.order_reservation"] = 1;
             $Condition["pr.distributiontag"]  = 0;
 
-            //获取预约订单
-            $Orders = OrderModel::OrderReservationList($Condition,$Page,10);
+            $OrdersId = OrderModel::OrderReservationList($Condition,1,999999);
 
-            foreach ($Orders as $Key => $Val){
-                if ($Val["product_endusetime"] < time()){
-                    $EndTime = 2;//订单商品结束时间过期等于2
-                }else{
-                    $EndTime = 1;//订单商品结束时间未过期等于1
-                }
-
+            foreach ($OrdersId as $Key => $Val){
                 if ($Val["express"] == 1){//获取预约到店电子消费码
-
-                    $OrderCode = array();
-
                     $CodeCondition["cc.order_id"] = array("eq",$Val["order_id"]);
                     $CodeCondition["cc.user_id"]  = array("eq",$Uid);
                     $CodeCondition["cc.status"]   = array("eq",1);
@@ -73,55 +63,116 @@ class YuyueController extends ApiBaseController
                     if ($CodeList){
                         foreach ($CodeList as $K => $V){
                             if (!$V["reservation_id"] || ($V["reservation_status"] == 0 || $V["reservation_status"] > 2)){
-                                $Codes["consume_code"] = $V["consume_code"];
-                                $Codes["status"]       = $V["status"];
-                                $OrderCode[]           = $Codes;
+                                if (!$OrderId){
+                                    $OrderId .= "{$Val['order_id']}";
+                                }else{
+                                    $OrderId .= ",{$Val['order_id']}";
+                                }
+                                unset($CodeList);
+                                break;
                             }
                         }
                     }
 
-                    $Count = count($OrderCode);
+                    unset($CodeList);
+                } else{//获取订单预约快递信息
+                    $FahuoCondition["rf.order_id"] = array("eq",$Val["order_id"]);
+                    $FahuoCondition["rf.user_id"]  = array("eq",$Uid);
 
-                    if ($Count){
+                    $Express = OrderModel::OrderReservationFahuoFind($FahuoCondition);
+
+                    if (!$Express){
+                        if (!$OrderId){
+                            $OrderId .= "{$Val['order_id']}";
+                        }else{
+                            $OrderId .= ",{$Val['order_id']}";
+                        }
+                    }
+                }
+            }
+
+            if($OrderId){
+                $Condition[] = array("exp","o.order_id in({$OrderId})");
+                unset($OrdersId);
+
+                //获取预约订单
+                $Orders = OrderModel::OrderReservationList($Condition,$Page,10);
+
+                foreach ($Orders as $Key => $Val){
+
+                    if ($Val["product_endusetime"] < time()){
+                        $EndTime = 2;//订单商品结束时间过期等于2
+                    }else{
+                        $EndTime = 1;//订单商品结束时间未过期等于1
+                    }
+
+                    if ($Val["express"] == 1){//获取预约到店电子消费码
+
+                        $OrderCode = array();
+
+                        $CodeCondition["cc.order_id"] = array("eq",$Val["order_id"]);
+                        $CodeCondition["cc.user_id"]  = array("eq",$Uid);
+                        $CodeCondition["cc.status"]   = array("eq",1);
+
+                        $CodeList  = OrderModel::OrderConsumeCodeList($CodeCondition);
+
+                        if ($CodeList){
+                            foreach ($CodeList as $K => $V){
+                                if (!$V["reservation_id"] || ($V["reservation_status"] == 0 || $V["reservation_status"] > 2)){
+                                    $Codes["consume_code"] = $V["consume_code"];
+                                    $Codes["status"]       = $V["status"];
+                                    $OrderCode[]           = $Codes;
+                                }
+                            }
+                        }
+
+                        $Count = count($OrderCode);
+
+                        if ($Count){
+                            $Data["order_id"]     = $Val["order_id"];
+                            $Data["ordernumber"]  = $Val["ordernumber"];
+                            $Data["express"]      = $Val["express"];
+                            $Data["product_name"] = $Val["product_name"];
+                            $Data["startusetime"] = $Val["product_startusetime"];
+                            $Data["endusetime"]   = $Val["product_endusetime"];
+                            $Data["endtime"]      = $EndTime;
+                            $Data["code_count"]   = $Count;
+                            $Data["code"]         = $OrderCode;
+
+                            $OrderAll[] = $Data;
+                        }
+
+                        unset($CodeList);
+                        unset($OrderCode);
+                        unset($Data);
+                    } else{//获取订单预约快递信息
+
+                        $FahuoCondition["rf.order_id"] = array("eq",$Val["order_id"]);
+                        $FahuoCondition["rf.user_id"]  = array("eq",$Uid);
+
+                        $Express = OrderModel::OrderReservationFahuoFind($FahuoCondition);
+
                         $Data["order_id"]     = $Val["order_id"];
                         $Data["ordernumber"]  = $Val["ordernumber"];
                         $Data["express"]      = $Val["express"];
                         $Data["product_name"] = $Val["product_name"];
                         $Data["startusetime"] = $Val["product_startusetime"];
                         $Data["endusetime"]   = $Val["product_endusetime"];
-                        $Data["endtime"]      = $EndTime;
-                        $Data["code_count"]   = $Count;
-                        $Data["code"]         = $OrderCode;
+                        $Data["endtime"]      = 1;
+                        $Data["code_count"]   = 0;
+                        $Data["code"]         = [];
 
-                        $OrderAll[] = $Data;
+                        if (!$Express){
+                            $OrderAll[] = $Data;
+                        }
+
+                        unset($Express);
+                        unset($Data);
                     }
-
-                    unset($CodeList);
-                    unset($OrderCode);
-                } else{//获取订单预约快递信息
-
-                    $FahuoCondition["rf.order_id"] = array("eq",$Val["order_id"]);
-                    $FahuoCondition["rf.user_id"]  = array("eq",$Uid);
-
-                    $Express = OrderModel::OrderReservationFahuoFind($FahuoCondition);
-
-                    $Data["order_id"]     = $Val["order_id"];
-                    $Data["ordernumber"]  = $Val["ordernumber"];
-                    $Data["express"]      = $Val["express"];
-                    $Data["product_name"] = $Val["product_name"];
-                    $Data["startusetime"] = $Val["product_startusetime"];
-                    $Data["endusetime"]   = $Val["product_endusetime"];
-                    $Data["endtime"]      = 1;
-
-                    if (!$Express){
-                        $OrderAll[] = $Data;
-                    }
-
-                    unset($Express);
                 }
-            }
 
-            unset($Orders);
+                unset($Orders);
+            }
 
             $this->returnApiData("获取成功", 200,$OrderAll);
         }catch (Exception $e){
@@ -145,26 +196,18 @@ class YuyueController extends ApiBaseController
 
             $Punfu = new PubfunController();
             $Punfu->UserLoginStatus($Token,$this->headerData);//用户判断
-
-            $OrderAll = array();
-
             $Uid = UserModel::UserFindUid($Token);
+            $OrderAll = array();
 
             $Condition[] = array("exp"," (o.order_isexpress = 1 or o.order_isexpress = 2 and o.order_reservation = 1) and o.order_status >= 2 and o.order_status <= 4");
             $Condition["o.user_id"]           = $Uid;
             $Condition["o.order_reservation"] = 1;
             $Condition["pr.distributiontag"]  = 0;
 
-            //获取预约订单
-            $Orders = OrderModel::OrderReservationList($Condition,$Page,10);
+            $OrdersId = OrderModel::OrderReservationList($Condition,1,999999);
+            $OrderId  = "";
 
-            foreach ($Orders as $Key => $Val){
-                if ($Val["product_endusetime"] < time()){
-                    $EndTime = 2;//订单商品结束时间过期等于2
-                }else{
-                    $EndTime = 1;//订单商品结束时间未过期等于1
-                }
-
+            foreach ($OrdersId as $Key => $Val){
                 if ($Val["express"] == 1 && $Val["reservation"] == 1){//获取预约到店电子消费码
                     $CodeCondition["cc.order_id"] = array("eq",$Val["order_id"]);
                     $CodeCondition["cc.user_id"]  = array("eq",$Uid);
@@ -174,17 +217,14 @@ class YuyueController extends ApiBaseController
                     if ($CodeList){
                         foreach ($CodeList as $K => $V){
                             if ($V["reservation_status"] == 1 || $V["reservation_status"] == 2){
-                                $Data["order_id"]     = $Val["order_id"];
-                                $Data["ordernumber"]  = $Val["ordernumber"];
-                                $Data["express"]      = $Val["express"];
-                                $Data["product_name"] = $Val["product_name"];
-                                $Data["startusetime"] = $Val["product_startusetime"];
-                                $Data["endusetime"]   = $Val["product_endusetime"];
-                                $Data["endtime"]      = $EndTime;
-                                $Data["consume_code"] = $V["consume_code"];
-                                $Data["status"]       = $V["status"];
+                                if (!$OrderId){
+                                    $OrderId .= "{$Val['order_id']}";
+                                }else{
+                                    $OrderId .= ",{$Val['order_id']}";
+                                }
 
-                                $OrderAll[] = $Data;
+                                unset($CodeList);
+                                break;
                             }
                         }
                     }
@@ -198,23 +238,83 @@ class YuyueController extends ApiBaseController
                     $Express = OrderModel::OrderReservationFahuoFind($FahuoCondition);
 
                     if ($Express){
-                        $Data["order_id"]     = $Val["order_id"];
-                        $Data["ordernumber"]  = $Val["ordernumber"];
-                        $Data["express"]      = $Val["express"];
-                        $Data["product_name"] = $Val["product_name"];
-                        $Data["startusetime"] = $Val["product_startusetime"];
-                        $Data["endusetime"]   = $Val["product_endusetime"];
-                        $Data["endtime"]      = $EndTime;
-                        $Data["deliveryid"]   = $Express["yy_id"];
-
-                        $OrderAll[] = $Data;
+                        if (!$OrderId){
+                            $OrderId .= "{$Val['order_id']}";
+                        }else{
+                            $OrderId .= ",{$Val['order_id']}";
+                        }
                     }
 
                     unset($Express);
                 }
             }
 
-            unset($Orders);
+            if ($OrderId){
+                $Condition[] = array("exp","o.order_id in({$OrderId})");
+                unset($OrdersId);
+
+                //获取预约订单
+                $Orders = OrderModel::OrderReservationList($Condition,$Page,10);
+
+                foreach ($Orders as $Key => $Val){
+                    if ($Val["product_endusetime"] < time()){
+                        $EndTime = 2;//订单商品结束时间过期等于2
+                    }else{
+                        $EndTime = 1;//订单商品结束时间未过期等于1
+                    }
+
+                    if ($Val["express"] == 1 && $Val["reservation"] == 1){//获取预约到店电子消费码
+                        $CodeCondition["cc.order_id"] = array("eq",$Val["order_id"]);
+                        $CodeCondition["cc.user_id"]  = array("eq",$Uid);
+
+                        $CodeList  = OrderModel::OrderConsumeCodeList($CodeCondition);
+
+                        if ($CodeList){
+                            foreach ($CodeList as $K => $V){
+                                if ($V["reservation_status"] == 1 || $V["reservation_status"] == 2){
+                                    $Data["order_id"]     = $Val["order_id"];
+                                    $Data["ordernumber"]  = $Val["ordernumber"];
+                                    $Data["express"]      = $Val["express"];
+                                    $Data["product_name"] = $Val["product_name"];
+                                    $Data["startusetime"] = $Val["product_startusetime"];
+                                    $Data["endusetime"]   = $Val["product_endusetime"];
+                                    $Data["endtime"]      = $EndTime;
+                                    $Data["consume_code"] = $V["consume_code"];
+                                    $Data["status"]       = $V["status"];
+
+                                    $OrderAll[] = $Data;
+                                }
+                            }
+                        }
+
+                        unset($CodeList);
+                    }elseif($Val["express"] == 2 && $Val["reservation"] == 1){//获取订单预约快递信息
+
+                        $FahuoCondition["rf.order_id"] = array("eq",$Val["order_id"]);
+                        $FahuoCondition["rf.user_id"]  = array("eq",$Uid);
+
+                        $Express = OrderModel::OrderReservationFahuoFind($FahuoCondition);
+
+                        if ($Express){
+                            $Data["order_id"]     = $Val["order_id"];
+                            $Data["ordernumber"]  = $Val["ordernumber"];
+                            $Data["express"]      = $Val["express"];
+                            $Data["product_name"] = $Val["product_name"];
+                            $Data["startusetime"] = $Val["product_startusetime"];
+                            $Data["endusetime"]   = $Val["product_endusetime"];
+                            $Data["endtime"]      = $EndTime;
+                            $Data["deliveryid"]   = $Express["yy_id"];
+
+                            $OrderAll[] = $Data;
+                        }
+
+                        unset($Express);
+                    }
+                }
+
+                unset($Orders);
+            }
+
             $this->returnApiData("获取成功", 200,$OrderAll);
         }catch (Exception $e){
             parent::Tpl_Abnormal($e->getMessage());
@@ -1054,7 +1154,9 @@ class YuyueController extends ApiBaseController
             }elseif($payway == 3){
                 $this->returnApiData('银行卡支付尚未开通', 400);
             }elseif($payway == 4){
-                $this->returnApiData('微信app支付尚未开通', 400);
+                $pm  = new Paymodel();
+                $res = $pm->wxAPPPay($orderNo, $order['reservation_addprice'], 'Notify/yuyue');
+                $this->returnApiData('获取成功', 200, ['jsApiParameters'=>$res]);
             }
         }else{
             $this->returnApiData('没有查询到订单信息', 400);

@@ -312,24 +312,26 @@ class OrderController extends AdminBaseController {
             $Cash  = OrderModel::TableName();
             $Cash->startTrans();//开启事务
 
-            if ($OrderFind["commis_first"] > 0){
-                self::OrderRefundCommission($OrderFind,$OrderFind["userid_first"],$OrderFind["commis_first"],$Cash,$Type,0);
-            }
-            if ($OrderFind["commis_second"] > 0){
-                self::OrderRefundCommission($OrderFind,$OrderFind["userid_second"],$OrderFind["commis_second"],$Cash,$Type,0);
-            }
-            if ($OrderFind["commis_operations"] > 0){
-                self::OrderRefundCommission($OrderFind,$OrderFind["userid_operations"],$OrderFind["commis_operations"],$Cash,$Type,0);
+            if ($Status != 3){
+                if ($OrderFind["commis_first"] > 0){
+                    self::OrderRefundCommission($OrderFind,$OrderFind["userid_first"],$OrderFind["commis_first"],$Cash,$Type,0);
+                }
+                if ($OrderFind["commis_second"] > 0){
+                    self::OrderRefundCommission($OrderFind,$OrderFind["userid_second"],$OrderFind["commis_second"],$Cash,$Type,0);
+                }
+                if ($OrderFind["commis_operations"] > 0){
+                    self::OrderRefundCommission($OrderFind,$OrderFind["userid_operations"],$OrderFind["commis_operations"],$Cash,$Type,0);
+                }
+
+                if ($OrderFind["commis_operations_child"] > 0){
+                    self::OrderRefundCommission($OrderFind,$OrderFind["userid_operations_child"],$OrderFind["commis_operations_child"],$Cash,$Type,1);
+                }
+                if ($OrderFind["commis_playerhost_child"] > 0){
+                    self::OrderRefundCommission($OrderFind,$OrderFind["userid_playerhost_child"],$OrderFind["commis_playerhost_child"],$Cash,$Type,1);
+                }
             }
 
-            if ($OrderFind["commis_operations_child"] > 0){
-                self::OrderRefundCommission($OrderFind,$OrderFind["userid_operations_child"],$OrderFind["commis_operations_child"],$Cash,$Type,1);
-            }
-            if ($OrderFind["commis_playerhost_child"] > 0){
-                self::OrderRefundCommission($OrderFind,$OrderFind["userid_playerhost_child"],$OrderFind["commis_playerhost_child"],$Cash,$Type,1);
-            }
-
-            if ($Status == 1){
+            if ($Status == 1 || $Status == 3){
                 $PayRefund = new Paymodel();
 
                 $Order["transaction_id"] = $OrderFind["transaction_id"];
@@ -341,45 +343,49 @@ class OrderController extends AdminBaseController {
                     $Cash->rollback();//失败回滚exit;
                     $this->toError("订单微信退款失败,".json_encode($WeChat,JSON_UNESCAPED_UNICODE ));
                 }
+            }
 
-                $OrderCondition["order_id"]      = $OrderId;
-                $OrderData["order_status"]       = 6;
-                $OrderData["order_refundstatus"] = 3;
+            $OrderCondition["order_id"]      = $OrderId;
+            $OrderData["order_status"]       = 6;
+            $OrderData["order_refundstatus"] = 3;
 
-                $OrderUp = OrderModel::OrderUpDate($OrderCondition,$OrderData);
+            $OrderUp = OrderModel::OrderUpDate($OrderCondition,$OrderData);
 
-                if ($OrderUp === false){
-                    $Cash->rollback();//失败回滚exit;
-                    $this->toError("订单退款修订单状态失败");
-                }
+            if ($OrderUp === false){
+                $Cash->rollback();//失败回滚exit;
+                $this->toError("订单退款修订单状态失败");
+            }
 
-                $RefundData["order_id"]       = $OrderId;
-                $RefundData["user_id"]        = $OrderFind["user_id"];
-                $RefundData["refund_reason"]  = "平台进行退款";
-                $RefundData["refund_status"]  = 3;
-                $RefundData["refund_uptime"]  = time();
-                $RefundData["refund_addtime"] = time();
+            $RefundData["order_id"]       = $OrderId;
+            $RefundData["user_id"]        = $OrderFind["user_id"];
+            $RefundData["refund_reason"]  = "平台进行退款";
+            $RefundData["refund_status"]  = 3;
+            $RefundData["refund_uptime"]  = time();
+            $RefundData["refund_addtime"] = time();
 
-                $RefundAdd = OrderModel::OrderRefundAdd($RefundData);
+            $RefundAdd = OrderModel::OrderRefundAdd($RefundData);
 
-                if ($RefundAdd === false){
-                    $Cash->rollback();//失败回滚exit;
-                    $this->toError("订单退款添加退款申请失败");
-                }
+            if ($RefundAdd === false){
+                $Cash->rollback();//失败回滚exit;
+                $this->toError("订单退款添加退款申请失败");
+            }
 
-                $RecordData["order_id"]      = $OrderId;
-                $RecordData["user_id"]       = $OrderFind["user_id"];
-                $RecordData["refund_no"]     = $OrderFind["transaction_id"];
-                $RecordData["refund_amount"] = $OrderFind["order_totalfee"];
-                $RecordData["refund_time"]   = time();
-                $RecordData["remark"]        = "用户订单退款日志";
+            $RecordData["order_id"]      = $OrderId;
+            $RecordData["user_id"]       = $OrderFind["user_id"];
+            $RecordData["refund_no"]     = $OrderFind["transaction_id"];
+            $RecordData["refund_amount"] = $OrderFind["order_totalfee"];
+            $RecordData["refund_time"]   = time();
+            $RecordData["remark"]        = "用户订单退款日志";
 
-                $RecordAdd = OrderModel::OrderRefundRecordAdd($RecordData);
+            $RecordAdd = OrderModel::OrderRefundRecordAdd($RecordData);
 
-                if ($RecordAdd === false){
-                    $Cash->rollback();//失败回滚exit;
-                    $this->toError("订单退款添加退款记录失败");
-                }
+            if ($RecordAdd === false){
+                $Cash->rollback();//失败回滚exit;
+                $this->toError("订单退款添加退款记录失败");
+            }
+
+
+            if ($Status == 1){
 
                 if ($OrderFind["order_isexpress"] == 1 && $OrderFind["order_reservation"] == 1){
                     foreach ($CodeList as $Key => $Val){
@@ -410,45 +416,6 @@ class OrderController extends AdminBaseController {
                         }
                     }
                 }
-            }else{
-                $OrderCondition["order_id"]      = $OrderId;
-                $OrderData["order_status"]       = 6;
-                $OrderData["order_refundstatus"] = 3;
-
-                $OrderUp = OrderModel::OrderUpDate($OrderCondition,$OrderData);
-
-                if ($OrderUp === false){
-                    $Cash->rollback();//失败回滚exit;
-                    $this->toError("订单退款订单状态修改失败");
-                }
-
-                $RefundData["order_id"]       = $OrderId;
-                $RefundData["user_id"]        = $OrderFind["user_id"];
-                $RefundData["refund_reason"]  = "平台进行退款";
-                $RefundData["refund_status"]  = 3;
-                $RefundData["refund_uptime"]  = time();
-                $RefundData["refund_addtime"] = time();
-
-                $RefundAdd = OrderModel::OrderRefundAdd($RefundData);
-
-                if ($RefundAdd === false){
-                    $Cash->rollback();//失败回滚exit;
-                    $this->toError("订单退款添加退款申请失败");
-                }
-
-                $RecordData["order_id"]      = $OrderId;
-                $RecordData["user_id"]       = $OrderFind["user_id"];
-                $RecordData["refund_no"]     = $OrderFind["transaction_id"];
-                $RecordData["refund_amount"] = $OrderFind["order_totalfee"];
-                $RecordData["refund_time"]   = time();
-                $RecordData["remark"]        = "用户订单退款日志";
-
-                $RecordAdd = OrderModel::OrderRefundRecordAdd($RecordData);
-
-                if ($RecordAdd === false){
-                    $Cash->rollback();//失败回滚exit;
-                    $this->toError("订单退款添加退款记录失败");
-                }
             }
 
             if ($OrderFind["order_isexpress"] == 1){
@@ -474,11 +441,13 @@ class OrderController extends AdminBaseController {
                 }
             }
 
-            $RefundRecord = FinanceModel::refundDecodeData($OrderFind["order_totalfee"]);
+            if ($Status != 3){
+                $RefundRecord = FinanceModel::refundDecodeData($OrderFind["order_totalfee"]);
 
-            if (!$RefundRecord){
-                $Cash->rollback();//失败回滚exit;
-                $this->toError("订单退款统计失败");
+                if (!$RefundRecord){
+                    $Cash->rollback();//失败回滚exit;
+                    $this->toError("订单退款统计失败");
+                }
             }
 
             $Cash->commit();//成功提交事务
@@ -817,11 +786,11 @@ class OrderController extends AdminBaseController {
             $where['p.product_id'] = $productId;
         }
         $where = $this->TimeContrast(strtotime($starttime),strtotime($endtime),"o.order_addtime",$where);
-        $field = "o.order_fullname,o.order_mobile ,p.num,p.product_name,from_unixtime(o.order_addtime,'%Y-%m-%d %H:%i:%s')";
+        $field = "o.order_fullname,o.order_mobile,o.order_idcard,from_unixtime(o.order_plainday,'%Y-%m-%d %H:%i:%s') ,p.num,p.product_name,from_unixtime(o.order_addtime,'%Y-%m-%d %H:%i:%s')";
         $list = Db::name('order o')->join('order_product p','o.order_id=p.order_id','left')
             ->field($field)->where($where)->select();
         if(!empty($list)){
-            $Column    =  array("联系人","联系电话","购买数量","产品名","下单时间");
+            $Column    =  array("联系人","联系电话","身份证","预约（游玩）日期","购买数量","产品名","下单时间");
             $em        = new ExcelModel();
             $Date      = date("Y年m月d日H时i分");
             $em->export($Column,$list,"","下单数据",$Date."下单数据");

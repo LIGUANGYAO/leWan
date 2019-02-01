@@ -101,7 +101,7 @@ class FinanceController extends AdminBaseController
 
 
     private function refreshData($starttime, $endtime, $day){
-        //统计订单数据
+        //统计订单数据,不含退款
         $sql1 ="select ".
             " sum(o.order_totalfee) total_order_business,".
             "   sum(a.payamount) total_order_payfee,".
@@ -112,10 +112,8 @@ class FinanceController extends AdminBaseController
             "    from jay_order o".
             "   left join jay_order_product p on p.order_id = o.order_id".
             "   left join jay_order_affiliated a on a.order_id = o.order_id".
-            "   where  o.order_status>1 and o.order_paytime BETWEEN ".$starttime." and ".$endtime;
+            "   where  o.order_status>1 and o.order_status<5 and o.order_paytime BETWEEN ".$starttime." and ".$endtime;
         $data = Db::query($sql1);
-        $xrwr['record_action'] = 607;
-        $xrwr['record_addtime'] = ['between', $starttime.','.$endtime];
         $data[0]['total_order_commission'] = $data[0]['total_order_commission'];
         //总预约加价金额
         $wr['reservation_status'] = ['gt', 0];

@@ -84,7 +84,7 @@
                         <td class="nowrap">{$val.total_order_addfee|default=0}</td>
                         <td class="nowrap">{$val.total_order_productnum|default=0}</td>
                         <td class="nowrap">{$val.total_order_commission|default=0}</td>
-                        <td class="nowrap">{$val.total_order_payfee-$val.total_order_settle-$val.total_order_commission}</td>
+                        <td class="nowrap">{$val.total_order_payfee-$val.total_order_settle-$val.total_order_commission-$val.total_order_addfee}</td>
                         <td class="nowrap">{$val.total_jiesuan_commission|default=0}</td>
                         <td class="nowrap">{$val.total_order_refund|default=0}</td>
                         <td class="nowrap">{$val.total_deduction_commission|default=0}</td>
@@ -117,7 +117,7 @@
                         <td class="nowrap">{$val.total_order_addfee|default=0}</td>
                         <td class="nowrap">{$val.total_order_productnum|default=0}</td>
                         <td class="nowrap">{$val.total_order_commission|default=0}</td>
-                        <td class="nowrap">{$val.total_order_payfee-$val.total_order_settle-$val.total_order_commission-$val.total_order_refund}</td>
+                        <td class="nowrap">{$val.total_order_payfee-$val.total_order_settle-$val.total_order_commission-$val.total_order_addfee}</td>
                         <td class="nowrap">{$val.total_jiesuan_commission|default=0}</td>
                         <td class="nowrap">{$val.total_order_refund|default=0}</td>
                         <td class="nowrap">{$val.total_deduction_commission|default=0}</td>
@@ -145,7 +145,7 @@
                     <td class="nowrap">{$data.zongji.total_order_addfee|default=0}</td>
                     <td class="nowrap">{$data.zongji.total_order_productnum|default=0}</td>
                     <td class="nowrap">{$data.zongji.total_order_commission|default=0}</td>
-                    <td class="nowrap">{$data.zongji.total_order_payfee-$data.zongji.total_order_settle-$data.zongji.total_order_commission-$data.zongji.total_order_refund}</td>
+                    <td class="nowrap">{$data.zongji.total_order_payfee-$data.zongji.total_order_settle-$data.zongji.total_order_commission-$data.zongji.total_order_addfee}</td>
                     <td class="nowrap">{$data.zongji.total_jiesuan_commission|default=0}</td>
                     <td class="nowrap">{$data.zongji.total_order_refund|default=0}</td>
                     <td class="nowrap">{$data.zongji.total_deduction_commission|default=0}</td>
