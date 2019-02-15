@@ -34,12 +34,13 @@
 		<img id="showImg" src=""/>
 	</body>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="./plugins/serverApi.js?t=201901161450"></script>
 	<script type="text/javascript">
 		$('.uploadImg1').on('change', function(e) {
 			var formData = new FormData();
 			formData.append('positive', $('input[name=positive]')[0].files[0]);
 			$.ajax({
-				url: "http://cs.lewan6.ren/api/Upload/upUserAuthenticatePicToOss",
+				url: API_SERVER + "Upload/upUserAuthenticatePicToOss",
 				method: 'POST',
 				data: formData,
 				contentType: false, // 注意这里应设为false
@@ -70,7 +71,7 @@
 			    reader.onload = function () {
 			        var result = this.result;    //data:base64     
 			        $.ajax({
-						url: "http://cs.lewan6.ren/api/Upload/upStreamUserAuthenticatePicToOss",
+						url: API_SERVER+ "Upload/upStreamUserAuthenticatePicToOss",
 						method: 'POST',
 						data: {
 							scope: "html",

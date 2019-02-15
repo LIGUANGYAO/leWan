@@ -166,7 +166,9 @@ if(browser.versions.android) {
 			dataType: "json", //默认后不显示图片上传中
 			headers: {
 				"product": "wechat",
-				"platform": browserType
+				"platform": browserType,
+				"provincecode": localStorage.getItem("provincecode") || 510000,
+				"citycode": localStorage.getItem("citycode") || 510100
 			},
 			beforeSend: function(XHR) {
 				//提交前回调方法

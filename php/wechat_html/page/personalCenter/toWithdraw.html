@@ -370,7 +370,7 @@
 						mui.toast("请先到个人中心添加银行卡！")
 					}
 				})
-
+				
 				//立即提现
 				var isClick = false;
 				mui("body").on("tap", "#nowWantMonery", function() {
@@ -380,16 +380,11 @@
 						var isSecBank = $(".bankImg").attr("dataVal");
 
 						var isOk = validate(
-							[money, ['required'],
-								['提现金额不能为空']
+							[money, ['required', function() {
+									return money >= minMoney
+								}],
+								['提现金额不能为空', '最低' + minMoney + '元起提']
 							], //金额
-//							[money, ['required', function() {
-//									return money >= minMoney
-//								}, function() {
-//									return money <= parseFloat($("#cashbalance").text())
-//								}],
-//								['提现金额不能为空', '最低' + minMoney + '元起提', '请输入正确的提现金额']
-//							], //金额
 							[isSecBank, [function() {
 									return isSecBank == "1"
 								}],
@@ -413,10 +408,11 @@
 							success: function(data) {
 								log(data)
 								if(data.code == 200) {
-									mui.toast("提现成功，请等待平台审核！");
-									setTimeout(mui.openWindow({
-										url: 'personalCenter.html'
-									}), 1500)
+									mui.alert("您于"+getDateTime(new Date().getTime()/1000,'Y年MM月dd日 hh:mm:ss')+"进行申请提现金额：¥"+money+"，系统1-3个工作日进行 发放，如遇周末节假日则顺延发放。", '申请提现', "我知道了", function() {
+					                    mui.openWindow({
+											url: 'personalCenter.html'
+										})
+					               });
 								} else {
 									mui.toast(data.message);
 									isClick = false;

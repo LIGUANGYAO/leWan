@@ -151,6 +151,12 @@
 				color: #FFFFFF;
 				background-color: #333333;
 			}
+			.mui-toast-container {
+				bottom: 50% !important;
+			}
+			.mui-toast-message{
+				font-size: 0.36rem;
+			}
 		</style>
 	</head>
 
@@ -164,7 +170,7 @@
 					</header>
 					<section>
 						<div class="headerSel">
-							<span class="btn activeBtn"dataVal='1'>预约成功</span>
+							<span class="btn activeBtn"dataVal='1'>消费码列表</span>
 							<span class="btn" dataVal='2'>核销记录</span>
 							<span class="btn" dataVal='3'>过期冻结</span>
 						</div>
@@ -182,7 +188,7 @@
 									<span>电话：{{item.order_mobile}}</span>
 								</div>
 								<div class="cardThree sizeColor">
-									<span>预约日期：{{item.reservation_calendar?getDateTime(item.reservation_calendar,"Y年MM月dd日 hh:mm:ss"):'无'}}</span>
+									<span>预约日期:{{item.reservation_calendar?getDateTime(item.reservation_calendar,"Y年MM月dd日"):'无'}}</span>
 									<span>{{item.yy_property?item.yy_property:''}}</span>
 								</div>
 								<div class="cardFour sizeColor">
@@ -274,7 +280,7 @@
 								pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
 								pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < vueData.pagesize);
 							} else {
-								mui.toast(data.message)
+								mui.toast(data.message, {duration: 'long',type: 'div'})
 							}
 						}
 					});

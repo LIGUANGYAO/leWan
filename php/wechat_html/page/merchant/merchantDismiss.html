@@ -71,7 +71,11 @@
 			$(function() {
 				var token = localStorage.getItem("token");
 				var reservation_id = getUrlParam("reservation_id");
+				var consumerCode = getUrlParam("consumerCode");
+				var isClick = false;
 				mui('body').on('tap', ".footer", function() {
+					if(isClick) return;
+					isClick = true;
 					$.ajax({
 						url: SELLER_SERVER + "/api/index/reservationCancel",
 						async: false,
@@ -87,11 +91,12 @@
 								mui.toast('提交驳回成功，您的反馈我们 会及时转达并通知客户！', {duration: 'long',type: 'div'})
 								setTimeout(function(){
 									mui.openWindow({
-										url:"merchantCenter.html"
+										url: "merchantVerification.html?consumerCode=" + consumerCode
 									})
 								},2000)
 							} else {
-								mui.toast(data.message, {duration: 'long',type: 'div'})
+								mui.toast(data.message, {duration: 'long',type: 'div'});
+								isClick = false;
 							}
 						}
 					});

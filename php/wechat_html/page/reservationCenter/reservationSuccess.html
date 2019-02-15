@@ -114,6 +114,9 @@
 				font-weight: bold;
 				float: left;
 			}
+			.footerBtnTwoMan{
+				width: 100% !important;
+			}
 			/*联系商家*/
 			.modalBox4{
 				display: none;
@@ -219,11 +222,11 @@
 					</div>
 				</div>
 				<div v-if="type == 1 || type == 2" class="footerBtnZreo">
-					<div class="footerBtnOne" @tap="cancelYuyue(yuyueMessage.reservation_id)">
+					<div class="footerBtnOne" v-if="yuyueMessage.status == 2" @tap="cancelYuyue(yuyueMessage.reservation_id)">
 						<i class="iconfont icon-wode"></i>
 						<span>取消预约</span>
 					</div>
-					<div class="footerBtnTwo" @tap="jumpTopMap(yuyueMessage.merchant_lat,yuyueMessage.merchant_lng,yuyueMessage.merchant_address)">
+					<div class="footerBtnTwo" :class="{footerBtnTwoMan : yuyueMessage.status != 2}" @tap="jumpTopMap(yuyueMessage.merchant_lat,yuyueMessage.merchant_lng,yuyueMessage.merchant_address)">
 						<i class="iconfont icon-dingwei"></i>
 						地图导航
 					</div>
@@ -320,7 +323,8 @@
 								success: function(data) {
 									log(data)
 									if(data.code == 200) {
-										mui.toast(data.message, {duration: 'long',type: 'div'})
+										mui.toast(data.message, {duration: 'long',type: 'div'});
+										vueData.yuyueMessage.status = 3;
 									} else {
 										mui.toast(data.message, {duration: 'long',type: 'div'})
 									}
