@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{$title}</title>
+        <meta name="author" content="saltyfishweb.com">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Expires" CONTENT="-1">
+        <meta http-equiv="Cache-Control" CONTENT="no-cache">
+        <meta http-equiv="Pragma" CONTENT="no-cache">
+        <link href="/www/css/main.css?rand={$time}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.0/skins/default/aliplayer-min.css" />
+        <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.0/aliplayer-min.js"></script>
+        <style type="text/css">
+            .prism-player .prism-cover{
+                background-color:none;
+                display:block;
+            }
+
+            .prism-player .prism-marker-text{
+                display:none;
+            }
+        </style>
+    </head>
+<body style="background:#f5f5f5;">
+<div class="prism-player" id="player-con"></div>
+<script>
+    var player = new Aliplayer({
+            "id": "player-con",
+            "source": "https://lw-videostorage.oss-cn-qingdao.aliyuncs.com/{$videoname}.mp4",
+            "width": "100%",
+            "height": "500px",
+            "autoplay": true,
+            "isLive": false,
+            "rePlay": false,
+            "playsinline": true,
+            "preload": true,
+            "controlBarVisibility": "hover",
+            "useH5Prism": true
+        }, function (player) {
+            console.log("播放器创建了。");
+        }
+    );
+</script>
+</body>
+</html>

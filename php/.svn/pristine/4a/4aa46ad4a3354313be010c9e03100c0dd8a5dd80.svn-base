@@ -1,0 +1,414 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>预约成功</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			.header {
+				background-size: 100% 100%;
+				width: 100%;
+				height: 5.333rem;
+				background-color: #FFFFFF;
+				text-align: center;
+				overflow: hidden;
+				color: #FFFFFF;
+			}
+			
+			.headerTitle {
+				margin-top: 2.053rem;
+				font-size: 0.6rem;
+				font-weight: 600;
+			}
+			
+			.headerText {
+				margin-top: 0.533rem;
+				font-size: 0.37rem;
+				font-weight: 400;
+			}
+			
+			.mui-table-view {
+				padding-top: 0.4rem;
+			}
+			
+			.mui-table-view:before {
+				height: 0;
+			}
+			
+			.mui-table-view-cell {
+				font-size: 0.373rem;
+				color: #333333;
+				font-weight: 400;
+			}
+			.tishiBox{
+				background-color: #FFFFFF;
+				overflow: hidden;
+			}
+			.tishi{
+				text-align: center;
+				color: #FF8B30;
+				font-size: 0.32rem;
+				font-weight: 500;
+				margin-top: 1rem;
+			}
+			.tishiMeaasge{
+				padding-left: 0.32rem;
+				padding-right: 0.32rem;
+				font-size: 0.32rem;
+				color: #999999;
+				font-weight: 300;
+				margin-top: 0.426rem;
+			}
+			.footerBtn{
+				width: 100%;
+				height: 1.173rem;
+				line-height: 1.173rem;
+				text-align: center;
+				position: fixed;
+				left: 0;
+				bottom: 0;
+				background-color: #FF8B30;
+				color: #FFFFFF;
+				font-size: 0.373rem;
+				font-weight: bold;
+			}
+			.footerBtnZreo{
+				text-align: center;
+				position: fixed;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+			}
+			.footerBtnOne{
+				width: 28%;
+				float: left;
+				height: 1.173rem;
+				background-color: #FFFFFF;
+				color: #999999;
+				font-size: 0.373rem;
+			}
+			.footerBtnOne>i{
+				display: inline-block;
+				height: 0.473rem;
+				line-height: 0.473rem;
+				font-size: 0.5rem;
+			}
+			.footerBtnOne>span{
+				width: 100%;
+				display: inline-block;
+				height: 0.7rem;
+				line-height: 0.5rem;
+			}
+			.footerBtnTwo{
+				width: 72%;
+				height: 1.173rem;
+				line-height: 1.173rem;
+				background-color: #FF8B30;
+				color: #FFFFFF;
+				font-size: 0.373rem;
+				font-weight: bold;
+				float: left;
+			}
+			.footerBtnTwoMan{
+				width: 100% !important;
+			}
+			/*联系商家*/
+			.modalBox4{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.4);
+				z-index: 30;
+			}
+			.modalCard4{
+				width: 8.613rem;
+				height: 2rem;
+				margin: 0 auto;
+				margin-top: 5rem;
+				border-radius: 0.2rem;
+				overflow: hidden;
+				background-color: #FFFFFF;
+			}
+			
+			.modalBox4Content{
+				height: 2rem;
+				border-radius: 0.2rem;
+				overflow-y: scroll;
+			}
+			.modalBox4Content:after,.modalBox4Content:before{
+				height: 0;
+			}
+			.modalBox4List{
+				height: 1.84rem !important;
+			}
+			.listLeft{
+				float: left;
+				width: 75%;
+			}
+			.shopName4{
+				margin-left: 0.74rem;
+				margin-top: 0.266rem;
+				color: #999999;
+				font-size: 0.32rem;
+				font-weight: 500;
+			}
+			.shopNum4{
+				margin-top: 0.16rem;
+			}
+			.shopNum4>span:nth-child(1){
+				display: inline-block;
+				vertical-align: middle;
+				width: 0.1rem;
+				height: 0.1rem;
+				border-radius: 0.05rem;
+				background-color: #FF8B30;
+				margin-left: 0.3rem;
+			}
+			.shopNum4>span:nth-child(2){
+				display: inline-block;
+				vertical-align: middle;
+				color: #333333;
+				font-size: 0.34rem;
+				font-weight: 700;
+				margin-left: 0.25rem;
+			}
+			.listRight{
+				float: right;
+				height: 1.84rem;
+				text-align: center;
+				width: 25%;
+			}
+			.listRight>img{
+				width: 0.8rem;
+				height: 0.8rem;
+				margin-top: 0.502rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="J_el" v-cloak>
+			<div class="content">
+				<div class="header" style="background-image: url(../../img/reservationCenter/subscribe2.png);">
+					<div class="headerTitle">【 {{ yuyueMessage.merchant_name }} 】</div>
+					<div class="headerText">预约成功</div>
+				</div>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<span class="conName">预约店铺：{{yuyueMessage.merchant_name}}</span>
+					</li>
+					<li class="mui-table-view-cell">
+						<span class="conName">商品规格：{{yuyueMessage.product_property}}</span>
+					</li>
+					<li class="mui-table-view-cell">
+						<span class="conName">预约日期：{{getDateTime(yuyueMessage.calendar,"Y年MM月dd日")}} {{yuyueMessage.property}}</span>
+					</li>
+					<li class="mui-table-view-cell">
+						<span class="conName">预约加收：{{yuyueMessage.addprice}} 元</span>
+					</li>
+				</ul>
+				<div class="tishiBox">
+					<div class="tishi">温馨提示</div>
+					<div class="tishiMeaasge">
+						请准时到店消费，超时请与商家协调服务时间，次日作废，预约当日内所有可预约时段有效 次日作废。
+					</div>
+				</div>
+				<div v-if="type == 1 || type == 2" class="footerBtnZreo">
+					<div class="footerBtnOne" v-if="yuyueMessage.status == 2" @tap="cancelYuyue(yuyueMessage.reservation_id)">
+						<i class="iconfont icon-wode"></i>
+						<span>取消预约</span>
+					</div>
+					<div class="footerBtnTwo" :class="{footerBtnTwoMan : yuyueMessage.status != 2}" @tap="jumpTopMap(yuyueMessage.merchant_lat,yuyueMessage.merchant_lng,yuyueMessage.merchant_address)">
+						<i class="iconfont icon-dingwei"></i>
+						地图导航
+					</div>
+				</div>
+				<div v-else-if="type == 3" class="footerBtn" @tap="jumpTopPro(yuyueMessage.product_id)">再来一单</div>
+			</div>
+			<!--联系商家-->
+			<div class="modalBox4">
+				<div class="modalCard4">
+					<div class="modalBox4Content">
+						<div class="modalBox4List" @tap="callPhone(yuyueMessage.merchant_400tel)">
+							<div class="listLeft">
+								<div class="shopName4">{{yuyueMessage.merchant_name}}</div>
+								<div class="shopNum4">
+									<span></span>
+									<span>{{yuyueMessage.merchant_400tel}}</span>
+								</div>
+							</div>
+							<div class="listRight">
+								<img src="../../img/homePage/productDetails5.png"/>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/clipboard.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script src="../../plugins/getTokenCommon.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = localStorage.getItem("token");
+				var code = getUrlParam("code");
+				var type = getUrlParam("type");
+				
+				var vueData = {
+					yuyueMessage: {},
+					type: 1,
+				}
+				new Vue({
+					el: "#J_el",
+					data: vueData,
+					methods: {
+						jumpTopMap:jumpTopMap,
+						jumpTopPro:jumpTopPro,
+						cancelYuyue: cancelYuyue,
+						callPhone: callPhone,
+					}
+				})
+
+				//获取预约成功信息
+				getYuyue()
+
+				function getYuyue() {
+					$.ajax({
+						url: API_SERVER + "Yuyue/ConsumeBookedReservation",
+						data: {
+							token: token,
+							code: code,
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								pageBian();
+								vueData.yuyueMessage = data.data;
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					});
+				}
+				//拨打电话
+				function callPhone(phone){
+					window.location.href = 'tel://' + phone;
+				}
+				//用户取消预约
+				function cancelYuyue(reId){
+					mui.confirm('如需取消预约请致电商家进行沟通，若商家同意取消预约，您可再次选择其他时段进行预约消费，取消预约以商家沟通为准', '提示', ['否', '是'], function(e) {
+						if(e.index == 1) {
+							$.ajax({
+								url: API_SERVER + "Yuyue/ConsumeBookedCancel",
+								data: {
+									token: token,
+									r_id: reId,
+									url: BASE_SERVER + "wechat_html/page/merchant/merchantVerification.html?consumerCode=" + code
+								},
+								success: function(data) {
+									log(data)
+									if(data.code == 200) {
+										mui.toast(data.message, {duration: 'long',type: 'div'});
+										vueData.yuyueMessage.status = 3;
+									} else {
+										mui.toast(data.message, {duration: 'long',type: 'div'})
+									}
+									$('.modalBox4').css({'display':'block'})
+								}
+							});
+						} else {
+							log("我不同意取消！")
+						}
+					})
+				}
+				mui('body').on('tap', '.modalBox4', function() { //商家电话模态窗
+					$('.modalBox4').hide();
+				})
+				mui('body').on('tap', '.modalCard4', function(event) { //商家电话模态窗冒泡
+					event.stopPropagation();
+				})
+				//判断从预约中心过来还是订单详情
+				function pageBian(){
+					if(type === "1") { //预约中心
+						document.title = '预约成功';
+						vueData.type = 1;
+						$(".headerText").text("预约成功");
+					} else if(type === "2") { //订单详情
+						document.title = '已预约';
+						vueData.type = 2;
+						$(".headerText").text("已预约");
+					} else if(type === "3") { //订单详情
+						document.title = '已使用';
+						vueData.type = 3;
+						$(".headerText").text("已使用");
+					}
+				}
+				//页脚跳转
+				var isClickMap = false;
+				function jumpTopMap(lat,lng,address){
+					var poi = bd2gcj(lng,lat)
+					log(poi.lat + "==" + poi.lng);
+					
+					if(isClickMap) return;
+					isClickMap = true;
+					
+					getWechatSignature(location.href.split('#')[0]);
+					wx.ready(function() {
+						wx.openLocation({
+							latitude: parseFloat(poi.lat),
+							longitude: parseFloat(poi.lng),
+							name: '商家地址',
+							address: address,
+							scale: 12,
+							infoUrl: '',
+							success: function(res) {
+								log('打开了微信地图');
+								isClickMap = false;
+							},
+							fail: function(res) {
+								isClickMap = false
+								alert(JSON.stringify(res));
+							}
+						})
+					});
+				}
+				
+				//百度转火星
+				function bd2gcj(lng,lat) {
+					var M_PI = 3.14159265358979324;
+					var x_pi = M_PI * 3000.0 / 180.0;
+					
+					var poi = {};
+					var x = lng - 0.0065, y = lat - 0.006;
+					var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
+					var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
+					poi.lng = z * Math.cos(theta);
+					poi.lat = z * Math.sin(theta);
+					return poi;
+				}
+				//跳转商品详情
+				function jumpTopPro(id){
+					mui.openWindow({
+						url: BASE_SERVER + "wechat_html/page/homePage/homePage.html"
+					})
+				}
+			})
+		</script>
+	</body>
+
+</html>

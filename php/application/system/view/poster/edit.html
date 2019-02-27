@@ -1,0 +1,42 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form" action="{:url('Poster/PosterAppend')}" method="post" enctype="multipart/form-data">
+        <input type="hidden" value="{$obj.id}" name="id">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序:</label>
+            <div class="layui-input-inline layui-col-sm5">
+                <input type="text" name="poster[sort]" value="{$obj.sort}" lay-verify="require|number" tips="请输入数字" lay- class="layui-input">
+                <div class="layui-form-mid layui-word-aux"> 数字越小越在前</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item ">
+            <label class="layui-form-label">是否启用:</label>
+            <div class="layui-input-inline layui-col-sm3">
+                <label><input type="radio"  name="poster[status]" value="1" title="是"  <if condition="$obj.status eq 1">checked="checked"</if> ></label>
+                <label><input type="radio"  name="poster[status]" value="2" title="否"  <if condition="$obj.status eq 2">checked="checked"<elseif condition="$obj.status neq 1"/>checked="checked"</if> ></label>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">海报图片:</label>
+            <div class="layui-input-inline">
+                <input type="file" name="img" textname="pic" class="layui-upload-file" lay-ext="jpg|png|gif" lay-title="点击上传">
+                <input type="hidden" name="pic" value="{$obj.pic}">
+                <div class="img_preview pic" title="图片预览"><img src="{$obj.pic}"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+
+        <input type="hidden" value="{$obj.id}" name="id">
+    </form>
+
+</div>
+
+<script>
+</script>

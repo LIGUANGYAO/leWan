@@ -1,0 +1,312 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>预约订单</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/leWan.css" rel="stylesheet" />
+	<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+	<link href="../../fonts/iconfont.css" rel="stylesheet" />
+	<style type="text/css">
+		body{
+			margin-bottom: 1.4rem !important;
+		}
+		header{
+			width: 100%;
+			height: 0.746rem;
+			line-height: 0.746rem;
+			font-size: 0.373rem;
+			font-weight: 400;
+			color: #FFFFFF;
+			background-color: #C8051D;
+		}
+		section{
+			background-color: #139F97;
+			padding: 0.32rem !important;
+			min-height: 100vh;
+		}
+		.header,.footer{
+			background-color: #FFFFFF;
+		}
+		.header>div{
+			color: #333333;
+			height: 1.253rem;
+			line-height: 1.253rem;
+			font-size: 0.373rem;
+			font-weight: 400;
+			border-bottom: 1px solid #F2F2F2;
+			margin-left: 0.3rem;
+			padding-left: 0.1rem;
+			padding-right: 0.2rem;
+		}
+		.header>div:last-child{
+			border: none !important;
+		}
+		.header{
+			border-top-left-radius: 0.1rem;
+			border-top-right-radius: 0.1rem;
+		}
+		.footer{
+			color: #139F97;
+			padding: 0.3rem 0.3rem 0.2rem 0.3rem;
+			border-bottom-left-radius: 0.1rem;
+			border-bottom-right-radius: 0.1rem;
+		}
+		.header>.shopName{
+			padding-top: 0.2rem;
+			height: auto !important;
+			line-height: 0.8rem !important; 
+		}
+		.header>.code{
+			color: #139F97;
+			font-weight: 500;
+		}
+		.guigeName{
+			margin-left: 0.2rem;
+			font-weight: 600;
+		}
+		section>img{
+			width: 100%;
+			display: block;
+		}
+		
+		.footer>div:first-child{
+			height: 1.253rem;
+			line-height: 1.253rem;
+			font-size: 0.426rem;
+			font-weight: 600;
+			border-bottom: 1px solid #F2F2F2;
+		}
+		.footer>div:nth-child(2){
+			padding: 0.2rem 0;
+		}
+		.footer>div:nth-child(2)>span:nth-child(1){
+			font-size: 0.373rem;
+			font-weight: 600;
+		}
+		.footer>div:nth-child(2)>span:nth-child(2){
+			font-size: 0.32rem;
+			font-weight: 400;
+		}
+		.merMes{
+			width: 100%;
+			height: 3.546rem;
+			margin-top: 0.533rem;
+			border-radius: 0.1rem;
+			background-color: #FFFFFF;
+			font-size: 0.36rem;
+			font-weight: 400;
+			padding: 0.2rem;
+		}
+		footer{
+			width: 100%;
+			height: 1.4rem;
+			font-size: 0.426rem;
+			font-weight: 600;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			z-index: 10;
+		}
+		
+		.sureDestroy{
+			width: 100%;
+			color: #FFFFFF;
+			background-color: #FF8B30;
+			line-height: 1.4rem;
+		}
+		.applyForReservation{
+			width: 100%;
+			color: #FFFFFF;
+			background-color: #FF8B30;
+			line-height: 1.4rem;
+		}
+		.applyForOne{
+			width: 100%;
+			color: #FFFFFF;
+			background-color: #E1B872;
+			line-height: 1.4rem;
+		}
+		.sureMis{
+			width: 100%;
+			color: #FFFFFF;
+			background-color: #E1B872;
+			line-height: 1.4rem;
+		}
+		.mui-toast-container {
+			bottom: 50% !important;
+		}
+		.mui-toast-message{
+			font-size: 0.36rem;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="J_el" v-cloak>
+		<header class="mui-text-center headerBox" v-if="codeDetails.reservation_cancel_status == 1 || codeDetails.reservation_cancel_status == 2">
+			<marquee behavior="alternate" scrollamount="3" direction="left">{{codeDetails.reservation_cancel_tit || null}}</marquee>
+		</header>
+		<header class="mui-text-center headerBox" v-else-if="codeDetails.reservation_status_tit">
+			<marquee behavior="alternate" scrollamount="3" direction="left">{{codeDetails.reservation_status_tit || null}}</marquee>
+		</header>
+		<section>
+			<div class="header">
+				<div class="shopName">商品名称： {{codeDetails.product_name}}</div>
+				<div class="code">消费电子码： {{codeDetails.consume_code}}</div>
+				<div class="">订单编号： {{codeDetails.order_no}}</div>
+				<div class="">支付时间： {{getDateTime(codeDetails.order_paytime,"Y年MM月dd日 hh:mm:ss")}}</div>
+				<div class="" v-if="codeDetails.reservation_calendar">预约日期： {{codeDetails.reservation_calendar == 0? '未预约' : getDateTime(codeDetails.reservation_calendar,"Y年MM月dd日")}} <span class="guigeName">{{codeDetails.reservation_property || null}}</span></div>
+				<div class="" v-if="codeDetails.reservation_calendar">额外加收： {{codeDetails.addprice}}元</div>
+			</div>
+			<img src="../../img/merchant/merchantVerification1.jpg"/>
+			<div class="footer">
+				<div class="">
+					<span class="mui-pull-left">姓名：{{codeDetails.order_fullname}}</span>
+					<span class="mui-pull-right">电话：{{codeDetails.order_mobile}}</span>
+				</div>
+				<div class="">
+					<span>用户备注: </span>
+					<span>{{codeDetails.order_leave || '无备注信息'}}</span>
+				</div>
+			</div>
+			<textarea class="merMes" placeholder="填写备注信息" v-model="textareaText"></textarea>
+		</section>
+		<footer class="">
+			<div v-if="codeDetails.reservation_cancel_status == 1" class="mui-text-center applyForReservation" @tap="applyForReservation()">取消预约</div>
+			<div v-else-if="codeDetails.reservation_cancel_status == 2" class="mui-text-center applyForOne">已同意取消</div>
+			<div v-else-if="codeDetails.status==1" class="mui-text-center sureDestroy" @tap="destroyCode(codeDetails.order_id,codeDetails.consume_code_id)">确认安排</div>
+			<div v-else-if="codeDetails.status==2" class="mui-text-center sureMis">已使用</div>
+			<div v-else-if="codeDetails.status==3" class="mui-text-center sureMis">已过期</div>
+			<div v-else-if="codeDetails.status==4" class="mui-text-center sureMis">已冻结</div>
+		</footer>
+	</div>
+	<script src="../../plugins/flexible.js"></script>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script src="../../plugins/jquery-2.1.4.js"></script>
+	<script src="../../plugins/vue.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../plugins/swiper-4.3.3.min.js"></script>
+	<script src="../../plugins/serverApi.js?t=201901161450"></script>
+	<script src="../../plugins/getTokenCommon.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var token = localStorage.getItem("token");
+			var consumerCode = getUrlParam("consumerCode");
+			var isCancel = getUrlParam("isCancel") || null;
+			var reservation_id = getUrlParam("reservation_id") || null;
+			
+			var vueData = {
+				codeDetails: {},
+				textareaText:'',
+				isCancel: isCancel,
+			}
+			new Vue({
+				el: "#J_el",
+				data: vueData,
+				methods: {
+					destroyCode: destroyCode,
+					applyForReservation: applyForReservation,
+				}
+			})
+			//电子码查询
+			getCodeMes()
+			function getCodeMes(){
+				$.ajax({
+					url: SELLER_SERVER + "/api/index/searchOrder",
+					async: false,
+					data: {
+						token: token,
+						code: consumerCode,
+						isCancel: isCancel,//是否是取消预约操作:1是；2不是
+						reservation_id: reservation_id,//预约ID
+					},
+					success: function(data) {
+						log(data)
+						if(data.code == 200) {
+							vueData.codeDetails = data.data;
+							//判断申请取消预约
+							if(data.data.reservation_cancel_status == 1){
+								applyForReservation();
+							}else if(data.data.reservation_cancel_status == 2){
+								mui.toast("此单已同意取消预约,感谢您的理解!", {duration: 'long',type: 'div'})
+							}else if(data.data.reservation_cancel_status == 3){
+								mui.toast(data.data.reservation_cancel_tit, {duration: 'long',type: 'div'})
+							}
+						} else {
+							mui.alert(data.message,'提示','知道了')
+						}
+					}
+				});
+			}
+			
+			//申请取消预约函数
+			function applyForReservation(){
+				mui.confirm('该客户申请取消当日的预约消费，同意取消后该客户可重新预约日期进行消费', '取消预约', ['驳回', '同意'], function(e) {
+					if(e.index == 1) {
+						$.ajax({
+							url: SELLER_SERVER + "/api/index/reservationCancel",
+							data: {
+								token: token,
+								reservation_id: reservation_id,	//预约ID
+								status: 1, //操作类型：1通过；2驳回
+								remark: '无备注信息'
+							},
+							success: function(data) {
+								log(data)
+								if(data.code == 200) {
+									mui.toast(data.message, {duration: 'long',type: 'div'});
+									setTimeout(function(){
+										mui.openWindow({
+											url: "merchantVerification.html?consumerCode=" + consumerCode +"&reservation_id=" + reservation_id +"&isCancel=" + 1
+										})
+									},2000)
+								} else {
+									mui.toast(data.message, {duration: 'long',type: 'div'})
+								}
+							}
+						});
+					} else {
+						mui.openWindow({
+							url:"merchantDismiss.html?reservation_id=" + reservation_id +"&consumerCode=" + consumerCode
+						})
+					}
+				})
+			}
+			//核销电子码
+			function destroyCode(order_id,codeid){
+				mui.confirm('确定预约该订单？', '提示', ['否', '是'], function(e) {
+					if(e.index == 1) {
+						$.ajax({
+							url: SELLER_SERVER + "/api/index/destroyOrder",
+							data: {
+								token: token,
+								order_id: order_id,
+								codeid: codeid,
+								oredr_remark: vueData.textareaText
+							},
+							success: function(data) {
+								log(data)
+								if(data.code == 200) {
+									mui.toast(data.message)
+									setTimeout(function(){
+										mui.openWindow({
+											url:"merchantCenter.html"
+										})
+									},2000)
+								} else {
+									mui.toast(data.message, {duration: 'long',type: 'div'})
+								}
+							}
+						});
+					} else {
+						log("我不同意安排！")
+					}
+				})
+			}
+		})
+	</script>
+</body>
+</html>

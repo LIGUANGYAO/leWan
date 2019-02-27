@@ -1,0 +1,325 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>预约订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				background-color: #FFFFFF;
+			}
+			
+			header {
+				width: 100%;
+				height: 4.72rem;
+				position: relative;
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+			}
+			
+			.scanQRCodeBtn {
+				width: 1.6rem;
+				height: 1.6rem;
+				float: right;
+				margin-right: 0.7rem;
+				margin-top: 0.4rem;
+			}
+			
+			.search {
+				width: 8.2rem;
+				height: 2.6rem;
+				position: absolute;
+				bottom: -1.3rem;
+				left: 0.9rem;
+				background-color: #FFFFFF;
+				border-radius: 0.15rem;
+				box-shadow: 0 0 10px 1px #999999;
+			}
+			
+			.search>input {
+				display: inline-block;
+				width: 100%;
+				height: 0.6rem;
+				margin-top: 1rem;
+				border: none;
+				font-size: 0.373rem;
+				color: #333333;
+				padding-left: 1rem;
+			}
+			
+			body section {
+				margin-top: 2.2rem;
+				padding: 0.32rem;
+			}
+			
+			.headerSel {
+				width: 9.36rem;
+				height: 1.15rem;
+				border: 1px solid #139F97;
+				border-radius: 0.1rem;
+				overflow: hidden;
+			}
+			
+			.headerSel>span {
+				width: 33.33%;
+				float: left;
+				display: inline-block;
+				line-height: 1.15rem;
+				color: #139F97;
+				font-size: 0.373rem;
+				font-weight: 300;
+				text-align: center;
+			}
+			
+			.activeBtn {
+				background-color: #139F97 !important;
+				color: #FFFFFF !important;
+			}
+			.mui-content {
+			    background-color: #FFFFFF !important;
+			}
+			.cardBox {
+				margin-top: 0.32rem;
+			}
+			
+			.cardList {
+				margin-top: 0.32rem;
+				box-shadow: 0 0 10px 1px #F2F2F2;
+				border-radius: 0.1rem;
+				padding-left: 0.533rem;
+			}
+			.cardList>div{
+				border-bottom:1px solid #F2F2F2;
+				height: 1.546rem;
+				line-height: 1.546rem;
+			}
+			.cardOne{
+				font-size: 0.426rem;
+			}
+			.cardOne>span:nth-child(1){
+				display: inline-block;
+				width: 70%;
+				height: 1.546rem;
+				line-height: 1.546rem;
+				color: #333333;
+				font-weight: 500;
+				float: left;
+			}
+			.cardOne>span:nth-child(2){
+				display: inline-block;
+				width: 30%;
+				height: 1.546rem;
+				line-height: 1.546rem;
+				text-align: center;
+				font-weight: 600;
+				float: left;
+			}
+			.sizeColor{
+				font-size: 0.373rem;
+				font-weight: 400;
+				color: #333333;
+			}
+			
+			.cardTwo>span:nth-child(2){
+				float: right;
+				margin-right: 0.4rem;
+			}
+			.cardThree>span:nth-child(2){
+				margin-left: 0.3rem;
+				font-weight: 600;
+			}
+			.cardFour{
+				height: 1.7rem;
+				padding-top: 0.1rem;
+				line-height: 0.6rem !important;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+			}
+			.statusOne{
+				color: #FFFFFF;
+				background-color: #FF8B30;
+			}
+			.statusTwo{
+				color: #FFFFFF;
+				background-color: #333333;
+			}
+			.mui-toast-container {
+				bottom: 50% !important;
+			}
+			.mui-toast-message{
+				font-size: 0.36rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="J_el" v-cloak>
+					<header class="mui-text-center" style="background-image: url('http://oss.lewan6.ren/uploads/html/f13d7f33b675d6e2c85ef35815eec34.png');">
+						<div class="scanQRCodeBtn"></div>
+						<div class="search"><input type="text" v-model="keywords" id="keywords" placeholder="输入电子码/手机尾号/姓名进行查询" /></div>
+					</header>
+					<section>
+						<div class="headerSel">
+							<span class="btn activeBtn"dataVal='1'>消费码列表</span>
+							<span class="btn" dataVal='2'>核销记录</span>
+							<span class="btn" dataVal='3'>过期冻结</span>
+						</div>
+						<div class="cardBox" v-if="orderList.length">
+							<div class="cardList" v-for="item in orderList">
+								<div class="cardOne">
+									<span>{{item.consume_code}}</span>
+									<span class="statusOne" v-if="statusText == 1" @tap="jumpToYuyue(item.consume_code)">安排</span>
+									<span class="statusTwo" v-if="statusText == 2">已核销</span>
+									<!--电子码状态：1未使用； 2已使用；3已过期; 4冻结-->
+									<span class="statusTwo" v-if="statusText == 3">{{item.code_status == 4?'已冻结':'已过期'}}</span>
+								</div>
+								<div class="cardTwo sizeColor">
+									<span>姓名：{{item.order_fullname}}</span>
+									<span>电话：{{item.order_mobile}}</span>
+								</div>
+								<div class="cardThree sizeColor">
+									<span>预约日期:{{item.reservation_calendar?getDateTime(item.reservation_calendar,"Y年MM月dd日"):'无'}}</span>
+									<span>{{item.yy_property?item.yy_property:''}}</span>
+								</div>
+								<div class="cardFour sizeColor">
+									<span>备注：</span>
+									<span>{{item.order_leave}}</span>
+								</div>
+							</div>
+						</div>
+						<!--空状态时-->
+						<div class="lw-empty" style="display: block;" v-else>
+							<div class="lw-empty-box">
+								<div class="lw-empty-flex">
+									<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+									<div class="lw-empty-test">暂无订单 ！</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js?t=201901161450"></script>
+		<script src="../../plugins/getTokenCommon.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				mui.init({
+					pullRefresh: {
+						container: '#refreshContainer',
+						up: {
+							height: 50,
+							auto: false,
+							contentnomore: '没有更多数据了',
+							contentrefresh: '正在加载...',
+							callback: function() {
+								setTimeout(function() {
+									getIndent();
+								}, 100);
+							}
+						}
+					}
+				});
+				var token = localStorage.getItem("token");
+				var vueData = {
+					page: 1,
+					pagesize: 10,
+					keywords: '',
+					orderList: [],
+					statusText: 1
+				}
+				new Vue({
+					el: "#J_el",
+					data: vueData,
+					methods: {
+						jumpToYuyue:jumpToYuyue
+					}
+				})
+
+				//获取数据
+				getIndent(true);
+
+				function getIndent(empty) {
+					$.ajax({
+						url: SELLER_SERVER + "/api/index/yyOrderList",
+						async: false,
+						data: {
+							token: token,
+							keywords: vueData.keywords,
+							type: $('.activeBtn').attr('dataVal'), //1待核销；2已过期；3核销记录
+							page: vueData.page,
+							pagesize: vueData.pagesize
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								var lists = data.data;
+								empty && vueData.orderList.splice(0);
+								for(var i = 0; i < lists.length; i++) {
+									vueData.orderList.push(lists[i]);
+								}
+								vueData.page++;
+								var pullRefresh = mui('#refreshContainer').pullRefresh();
+								pullRefresh && pullRefresh.endPulldownToRefresh && pullRefresh.endPulldownToRefresh();
+								pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
+								pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < vueData.pagesize);
+							} else {
+								mui.toast(data.message, {duration: 'long',type: 'div'})
+							}
+						}
+					});
+				}
+				//安排客户
+				function jumpToYuyue(code){
+					mui.openWindow({
+						url:"merchantVerification.html?consumerCode=" + code
+					})
+				}
+				//输入框实时监听
+				$("#keywords").bind("input propertychange", function() {
+					var d = $("#keywords").val();
+					vueData.page = 1;
+					getIndent(true);
+				})
+				//切换按钮
+				mui('body').on("tap", '.btn', function() {
+					$('.btn').removeClass('activeBtn');
+					$(this).addClass('activeBtn');
+					vueData.statusText = $(this).attr('dataVal');
+					vueData.page = 1;
+					getIndent(true);
+				})
+				//扫一扫
+				mui('body').on("tap", '.scanQRCodeBtn', function() {
+					getWechatSignature(location.href.split('#')[0]);
+					wx.ready(function() {
+						wx.scanQRCode({
+							needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+							scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+							success: function(res) {
+								var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+							}
+						});
+					});
+				})
+			})
+		</script>
+	</body>
+
+</html>

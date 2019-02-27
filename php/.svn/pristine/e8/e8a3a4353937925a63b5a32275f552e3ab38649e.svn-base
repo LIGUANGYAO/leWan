@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+
+<div class="page">
+    <div class="l">
+        <a href="javascript:openWindow('添加邀请海报','{:url(\'system/Poster/PosterAppend\')}', '30%', '50%')" class="layui-btn"><i class="fa fa-plus"></i> 添加邀请海报</a>
+    </div>
+    <div class="clear"></div>
+    <div class="layui-field-title"></div>
+
+    <div class="layui-form layui-row layui-col-space10">
+        <volist name="data" id="val">
+            <div class="layui-col-md2">
+                <div class="db" colspan="2">
+                    <span>编辑时间:{$val.addtime|date="Y-m-d H:i",###}</span>
+                    <a href="javascript:openWindow('编辑邀请海报','{:url(\'system/Poster/PosterAppend\',array('id'=>$val.id))}', '30%', '50%')" class="editIcon r" title="编辑邀请海报"> <i class="fa fa-edit"></i></a>
+                </div>
+                <div class="clear"></div>
+                <div class="layui-field-title"></div>
+                <img src="{$val.pic}" style="height:400px; width:280px;" />
+            </div>
+        </volist>
+    </div>
+
+</div>
