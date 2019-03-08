@@ -1,0 +1,135 @@
+[已更新]
+1.user表增加字段viewtimes_all、viewtimes_everyday、upgrade_time
+说明：
+每次浏览更新viewtimes_all+1；viewtimes_everyday+1；
+新用户授权注册 || 注册超级会员 || 后台升级其他等级 || 自动升级等级 更新upgrade_time
+
+2.product表加product_numlimit_num
+
+
+
+-- ----------------------------
+-- (用户数据统计)-昨日
+-- [活跃率，注册量]Procedure structure for `Timertask_user_tongji`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `Timertask_user_tongji`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Timertask_user_tongji`(OUT error INT)
+  BEGIN
+
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error = 1; # 异常错误
+    SET error = 0;
+    SET @execStarttime = UNIX_TIMESTAMP();
+
+    # 今日tag
+    SET @day_tag = FROM_UNIXTIME(UNIX_TIMESTAMP(), '%Y%m%d');
+    SET @yesterday_tag2 = FROM_UNIXTIME(UNIX_TIMESTAMP(), '%Y-%m-%d');
+    # 当月tang
+    SET @month_tag = FROM_UNIXTIME(unix_timestamp(), '%Y%m');
+    # 昨日tag
+    SET @yesterday_tag = DATE_FORMAT(DATE_ADD(@day_tag, INTERVAL -1 DAY), '%Y%m%d');
+    # 昨日的月份tag
+    SET @yesterdaymonth_tag = DATE_FORMAT(DATE_ADD(@day_tag, INTERVAL -1 DAY), '%Y%m');
+    #1.初始化记录
+
+    INSERT IGNORE INTO jay_user_tongji(tag) VALUES (@yesterdaymonth_tag);
+    INSERT IGNORE INTO jay_user_tongji(tag) VALUES (@yesterday_tag);
+
+    ######################总数###########################
+    #1.浏览次数
+    SET @viewtimes = 0;
+    SET @v_sql = CONCAT('select sum(viewtimes_everyday) into @viewtimes from jay_user;');
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+    #2.用户总数
+    SET @userallcount = 0;
+    SET @v_sql = CONCAT("select count(*) into @userallcount from jay_user where reg_time < UNIX_TIMESTAMP('",@yesterday_tag2,"');");
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    #4.新增普通会员总数
+    SET @user1count = 0;
+    SET @v_sql = CONCAT("select count(*) into @user1count from jay_user where `level`=1 and FROM_UNIXTIME(upgrade_time,'%Y%m%d')='",@yesterday_tag,"';");
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    #5.新增超级会员总数
+    SET @user2count = 0;
+    SET @v_sql = CONCAT("select count(*) into @user2count from jay_user where `level`=2 and FROM_UNIXTIME(upgrade_time,'%Y%m%d')='",@yesterday_tag,"';");
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    #6.新增分享达人总数
+    SET @user3count = 0;
+    SET @v_sql = CONCAT("select count(*) into @user3count from jay_user where `level`=3 and FROM_UNIXTIME(upgrade_time,'%Y%m%d')='",@yesterday_tag,"';");
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    #7.新增运营达人总数
+    SET @user4count = 0;
+    SET @v_sql = CONCAT("select count(*) into @user4count from jay_user where `level`=4 and FROM_UNIXTIME(upgrade_time,'%Y%m%d')='",@yesterday_tag,"';");
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    #8.新增玩主总数
+    SET @user5count = 0;
+    SET @v_sql = CONCAT("select count(*) into @user5count from jay_user where `level`=5 and FROM_UNIXTIME(upgrade_time,'%Y%m%d')='",@yesterday_tag,"';");
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    #***************************************更新统计数据***********************************************
+    #do-2.当月统计
+    SET @v_sql = CONCAT('UPDATE jay_user_tongji SET viewtimes = ', @viewtimes);
+    SET @v_sql = CONCAT(@v_sql, ' ,userallcount = ', @userallcount);
+    SET @v_sql = CONCAT(@v_sql, ' ,user1count = ', @user1count);
+    SET @v_sql = CONCAT(@v_sql, ' ,user2count = ', @user2count);
+    SET @v_sql = CONCAT(@v_sql, ' ,user3count = ', @user3count);
+    SET @v_sql = CONCAT(@v_sql, ' ,user4count = ', @user4count);
+    SET @v_sql = CONCAT(@v_sql, ' ,user5count = ', @user5count);
+    SET @v_sql = CONCAT(@v_sql, ' WHERE tag = ', @yesterday_tag);
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    #do-3.昨日统计
+    SET @v_sql = CONCAT('UPDATE jay_user_tongji SET viewtimes = viewtimes+', @viewtimes);
+    SET @v_sql = CONCAT(@v_sql, ' ,userallcount = ', @userallcount);
+    SET @v_sql = CONCAT(@v_sql, ' ,user1count = user1count+ ', @user1count);
+    SET @v_sql = CONCAT(@v_sql, ' ,user2count = user2count+', @user2count);
+    SET @v_sql = CONCAT(@v_sql, ' ,user3count = user3count+', @user3count);
+    SET @v_sql = CONCAT(@v_sql, ' ,user4count = user4count+', @user4count);
+    SET @v_sql = CONCAT(@v_sql, ' ,user5count = user5count+', @user5count);
+    SET @v_sql = CONCAT(@v_sql, ' WHERE tag = ', @yesterdaymonth_tag);
+    PREPARE statement FROM @v_sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+    #重置每日浏览量
+    update jay_user set viewtimes_everyday = 0;
+
+    #记录执行日志
+    set @logId = addTimerlog('Timertask_user_tongji', error, @execStarttime);
+  END;
+;;
+DELIMITER ;
+
+
+
+-- ----------------------------
+-- Event structure for `timer_usertongji`
+-- [两小时定时确认收货]
+-- ----------------------------
+DROP EVENT IF EXISTS `timer_usertongji`;
+DELIMITER ;;
+CREATE DEFINER=`lewan2018`@`%` EVENT `timer_usertongji`
+ON SCHEDULE EVERY 1 DAY STARTS '2018-12-02 00:02:00'
+ON COMPLETION PRESERVE ENABLE
+DO call Timertask_user_tongji(@error);
+;;
+DELIMITER ;

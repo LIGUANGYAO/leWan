@@ -1,0 +1,151 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+<div class="layui-field-title"></div>
+
+    <div class="l" >
+        <form class="layui-form" action="{:url('Userownerapply/UserOwnerApplyList')}">
+            <input type="text" name="type" value="{$type}" hidden="hidden">
+
+            <div class="layui-form-item col-sm-12">
+                <div class="layui-input-block ">
+                    <input type="text" name="title"  placeholder="用户昵称/联系电话/联系姓名/城市名/小区名"  class="layui-input" value="{$query['title']}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">审核时间:</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="trialstarttime" value="{$query['trialstarttime']|default=''}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                </div>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="trialendtime" value="{$query['trialendtime']|default=''}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                </div>
+
+                <label class="layui-form-label">申请时间:</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="starttime" value="{$query['starttime']|default=''}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                </div>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="endtime" value="{$query['endtime']|default=''}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                </div>
+
+                <label class="layui-form-label">盟主等级:</label>
+                <div class="layui-input-inline ">
+                    <select name="ownerstatus" lay-verify="require">
+                        <option value="0">全部盟主</option>
+                        <option value="1" <if condition="$query.ownerstatus eq 1"> selected="selected"</if>>实习盟主</option>
+                        <option value="2" <if condition="$query.ownerstatus eq 2"> selected="selected"</if>>乐玩盟主</option>
+                    </select>
+                </div>
+
+                <span class="input-group-btn">
+                      <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+                </span>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="clear"></div>
+    <div class="layui-field-title"></div>
+
+    <div class="layui-input-block">
+        <div class="layui-btn-group search">
+            <a href="{:url('Userownerapply/UserOwnerApplyList',array('type'=>0))}"><button class="layui-btn layui-btn-warm">盟主申请中 ({$count.apply})</button></a>
+            <a href="{:url('Userownerapply/UserOwnerApplyList',array('type'=>1))}"><button class="layui-btn layui-btn-danger">盟主驳回({$count.reject})</button></a>
+            <a href="{:url('Userownerapply/UserOwnerApplyList',array('type'=>2))}"><button class="layui-btn">盟主通过 ({$count.adopt})</button></a>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+
+    <div class="layui-form">
+        <if condition="!empty($data.list)">
+            <table class="layui-table" lay-skin="line" >
+                <thead>
+                <tr>
+                    <th >用户头像</th>
+                    <th >用户昵称</th>
+                    <th >联系信息</th>
+                    <th >小区城市</th>
+                    <th >小区名</th>
+                    <if condition="$type eq 2">
+                        <th >盟主等级</th>
+                    </if>
+                    <th >审核时间</th>
+                    <th >申请时间</th>
+                    <th width="100">操作</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <volist name="$data['list']" id="val">
+                    <tr class="">
+                        <td >
+                            <if condition="$val.userthumb">
+                                <img src="{$val.userthumb}" style="width: 80px;height: 80px;">
+                                <else />
+                                <img src="{$val.avatar}" style="width: 80px;height: 80px;">
+                            </if>
+
+                        </td>
+                        <td >
+                            <if condition="$val.username">
+                                {$val.username}
+                                <else />
+                                {$val.nickname}
+                            </if>
+                        </td>
+                        <td >
+                            {$val.realname}<br/>
+                            {$val.phone}
+                        </td>
+                        <td>{$val.fullname}</td>
+                        <td>{$val.community_name}</td>
+
+                        <if condition="$type eq 2">
+                            <td>
+                                <if condition="$val.ownerstatus eq 1">
+                                    <label class="layui-badge layui-bg-green">实习盟主</label>
+                                    <else />
+                                    <label class="layui-badge">乐玩盟主</label>
+                                </if>
+                            </td>
+                        </if>
+                        <td>
+                            <if condition="!empty($val['uptime'])">
+                                {$val.uptime|date="Y-m-d H:i",###}
+                            </if>
+                        </td>
+                        <td >{$val.addtime|date="Y-m-d H:i",###}</td>
+                        <td >
+                            <div class="layui-btn-group">
+                                <a href="javascript:openWindow('盟主详情', '{:url(\'system/Userownerapply/UserownerapplyEdit\', array(\'id\'=>$val[\'apply_id\'],\'type\'=>$type))}', '50%', '80%')" class="layui-btn layui-btn-sm" title="盟主详情">
+                                    <i class="layui-icon"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <else />
+                <div class="layui-field-title"></div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        暂无数据w(ﾟДﾟ)w
+                    </div>
+                </div>
+        </if>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="l"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+</div>
+<script>
+
+</script>

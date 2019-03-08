@@ -1,0 +1,32 @@
+<div class="page">
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+            <tr>
+                <th class="nowrap">会员昵称</th>
+                <th class="nowrap">锁粉时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="fans" id="val">
+                <tr>
+                    <td class="nowrap">{$val.nickname}</td>
+                    <td class="nowrap">{$val.lock_time|date2='Y-m-d H:i:s',###}</td>
+                </tr>
+            </volist>
+
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,202 @@
+<div class="page">
+
+    <div>
+        <table class="huizong">
+            <tr>
+                <td>平台会员现金余额</td>
+                <td>{$total.cash_balance}元</td>
+                <td>平台会员佣金总余额</td>
+                <td>{$total.commission_balance}元</td>
+                <td>今日结算佣金</td>
+                <td>{$jrjs_amount}元</td>
+                <td>提现中金额</td>
+                <td>{$txz_amount}元</td>
+                <td>提现成功金额</td>
+                <td>{$txcg_amount}元</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="l" style="width:90%; ">
+    <form class="layui-form search" action="{:url('system/finance/table')}" name="sform">
+
+        <div class="layui-inline">
+            <label class="layui-form-indexlabel">日期范围</label>
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="starttime" autocomplete="off" value="{$starttime}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+	        </div>
+	        <div class="layui-input-inline">
+	            <input class="layui-input" name="endtime" autocomplete="off" value="{$endtime}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+	        </div>
+        </div>
+
+        <button class="layui-btn layui-btn-small">搜 &nbsp; 索</button>
+        <a class="layui-btn layui-btn-small" onclick="javascript:exportExcel();">导出excel</a>
+
+    </form>
+    </div>
+
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+                <tr>
+                    <th width="20" ><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th class="nowrap">日期</th>
+                    <th class="nowrap">代收总额</th>
+                    <th class="nowrap">代收总额</th>
+                    <th class="nowrap">优惠券总面额</th>
+                    <th class="nowrap">结算总额</th>
+                    <th class="nowrap">预约加价总额</th>
+                    <th class="nowrap">推广产品销售数量</th>
+                    <th class="nowrap">佣金总额</th>
+                    <th class="nowrap">升级奖励佣金</th>
+                    <th class="nowrap">后台充值佣金</th>
+                    <th class="nowrap">毛利</th>
+                    <th class="nowrap">已结算佣金总额</th>
+                    <th class="nowrap">退款总额</th>
+                    <th class="nowrap">退款扣除会员佣金</th>
+                    <th class="nowrap">退款扣除会员现金</th>
+                    <th class="nowrap">提现总额</th>
+                    <th class="nowrap">手续费总额</th>
+                    <th class="nowrap">商家结算总金额</th>
+                    <th class="nowrap">交易用户量</th>
+                    <th class="nowrap">活跃用户量</th>
+                    <!--
+                    <th class="nowrap">新增超级会员数量</th>
+                    <th class="nowrap">新增分销达人数量</th>
+                    <th class="nowrap">新增运营达人人数</th>
+                    -->
+                </tr>
+            </thead>
+            <tbody>
+                <volist name="data.list" id="val">
+                    <tr>
+                        <td class="nowrap"><input type="checkbox" name="id[]" value="{$val.finance_id}" lay-skin="primary" lay-filter="idchoose"></td>
+                        <td class="nowrap">{$val.total_tag}
+                            <if condition="$now neq $val['total_tag']">
+                                <a href="javascript:jisuan('{$val.total_tag}');">刷新</a></td>
+                            </if>
+                        <td class="nowrap">{$val.total_order_business|default=0}</td>
+                        <td class="nowrap">{$val.total_order_payfee|default=0}</td>
+                        <td class="nowrap">{$val.total_order_coupon|default=0}</td>
+                        <td class="nowrap">{$val.total_order_settle|default=0}</td>
+                        <td class="nowrap">{$val.total_order_addfee|default=0}</td>
+                        <td class="nowrap">{$val.total_order_productnum|default=0}</td>
+                        <td class="nowrap">{$val.total_order_commission|default=0}</td>
+                        <td class="nowrap">{$val.total_reward|default=0}</td>
+                        <td class="nowrap">{$val.total_rewardback|default=0}</td>
+                        <td class="nowrap">{$val.total_order_payfee-$val.total_order_settle-$val.total_order_commission-$val.total_order_addfee-$val.total_reward-$val.total_rewardback}</td>
+                        <td class="nowrap">{$val.total_jiesuan_commission|default=0}</td>
+                        <td class="nowrap">{$val.total_order_refund|default=0}</td>
+                        <td class="nowrap">{$val.total_deduction_commission|default=0}</td>
+                        <td class="nowrap">{$val.total_deduction_cash|default=0}</td>
+                        <td class="nowrap">{$val.total_withdraw|default=0}</td>
+                        <td class="nowrap">{$val.total_taxfee|default=0}</td>
+                        <td class="nowrap">{$val.total_merchant_settle|default=0}</td>
+                        <td class="nowrap">{$val.total_business_user|default=0}</td>
+                        <td class="nowrap">{$val.total_active_user|default=0}</td>
+                        <!--
+                        <td class="nowrap">{$val.total_level2_user|default=0}</td>
+                        <td class="nowrap">{$val.total_level3_user|default=0}</td>
+                        <td class="nowrap">{$val.total_level4_user|default=0}</td>
+                        -->
+                    </tr>
+                </volist>
+
+                <!--月份排序-->
+                <volist name="lear5month" id="val">
+                    <tr>
+                        <td class="nowrap"><input type="checkbox" name="id[]" value="{$val.finance_id}" lay-skin="primary" lay-filter="idchoose"></td>
+                        <td class="nowrap">{$val.total_tag}
+                            <if condition="$now neq $val['total_tag']">
+                                <a href="javascript:jisuan2('{$val.total_tag}');">刷新</a></td>
+                        </if>
+                        <td class="nowrap">{$val.total_order_business|default=0}</td>
+                        <td class="nowrap">{$val.total_order_payfee|default=0}</td>
+                        <td class="nowrap">{$val.total_order_coupon|default=0}</td>
+                        <td class="nowrap">{$val.total_order_settle|default=0}</td>
+                        <td class="nowrap">{$val.total_order_addfee|default=0}</td>
+                        <td class="nowrap">{$val.total_order_productnum|default=0}</td>
+                        <td class="nowrap">{$val.total_order_commission|default=0}</td>
+                        <td class="nowrap">{$val.total_reward|default=0}</td>
+                        <td class="nowrap">{$val.total_rewardback|default=0}</td>
+                        <td class="nowrap">{$val.total_order_payfee-$val.total_order_settle-$val.total_order_commission-$val.total_order_addfee-$val.total_reward-$val.total_rewardback}</td>
+                        <td class="nowrap">{$val.total_jiesuan_commission|default=0}</td>
+                        <td class="nowrap">{$val.total_order_refund|default=0}</td>
+                        <td class="nowrap">{$val.total_deduction_commission|default=0}</td>
+                        <td class="nowrap">{$val.total_deduction_cash|default=0}</td>
+                        <td class="nowrap">{$val.total_withdraw|default=0}</td>
+                        <td class="nowrap">{$val.total_taxfee|default=0}</td>
+                        <td class="nowrap">{$val.total_merchant_settle|default=0}</td>
+                        <td class="nowrap">{$val.total_business_user|default=0}</td>
+                        <td class="nowrap">{$val.total_active_user|default=0}</td>
+                        <!--
+                        <td class="nowrap">{$val.total_level2_user|default=0}</td>
+                        <td class="nowrap">{$val.total_level3_user|default=0}</td>
+                        <td class="nowrap">{$val.total_level4_user|default=0}</td>
+                        -->
+                    </tr>
+                </volist>
+
+                <tr>
+                    <td class="nowrap"></td>
+                    <td class="nowrap">总计</td>
+                    <td class="nowrap">{$data.zongji.total_order_business|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_order_payfee|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_order_coupon|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_order_settle|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_order_addfee|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_order_productnum|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_order_commission|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_reward|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_rewardback|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_order_payfee-$data.zongji.total_order_settle-$data.zongji.total_order_commission-$data.zongji.total_order_addfee-$data.zongji.total_reward-$data.zongji.total_rewardback}</td>
+                    <td class="nowrap">{$data.zongji.total_jiesuan_commission|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_order_refund|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_deduction_commission|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_deduction_cash|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_withdraw|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_taxfee|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_merchant_settle|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_business_user|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_active_user|default=0}</td>
+                    <!--
+                    <td class="nowrap">{$data.zongji.total_level2_user|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_level3_user|default=0}</td>
+                    <td class="nowrap">{$data.zongji.total_level4_user|default=0}</td>
+                    -->
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+<script>
+    function jisuan(date) {
+        layer.load(2,{shade:0.3});
+        post({"day":date}, "{:url('finance/jisuan')}", function (res) {
+            window.location.reload();
+        });
+    }
+    function jisuan2(date) {
+        layer.load(2,{shade:0.3});
+        post({"day":date}, "{:url('finance/jisuan2')}", function (res) {
+            window.location.reload();
+        });
+    }
+
+    function exportExcel() {
+        var param = $("form[name='sform']").serialize();
+        window.open('/system/finance/exporttable.html?'+param);
+    }
+</script>
+
+</div>

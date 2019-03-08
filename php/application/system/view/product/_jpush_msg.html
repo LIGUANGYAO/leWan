@@ -1,0 +1,90 @@
+<form class="layui-form " action="/system/product/productPush" id="myform" method="post">
+    <input type='hidden'  name="product_id" value="{$product_id}">
+    <br>
+    <br>
+    <div class="layui-form-item">
+        <label class="layui-form-label">推送平台</label>
+        <div class="layui-input-inline" id="touser" style="width: 70%;">
+            <!--0 APP；1安卓；2IOS；3微信-->
+            <input type="radio" name="touser" value="0" checked lay-filter="touser" lay-skin="touser" title="安卓/IOS">
+            <input type="radio" name="touser" value="1"  lay-filter="touser" lay-skin="touser" title="安卓">
+            <input type="radio" name="touser" value="2"  lay-filter="touser" lay-skin="touser" title="IOS">
+            <input type="radio" name="touser" value="3"  lay-filter="touser" lay-skin="touser" title="微信">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">推送用户</label>
+        <div class="layui-input-inline" id="ulevel" style="width: 70%;">
+            <!--<label>-->
+                <!--推送用户级别：1全部；2超级会员；3分享达人；4运营达人，5玩主-->
+                <input type="checkbox" name="ulevel[]" value="1" checked  lay-filter="ulevel" lay-skin="ulevel" title="全部">
+                <input type="checkbox" name="ulevel[]" value="2"  lay-filter="ulevel" lay-skin="ulevel" title="超级会员">
+                <input type="checkbox" name="ulevel[]" value="3"  lay-filter="ulevel" lay-skin="ulevel" title="分享达人">
+                <input type="checkbox" name="ulevel[]" value="4"  lay-filter="ulevel" lay-skin="ulevel" title="运营达人">
+                <input type="checkbox" name="ulevel[]" value="5"  lay-filter="ulevel" lay-skin="ulevel" title="玩主">
+            <!--</label>-->
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block layui-input-block">
+            <button type="submit" class="layui-btn ">推送</button>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    layui.use(['form'], function(){
+        form = layui.form();
+        form.render();
+        form.on('radio(touser)', function(data){
+            //微信只能退送给达人
+            if(data.value == 3){
+                $('#myform input[name="ulevel[]"]').prop("checked", false);
+                $('#myform input[name="ulevel[]"]').eq(2).prop("checked", true);
+                $('#myform input[name="ulevel[]"]').eq(3).prop("checked", true);
+                $('#myform input[name="ulevel[]"]').eq(4).prop("checked", true);
+            }else{
+                $('#myform input[name="ulevel[]"]').prop("checked", false);
+                $('#myform input[name="ulevel[]"]').eq(0).prop("checked", true);
+            }
+            form.render();
+        });
+
+        form.on('checkbox(ulevel)', function(data){
+            var touser = $('#myform input[name="touser"]:checked').val();
+            if(data.elem.checked){
+                if(touser==3 && data.value<3){
+                    console.log('微信只能推送给达人级别')
+                    $(this).prop("checked", false);
+                }
+            }
+            form.render();
+        });
+
+    });
+
+    var flag = false;
+    function sendMsgtoUser($id) {
+        //    if(flag){return false;}
+        var touser = $('#myform input[name="touser"]:checked').val();
+
+        var ulevel = $('#myform input[name="ulevel[]"]:checked').val();
+
+        flag = true;
+        $.post('/system/product/productPush',{'id':$id,'touser':touser,'ulevel':ulevel,'type':1},function (data) {
+            flag=false;
+            layer.msg('提交成功', {icon: 1});
+//            if(data.code!=400){
+//                layer.msg('提交成功', {icon: 1});
+//                parent.location.reload();
+//                layer.closeAll();
+//            }else{
+//                layer.msg(data.msg, {icon: 2});
+//            }
+        })
+    }
+
+</script>

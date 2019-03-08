@@ -1,0 +1,66 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('config/commission')}" method="post" enctype="multipart/form-data">
+
+        <fieldset class="layui-elem-field" style="margin: 20px; width: 90%;">
+            <legend>盟主设置</legend>
+            <div class="layui-field-box">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;">最多熊取:</label>
+                    <div class="layui-input-inline" style="width:160px;">至少
+                        <input type="text" name="first_com_per" value="{$obj.first_com_per}" lay-verify="number" autocomplete="off" placeholder="50" class="layui-input" style="width: 80px; display: inline-block">%
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;">上级佣金比例:</label>
+                    <div class="layui-input-inline" style="width:160px;">至少
+                        <input type="text" name="second_com_per" value="{$obj.second_com_per}" lay-verify="number" autocomplete="off" placeholder="10" class="layui-input" style="width: 80px; display: inline-block">%
+                    </div>
+                    <div class="layui-input-inline" style="width:150px;">最多
+                        <input type="text" name="second_com_per2" value="{$obj.second_com_per2}" lay-verify="number" autocomplete="off" placeholder="20" class="layui-input" style="width: 80px; display: inline-block">%
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;">运营佣金比例:</label>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="operations_com_per" value="{$obj.operations_com_per}" lay-verify="number" autocomplete="off" placeholder="35" class="layui-input" style="width: 80px; display: inline-block">%
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;">运营奖金比例:</label>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="operations_child_per" value="{$obj.operations_child_per}" placeholder="8" autocomplete="off" lay-verify="operations_child_per" class="layui-input" style="width: 80px; display: inline-block">%
+                    </div>
+                    <span class="notice">运营达人拿 直属下级 运营达人佣金比例</span>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;">玩主奖金比例:</label>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="playerhost_child_per" value="{$obj.playerhost_child_per}" placeholder="2" autocomplete="off" lay-verify="number" class="layui-input" style="width: 80px; display: inline-block">%
+                    </div>
+                    <span class="notice">玩主拿 体系全局 运营达人佣金比例</span>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;">直属玩主奖金比例:</label>
+                    <div class="layui-input-inline" style="width:100px;">
+                        <input type="text" name="playerhost_child_zhishu_per" value="{$obj.playerhost_child_zhishu_per}" placeholder="30" autocomplete="off" lay-verify="number" class="layui-input" style="width: 80px; display: inline-block">%
+                    </div>
+                    <span class="notice">玩主拿 体系第一个玩主奖金的比例</span>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+<script>
+
+
+
+
+</script>

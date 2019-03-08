@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>审核状态</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/leWan.css" rel="stylesheet" />
+	<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+	<link href="../../fonts/iconfont.css" rel="stylesheet" />
+	<style type="text/css">
+		body {
+			padding: 0;
+			margin: 0 !important;
+			background-color: #F5F6FA !important;
+			overflow: hidden;
+			min-height: 100vh;
+		}
+		.content_box{
+			width: 9rem;
+			height: 15rem;
+			margin: 0 auto;
+			margin-top: 0.48rem;
+			margin-bottom: 0.6rem;
+			border-radius: 0.2rem;
+			background-color: #FFFFFF;
+			box-shadow:0 0.053rem 0.12rem 0 rgba(0,0,0,0.3);
+			overflow: hidden;
+			position: relative;
+		}
+		.status{
+			background-image: url("http://oss.lewan6.ren/uploads/idcard/20190304/1f4bac1d712d19cffec4be052910e1e8cde67ab4.png");
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
+			width: 3.733rem;
+			height: 1.013rem;
+			text-align: center;
+			line-height: 1.13rem;
+			margin: 0 auto;
+			margin-top: 0.746rem;
+			font-size: 0.413rem;
+			font-weight: 500;
+			color: #FFFFFF;
+		}
+		.activity{
+			display: inline-block;
+			width: 0.653rem;
+			height: 2.2rem;
+			position: absolute;
+			top: 0.866rem;
+			right: 0.706rem;
+		}
+		.status_img{
+			width: 100%;
+			text-align: center;
+		}
+		.status_img>img{
+			display: inline-block;
+			width: 5.76rem;
+			margin-top: 2.293rem;
+		}
+		.hintMessage{
+			padding: 0.48rem 0.6rem;
+			font-size: 0.333rem;
+			font-weight: 400;
+			color: #FF8B30;
+			text-align: center;
+		}
+		.hint_message{
+			color: #999999 !important;
+		}
+		.footer{
+			width: 4.2rem;
+			height: 1.16rem;
+			line-height: 1.16rem;
+			text-align: center;
+			margin: 0 auto;
+			margin-top: 1.066rem;
+			border: 1px solid #FF8B30;
+			border-radius: 0.15rem;
+			color: #FF8B30;
+			font-size: 0.386rem;
+			font-weight: 500;
+		}
+		.footer_message{
+			margin: 0 auto;
+			padding: 0.56rem;
+			color: #333333;
+			font-size: 0.44rem;
+			font-weight: 500;
+		}
+	</style>
+</head>
+
+<body>
+<div class="" id="J_el" v-cloak>
+	<div class="content_box">
+		<div class="status">{{status == 0 ? "已收到申请" : "审核失败"}}</div>
+		<img class="activity" src="http://oss.lewan6.ren/uploads/idcard/20190304/7c1785d19d541ae5733215a9185ca8ef43a88efb.png"/>
+		<div class="status_img">
+			<!--审核失败-->
+			<img v-if="status == 1" src="http://oss.lewan6.ren/uploads/idcard/20190304/9dfb615cc7ed73dd359dc1bbc23fe27417054184.png"/>
+			<!--审核中-->
+			<img v-if="status == 0" src="http://oss.lewan6.ren/uploads/idcard/20190304/2842a6b463751816d8b45ca5c343b2bf439757e0.png"/>
+		</div>
+		<!--审核失败-->
+		<div v-if="status == 1" class="hintMessage">您申请的{{communityName}}小区盟主，由于{{remark}}，所以不能成为该小区盟主，您也可继续努力多多建立属于自己的运营群，来建立自己的人脉。</div>
+		<!--审核中-->
+		<div v-else-if="status == 0" class="hintMessage hint_message">我们正在对您的申请进行审核！</div>
+		
+		
+		<!--审核失败-->
+		<div v-if="status == 1" class="footer" @tap="goToAdd()">选择其他小区</div>
+		<!--审核中-->
+		<div v-else-if="status == 0" class="footer_message">我们的工作人员会尽快联系您，审核通过之后我们会有客服专员对您进行培训。</div>
+		
+	</div>
+</div>
+<script src="../../plugins/flexible.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="../../plugins/jquery-2.1.4.js"></script>
+<script src="../../plugins/vue.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../plugins/swiper-4.3.3.min.js"></script>
+<script src="../../plugins/serverApi.js"></script>
+<script src="../../plugins/getTokenCommon.js"></script>
+<script type="text/javascript">
+	$(function() {
+		var token = localStorage.getItem("token");
+		var status = getUrlParam("status"); //申请状态  0申请中 1审核失败
+		var communityName = getUrlParam("community_name") || "无";//小区名称
+		var remark = getUrlParam("remark") || "无";//驳回理由
+		
+		new Vue({
+			el: "#J_el",
+			data: {
+				status: status,
+				communityName: communityName,
+				remark:remark,
+			},
+			methods: {
+				goToAdd: goToAdd
+			}
+		})
+		
+		mui('body').on('tap', '.activity', function() { //9 活动规则 
+			mui.openWindow({
+				url: "../homePage/articleTemplate.html?msgId="+9
+			})
+		})
+		
+		function goToAdd(){
+			mui.openWindow({	//申请
+				url: "CommunityLeaderApply.html",
+				id: "CommunityLeaderApply.html"
+			})
+		}
+	})
+</script>
+</body>
+
+</html>

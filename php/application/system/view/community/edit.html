@@ -1,0 +1,60 @@
+
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form " action="{:url('system/Community/CommunityEdit')}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="community_id" value="{$data.community_id}"/>
+        <div class="layui-form-item" >
+            <label class="layui-form-label">小区名:</label>
+            <div class="layui-input-block">
+                <input type="text" name="community_name"  lay-verify="require" placeholder="请填写小区名" tips="请填写小区名" autocomplete="off" class="layui-input" value="{$data.community_name}">
+            </div>
+        </div>
+        <div class="layui-form-item" title="num">
+            <label class="layui-form-label">所在城市:</label>
+
+            <div class="layui-input-inline">
+                <select name="provence_id"  lay-filter="provence_id" lay-verify="require">
+                    <option value="0">选择省</option>
+                    <volist name="provence" id="val">
+                        <option value="{$val.code}"<if condition="$query.provence eq $val.code">
+                        selected="selected"</if>>{$val.provence}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="city_id" lay-filter="city_id" lay-verify="require">
+                    <option value="0">选择市</option>
+                    <volist name="city" id="val">
+                        <option value="{$val.code}"<if condition="$query.city eq $val.code">
+                        selected="selected"</if>>{$val.city}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="area_id" lay-filter="area_id" lay-verify="require">
+                    <option value="0">选择区/县</option>
+                    <volist name="area" id="val">
+                        <option value="{$val.code}"<if condition="$query.area eq $val.code">
+                        selected="selected"</if>>{$val.area}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否有效</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="status" lay-skin="switch" lay-text="有效|无效" <if condition="$data.status eq '1'">checked="checked"</if> value="1">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            </div>
+        </div>
+
+        <input type="hidden" value="{$obj.id}" name="id">
+    </form>
+</div>

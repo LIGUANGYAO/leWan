@@ -1,0 +1,96 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2019/2/25
+ * Time: 14:07
+ * 小区模型
+ * 肖亚子
+ */
+
+namespace app\System\model;
+use Think\Db;
+
+class CommunityModel extends BaseModel{
+
+    public static function TableName(){
+        return Db::name("region_community");
+    }
+
+    /**
+     * @param array $Condition  查询条件
+     * @param int $Psize        分页数
+     * @param int $PageSize     分页每页条数
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取小区数据
+     * 肖亚子
+     */
+    public static function CommunityList($Condition = array(),$Psize = 1,$PageSize = 20){
+        $Count = self::TableName()
+                    ->alias("rc")
+                    ->field("rc.community_id,rc.community_name,r.fullname")
+                    ->join("region r","r.id = rc.district_id","left")
+                    ->where($Condition)
+                    ->count();
+
+        $PageCount = ceil($Count/$PageSize);
+
+        $List = self::TableName()
+                    ->alias("rc")
+                    ->field("rc.community_id,rc.community_name,r.fullname")
+                    ->join("region r","r.id = rc.district_id","left")
+                    ->where($Condition)
+                    ->page($Psize, $PageSize)
+                    ->select();
+
+        $PaginaTion = parent::Paging($Count,$Psize,$PageCount,$List);
+
+        return $PaginaTion;
+    }
+
+    /**
+     * @param array $Condition  查询条件
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * 获取小区信息
+     * 肖亚子
+     */
+    public static function CommunityFind($Condition = array()){
+        $Data = self::TableName()->where($Condition)->find();
+
+        return $Data;
+    }
+
+    /**
+     * @param array $Condition  查询条件
+     * @return mixed
+     * 获取小区所在城市的城市id
+     * 肖亚子
+     */
+    public static function CommunityArea($Condition = array()){
+        $Data = Db::name("region")->field("id,parentid")->where($Condition)->find();
+
+        return $Data;
+    }
+
+    /**
+     * @param array $Condition  修改条件
+     * @param $Data             修改内容
+     * @return int|string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     * 修改小区信息
+     * 肖亚子
+     */
+    public static function CommunityUpdate($Condition = array(),$Data){
+        $Data = self::TableName()->where($Condition)->update($Data);
+
+        return $Data;
+    }
+
+}

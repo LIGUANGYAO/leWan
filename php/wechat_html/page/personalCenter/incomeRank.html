@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>收入排名</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0 !important;
+				background-color: #FFFFFF;
+			}
+			/*头部*/
+			.header{
+				width: 100%;
+				height: 5.706rem;
+				position: relative;
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+				/*background-image: url("http://oss.lewan6.ren/uploads/idcard/20190228/7b9d4a377e72ffedce73ee61eff10cffe8ba27fd.png");*/
+			}
+			.header_number{
+				position: absolute;
+				margin: 3rem 0 0 6.186rem;
+				width: 1.84rem;
+				height: 0.9rem;
+				line-height: 0.9rem;
+				text-align: center;
+				font-size: 0.693rem;
+				font-weight: bold;
+				color: #A8864A;
+				font-family: ;
+			}
+			.caojih{
+				color: #A8864A;
+			}
+			.fenxiangh{
+				color: #868686;
+			}
+			.yunyingh{
+				color: #D19904;
+			}
+			.wanzhuh{
+				color: #100A83;
+			}
+			.content{
+				font-family: "wupan";
+				width: 9.226rem;
+				height: 10.72rem;
+				margin: 0 auto;
+				position: relative;
+				overflow: hidden;
+				top: -1rem;
+				border-radius: 0.2rem;
+				background-color: #FFFFFF;
+				box-shadow: 0px 0.093rem 0.293rem 0px rgba(0,0,0,0.16);;
+			}
+			.content_header{
+				position: relative;
+			}
+			.header_img{
+				width: 1.452rem;
+				height: 1.452rem;
+				border-radius: 0.726rem;
+				position: absolute;
+				left: 0.573rem;
+				top: 0.48rem;
+			}
+			.name{
+				position: absolute;
+				left: 2.266rem;
+				top: 0.68rem;
+				font-size: 0.333rem;
+				font-weight: 300;
+				color: #333333;
+			}
+			.level_name{
+				display: inline-block;
+				width: 2.24rem;
+				height: 0.72rem;
+				border-radius: 0.36rem;
+				line-height: 0.72rem;
+				text-align: center;
+				position: absolute;
+				left: 2.266rem;
+				top: 1.306rem;
+				font-size: 0.333rem;
+				font-weight: 600;
+				color: #FFFFFF;
+			}
+			.rank_num{
+				position: absolute;
+				left: 5.96rem;
+				top: 1.52rem;
+				font-size: 0.32rem;
+				font-weight: 400;
+				color: #9B9B9B;
+			}
+			.rank_fenxi{
+				margin-top: 2.853rem;
+				text-align: center;
+			}
+			.rank_fenxi>img{
+				width: 3.746rem;
+				display: inline-block;
+			}
+			.rank_fenxi>div{
+				margin-top: 0.093rem;
+				font-size: 0.32rem;
+				font-weight: 400;
+				color: #999999;
+			}
+			.num_box{
+				margin-top: 0.8rem;
+			}
+			.num_box>span:nth-child(1){
+				font-size: 0.36rem;
+				font-weight: 400;
+				color: #0A0722;
+				margin-left: 0.48rem;
+			}
+			.num_box>span:nth-child(2){
+				font-size: 0.6rem;
+				font-weight: 600;
+			}
+			.xiangcha{
+				font-size: 0.4rem !important;
+			}
+			.footer{
+				font-size: 0.293rem;
+				color: #CCCCCC;
+				font-weight: 500;
+				margin-top: 0.5rem;
+				text-align: center;
+			}
+			.caojiBack{
+				background:linear-gradient(180deg,rgba(96,96,96,1) 0%,rgba(0,0,0,1) 100%);
+			}
+			.fenxiangBack{
+				background:linear-gradient(180deg,rgba(243,110,122,1) 0%,rgba(133,3,23,1) 100%);
+			}
+			.yunyingBack{
+				background:linear-gradient(180deg,rgba(255,218,78,1) 0%,rgba(222,103,7,1) 100%);
+			}
+			.wanzhuBack{
+				background:linear-gradient(360deg,rgba(18,7,173,1) 0%,rgba(86,94,247,1) 100%);
+			}
+			.caoji{
+				color: #E7B359;
+			}
+			.fenxiang{
+				color: #B70C33;
+			}
+			.yunying{
+				color: #E06C0A;
+			}
+			.wanzhu{
+				color: #494DE9;
+			}
+		</style>
+	</head>
+
+	<body>
+	<div class="" id="J_el" v-cloak>
+		<div class="header" :style="{backgroundImage: 'url(' + imgList[level-2] + ')'}">
+			<div class="header_number" :class="headerColor[level-2]">{{comDet.top || "--"}}</div>
+		</div>
+		<div class="content">
+			<div class="content_header">
+				<img :src="comDet.avatar" class="header_img"/>
+				<span class="name">{{comDet.nickname}}</span>
+				<div class="level_name" :class="backColor[level-2]">{{comDet.level == 2 ? "超级会员" : (comDet.level == 3 ? "分享达人" : (comDet.level == 4 ? "运营达人" : (comDet.level == 5 ? "玩主" : "普通会员"))) }}</div>
+				<span class="rank_num">当前排名：{{comDet.top || "--"}}
+					<i v-if="comDet.bianhua < 0 || comDet.bianhua > 0" class="iconfont" :class="comDet.ranking > 0 ? 'icon-jiantou-copy-copy' : (comDet.ranking < 0 ? 'icon-jiantou' : '')"></i>
+				</span>
+			</div>
+			<div class="rank_fenxi">
+				<img src="http://oss.lewan6.ren/uploads/idcard/20190228/97b6c89cb694d09c3064c6c539d1d04b78c05461.png"/>
+				<div class="">最后一次更新 {{ comDet.addtime || "--" }}</div>
+			</div>
+			<div class="num_box">
+				<span>本月佣金金额：</span>
+				<span :class="fontColor[level-2]">{{comDet.commission_benyue || 0}}</span>
+			</div>
+			<div class="num_box">
+				<span>本月佣金排名：</span>
+				<span :class="fontColor[level-2]">{{comDet.benyue_paiming || "暂未进入排名"}}</span>
+			</div>
+			<div class="num_box">
+				<span>上月佣金排名：</span>
+				<span :class="fontColor[level-2]">{{comDet.shangyue_paiming || "暂未进入排名"}}</span>
+			</div>
+			<div class="num_box">
+				<span>相较第一名业绩比例：</span>
+				<span class="xiangcha" :class="fontColor[level-2]">{{comDet.chaju || "暂无"}}</span>
+			</div>
+		</div>
+		<div class="footer">以上内容最终解释权归乐玩联盟所有</div>
+	</div>
+	<script src="../../plugins/flexible.js"></script>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script src="../../plugins/jquery-2.1.4.js"></script>
+	<script src="../../plugins/vue.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../plugins/swiper-4.3.3.min.js"></script>
+	<script src="../../plugins/serverApi.js"></script>
+	<script src="../../plugins/getTokenCommon.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var token = localStorage.getItem("token");
+			var vueData = {
+				level: 2,
+				comDet: {},
+				imgList: [
+					"http://oss.lewan6.ren/uploads/idcard/20190307/493f31c7e3a31593d23d04963fc82c979d41a574.png",
+					"http://oss.lewan6.ren/uploads/idcard/20190307/6730c49c81f2713ca67dfb488014dc35ad976e50.png",
+					"http://oss.lewan6.ren/uploads/idcard/20190307/a482bac39f842007fd2356df04c8935f0482f506.png",
+					"http://oss.lewan6.ren/uploads/idcard/20190301/5329ba39eb4971438e10df13c75beb44807ea6c3.png"
+				],
+				headerColor:["caojih","fenxiangh","yunyingh","wanzhuh"],
+				fontColor:["caoji","fenxiang","yunying","wanzhu"],
+				backColor:["caojiBack","fenxiangBack","yunyingBack","wanzhuBack"]
+			}
+			new Vue({
+				el: "#J_el",
+				data: vueData,
+				methods: {}
+			})
+			
+			getDetails();
+
+			function getDetails() {
+				$.ajax({
+					url: API_SERVER + "Usercommunityleader/top300",
+					data: {token: token},
+					success: function(data) {
+						log(data)
+						if(data.code == 200) {
+							vueData.level = data.data.level;
+							vueData.comDet = data.data;
+						} else {
+							mui.toast(data.message)
+						}
+					}
+				});
+			}
+		})
+	</script>
+	</body>
+
+</html>

@@ -1,0 +1,201 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: jay
+ * Date: 2018/7/20
+ * Time: 13:53
+ */
+namespace app\common\model;
+use think\Db;
+use think\Request;
+
+
+/**
+ * 支付工具
+ * Class Paymodel
+ * @package app\common\model
+ */
+class Paymodel{
+
+
+    /**
+     * 微信公众号支付-统一下单
+     * @param $openId
+     * @param $orderNo
+     * @param $amount
+     * @param $notifyurl
+     * @param $subject
+     * @param $body
+     * @return \json数据，可直接填入js函数作为参数
+     */
+    public function wxJsPay($openId, $orderNo, $amount, $notifyurl, $subject='乐玩联盟', $body='乐玩联盟'){
+        //调用JSAPI
+        Vendor("WxPay.WxPay#Api");
+        Vendor("WxPay.WxPay#JsApiPay");
+
+        $tools = new \JsApiPay();
+
+        //②、统一下单
+        $input = new \WxPayUnifiedOrder();
+        $input->SetBody($body);
+        $input->SetAttach($subject);
+        $input->SetOut_trade_no($orderNo);
+        $input->SetTotal_fee($amount*100);
+        $input->SetTime_start(date("YmdHis"));
+        $input->SetTime_expire(date("YmdHis", time() + 600));
+        $input->SetGoods_tag("test");
+        $input->SetNotify_url(url($notifyurl, ['payway'=>PayMethod::WxJSApi], true, true));
+        $input->SetTrade_type("JSAPI");
+        $input->SetOpenid($openId);
+        $config = new \WxPayConfig();
+        $order = \WxPayApi::unifiedOrder($config, $input);
+        //统一下单结果
+        //fuck($order);
+        if($order['return_code'] != 'SUCCESS'){
+            ajaxreturn($order['return_msg'], 400);
+        }
+        if($order['result_code'] != 'SUCCESS'){
+            ajaxreturn($order['err_code_des'], 400);
+        }
+        //返回js参数调起支付
+        $jsApiParameters = $tools->GetJsApiParameters($order);
+        return $jsApiParameters;
+    }
+
+
+    /**
+     * 微信APP支付
+     * @param $orderNo
+     * @param $amount
+     * @param $notifyurl
+     * @param string $subject
+     * @param string $body
+     * @return mixed
+     */
+    public function wxAPPPay($orderNo, $amount, $notifyurl, $subject='乐玩联盟', $body='乐玩联盟'){
+        //调用JSAPI
+        Vendor("WxPay.WxPay#Api");
+        Vendor("WxPay.WxPay#Config");
+        Vendor("WxPay.WxPay#AppPay");
+        $config = new \WxPayConfig();
+        $wx = new \Wxpay($config);//实例化微信支付控制器
+        $order = $wx->getPrePayOrder($body, $orderNo, $amount, url($notifyurl, ['payway'=>PayMethod::WxAppNative], true, true));//调用微信支付的方法
+        if($order['return_code'] != 'SUCCESS'){
+            ajaxreturn($order['return_msg'], 400);
+        }
+        if($order['result_code'] != 'SUCCESS'){
+            ajaxreturn($order['err_code_des'], 400);
+        }
+        $payParameter = $wx->getAppPayParameter($order['prepay_id']);
+        return $payParameter;
+    }
+
+
+
+    /**
+     * 处理微信退款
+     * @param $order
+     * @return bool|\成功时返回，其他抛异常
+     */
+    public function wxRefund($order){
+        Vendor("WxPay.WxPay#Api");
+        Vendor("WxPay.WxPay#JsApiPay");
+        try{
+            $transaction_id = $order["transaction_id"];
+            $total_fee = $order["totalfee"]*100;
+            $refund_fee = $order["refundfee"]*100;
+            $input = new \WxPayRefund();
+            $input->SetTransaction_id($transaction_id);
+            $input->SetTotal_fee($total_fee);
+            $input->SetRefund_fee($refund_fee);
+
+            $config = new \WxPayConfig();
+            $input->SetOut_refund_no("sdkphp".date("YmdHis"));
+            $input->SetOp_user_id($config->GetMerchantId());
+
+            $wx=  \WxPayApi::refund($config, $input);
+
+            GLog("Refund",json_encode($wx,JSON_UNESCAPED_UNICODE ));
+            return $wx;
+        } catch(Exception $e) {
+            GLog("Refund",json_decode($e),JSON_UNESCAPED_UNICODE);
+            return false;
+        }
+    }
+
+
+    public function wxWithdrawal(){
+        Vendor("WxPay.WxPay#Api");
+        Vendor("WxPay.WxPay#JsApiPay");
+        try{
+            $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
+            $data['partner_trade_no'] = 'LW18122716030905018143953';
+            $data['openid'] = 'oRSVB5uyiww45nudzxB1ZBF9qGZM';
+            $data['amount'] = 1;
+            $sing=strtoupper(MD5("appid=".WX_APPID."&body=lewan6.ren&device_info=1000&mch_id=".
+                WX_MCHID."&nonce_str=".createNonceStr(32)."&key=".WX_KEY));
+            $data['mch_appid'] = WX_APPID;
+            $data['mchid'] = WX_MCHID;
+            $data['nonce_str'] = createNonceStr(32);
+            $data['sign'] = $sing;
+            $data['check_name'] = 'NO_CHECK';
+            $data['desc'] = '提现测试';
+            $data['spbill_create_ip'] = Request::instance()->ip();
+            $xml =array2xml($data);
+            $wx=  $this->curlPost($url, $xml);
+            dump($wx);
+            exit;
+
+            GLog("Refund",json_encode($wx,JSON_UNESCAPED_UNICODE ));
+            return $wx;
+        } catch(Exception $e) {
+            GLog("Refund",json_decode($e),JSON_UNESCAPED_UNICODE);
+            return false;
+        }
+    }
+
+
+
+    /**
+     * @param string $url       请求路劲
+     * @param string $postData  请求参数
+     * @param array  $useCert   证书
+     * @return mixed
+     */
+    function curlPost($url = '', $postData = '', $useCert = array()){
+        $config = new \WxPayConfig();
+
+        if (is_array($postData)) {
+            $postData = http_build_query($postData);
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30); //设置cURL允许执行的最长秒数
+        if (!empty($useCert)) {
+            $sslCertPath = "";
+            $sslKeyPath = "";
+            $config->GetSSLCertPath($sslCertPath, $sslKeyPath);
+            curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
+            curl_setopt($ch,CURLOPT_SSLCERT, $sslCertPath);
+            curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
+            curl_setopt($ch,CURLOPT_SSLKEY, $sslKeyPath);
+        }
+        if(stripos($url,"https://")!==FALSE){
+            //https请求 不验证证书和host
+            curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        }    else    {
+            curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,TRUE);
+            curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,2);//严格校验
+        }
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
+}

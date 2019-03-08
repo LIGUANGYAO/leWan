@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+    <form class="layui-form" action="{:url('system/Community/CommunityList')}">
+        <div class="layui-form-item ">
+            <div class="layui-input-block layui-col-sm4">
+                <input type="text" name="title"  placeholder="所在城市/社区名"  class="layui-input" value="{$title}">
+            </div>
+            <label class="layui-form-label">城市</label>
+            <div class="layui-input-inline">
+                <select name="provence_id"  lay-filter="provence_id">
+                    <option value="0">选择省</option>
+                    <volist name="provence" id="val">
+                        <option value="{$val.code}"<if condition="$query.provence eq $val.code">
+                        selected="selected"</if>>{$val.provence}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="city_id" lay-filter="city_id">
+                    <option value="0">选择市</option>
+                    <volist name="city" id="val">
+                        <option value="{$val.code}"<if condition="$query.city eq $val.code">
+                        selected="selected"</if>>{$val.city}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="area_id" lay-filter="area_id">
+                    <option value="0">选择区/县</option>
+                    <volist name="area" id="val">
+                        <option value="{$val.code}"<if condition="$query.area eq $val.code">
+                        selected="selected"</if>>{$val.area}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+
+            <span class="input-group-btn">
+           <button type="submit" class="layui-btn"><i class="fa fa-search"></i> 搜索</button>
+            <if condition="$status eq 3">
+                <button type="submit" class="layui-btn layui-btn-small" name="excel" value="1">导出excel</button>
+            </if>
+        </span>
+        </div>
+    </form>
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table" lay-skin="line" >
+            <thead>
+            <tr>
+                <th class="nowrap">所在城市</th>
+                <th>社区名</th>
+                <th class="nowrap">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="data.list" id="val">
+                <tr>
+                    <td class="nowrap">{$val.fullname}</td>
+                    <td style="min-width: 200px; max-width: 200px;">{$val.community_name}</td>
+                    <td class="nowrap">
+                        <a href="javascript:openWindow('编辑小区', '{:url(\'system/Community/CommunityEdit\', array(\'id\'=>$val.community_id))}', '50%', '80%')" class="editIcon" title="编辑小区"><i class="fa fa-edit"></i></a>
+                        <a href="javascript:sure('确定删除这条数据？', '{:url(\'system/Community/CommunityDel\', array(\'id\'=>$val.community_id))}')" class="delIcon" title="删除"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="l"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+</script>
