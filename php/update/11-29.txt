@@ -1,1 +1,0 @@
-1、product_description改成longtext  [已升级]

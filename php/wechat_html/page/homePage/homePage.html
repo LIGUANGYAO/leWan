@@ -833,6 +833,19 @@
 				mui.init({
 					pullRefresh: {
 						container: '#refreshContainer',
+						down: {
+							height: 50, //可选,默认50.触发下拉刷新拖动距离,
+							auto: false, //可选,默认false.自动下拉刷新一次
+							contentdown: '下拉可以刷新', //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+							contentover: '释放立即刷新', //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+							contentrefresh: '正在刷新...', //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+							callback: function() {
+								setTimeout(function() {
+									pageData.page = 1;
+									getProduct(true);
+								}, 100);
+							} //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+						},
 						up: {
 							height: 50,
 							auto: false,
@@ -979,11 +992,14 @@
 						})
 					},
 					mounted: function() {
+//						if(sessionStorage.getItem('scrollTop') > 0){
+//							mui('.mui-scroll-wrapper').scroll().scrollTo(0,'-'+sessionStorage.getItem('scrollTop'),200);
+//						}
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
 						document.querySelector('.mui-scroll-wrapper').addEventListener('scroll', function(e) {
 							scrollTop = Math.abs(scroll.y)
+//							sessionStorage.setItem('scrollTop',scrollTop);
 						})
-						
 						setInterval(function(){
 							for(var key in vueData.cardList) {
 								var aaa = parseInt(vueData.cardList[key]["product_endtime"] * 1000);
@@ -1038,6 +1054,10 @@
 						}else if(isPosition == 3){
 							mui.openWindow({
 								url: "productList.html?cateId=" + catId + "&cateName=" + alt
+							})
+						}else if(isPosition == 4){
+							mui.openWindow({
+								url: "moneyIncentive.html"
 							})
 						}
 					}else{

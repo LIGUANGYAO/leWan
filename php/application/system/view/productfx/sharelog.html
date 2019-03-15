@@ -1,0 +1,114 @@
+<div class="page">
+    <div class="l" style="width:70%; ">
+        <form class="layui-form search" name="sform" action="{:url('system/user/sharelog')}">
+            <label class="layui-form-indexlabel">时间范围</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="starttime" autocomplete="off" value="{$date}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYYMMDD'})">
+            </div>
+
+            <div class="layui-input-inline ">
+                <select name="type" lay-verify="require">
+                    <option value="">请选择佣金类型</option>
+                    <option value="601" <if condition="$type eq 601"> selected="selected"</if>>一级佣金</option>
+                    <option value="602" <if condition="$type eq 602"> selected="selected"</if>>上级佣金</option>
+                    <option value="603" <if condition="$type eq 603"> selected="selected"</if>>运营佣金</option>
+                    <option value="604" <if condition="$type eq 604"> selected="selected"</if>>运营奖金</option>
+                    <option value="605" <if condition="$type eq 605"> selected="selected"</if>>佣金解冻</option>
+                    <option value="606" <if condition="$type eq 606"> selected="selected"</if>>玩主奖金</option>
+                    <option value="607" <if condition="$type eq 607"> selected="selected"</if>>新人免单全返</option>
+                    <option value="608" <if condition="$type eq 608"> selected="selected"</if>>销售奖励</option>
+                    <option value="609" <if condition="$type eq 609"> selected="selected"</if>>直属玩主奖金</option>
+                    <option value="610" <if condition="$type eq 610"> selected="selected"</if>>升级自动奖励</option>
+                    <option value="611" <if condition="$type eq 611"> selected="selected"</if>>每日3单活动奖励</option>
+                </select>
+            </div>
+            <button class="layui-btn layui-btn-small">搜 &nbsp; 索</button>
+            <button type="submit" class="layui-btn layui-btn-primary" name="excel" value="1">导出excel</button>
+        </form>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <if condition="!empty($list)">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <!--<th nowrap="nowrap" width="20"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>-->
+                    <th nowrap="nowrap">用户名</th>
+                    <th nowrap="nowrap">联系电话</th>
+                    <th nowrap="nowrap">用户等级</th>
+                    <th nowrap="nowrap">佣金类型</th>
+                    <th nowrap="nowrap">金额</th>
+                    <th nowrap="nowrap">操作后余额</th>
+                    <th nowrap="nowrap">备注</th>
+                    <th nowrap="nowrap">时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <volist name="list" id="val">
+                        <tr>
+                            <!--<td nowrap="nowrap"><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>-->
+                            <td nowrap="nowrap">{$val.nickname}</td>
+                            <td nowrap="nowrap">{$val.mobile}</td>
+                            <td nowrap="nowrap">
+                                <if condition="$val.level eq 1">
+                                    <label class="layui-badge layui-bg-gray">普通用户</label>
+                                    <elseif condition="$val['level'] eq 2"/>
+                                    <label class="layui-badge layui-bg-black" style="color: #FFFFff">超级会员</label>
+                                    <elseif condition="$val['level'] eq 3"/>
+                                    <label class="layui-badge layui-bg-blue">分享达人</label>
+                                    <elseif condition="$val['level'] eq 4"/>
+                                    <label class="layui-badge layui-bg-orange">运营达人</label>
+                                    <elseif condition="$val['level'] eq 5" />
+                                    <label class="layui-badge ">玩主</label>
+                                </if>
+                            </td>
+                            <td nowrap="nowrap">
+                                <if condition="$val.record_action eq 601">
+                                    <label class="layui-badge layui-bg-gray">一级佣金</label>
+                                <elseif condition="$val['record_action'] eq 602"/>
+                                    <label class="layui-badge layui-bg-black" style="color: #FFFFff">上级佣金</label>
+                                <elseif condition="$val['record_action'] eq 603"/>
+                                    <label class="layui-badge layui-bg-blue">运营佣金</label>
+                                <elseif condition="$val['record_action'] eq 604"/>
+                                    <label class="layui-badge layui-bg-orange">运营奖金</label>
+                                <elseif condition="$val['record_action'] eq 605" />
+                                    <label class="layui-badge ">佣金解冻</label>
+                                <elseif condition="$val['record_action'] eq 606" />
+                                    <label class="layui-badge ">玩主奖金</label>
+                                <elseif condition="$val['record_action'] eq 607" />
+                                    <label class="layui-badge ">新人免单全返</label>
+                                <elseif condition="$val['record_action'] eq 608" />
+                                    <label class="layui-badge ">销售奖励</label>
+                                <elseif condition="$val['record_action'] eq 609" />
+                                    <label class="layui-badge ">直属玩主奖金</label>
+                                <elseif condition="$val['record_action'] eq 610" />
+                                    <label class="layui-badge ">升级自动奖励</label>
+                                <elseif condition="$val['record_action'] eq 611" />
+                                    <label class="layui-badge ">每日3单活动奖励</label>
+                                </if>
+                            </td>
+                            <td nowrap="nowrap">{$val.record_amount}</td>
+                            <td nowrap="nowrap">{$val.record_balance}</td>
+                            <td nowrap="nowrap">{$val.record_remark}</td>
+                            <td nowrap="nowrap">{$val.record_addtime|date2='Y-m-d H:i',###}</td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+        <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center">
+                    暂无数据w(ﾟДﾟ)w
+                </div>
+            </div>
+        </if>
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+</div>

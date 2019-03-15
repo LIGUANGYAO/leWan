@@ -1,0 +1,56 @@
+<div class="page">
+    <div class="l" style="width:70%; ">
+        <form class="layui-form search" name="sform" action="{:url('system/user/sharetop')}">
+            <label class="layui-form-indexlabel">时间范围</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="starttime" autocomplete="off" value="{$date}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYYMMDD'})">
+            </div>
+            <button class="layui-btn layui-btn-small">搜 &nbsp; 索</button>
+            <button type="submit" class="layui-btn layui-btn-primary" name="excel" value="1">导出excel</button>
+        </form>
+    </div>
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <!--<th nowrap="nowrap" width="20"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>-->
+                <th nowrap="nowrap" style="width: 300px;">用户名</th>
+                <th nowrap="nowrap" style="width: 200px;">联系电话</th>
+                <th nowrap="nowrap">用户等级</th>
+                <th nowrap="nowrap">直卖数量</th>
+            </tr>
+            </thead>
+            <tbody>
+                <volist name="data.list" id="val">
+                    <tr>
+                        <!--<td nowrap="nowrap"><input type="checkbox" name="id[]" value="{$val.id}" lay-skin="primary" lay-filter="idchoose"></td>-->
+                        <td nowrap="nowrap" style="width: 300px;">{$val.nickname}</td>
+                        <td nowrap="nowrap" style="width: 200px;">{$val.mobile}</td>
+                        <td nowrap="nowrap" style="width: 200px;">
+                            <if condition="$val.level eq 1">
+                                <label class="layui-badge layui-bg-gray">普通用户</label>
+                                <elseif condition="$val['level'] eq 2"/>
+                                <label class="layui-badge layui-bg-black" style="color: #FFFFff">超级会员</label>
+                                <elseif condition="$val['level'] eq 3"/>
+                                <label class="layui-badge layui-bg-blue">分享达人</label>
+                                <elseif condition="$val['level'] eq 4"/>
+                                <label class="layui-badge layui-bg-orange">运营达人</label>
+                                <elseif condition="$val['level'] eq 5" />
+                                <label class="layui-badge ">玩主</label>
+                            </if>
+                        </td>
+                        <td nowrap="nowrap">{$val.num}</td>
+                    </tr>
+                </volist>
+            </tbody>
+        </table>
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="r"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+</div>

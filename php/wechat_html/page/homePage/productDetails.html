@@ -17,6 +17,11 @@
 			html,body,p,span,strong,pre,div{
 				-webkit-user-select: text !important;
 			}
+			.downLoad{
+				background-color: #333333;
+				color: #FFFFFF;
+			}
+			
 			/*banner图*/
 			
 			.mui-slider-item {
@@ -798,6 +803,9 @@
 	<body>
 		<div class="" id="J_el" v-cloak>
 			<div class="" v-if="showPage">
+				<div class="downLoad" @tap="goToDownLoad()">
+					下载app
+				</div>
 				<div class="headerBox">
 					<div class="mui-slider">
 						<div class="mui-slider-group mui-slider-loop">
@@ -1154,6 +1162,7 @@
 						countdown:countdown,	//倒计时
 						jumpToDetails: jumpToDetails,	//商品详情跳转
 						handleScroll: handleScroll,	//页面滚动
+						goToDownLoad: goToDownLoad,	//下载app
 					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
@@ -1591,6 +1600,14 @@
 				mui('body').on('tap', '.modalBox3', function(event) { //规格模态窗冒泡
 					event.stopPropagation();
 				})
+				//app下载
+				function goToDownLoad(){
+					if(browser.versions.android) {
+						alert('android下载')
+					} else if(browser.versions.ios || iPhone || iPad) {
+						alert('ios下载')
+					}
+				}
 			})
 		</script>
 	</body>

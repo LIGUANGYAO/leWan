@@ -1,0 +1,606 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>申请盟主</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../plugins/mui.picker.css" rel="stylesheet" />
+		<link href="../../plugins/mui.poppicker.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0 !important;
+				background-color: #F5F6FA;
+				min-height: 100vh;
+				overflow: hidden;
+			}
+			/*头部*/
+			
+			.header {
+				width: 9.6rem;
+				margin-left: 0.2rem;
+				height: 1.5rem;
+				text-align: center;
+				background-color: #FFFFFF;
+				margin-top: 0.48rem;
+				border-radius: 0.2rem !important;
+				box-shadow: 0px 0.413rem 0.213rem -0.24rem rgba(234, 234, 234, 1);
+			}
+			
+			.header_name {
+				display: inline-block;
+				width: 2.5rem;
+				height: 1.5rem;
+				line-height: 1.5rem;
+				float: left;
+				text-align: center;
+				font-size: 0.386rem;
+				font-weight: 500;
+				color: #333333;
+			}
+			
+			.header_search {
+				display: inline-block;
+				width: 7rem !important;
+				height: 1.5rem !important;
+				background-color: #FFFFFF !important;
+				text-align: left !important;
+				float: right;
+			}
+			
+			.search_title{
+				padding-left: 0.293rem;
+				padding-top: 0.68rem;
+				padding-bottom: 0.533rem;
+				font-size: 0.333rem;
+				color: #999999;
+				font-weight: 400;
+				
+			}
+			.createCommunityName{
+				width: 9.6rem;
+				height: 1.2rem;
+				line-height: 1.2rem;
+				margin: 0 auto;
+				background-color: #FFFFFF;
+				border-radius: 0.15rem;
+				padding: 0 0.5rem;
+				font-size: 0.4rem;
+				color: #333333;
+			}
+			.createCommunityBtn{
+				float: right;
+				color: #FF8B30;
+				font-size: 0.333rem;
+				font-weight: 500;
+			}
+			.content {
+				width: 9.6rem;
+				margin: 0.413rem 0 0.48rem 0.2rem;
+				overflow: hidden;
+				border-radius: 0.3rem;
+				box-shadow: 0px 0.413rem 0.213rem -0.24rem rgba(234, 234, 234, 1);
+				background-color: #FFFFFF;
+			}
+			.mTop{
+				margin-top: 2.2rem;
+			}
+			.search_adress {
+				height: 1.253rem;
+				line-height: 1.253rem;
+				border-bottom: 1px dashed #F2F2F2;
+				padding-left: 0.533rem;
+				padding-right: 0.533rem;
+				font-size: 0.386rem;
+				font-weight: 400;
+				color: #999999;
+			}
+			
+			.seatch_title {
+				font-size: 0.38rem;
+				font-weight: 700;
+				color: #333333;
+				margin-top: 0.48rem;
+				padding-left: 0.533rem;
+				margin-bottom: 0.2rem;
+			}
+			.clearStorage{
+				float: right;
+				font-size: 0.24rem;
+				font-weight: 400;
+				margin-right: 0.5333rem;
+			}
+			/*搜索列表*/
+			
+			.tabBtn {
+				color: #FF8B30 !important;
+				float: right;
+			}
+			
+			.mui-input-group {
+				padding-left: 0.533rem;
+			}
+			
+			.mui-input-group .mui-input-row:after {
+				background-color: #F3F3F3;
+			}
+			
+			.mui-input-group:before,
+			.mui-input-group:after {
+				height: 0 !important;
+			}
+			
+			.mui-input-group .mui-input-row {
+				height: 1.186rem;
+			}
+			
+			.mui-input-row label {
+				height: 1.186rem;
+				line-height: 1.186rem;
+				padding: 0 !important;
+			}
+			
+			.mui-radio input[type=radio] {
+				font-size: 0.333rem;
+				font-weight: 400;
+				color: #333333;
+				width: 0.6rem;
+				height: 0.6rem;
+				top: 0.29rem;
+			}
+			
+			.mui-radio input[type=radio]:before {
+				font-size: 0.55rem;
+			}
+			
+			.mui-radio input[type=radio]:checked:before {
+				color: #FF8B30;
+			}
+			
+			.kong_jilu {
+				height: 4rem;
+				line-height: 4rem;
+				text-align: center;
+				font-size: 0.373rem;
+				color: #999999;
+			}
+			/*联系人信息*/
+			
+			.lianxiMess {
+				margin-top: 0.7rem;
+			}
+			
+			.lianxiMess>img {
+				width: 100%;
+			}
+			
+			.lianxiBox {
+				margin-top: 0.48rem;
+			}
+			
+			.lianxiList {
+				width: 9rem;
+				margin-left: 0.3rem;
+				margin-top: 0.24rem;
+				overflow: hidden;
+				background-color: #F6F6F6;
+				border-radius: 0.1rem;
+				height: 1.1rem;
+			}
+			
+			.lianxiList>span {
+				display: inline-block;
+				width: 2.5rem;
+				float: left;
+				font-size: 0.386rem;
+				font-weight: 500;
+				color: #333333;
+				line-height: 1.1rem;
+				text-align: center;
+			}
+			
+			.lianxiList>input {
+				display: inline-block;
+				width: 6.4rem;
+				float: right;
+				height: 0.533rem;
+				border: none;
+				background-color: #F6F6F6;
+				font-size: 0.386rem;
+				color: #333333;
+				font-weight: 500;
+				padding: 0 !important;
+				height: 0.7rem;
+				line-height: 0.7rem;
+				margin-top: 0.2rem;
+			}
+			
+			.jiesao>textarea {
+				display: inline-block;
+				width: 9rem;
+				margin-left: 0.3rem;
+				height: 2.8rem;
+				margin-top: 0.24rem;
+				background-color: #F6F6F6;
+				font-size: 0.386rem;
+				font-weight: 400;
+				color: #333333;
+				padding: 0.26rem;
+				border: none;
+			}
+			
+			.sure_btn {
+				width: 7.8rem;
+				height: 1.106rem;
+				line-height: 1.106rem;
+				text-align: center;
+				border-radius: 0.2rem;
+				background-color: #CCCCCC;
+				color: #FFFFFF;
+				font-size: 0.386rem;
+				font-weight: 500;
+				border: none;
+				margin: 0.48rem 0 1.133rem 0.9rem;
+			}
+			
+			.sure_btn_color {
+				background-color: #FF9F24;
+			}
+			
+			.mui-popup-button {
+				color: #FF9F24;
+			}
+			
+			.footer-enter-active {
+				transition: all 1s ease-out;
+			}
+			.footer-leave-active {
+				transition: all 0.1s linear;
+			}
+			
+			.footer-enter {
+				transform: translateY(200px);
+				opacity: 0;
+			}
+			
+			.footer-leave-active {
+				transform: translateY(10px);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="" id="J_el" v-cloak>
+			<div class="header">
+				<span class="header_name">小区名称：</span>
+				<input type="search" class="header_search" id="searchPlot" oninput="value=value.replace(/[^\w\u4E00-\u9FA5]/g, '')" v-model="communityName" placeholder="输入申请小区名称" />
+			</div>
+			<div class="searchBox" v-if="searchShow">
+				<div class="search_title">搜索结果：系统暂未录入该小区，您可选择创建该小区。</div>
+				<div class="createCommunityName">{{ communityName }} <span class="createCommunityBtn" @tap="createCommunity()"><i class="iconfont icon-dashujukeshihuaico-"></i>创建</span></div>
+			</div>
+			<div class="content" :class="{mTop:footerShow}">
+				<!--<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll">-->
+				<div class="" v-if="showPlot && !searchShow">
+					<div class="search_adress" @tap="selectPlot()">
+						<span>当前：</span>
+						<span id="ssqAdress" :area="addressCode">{{ssqAdress}}</span>
+						<span class="tabBtn">切换区<i class="iconfont icon-qiehuan"></i></span>
+					</div>
+					<div class="seatch_title">{{plotList.length?'搜索列表':(historyList.length?'历史搜索记录': '')}}
+						<span v-if="historyList.length && !plotList.length" class="clearStorage" @tap="clearStorage()"><i class="iconfont icon-lajitong"></i>清除</span>
+					</div>
+					<form class="mui-input-group" v-if="plotList.length">
+						<div class="mui-input-row mui-radio" v-for="item in plotList" @tap="seclectEd(item.community_id,item.community_name,item.areacode)">
+							<label>{{item.community_name}}</label>
+							<input name="radio1" type="radio" :id="item.community_id">
+						</div>
+					</form>
+					<form class="mui-input-group" v-else-if="historyList.length">
+						<div class="mui-input-row mui-radio" v-for="item in historyList" @tap="seclectEd(item.community_id,item.community_name,item.areacode)">
+							<label>{{item.community_name}}</label>
+							<input name="radio1" type="radio" :id="item.community_id">
+						</div>
+					</form>
+					<div class="kong_jilu" v-else>
+						暂无搜索 快去搜索小区吧！
+					</div>
+				</div>
+				<!--</div>
+			</div>-->
+				<transition name="footer">
+					<div class="footer" v-if="footerShow">
+						<div class="lianxiMess"><img src="http://oss.lewan6.ren/uploads/idcard/20190304/e7c4925c962711e313fc9a4c8ee6e2c77ce102e9.png" /></div>
+						<div class="lianxiBox">
+							<div class="lianxiList">
+								<span>真实姓名：</span>
+								<input type="text" maxlength="10" v-model="userName" oninput="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')" placeholder="请输入真实姓名" />
+							</div>
+							<div class="lianxiList">
+								<span>联系电话：</span>
+								<input type="number" v-model="userPhone" oninput="if(value.length>11)value=value.slice(0,11)" maxlength="11" name="" placeholder="请输入联系电话" />
+							</div>
+							<div class="jiesao">
+								<textarea v-model="introduce" oninput="this.value=this.value.replace(/[^\u0020-\u007E\u00A0-\u00BE\u2E80-\uA4CF\uF900-\uFAFF\uFE30-\uFE4F\uFF00-\uFFEF\u0080-\u009F\u2000-\u201f\u2026\u2022\u20ac\r\n]/g,'')" placeholder="可填写申请盟主的自我介绍。。（限50字）" maxlength="50"></textarea>
+							</div>
+							<div class="">
+								<button class="sure_btn" :class="{sure_btn_color: userName && userPhone}" @tap="submitMessage()">提交审核 等待联系</button>
+							</div>
+						</div>
+					</div>
+				</transition>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.10&key=b286bfefabeab1fbee7737811fb1ab0c&plugin=AMap.Geocoder"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/mui.picker.js"></script>
+		<script src="../../plugins/mui.poppicker.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script src="../../plugins/getTokenCommon.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				mui.init({
+					pullRefresh: {
+						container: '#refreshContainer',
+						up: {
+							height: 50,
+							auto: false,
+							contentnomore: '没有更多数据了',
+							contentrefresh: '正在加载...',
+							callback: function() {
+								setTimeout(function() {
+									getList();
+								}, 100);
+							}
+						}
+					}
+				});
+				var token = localStorage.getItem("token");
+				var vueData = {
+					communityName: '', //页头搜索
+					addressCode: '',	//区code
+					ssqAdress: '定位中...', //省市区
+					isPosition: false,  //是否定位
+					paging: 1,	//分页
+					plotList: [], //小区列表
+					searchShow: false, //没有搜索到小区显示是否创建小区
+					showPlot: true,	//是否显示搜索列表
+					footerShow: false,	//是否显示页尾
+					historyList: [], //历史记录
+					userName: '', //名字
+					userPhone: '', //电话
+					introduce: '', //备注
+				}
+				new Vue({
+					el: "#J_el",
+					data: vueData,
+					methods: {
+						selectPlot: selectPlot,
+						seclectEd: seclectEd,
+						submitMessage: submitMessage,
+						clearStorage: clearStorage,
+						createCommunity: createCommunity,
+					},
+					mounted: function() {
+						vueData.historyList = localStorage.getItem('history_list') ? JSON.parse(localStorage.getItem('history_list')) : [];
+					}
+				})
+				//软键盘搜索小区
+				$("#searchPlot").bind("input propertychange", function() {
+					vueData.paging = 1;
+					getList(true);    
+					vueData.showPlot = true;
+					vueData.footerShow = false;
+				});
+
+				function getList(empty) {
+					vueData.searchShow = false;
+					$.ajax({
+						url: API_SERVER + 'Usercommunityleader/LeaderSearch',
+						data: {
+							token: token,
+							areacode: vueData.addressCode, //int	是	区code
+							title: vueData.communityName, //	string	是	搜索内容
+							paging: vueData.paging, //	int	是	分页数默认第一页
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								var lists = data.data;
+								if(lists.length == 0){
+									vueData.searchShow = true;
+								}
+								empty && vueData.plotList.splice(0);
+								for(var i = 0; i < lists.length; i++) {
+									lists[i].areacode = vueData.addressCode;
+									vueData.plotList.push(lists[i]);
+								}
+								vueData.paging++;
+								var pullRefresh = mui('#refreshContainer').pullRefresh();
+								pullRefresh && pullRefresh.endPulldownToRefresh && pullRefresh.endPulldownToRefresh();
+								pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
+								pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < 10);
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
+				}
+				//选择列表
+				function seclectEd(id, name, areacode) {
+					vueData.communityName = name;
+					vueData.addressCode = areacode;
+					$("#searchPlot").attr({
+						"idNum": id
+					});
+					vueData.showPlot = false;
+					vueData.footerShow = true;
+					var result = {
+						"community_name": name,
+						"community_id": id,
+						"areacode": areacode
+					};
+					var flag = false;
+					$.each(vueData.historyList, function(index, value) {
+						if(result.community_name == value.community_name) {
+							flag = true;
+						}
+					});
+					if(!flag) {
+						vueData.historyList.push(result);
+						if(vueData.historyList.length > 10) {
+							vueData.historyList.shift();
+						}
+						localStorage.setItem('history_list', JSON.stringify(vueData.historyList))
+					}
+				}
+
+				//提交申请
+				function submitMessage() {
+					username = vueData.userName;
+					userPhone = vueData.userPhone
+					var isOk = validate(
+						[username, ['required'],
+							['姓名不能为空']
+						], //联系人
+						[userPhone, ['required', 'phone'],
+							['手机号码不能为空', '请输入正确的手机号码']
+						]
+					);
+					if(!isOk) return;
+					$.ajax({
+						url: API_SERVER + 'Usercommunityleader/LeaderApply',
+						data: {
+							token: token,
+							citycode: String(vueData.addressCode).substr(0, 4) + "00", //	int	是	市code
+							areacode: vueData.addressCode, //	int	是	区code
+							title: vueData.communityName, //	string	否	未选择搜索出来小区，添加的小区名
+							community_id: $("#searchPlot").attr("idNum") || '', //	int	否	选择的搜索出来的小区id
+							realname: vueData.userName, //	string	是	联系姓名
+							phone: vueData.userPhone, //	string	是	联系电话
+							introduce: vueData.introduce || "无备注信息", //	string	否	用户申请盟主的优势介绍
+						},
+						success: function(data) {
+							if(data.code == 200) {
+								mui.alert("您申请成为" + vueData.communityName + "的小区盟主，申请资料已提交至乐玩联盟后台审核，我们将第一时间通过客服联系您！请保持手机畅通！", "提交成功", "知道了", function() {
+									mui.openWindow({
+										url: "personalCenter.html"
+									})
+								})
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					});
+				}
+
+				//获取用户定位
+				getLocation();
+
+				function getLocation() {
+					getWechatSignature(location.href.split('#')[0]);
+					wx.ready(function() {
+						wx.getLocation({
+							type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+							success: function(res) {
+								log(res)
+								var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+								var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180.
+								regeoCode(longitude, latitude); //执行高德地址逆解析
+							},
+							cancel: function(res) {
+								log(res)
+							}
+						});
+					});
+				}
+				
+				//创建小区
+				function createCommunity(){
+					vueData.searchShow = false;
+					vueData.showPlot = false;
+					vueData.footerShow = true;
+				}
+				//清除缓存
+				function clearStorage(){
+					localStorage.setItem('history_list','');
+					vueData.historyList = [];
+					mui.toast("历史记录已清除");
+				}
+				
+				//选择区
+				var cityPicker = new mui.PopPicker({
+					layer: 3
+				});
+				var initCity;
+				getCity()
+
+				function getCity() {
+					$.ajax({
+						url: API_SERVER + 'Area/AreaOpenUp',
+						data: {
+							type: 2
+						},
+						async: false,
+						success: function(data) {
+							if(data.code == 200) {
+								log(data)
+								initCity = data.data.list;
+							}
+						}
+					});
+				}
+				cityPicker.setData(initCity);
+
+				function selectPlot() {
+					document.activeElement.blur(); //选择城市时隐藏输入键盘
+					var _getParam = function(obj, param) {
+						return obj[param] || '';
+					};
+					cityPicker.show(function(items) {
+						log(items)
+						vueData.ssqAdress = _getParam(items[0], 'text') + _getParam(items[1], 'text') + _getParam(items[2], 'text');
+						vueData.addressCode = _getParam(items[2], 'value');
+						vueData.isPosition = true;
+						if(vueData.communityName) {
+							vueData.paging = 1;
+							getList(true);
+							vueData.showPlot = true;
+						}
+					});
+				}
+				//gps解析
+				function regeoCode(longitude, latitude) {
+					var geocoder = new AMap.Geocoder({});
+					var lnglat = [longitude, latitude]
+					geocoder.getAddress(lnglat, function(status, result) {
+						if(status === 'complete' && result.regeocode) {
+							log(result)
+							vueData.addressCode = result.regeocode.addressComponent.adcode; //区code码
+
+							var province = result.regeocode.addressComponent.province; //省名字
+							var city = result.regeocode.addressComponent.city; //市名字
+							var district = result.regeocode.addressComponent.district; //区名字
+							vueData.ssqAdress = province + city + district;
+							vueData.isPosition = true;
+						} else {
+							log(JSON.stringify(result))
+						}
+					});
+				}
+			})
+		</script>
+	</body>
+
+</html>
