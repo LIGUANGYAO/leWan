@@ -40,6 +40,10 @@ div,span,li{
 	font-family: "wupan";
 	src: url(../fonts/dina.ttf);
 }
+@font-face {
+	font-family: "wupanHD";
+	src: url(../fonts/FZQKBYSJW.TTF);
+}
 /*lodaing*/
 #ajaxBox{
 	position: fixed;

@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>培养升级</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/leWan.css" rel="stylesheet" />
+<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+<link href="../../fonts/iconfont.css" rel="stylesheet" />
+<style type="text/css">
+	body {
+		padding: 0;
+		margin: 0 !important;
+		min-height: 100vh;
+	}
+	.content_body{
+		width: 10rem;
+		height: 37.04rem;
+		background-image: url('http://oss.lewan6.ren/uploads/html/20190320/e3c2e8546ade2d1855c6ed5908e3e0079fdf17bbpng');
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		position: relative;
+	}
+	.one{
+		position: absolute;
+		top: 8.8rem;
+		left: 2.133rem;
+		width: 5.76rem;
+		height: 1.253rem;
+	}
+	.two,.three,.four{
+		position: absolute;
+		left: 5.12rem;
+		width: 2.346rem;
+		height: 0.826rem;
+		line-height: 0.826rem;
+		font-size: 0.453rem;
+		font-weight: bold;
+		color: #000000;
+		text-align: center;
+	}
+	.two{
+		top: 11.92rem;
+	}
+	.three{
+		top: 12.96rem;
+	}
+	.four{
+		top: 14.053rem;
+	}
+</style>
+</head>
+
+<body>
+<div class="content_body" id="J_el" v-cloak>
+	<div class="one" @tap="jumpTofriends()"></div>
+	<div class="two">{{details.count2}}人</div>
+	<div class="three">{{details.count3}}人</div>
+	<div class="four">{{details.count4}}人</div>
+</div>
+<script src="../../plugins/flexible.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="../../plugins/jquery-2.1.4.js"></script>
+<script src="../../plugins/vue.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../plugins/serverApi.js"></script>
+<!--<script src="../../plugins/getTokenCommon.js"></script>-->
+<script type="text/javascript">
+$(function() {
+	var token = getUrlParam("token");
+	var vueData = {
+		details:{},
+	}
+	new Vue({
+		el: '#J_el',
+		data: vueData,
+		methods: {
+			getDetails: getDetails,
+			hideMenu: hideMenu,
+			jumpTofriends: jumpTofriends,
+		},
+		created: function() {
+			getDetails();
+			hideMenu();
+		}
+	});
+	
+	//获取升级奖励详情
+	function getDetails(){
+		$.ajax({
+			url: API_SERVER + 'User/activesjjl',
+			async: false,
+			data:{token: token},
+			success: function(data) {
+				if(data.code == 200) {
+					log(data)
+					vueData.details = data.data;
+				}
+			}
+		});
+	}
+	//跳转直属好友
+	function jumpTofriends(){
+		mui.openWindow({
+			url: BASE_SERVER + "wechat_html/page/personalCenter/myFriend.html?dataNum=0"
+		})
+	}
+	//隐藏菜单按钮
+	function hideMenu(){
+		getWechatSignature(location.href.split('#')[0])
+		wx.ready(function() {
+			wx.hideAllNonBaseMenuItem();
+		});
+	}
+})
+</script>
+</body>
+
+</html>

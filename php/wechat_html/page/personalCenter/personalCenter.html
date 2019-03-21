@@ -56,7 +56,7 @@
 			
 			
 			/*非普通用户页头*/
-			.headerTwo,.content,#inviteFriends,#myBankCard,#realName,#CommunityLeader{		/*显隐部分东西区分会员等级*/
+			.headerTwo,.content,#inviteFriends,#myBankCard,#realName,#CommunityLeader,#lewanActivity{		/*显隐部分东西区分会员等级*/
 				display: none;
 			}
 			.headerBox {
@@ -534,6 +534,10 @@
 				<li class="mui-table-view-cell" id="inviteFriends">
 					<a class="mui-navigate-right"><i class="iconfont icon-yaoqingma"></i>邀请好友</a>
 				</li>
+				<!--区分普通用户 =乐玩活动-->
+				<li class="mui-table-view-cell" id="lewanActivity">
+					<a class="mui-navigate-right"><i class="iconfont icon-liwu"></i>乐玩活动</a>
+				</li>
 				<!--输入注册码-->
 				<li class="mui-table-view-cell" id="inputCode">
 					<a class="mui-navigate-right"><i class="iconfont icon-yaoqingma"></i>输入注册码</a>
@@ -612,6 +616,7 @@
 				if (level == 2 || level == 3 || level == 4 || level == 5){
 					$(".headerOne").hide();
 					$("#inviteFriends").show();
+					$("#lewanActivity").show();
 					$("#myBankCard").show();
 					$("#realName").show();
 					$("#inputCode").hide();
@@ -725,6 +730,11 @@
 				mui('body').on('tap', '#inviteFriends', function() { //海报好友
 					mui.openWindow({
 						url: "inviteFriends.html?t=" + new Date().getTime()
+					})
+				})
+				mui('body').on('tap', '#lewanActivity', function() { //乐玩活动
+					mui.openWindow({
+						url: "../lewanActivity/lewanActivity.html?t=" + new Date().getTime()
 					})
 				})
 				mui('body').on('tap', '#inputCode', function() { //输入注册码

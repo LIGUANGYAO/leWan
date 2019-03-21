@@ -18,10 +18,22 @@
 				-webkit-user-select: text !important;
 			}
 			.downLoad{
-				background-color: #333333;
-				color: #FFFFFF;
+				background-image: url('http://oss.lewan6.ren/uploads/html/20190321/12e8ca09d3f1d7faa09517e6bb5dace5d16b50aepng');
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				width: 100%;
+				height: 1.226rem;
 			}
-			
+			.goToDownLoad{
+				width: 8.9rem;
+				height: 1.226rem;
+				float: left;
+			}
+			.downLoad_close{
+				width: 1.1rem;
+				height: 1.226rem;
+				float: right;
+			}
 			/*banner图*/
 			
 			.mui-slider-item {
@@ -803,8 +815,9 @@
 	<body>
 		<div class="" id="J_el" v-cloak>
 			<div class="" v-if="showPage">
-				<div class="downLoad" @tap="goToDownLoad()">
-					下载app
+				<div class="downLoad">
+					<div class="goToDownLoad" @tap="goToDownLoad()"></div>
+					<div class="downLoad_close" @tap="closeDownLoad()"></div>
 				</div>
 				<div class="headerBox">
 					<div class="mui-slider">
@@ -1163,6 +1176,7 @@
 						jumpToDetails: jumpToDetails,	//商品详情跳转
 						handleScroll: handleScroll,	//页面滚动
 						goToDownLoad: goToDownLoad,	//下载app
+						closeDownLoad: closeDownLoad, //关闭下载按钮
 					},
 					mounted: function() {
 						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
@@ -1604,9 +1618,16 @@
 				function goToDownLoad(){
 					if(browser.versions.android) {
 						alert('android下载')
+//						window.location.href = "https://imtt.dd.qq.com/16891/D7C889CEC3ACDAA246D0F662513EFEB8.apk?fsname=com.leiwan.zl_v1.0.2_2.apk&csr=1bbd"
+						window.location.href = "https://android.myapp.com/myapp/detail.htm?apkName=com.leiwan.zl&ADTAG=mobile"
 					} else if(browser.versions.ios || iPhone || iPad) {
 						alert('ios下载')
+						window.location.href = "https://android.myapp.com/myapp/detail.htm?apkName=com.leiwan.zl&ADTAG=mobile"
 					}
+				}
+				//关闭app下载
+				function closeDownLoad(){
+					$(".downLoad").css({'display': 'none'})
 				}
 			})
 		</script>
