@@ -1,0 +1,320 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>达人后台</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/leWan.css" rel="stylesheet" />
+<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+<link href="../../fonts/iconfont.css" rel="stylesheet" />
+<style type="text/css">
+	body {
+		padding: 0;
+		margin: 0;
+	}
+	
+	html,body,.lw-empty-box {
+		background-color: #F2F2F2 !important;
+	}
+	/*头部*/
+	
+	.header {
+		background:linear-gradient(270deg,rgba(28,171,129,1) 0%,rgba(29,172,129,1) 5%,rgba(54,210,128,1) 79%,rgba(59,218,128,1) 100%);
+		height: 1.3rem;
+		line-height: 1.3rem;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-around;
+		-webkit-justify-content: space-around;
+		font-size: 0.38rem;
+		color: #FFFFFF;
+		font-weight: 400;
+		z-index: 20;
+	}
+	
+	.header>span {
+		padding: 0 0.2rem;
+	}
+	
+	.headerActive {
+		font-size: 0.4rem;
+		color: #FFFFFF;
+		font-weight: 500;
+		border-bottom: 5px solid #FF7030;
+	}
+	/*内容*/
+	
+	.content {
+		min-height: 100vh;
+		
+	}
+	.mui-scroll-wrapper{
+		top: 1.3rem;
+	}
+	.expertListList,.lw-empty {
+		background-color: #FFFFFF;
+	}
+	
+	.expertListList {
+		margin: 0.266rem 0.16rem 0.16rem 0.16rem;
+		border-radius: 0.2rem;
+	}
+	
+	.allColor{
+		color: #FF8B30;
+	}
+	/*全部好友*/
+	.allFriends{
+		margin-top: 0.106rem;
+		background-color: #FFFFFF;
+		height: 2.533rem;
+	}
+	.friOne{
+		display: inline-block;
+		width: 20%;
+		float: left;
+		height: 2.533rem;
+		text-align: center;
+	}
+	.friOne div:nth-child(1){
+		display: inline-block;
+		width: 1.333rem;
+		height: 1.333rem;
+		border-radius: 0.666rem;
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		margin-top: 0.2rem;
+	}
+	.friOne div:nth-child(2){
+		margin-top: 0.186rem;
+		font-size: 0.32rem;
+		font-weight: 600;
+	}
+	.friTwo{
+		display: inline-block;
+		width: 50%;
+		float: left;
+		height: 2.533rem;
+		text-align: left;
+	}
+	.friTwo div:nth-child(1){
+		font-size: 0.426rem;
+		font-weight: bold;
+		color: #333333;
+		margin-top: 0.666rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	.friTwo div:nth-child(2){
+		font-size: 0.32rem;
+		font-weight: 400;
+		color: #CCCCCC;
+		margin-top: 0.53rem;
+	}
+	.friThree{
+		display: inline-block;
+		width: 30%;
+		float: left;
+		height: 2.533rem;
+		text-align: right;
+		padding-right: 0.2rem;
+	}
+	.friThree div:nth-child(1){
+		font-size: 0.346rem;
+		color: #9B9B9B;
+		margin-top: 0.666rem;
+		font-weight: 400;
+	}
+	.friThree div:nth-child(2){
+		font-size: 0.533rem;
+		margin-top: 0.106rem;
+		font-weight: bold;
+	}
+	/*其他好友*/
+	.erFriends{
+		margin-top: 0.106rem;
+		background-color: #FFFFFF;
+		height: 1.973rem;
+	}
+	.erOne{
+		width: 70%;
+		float: left;
+		height: 1.973rem;
+	}
+	.erOne div:nth-child(1){
+		font-size: 0.426rem;
+		font-weight: bold;
+		color: #333333;
+		margin-top: 0.373rem;
+		margin-left: 0.293rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	.erOne div:nth-child(2){
+		font-size: 0.32rem;
+		font-weight: 500;
+		margin-top: 0.293rem;
+		margin-left: 0.293rem;
+	}
+	.erTwo{
+		width: 30%;
+		float: right;
+		text-align: right;
+		padding-right: 0.346rem;
+		height: 1.973rem;
+	}
+	.erTwo div:nth-child(1){
+		font-size: 0.346rem;
+		font-weight: 400;
+		margin-top: 0.32rem;
+		color: #9B9B9B;
+	}
+	.erTwo div:nth-child(2){
+		font-size: 0.533rem;
+		font-weight: bold;
+		margin-top: 0.293rem;
+	}
+</style>
+</head>
+
+<body>
+<div class="header">
+	<span showState='1' class="headerList headerActive">我的好友</span>
+	<span showState='2' class="headerList">好友直属</span>
+	<span showState='3' class="headerList">好友二级</span>
+</div>
+
+<div class="content">
+	<div class="mui-scroll-wrapper" id="refreshContainer">
+		<div class="mui-scroll">
+			<div id="J_el" v-cloak>
+				<div class="expertBox" v-if="expertList.length">
+					<div class="expertList" v-for="item in expertList">
+						<div class="allFriends" v-show="showList == 1">
+							<div class="friOne">
+								<div :style="{backgroundImage: 'url(' + item.avatar + ')'}"></div>
+								<div class="allColor">{{item.level}}</div>
+							</div>
+							<div class="friTwo">
+								<div>{{item.nickname ? item.nickname : "--" }}</div>
+								<div>与我关系<span class="allColor">({{item.relation}})</span></div>
+							</div>
+							<div class="friThree">
+								<div>本月所得收入</div>
+								<div class="allColor">¥{{item.money}}</div>
+							</div>
+						</div>
+						<div class="erFriends" v-show="showList == 2 || showList == 3">
+							<div class="erOne">
+								<div>{{item.nickname ? item.nickname : "--" }}</div>
+								<div class="allColor">{{item.level}}</div>
+							</div>
+							<div class="erTwo">
+								<div>{{showList == 2 ? '好友直属人数' : (showList == 3 ? '好友二级人数' : '--')}}</div>
+								<div class="allColor">{{showList == 2 ? item.recount : (showList == 3 ? item.childcount : '0')}}人</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--空状态时-->
+				<div class="lw-empty" style="display: block;" v-else>
+					<div class="lw-empty-box">
+						<div class="lw-empty-flex">
+							<img src="../../img/personalCenter/nullList1.png" alt="" class="lw-empty-img" />
+							<div class="lw-empty-test">暂无达人 去推广吧！</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../../plugins/flexible.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="../../plugins/jquery-2.1.4.js"></script>
+<script src="../../plugins/vue.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../plugins/swiper-4.3.3.min.js"></script>
+<script src="../../plugins/serverApi.js"></script>
+<script src="../../plugins/getTokenCommon.js"></script>
+<script type="text/javascript">
+	$(function() {
+		/*下拉刷新和上拉加载效果*/
+		mui.init({
+			pullRefresh: {
+				container: '#refreshContainer', //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				up: {
+					height: 50,
+					auto: false,
+					contentnomore: '没有更多数据了',
+					contentrefresh: '正在加载...',
+					callback: function() {
+						setTimeout(function() {
+							getList();
+						}, 1000);
+					}
+				}
+			}
+		});
+
+		var token = localStorage.getItem("token");
+		var pageData = {
+			page: 1,
+			psize: 10
+		}
+		var vueData = {
+			expertList: [],
+			showList: 1,
+		}
+		new Vue({
+			el: "#J_el",
+			data: vueData,
+			methods: {
+				
+			}
+		})
+
+		getList(true);
+		function getList(empty) {
+			$.ajax({
+				url: API_SERVER + "user/talentShow",
+				data: {
+					token: token,
+					page: pageData.page, //页码（默认第一页,默认1）
+				},
+				success: function(data) {
+					log(data)
+					if(data.code == 200) {
+						var lists = data.data.list;
+						empty && vueData.expertList.splice(0);
+						for(var i = 0; i < lists.length; i++) {
+							vueData.expertList.push(lists[i]);
+						}
+						pageData.page++;
+						var pullRefresh = mui('#refreshContainer').pullRefresh();
+						pullRefresh && pullRefresh.endPulldownToRefresh && pullRefresh.endPulldownToRefresh();
+						pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
+						pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < pageData.psize);
+					} else {
+						mui.toast(data.message)
+					}
+				}
+			});
+		}
+		
+		//切换导航栏
+		mui("body").on("tap", ".headerList", function() {
+			$(".headerList").removeClass("headerActive");
+			$(this).addClass("headerActive");
+			vueData.showList = $(this).attr("showState");
+		})
+	})
+</script>
+</body>
+
+</html>

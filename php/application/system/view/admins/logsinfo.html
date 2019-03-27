@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <div class="layui-tab">
+
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show" title="基本信息">
+
+                <table class="layui-table view">
+
+                    <volist name="notes" id="val">
+                            <tr>
+                                <td class="label">{$val.0}：</td>
+                                <td class="content">
+                                    <label class="layui-badge layui-bg-green">修改前</label>
+                                    {$val.1}
+                                    <br/>
+                                    <label class="layui-badge ">修改后</label>
+                                    {$val.2}
+                                </td>
+                            </tr>
+                    </volist>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+
+</script>

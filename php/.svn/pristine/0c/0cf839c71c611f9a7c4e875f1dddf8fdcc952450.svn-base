@@ -1,0 +1,300 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>瓜分十万奖池</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/leWan.css" rel="stylesheet" />
+<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+<link href="../../fonts/iconfont.css" rel="stylesheet" />
+<style type="text/css">
+	body{
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+	.body_box{
+		width: 100%;
+		position: relative;
+	}
+	.body_box .bei_jing{
+		width: 100%;
+		height: 100%;
+	}
+	.body_box .total{
+		position: absolute;
+		width: 100%;
+		text-align: center;
+		top: 14.373rem;
+		font-size: 0.44rem;
+		font-weight: 600;
+		color: #FFFF3A;
+	}
+	.activeBtn{
+		color: #FFFFFF !important;
+	}
+	.btn{
+		position: absolute;
+		top: 16.84rem;
+		width: 3rem;
+		height: 0.92rem;
+	}
+	.my_zhimai{
+		left: 1.666rem;
+	}
+	.my_fenxiang{
+		right: 1.666rem;
+	}
+	.gui_ze{
+		position: absolute;
+		top: 0.6rem;
+		right: 0.92rem;
+		width: 0.573rem;
+		height: 1.253rem;
+	}
+	.zhi_yin_box{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 10;
+		background-color: rgba(0,0,0,0.7);
+		display: none;
+	}
+	.zhi_yin{
+		position: absolute;
+		top: 0;
+		right: 0.6rem;
+		width: 30%;
+	}
+	.count_down{
+		width: 100%;
+		position: absolute;
+		top: 15.56rem;
+		text-align: center;
+		font-size: 0.293rem;
+		font-weight: 300;
+		color: #FFFFFF;
+	}
+	.cont_down_time{
+		color: #FFFFFF;
+	}
+	.cont_down_time span{
+		font-family: 'wupan';
+		display: inline-block;
+		width: 0.48rem;
+		text-align: center;
+		height: 0.48rem;
+		line-height: 0.6rem;
+		background-color: #FFFFFF;
+		border-radius: 0.05rem;
+		color: #051458;
+		font-size: 0.32rem;
+		font-weight: bold;
+	}
+	.fen_xiang{
+		position: fixed;
+		right: 0;
+		top: 11rem;
+		width: 2rem;
+		text-align: center;
+		height: 1rem;
+		line-height: 1rem;
+		border-bottom-left-radius: 1rem;
+		border-top-left-radius: 1rem;
+		font-size: 0.333rem;
+		color: #FFFFFF;
+		background:linear-gradient(90deg,rgba(25,255,149,1) 0%,rgba(83,160,253,1) 100%);
+	}
+	.list_box{
+		position: absolute;
+		top: 16.573rem;
+		right: 4.4rem;
+		width: 4.666rem;
+		height: 4rem;
+	}
+	.phone_name{
+		width: 4.6rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+		text-align: right;
+		font-size: 0.22rem;
+		font-weight: 400;
+		color: #FFFFFF;
+	}
+</style>
+</head>
+
+<body>
+<div id="J_el" v-cloak>
+	<div class="body_box" v-if="isEnd == 1">
+		<img class="bei_jing" src="http://oss.lewan6.ren/uploads/html/20190315/1a6a57e2093009d88f35b55653fe14caeadbe78cjpeg"/>
+		<div class="total">{{ details.num > 0 ? "今日您已直卖"+details.num+"单~请继续加油哦!" : "今日您还没有直卖单哦~" }}</div>
+		<div class="count_down">
+			<span>开奖倒计时:</span>
+			<span v-html="content" class="cont_down_time"></span>
+			<span>(每日下午15:00开奖)</span>
+		</div>
+		<div class="btn my_zhimai" @tap="gotoZhimai()"></div>
+		<div class="btn my_fenxiang" @tap="gotoFenxiang()"></div>
+		<div class="gui_ze" @tap="guize()"></div>
+		<div class="zhi_yin_box" @tap="hideModal()">
+			<img class="zhi_yin" src="http://oss.lewan6.ren/uploads/html/20190314/9058161ef2255ba78395c5f5834e1cff2bc1f24dpng"/>
+		</div>
+	</div>
+	<div class="body_box" v-else-if="isEnd == 2">
+		<img class="bei_jing" src="http://oss.lewan6.ren/uploads/html/20190315/210feac84dfdcab7b0827c98d4605bf0ac843ed7jpeg"/>
+		<div class="total jin_ri">上期中奖名单</div>
+		<div class="count_down">
+			<span>下次开奖:</span>
+			<span v-html="content" class="cont_down_time"></span>
+			<span>(每日下午15:00开奖)</span>
+		</div>
+		<marquee class="list_box" behavior="scroll" scrollamount="2" direction="up">
+			<div class="phone_name" v-for="item in details.list">{{item.nickname}}{{item.mobile}}</div>
+		</marquee>
+		<div class="fen_xiang" @tap="gotoFenxiang()">分享好友</div>
+		<div class="gui_ze" @tap="guize()"></div>
+		<div class="zhi_yin_box" @tap="hideModal()">
+			<img class="zhi_yin" src="http://oss.lewan6.ren/uploads/html/20190314/9058161ef2255ba78395c5f5834e1cff2bc1f24dpng"/>
+		</div>
+	</div>
+</div>
+<script src="../../plugins/flexible.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="../../plugins/jquery-2.1.4.js"></script>
+<script src="../../plugins/vue.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../plugins/swiper-4.3.3.min.js"></script>
+<script src="../../plugins/serverApi.js"></script>
+<!--<script src="../../plugins/getTokenCommon.js"></script>-->
+<script type="text/javascript">
+	$(function() {
+		var token = getUrlParam("token");
+		var vueData = {
+			details:{},
+			content: '',
+			isEnd: 0,
+		}
+		new Vue({
+			el: '#J_el',
+			data: vueData,
+			methods: {
+				countdown: countdown,
+				directSelling: directSelling,
+				gotoZhimai: gotoZhimai,
+				gotoFenxiang: gotoFenxiang,
+				hideModal: hideModal,
+				guize: guize,
+			},
+			created: function() {
+				directSelling();
+			}
+		});
+		
+		//获取用户订单信息
+		function directSelling(){
+			$.ajax({
+				url: API_SERVER + 'User/directSelling',
+				async: false,
+				data:{token: token},
+				success: function(data) {
+					if(data.code == 200) {
+						log(data)
+						vueData.details = data.data;
+						countdown(data.data.nowtime,data.data.endtime)
+					}
+				}
+			});
+		}
+		//倒计时
+		function countdown(nowtime,timestamp) {
+			var nowTime = nowtime*1000;
+			var timer = setInterval(function() {
+				nowTime = nowTime + 1000;
+				var endTime = timestamp * 1000;
+				var t = endTime - nowTime;
+				if( t > 54000000){
+					vueData.isEnd = 2;
+				}else{
+					vueData.isEnd = 1;
+				}
+				if(t > 0) {
+					var day = Math.floor(t / 86400000);
+					var hour = Math.floor((t / 3600000) % 24);
+					var min = Math.floor((t / 60000) % 60);
+					var sec = Math.floor((t / 1000) % 60);
+					hour = hour < 10 ? "0" + hour : hour;
+					min = min < 10 ? "0" + min : min;
+					sec = sec < 10 ? "0" + sec : sec;
+					var format = '';
+					format = "<span>" + hour + "</span> : <span>" + min + "</span> : <span>" + sec + "</span>";
+					vueData.content = format;
+				} else {
+					clearInterval(timer);
+					vueData.content = "已结束";
+				}
+			}, 1000);
+		}
+		//页面跳转
+		function gotoZhimai(){
+			mui.openWindow({
+				url: BASE_SERVER + "wechat_html/page/everydayFaddish/everydayFaddish.html"
+			})
+		}
+		//页面分享
+		function gotoFenxiang(){
+			$('.zhi_yin_box').show();
+		}
+		//关闭页面分享
+		function hideModal(){
+			$('.zhi_yin_box').hide();
+		}
+		//规则
+		function guize(){
+			$("html, body").animate({
+				scrollTop: document.documentElement.clientHeight
+			}, {
+				duration: 500,
+				easing: "swing"
+			});
+		}
+		
+		//分享朋友圈	
+		sharePYQ()
+		function sharePYQ() {
+			getWechatSignature(location.href.split('#')[0]);
+			wx.ready(function() {
+				wx.onMenuShareTimeline({
+					title: '【乐玩喊你来分钱】十万现金 送完即止',
+					link: BASE_SERVER + 'wechat_html/page/homePage/moneyIncentive.html',
+					imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
+					trigger: function(res) {
+						// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+					},
+					fail: function(res) {
+						mui.toast(res);
+					}
+				});
+				wx.onMenuShareAppMessage({
+					title: '【乐玩喊你来分钱】十万现金 送完即止',
+					desc: '乐玩出大招了!这一次我们只想送钱 搞事情不玩虚的，每天开奖，直接到账各位家人请提前准备好自己的钱袋',
+					link: BASE_SERVER + 'wechat_html/page/homePage/moneyIncentive.html',
+					imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
+					trigger: function(res) {
+						// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+					},
+					fail: function(res) {
+						mui.toast(res);
+					}
+				});
+			});
+		}
+	})
+</script>
+</body>
+
+</html>

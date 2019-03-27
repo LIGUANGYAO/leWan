@@ -1,0 +1,107 @@
+<div class="page" style="padding:20px 0px 0px 0px;">
+    <form class="layui-form" action="{$action}" method="post" enctype="multipart/form-data">
+        <input type="hidden" value="{$obj.id}" name="id">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司名称:</label>
+            <div class="layui-input-inline " style="width: 300px">
+                <input type="text" name="alt" lay-verify="require" class="layui-input" value="{$obj.alt}">
+            </div>
+        </div>
+
+        <div class="layui-form-item ">
+            <label class="layui-form-label">状态:</label>
+            <div class="layui-input-inline layui-col-sm3">
+                <label><input type="radio" name="jump" value="1" title="启用" <if condition="$obj.jump eq 1">checked="checked"</if> ></label>
+                <label><input type="radio" name="jump" value="2" title="禁用" <if condition="$obj.jump eq 2">checked="checked"<elseif condition="$obj.jump neq 1"/>checked="checked"</if> ></label>
+            </div>
+        </div>
+        <div class="layui-form-item" id="areatype" <if condition="$obj.type eq 3">style="display: none"</if>>
+            <label class="layui-form-label">经营城市:</label>
+            <div class="layui-input-inline">
+                <select name="provence_id"  lay-filter="provence_ids" status="1">
+                    <option value="">选择省</option>
+                    <volist name="provence" id="val">
+                        <option value="{$val.code}"<if condition="$obj.provence eq $val['code']">
+                        selected="selected"</if>>{$val.provence}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block" id="citys">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+
+        <input type="hidden" value="{$obj.id}" name="id">
+    </form>
+
+</div>
+<script>
+    var form;
+    layui.use(['layer', 'form'], function() {
+        form = layui.form();
+
+        form.on('select(provence_ids)', function(data){
+            var val = data.value;
+            post({pcode:val,status:1}, "{:url('ajax/loadcity')}", rendercity);
+        });
+
+        form.on('checkbox(cityids)', function(data){
+            var val = data.value;
+            tt = val+ ',';
+            if(data.elem.checked){
+                cidstr += tt;
+                for(var i = 0; i<tempdata.length; i++){
+
+                }
+            }else{
+                cidstr = cidstr.replace(tt, '');
+            }
+            console.log(cidstr)
+        });
+
+    });
+    var tempdata=[];
+    var cidstr = ',';
+
+    function rendercity(res) {
+        var html = remberlast();
+        dd = res.data;
+        has = false;
+        for(var i = 0; i<tempdata.length; i++){
+            if(tempdata[i].code == dd[0].code){
+                has = true;
+            }
+        }
+        if(!has){
+            tempdata = tempdata.concat(dd);
+        }
+        for(var i =0; i<dd.length; i++){
+            html += '<input type="checkbox" name="cityids[]" value="'+dd[i].code+'" lay-filter="cityids" lay-skin="primary" title="'+dd[i].city+'">';
+        }
+        $('#citys').html(html);
+        form.render("checkbox");
+    }
+
+    function remberlast() {
+        html = '';
+        $('#citys').html('');
+        dd = tempdata;
+        for(var i =0; i<dd.length; i++){
+            if(cidstr.indexOf(dd[i].code+',')>0){
+                html += '<input type="checkbox" name="cityids[]" value="'+dd[i].code+'" checked lay-filter="cityids" lay-skin="primary" title="'+dd[i].city+'">';
+            }
+        }
+       return html;
+    }
+
+</script>

@@ -1,0 +1,332 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>单品销售</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/leWan.css" rel="stylesheet" />
+<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+<link href="../../fonts/iconfont.css" rel="stylesheet" />
+<style type="text/css">
+	body {
+		padding: 0;
+		margin: 0 !important;
+		min-height: 100vh;
+	}
+	.content_body{
+		width: 10rem;
+		height: 51.786rem;
+		background-image: url('http://oss.lewan6.ren/uploads/html/20190322/28abf276dc3b8954c40a0f45522abcaab035a166png');
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		position: relative;
+	}
+	.one{
+		position: absolute;
+		width: 8.373rem;
+		height: 2.48rem;
+		top: 12.98rem;
+		left: 1.626rem;
+		font-size: 0.426rem;
+		font-weight: 400;
+		color: #333333;
+	}
+	.one_one{
+		margin-top: 0.666rem;
+		padding-left: 0.266rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	.one_two{
+		margin-top: 0.266rem;
+		padding-left: 0.266rem;
+	}
+	.two{
+		position: absolute;
+		width: 9.28rem;
+		height: 1.306rem;
+		top: 17.813rem;
+		left: 0;
+		font-size: 0.48rem;
+		font-weight: 600;
+		text-align: center;
+		line-height: 1.306rem;
+		color: #FFFFFF;
+	}
+	.three{
+		position: absolute;
+		width: 8.95rem;
+		height: 7.04rem;
+		top: 19.12rem;
+		left: 0;
+		overflow-y: scroll;
+	}
+	.three_list{
+		width: 8.186rem;
+		height: 1.76rem;
+		border: 1px solid #FFDDD5;
+		margin: 0.266rem 0 0 0.346rem;
+		font-family: 'wupanHD'
+	}
+	.list_left{
+		width: 5.866rem;
+		height: 1.76rem;
+		float: left;
+	}
+	.list_right{
+		width: 2.146rem;
+		height: 0.666rem;
+		line-height: 0.666rem;
+		text-align: center;
+		float: right;
+		color: #FFFFFF;
+		background-color: #FA633E;
+		margin-top: 0.546rem;
+	}
+	.left_one{
+		font-size: 0.373rem;
+		color: #FA633E;
+		margin: 0.346rem 0 0 0.266rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	.left_two{
+		font-size: 0.293rem;
+		color: #F9AA97;
+		margin: 0.133rem 0 0 0.266rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	.four{
+		position: absolute;
+		width: 8.6rem;
+		height: 9.333rem;
+		top: 32rem;
+		left: 0.7rem;
+	}
+	.four_title{
+		margin-top: 0.533rem;
+		text-align: center;
+		color: #CCCCCC;
+		font-weight: bold;
+		font-size: 0.373rem;
+	}
+	.four_list_box{
+		height: 7rem;
+		margin-top: 0.533rem;
+	}
+	.four_list_left{
+		display: inline-block;
+		width: 60%;
+		text-align: right;
+		float: left;
+		font-size: 0.266rem;
+		color: #333333;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow:ellipsis;
+	}
+	.four_list_right{
+		display: inline-block;
+		width: 25%;
+		text-align: left;
+		float: right;
+		font-size: 0.32rem;
+		color: #F35D34;
+	}
+	.five{
+		position: absolute;
+		width: 8.5rem;
+		height: 5.6rem;
+		top: 43.066rem;
+		left: 0.75rem;
+	}
+	.five_one,.five_two,.five_three,.five_four{
+		font-size: 0.32rem;
+		color: #333333;
+		font-weight: bold;
+	}
+	.five_two span,.five_four span{
+		font-size: 0.28rem;
+		color: #666666;
+		font-weight: 200;
+	}
+</style>
+</head>
+
+<body>
+<div class="content_body" id="J_el" v-cloak>
+	<div class="one">
+		<div class="one_one">活动产品：{{ details.title }}</div>
+		<div class="one_two">活动时间：{{ getDateTime(details.starttime,'Y.MM.dd') }} ~ {{ getDateTime(details.endtime,'Y.MM.dd') }}</div>
+	</div>
+	<div class="two">{{ details.zhimai > 0 ? "期间您已直卖"+details.zhimai+"份~请继续加油哦!" : "期间您还没有直卖单哦~" }}</div>
+	<div class="three">
+		<div class="three_list" @tap="details.rwnum1>details.zhimai && jumpToDetails(details.productids)">
+			<div class="list_left">
+				<div class="left_one">{{details.rule1}}</div>
+				<div class="left_two">{{details.w1}}</div>
+			</div>
+			<div class="list_right">{{ details.rwnum1 <= details.zhimai ? "已完成" : "我要完成" }}</div>
+		</div>
+		<div class="three_list" @tap="details.rwnum2>details.zhimai && jumpToDetails(details.productids)">
+			<div class="list_left">
+				<div class="left_one">{{details.rule2}}</div>
+				<div class="left_two">{{details.w2}}</div>
+			</div>
+			<div class="list_right">{{ details.rwnum2 <= details.zhimai ? "已完成" : "我要完成" }}</div>
+		</div>
+		<div class="three_list" @tap="details.rwnum3>details.zhimai && jumpToDetails(details.productids)">
+			<div class="list_left">
+				<div class="left_one">{{details.rule3}}</div>
+				<div class="left_two">{{details.w3}}</div>
+			</div>
+			<div class="list_right">{{ details.rwnum3 <= details.zhimai ? "已完成" : "我要完成" }}</div>
+		</div>
+	</div>
+	<div class="four">
+		<div class="four_title">最后一次更新：{{ dateTime }}</div>
+		<marquee class="four_list_box" behavior="scroll" scrollamount="2" direction="up">
+			<div class="four_list" v-for="item in details.mingdan">
+				<span class="four_list_left">{{item.nickname}}*{{item.mobile}}</span>
+				<span class="four_list_right">已卖{{item.num}}份</span>
+			</div>
+		</marquee>
+	</div>
+	<div class="five">
+		<div class="five_one">活动产品：{{ details.title }}</div>
+		<div class="five_two">一、活动规则<br/>
+			<span>{{details.content}} </span> </br>
+			<span>参与条件 ：直卖锁粉用户 </span>
+		</div>
+		<div class="five_three">二、活动时间：{{ getDateTime(details.starttime,'Y.MM.dd') }} ~ {{ getDateTime(details.endtime,'Y.MM.dd') }}</div>
+		<div class="five_four">三、奖励发放时间 </br>
+			<span>活动结束后3~5个工作日奖励发放处：个人订单处/佣金处 单品销售英雄榜，英雄就要被奖励. </span>
+		</div>
+	</div>
+</div>
+<script src="../../plugins/flexible.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="../../plugins/jquery-2.1.4.js"></script>
+<script src="../../plugins/vue.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../plugins/serverApi.js"></script>
+<!--<script src="../../plugins/getTokenCommon.js"></script>-->
+<script type="text/javascript">
+$(function() {
+	var token = getUrlParam("token") || localStorage.getItem("token");
+	var id = getUrlParam("product_id") || localStorage.getItem("product_id");
+	localStorage.setItem('product_id',id)
+	if(!token){
+		var code = getUrlParam("code");
+		if(token == 'undefined' || token == null || token == "") {
+			if(code == 'undefined' || code == null || code == "") {
+				var redirectUrl = location.href;
+				window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
+			} else {
+				$.ajax({
+					url: API_SERVER + "Wechat/WechatAuthorize",
+					async: false,
+					data: {
+						code: code + "&state",
+						recode: null,
+					},
+					success: function(data) {
+						log(data)
+						if(data.code == 200) {
+							localStorage.setItem("token", data.data.token); //token
+							token = data.data.token;
+						} else {
+							mui.toast(data.message)
+						}
+					}
+				})
+			}
+		}
+	}
+	getUserMessage();
+	if(localStorage.getItem("level") == 1){
+		mui.alert('您还未注册，暂无权限查看','提示','确定',function(){
+			wx.closeWindow();
+		})
+	}
+	var vueData = {
+		details:{},
+		dateTime: getDateTime(new Date().getTime()/1000,'Y.MM.dd hh:mm'),
+	}
+	new Vue({
+		el: '#J_el',
+		data: vueData,
+		methods: {
+			getDetails: getDetails,
+			hideMenu: hideMenu,
+			jumpToDetails: jumpToDetails,
+		},
+		created: function() {
+			getDetails();
+		}
+	});
+	
+	//获取单品销售详情
+	function getDetails(){
+		$.ajax({
+			url: API_SERVER + 'User/activesdp',
+			async: false,
+			data:{
+				token: token,
+				id: id,
+			},
+			success: function(data) {
+				if(data.code == 200) {
+					log(data)
+					vueData.details = data.data;
+					hideMenu();
+				}
+			}
+		});
+	}
+	//跳转商品详情
+	function jumpToDetails(id){
+		mui.openWindow({
+			url: BASE_SERVER + "wechat_html/page/homePage/productDetails.html?productId=" + id
+		})
+	}
+	//隐藏菜单按钮
+	function hideMenu(){
+		getWechatSignature(location.href.split('#')[0])
+		wx.ready(function() {
+			wx.onMenuShareTimeline({
+				title: '【单品直卖】' + vueData.details.title,
+				link: BASE_SERVER + 'wechat_html/page/lewanActivity/productSold.html?product_id=' + id,
+				imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
+				trigger: function(res) {
+					// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+				},
+				fail: function(res) {
+					mui.toast(res);
+				}
+			});
+			wx.onMenuShareAppMessage({
+				title: '【单品直卖】' + vueData.details.title,
+				desc: vueData.details.title,
+				link: BASE_SERVER + 'wechat_html/page/lewanActivity/productSold.html?product_id=' + id,
+				imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
+				trigger: function(res) {
+					// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+				},
+				fail: function(res) {
+					mui.toast(res);
+				}
+			});
+		});
+	}
+})
+</script>
+</body>
+
+</html>

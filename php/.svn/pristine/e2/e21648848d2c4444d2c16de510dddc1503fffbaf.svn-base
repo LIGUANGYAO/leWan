@@ -131,7 +131,7 @@
 <body>
 <div id="J_el" v-cloak>
 	<div class="body_box" v-if="isEnd == 1">
-		<img class="bei_jing" src="http://oss.lewan6.ren/uploads/html/20190315/1a6a57e2093009d88f35b55653fe14caeadbe78cjpeg"/>
+		<img class="bei_jing" src="http://oss.lewan6.ren/uploads/html/20190322/84a2213bcd2dfb30a3daaa6c43542396a48e8694png"/>
 		<div class="total">{{ details.num > 0 ? "今日您已直卖"+details.num+"单~请继续加油哦!" : "今日您还没有直卖单哦~" }}</div>
 		<div class="count_down">
 			<span>开奖倒计时:</span>
@@ -146,7 +146,7 @@
 		</div>
 	</div>
 	<div class="body_box" v-else-if="isEnd == 2">
-		<img class="bei_jing" src="http://oss.lewan6.ren/uploads/html/20190315/210feac84dfdcab7b0827c98d4605bf0ac843ed7jpeg"/>
+		<img class="bei_jing" src="http://oss.lewan6.ren/uploads/html/20190322/152e45628e04280ce342a7af497e30d3c79652aepng"/>
 		<div class="total jin_ri">上期中奖名单</div>
 		<div class="count_down">
 			<span>下次开奖:</span>
@@ -173,47 +173,39 @@
 <!--<script src="../../plugins/getTokenCommon.js"></script>-->
 <script type="text/javascript">
 	$(function() {
-		var token = localStorage.getItem("token");
-		var code = getUrlParam("code");
-		if(token) {
-			$.ajax({
-				url: API_SERVER + 'Wechat/hasToken',
-				async: false,
-				data: {token: token},
-				success: function(data) {
-					if(data.code == 200) {
-						log(data)
-						if(data.data.count == 0) {
-							localStorage.setItem("token", "")
-							window.location.href = location.href;
+		var token = getUrlParam("token") || localStorage.getItem("token");
+		if(!token){
+			var code = getUrlParam("code");
+			if(token == 'undefined' || token == null || token == "") {
+				if(code == 'undefined' || code == null || code == "") {
+					var redirectUrl = location.href;
+					window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
+				} else {
+					$.ajax({
+						url: API_SERVER + "Wechat/WechatAuthorize",
+						async: false,
+						data: {
+							code: code + "&state",
+							recode: null,
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								localStorage.setItem("token", data.data.token); //token
+								token = data.data.token;
+							} else {
+								mui.toast(data.message)
+							}
 						}
-					}
+					})
 				}
-			});
-		}
-		
-		if(token == 'undefined' || token == null || token == "") {
-			if(code == 'undefined' || code == null || code == "") {
-				var redirectUrl = location.href;
-				window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
-			} else {
-				//获取token
-				$.ajax({
-					url: API_SERVER + "Wechat/WechatAuthorize",
-					async: false,
-					data: {
-						code: code + "&state",
-						recode: null,
-					},
-					success: function(data) {
-						if(data.code == 200) {
-							token = data.data.token;
-						} else {
-							mui.toast(data.message)
-						}
-					}
-				})
 			}
+		}
+		getUserMessage();
+		if(localStorage.getItem("level") == 1){
+			mui.alert('您还未注册，暂无权限查看','提示','确定',function(){
+				wx.closeWindow();
+			})
 		}
 		var vueData = {
 			details:{},
@@ -311,7 +303,7 @@
 			wx.ready(function() {
 				wx.onMenuShareTimeline({
 					title: '【乐玩喊你来分钱】十万现金 送完即止',
-					link: BASE_SERVER + 'wechat_html/page/homePage/moneyIncentive.html',
+					link: BASE_SERVER + 'wechat_html/page/lewanActivity/moneyIncentive.html',
 					imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
 					trigger: function(res) {
 						// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
@@ -323,7 +315,7 @@
 				wx.onMenuShareAppMessage({
 					title: '【乐玩喊你来分钱】十万现金 送完即止',
 					desc: '乐玩出大招了!这一次我们只想送钱 搞事情不玩虚的，每天开奖，直接到账各位家人请提前准备好自己的钱袋',
-					link: BASE_SERVER + 'wechat_html/page/homePage/moneyIncentive.html',
+					link: BASE_SERVER + 'wechat_html/page/lewanActivity/moneyIncentive.html',
 					imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
 					trigger: function(res) {
 						// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回

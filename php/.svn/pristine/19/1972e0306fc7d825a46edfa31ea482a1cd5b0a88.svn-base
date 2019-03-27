@@ -1,0 +1,79 @@
+<div class="page">
+
+
+    <form class="layui-form" action="{:url('Banner/index')}">
+
+        <div class="layui-form-item ">
+            <label class="layui-form-label">城市筛选</label>
+            <div class="layui-input-inline">
+                <select name="provence_id"  lay-filter="provence_id" status="1">
+                    <option value="">选择省</option>
+                    <option value="">选择省</option>
+                    <volist name="provence" id="val">
+                        <option value="{$val.code}"<if condition="$query.provence eq $val.code">
+                        selected="selected"</if>>{$val.provence}
+                        </option>
+                    </volist>
+                </select>
+            </div>
+
+            <span class="input-group-btn layui-input-block">
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+            </span>
+        </div>
+    </form>
+
+    <div class="r">
+        <notempty name="addbtn">
+            <if condition="$addbtn.type eq '1'">
+                <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+                <else/>
+                <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+            </if>
+        </notempty>
+    </div>
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table">
+            <!-- 必须，只有这里才真正控制宽度 -->
+            <thead>
+                <tr>
+                    <th nowrap="nowrap" width="20"><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                    <th nowrap="nowrap">分公司名</th>
+                    <th nowrap="nowrap">登录账号</th>
+                    <th nowrap="nowrap">状态</th>
+                    <th nowrap="nowrap">经营城市</th>
+                    <th nowrap="nowrap">状态</th>
+                    <th nowrap="nowrap" width="100">操作</th>
+                </tr> 
+            </thead>
+            <tbody>
+
+            <volist name="$data.list" id="val">
+                <tr>
+                </tr>
+            </volist>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tabletool">
+        <!-- 工具按钮 -->
+        <div class="l">
+            <a href="" class="layui-btn batchdel layui-btn-small layui-btn-disabled">批量删除</a>
+        </div>
+
+        <!-- 分页工具 -->
+        <div id="limitpage" class="r"></div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+<script>
+
+</script>

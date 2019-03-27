@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>免单专题</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/leWan.css" rel="stylesheet" />
+<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+<link href="../../fonts/iconfont.css" rel="stylesheet" />
+<style type="text/css">
+	body {
+		padding: 0;
+		margin: 0 !important;
+		min-height: 100vh;
+	}
+	.content_body{
+		width: 10rem;
+		height: 37.2rem;
+		background-image: url('http://oss.lewan6.ren/uploads/html/20190320/531db976d885bf157b30297acfe0e1022bfb50bfpng');
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		position: relative;
+	}
+	.header_box{
+		width: 8rem;
+		height: 0.666rem;
+		position: absolute;
+		top: 11.946rem;
+		left: 1rem;
+		font-size: 0.48rem;
+		color: #FFFFFF;
+		font-weight: 600;
+	}
+	.content{
+		position: absolute;
+		top: 24.6rem;
+		left: 0.36rem;
+		width: 9.28rem;
+		height: 11.2rem;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling : touch;
+	}
+	.list{
+		width: 9.28rem;
+		height: 3.2rem;
+		background: #FFFFFF;
+		margin-top: 0.266rem;
+		box-shadow:0px 4px 34px 0px rgba(43,6,117,0.51) inset;
+	}
+	.list_img{
+		display: inline-block;
+		width: 2rem;
+		height: 2rem;
+		float: left;
+		margin-left: 0.266rem;
+		margin-top: 0.6rem;
+	}
+	.list_text{
+		overflow: hidden;
+		text-overflow:ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 5;
+		-webkit-box-orient: vertical;
+		color: #FB6B42;
+		font-weight: 400;
+		font-size: 0.32rem;
+		width: 4.506rem;
+		line-height: 1.4;
+		float: left;
+		margin-left: 0.373rem;
+		margin-top: 0.6rem;
+	}
+	.list_btn{
+		width: 1.786rem;
+		float: right;
+	}
+	.myCanyu{
+		display: inline-block;
+		margin-top: 1.266rem;
+		width: 1.786rem;
+		height: 0.666rem;
+		line-height: 0.666rem;
+		text-align: center;
+		background-color: #FB6B42;
+		color: #FFFFFF;
+		border-bottom-left-radius: 0.333rem;
+		border-top-left-radius: 0.333rem;
+	}
+</style>
+</head>
+
+<body>
+<div class="content_body" id="J_el" v-cloak>
+	<div class="header_box">{{ details.num > 0 ? "本月您已参与"+details.num+"次新人免单机会啦~" : "本月您还没有参与新人免单机会哦~" }}</div>
+	<div class="content">
+		<div class="list" v-for="item in details.products" @tap="jumpToDetails(item.product_id)">
+			<img :src="item.product_pic" class="list_img"/>
+			<div class="list_text">{{item.product_name}}</div>
+			<div class="list_btn">
+				<span class="myCanyu">我要参与</span>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../../plugins/flexible.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="../../plugins/jquery-2.1.4.js"></script>
+<script src="../../plugins/vue.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../plugins/serverApi.js"></script>
+<!--<script src="../../plugins/getTokenCommon.js"></script>-->
+<script type="text/javascript">
+$(function() {
+	var token = getUrlParam("token");
+	var vueData = {
+		details:{},
+	}
+	new Vue({
+		el: '#J_el',
+		data: vueData,
+		methods: {
+			getDetails: getDetails,
+			hideMenu: hideMenu,
+			jumpToDetails: jumpToDetails,
+		},
+		created: function() {
+			getDetails();
+			hideMenu();
+		}
+	});
+	
+	//获取新人专享信息
+	function getDetails(){
+		$.ajax({
+			url: API_SERVER + 'User/activeXrmd',
+			async: false,
+			data:{token: token},
+			success: function(data) {
+				if(data.code == 200) {
+					log(data)
+					vueData.details = data.data;
+				}
+			}
+		});
+	}
+	//跳转商品详情
+	function jumpToDetails(id){
+		mui.openWindow({
+			url: BASE_SERVER + "wechat_html/page/homePage/productDetails.html?productId=" + id
+		})
+//		try{
+//			window.appWeb.invokeNative("newPeople",id);
+//		}catch(err){
+//			mui.openWindow({
+//				url: BASE_SERVER + "wechat_html/page/homePage/productDetails.html?productId=" + id
+//			})
+//		}
+	}
+	//隐藏菜单按钮
+	function hideMenu(){
+		getWechatSignature(location.href.split('#')[0])
+		wx.ready(function() {
+			wx.hideAllNonBaseMenuItem();
+		});
+	}
+})
+</script>
+</body>
+
+</html>

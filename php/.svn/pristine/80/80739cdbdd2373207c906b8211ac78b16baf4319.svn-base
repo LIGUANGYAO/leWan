@@ -1,0 +1,310 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>乐玩活动</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/leWan.css" rel="stylesheet" />
+<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+<link href="../../plugins/mui.picker.css" rel="stylesheet" />
+<link href="../../plugins/mui.poppicker.css" rel="stylesheet" />
+<link href="../../fonts/iconfont.css" rel="stylesheet" />
+<style type="text/css">
+	body {
+		padding: 0;
+		margin: 0 !important;
+		background-color: #F5F6FA;
+		min-height: 100vh;
+	}
+	.header{
+		width: 100%;
+		height: 5.12rem;
+		background-image: url('http://oss.lewan6.ren/uploads/html/20190322/196ef855f2cf834bd7a0f0db03f8ce275dd2e7f9png');
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		position: relative;
+	}
+	.addressTap{
+		position: absolute;
+		left: 0.24rem;
+		top: 0.506rem;
+		color: #FFFFFF;
+		font-size: 0.373rem;
+		font-weight: 500;
+	}
+	.mui-table-view{
+		width: 9.28rem;
+		margin: 0 auto;
+		background-color: #F5F6FA !important;
+	}
+	.mui-media{
+		width: 9.28rem;
+		height: 2.88rem;
+		padding: 0 !important;
+		margin: 0 auto;
+		margin-top: 0.266rem;
+		background-color: #FFFFFF !important;
+	}
+	.mui-table-view:before,.mui-table-view:after,.mui-table-view-cell:after, .mui-table-view-cell:before{
+		height: 0;
+	}
+	.float_left{
+		width: 4.133rem;
+		height: 2.88rem;
+		float: left;
+	}
+	.float_right{
+		width: 5.146rem;
+		height: 2.88rem;
+		float: right;
+		position: relative;
+		padding: 0.533rem 0.613rem;
+		font-size: 0.426rem;
+		color: #333333;
+		font-weight: 400;
+	}
+	.float_right i{
+		position: absolute;
+		right: 0.266rem;
+		bottom: 0.2rem;
+	}
+</style>
+</head>
+
+<body>
+<div class="mui-content mui-scroll-wrapper" id="refreshContainer">
+	<div class="mui-scroll">
+		<div class="" id="J_el" v-cloak>
+			<div class="header">
+				<div class="addressTap" @tap="selectPlot()">
+					<i class="iconfont icon-dingwei"></i>
+					<span class="address">{{ cityName }}</span>
+				</div>
+			</div>
+			<div class="content">
+				<ul class="mui-table-view" v-if="showList.length">
+					<li class="mui-table-view-cell mui-media" @tap="gotoDetails(item.type,item.a_id)" v-for="item in showList">
+						<img class="float_left" :src="item.thumb"/>
+						<div class="float_right">
+							<span>{{item.title}}</span>
+							<i class="iconfont icon-tubiaozhizuomoban"></i>
+						</div>
+					</li>
+				<!--<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media" @tap="gotoDetails(1,0)">
+						<img class="float_left" src="../../img/homePage/homePage1.png"/>
+						<div class="float_right">
+							<span>新人专享</span>
+							<i class="iconfont icon-tubiaozhizuomoban"></i>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media" @tap="gotoDetails(2,0)">
+						<img class="float_left" src="../../img/homePage/homePage1.png"/>
+						<div class="float_right">
+							<span>瓜分十万奖池</span>
+							<i class="iconfont icon-tubiaozhizuomoban"></i>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media" @tap="gotoDetails(3,0)">
+						<img class="float_left" src="../../img/homePage/homePage1.png"/>
+						<div class="float_right">
+							<span>培养升级</span>
+							<i class="iconfont icon-tubiaozhizuomoban"></i>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media" @tap="gotoDetails(4,2)">
+						<img class="float_left" src="../../img/homePage/homePage1.png"/>
+						<div class="float_right">
+							<span>单品销售</span>
+							<i class="iconfont icon-tubiaozhizuomoban"></i>
+						</div>
+					</li>-->
+				</ul>
+				<!--空状态时-->
+				<div class="lw-empty" style="display: block;" v-else>
+					<div class="lw-empty-box">
+						<div class="lw-empty-flex">
+							<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+							<div class="lw-empty-test">暂无活动 敬请期待！</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="../../plugins/flexible.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.10&key=b286bfefabeab1fbee7737811fb1ab0c&plugin=AMap.Geocoder"></script>
+<script src="../../plugins/jquery-2.1.4.js"></script>
+<script src="../../plugins/vue.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../plugins/swiper-4.3.3.min.js"></script>
+<script src="../../plugins/mui.picker.js"></script>
+<script src="../../plugins/mui.poppicker.js"></script>
+<script src="../../plugins/serverApi.js"></script>
+<!--<script src="../../plugins/getTokenCommon.js"></script>-->
+<script type="text/javascript">
+	$(function() {
+		mui.init({
+			pullRefresh: {
+				container: '#refreshContainer',
+				up: {
+					height: 50,
+					auto: false,
+					contentnomore: '没有更多数据了',
+					contentrefresh: '正在加载...',
+					callback: function() {
+						setTimeout(function() {
+							getList();
+						}, 100);
+					}
+				}
+			}
+		});
+		var token = localStorage.getItem("token");
+		var vueData = {
+			cityName: '定位中...', //城市选择
+			cityCode: '',	//市code
+			page: 1,	//分页，默认第一页
+			showList: [],
+		}
+		new Vue({
+			el: "#J_el",
+			data: vueData,
+			methods: {
+				gotoDetails: gotoDetails,
+				selectPlot: selectPlot,
+			}
+		})
+		
+		function getList(empty) {
+			$.ajax({
+				url: API_SERVER + 'User/getActivesList',
+				data: {
+					token: token,
+					page: vueData.page,
+					citycode: vueData.cityCode,
+				},
+				success: function(data) {
+					log(data)
+					if(data.code == 200) {
+						var lists = data.data;
+						empty && vueData.showList.splice(0);
+						for(var i = 0; i < lists.length; i++) {
+							vueData.showList.push(lists[i]);
+						}
+						vueData.page++;
+						var pullRefresh = mui('#refreshContainer').pullRefresh();
+						pullRefresh && pullRefresh.endPulldownToRefresh && pullRefresh.endPulldownToRefresh();
+						pullRefresh && pullRefresh.refresh && pullRefresh.refresh(true);
+						pullRefresh && pullRefresh.endPullupToRefresh && pullRefresh.endPullupToRefresh(lists.length < 10);
+					} else {
+						mui.toast(data.message)
+					}
+				}
+			})
+		}
+		//跳转到活动详情页面
+		function gotoDetails(type,id){
+			if(type == 1){  //新人专享
+				mui.openWindow({
+					url: "newPersonAlone.html?token=" + token + "&t=" + new Date().getTime()
+				})
+			}else if(type == 2){ //十万活动
+				mui.openWindow({
+					url: "moneyIncentive.html?token=" + token + "&t=" + new Date().getTime()
+				})
+			}else if(type == 3){ //培养升级
+				mui.openWindow({
+					url: "cultivateTeam.html?token=" + token + "&t=" + new Date().getTime()
+				})
+			}else if(type == 4){//单品直卖
+				mui.openWindow({
+					url: "productSold.html?token=" + token + "&product_id=" + id + "&t=" + new Date().getTime()
+				})
+			}
+		}
+		
+		//获取用户定位
+		getLocation();
+
+		function getLocation() {
+			getWechatSignature(location.href.split('#')[0]);
+			wx.ready(function() {
+				wx.hideAllNonBaseMenuItem();
+				wx.getLocation({
+					type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+					success: function(res) {
+						log(res)
+						var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+						var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180.
+						regeoCode(longitude, latitude); //执行高德地址逆解析
+					},
+					cancel: function(res) {
+						log(res)
+					}
+				});
+			});
+		}
+		
+		//选择区
+		var cityPicker = new mui.PopPicker({
+			layer: 2
+		});
+		var initCity;
+		getCity()
+
+		function getCity() {
+			$.ajax({
+				url: API_SERVER + 'Area/AreaOpenUp',
+				data: {type: 2},
+				async: false,
+				success: function(data) {
+					if(data.code == 200) {
+						log(data)
+						initCity = data.data.list;
+					}
+				}
+			});
+		}
+		cityPicker.setData(initCity);
+
+		function selectPlot() {
+			document.activeElement.blur(); //选择城市时隐藏输入键盘
+			var _getParam = function(obj, param) {
+				return obj[param] || '';
+			};
+			cityPicker.show(function(items) {
+				log(items)
+				vueData.cityName = _getParam(items[1], 'text');
+				vueData.cityCode = _getParam(items[1], 'value');
+				if(vueData.cityName) {
+					vueData.page = 1;
+					getList(true);
+				}
+			});
+		}
+		//gps解析
+		function regeoCode(longitude, latitude) {
+			var geocoder = new AMap.Geocoder({});
+			var lnglat = [longitude, latitude]
+			geocoder.getAddress(lnglat, function(status, result) {
+				if(status === 'complete' && result.regeocode) {
+					log(result)
+					vueData.cityCode = result.regeocode.addressComponent.adcode.substr(0, 4) + "00"; //区code码
+					vueData.cityName = result.regeocode.addressComponent.city; //市名字
+					vueData.page = 1;
+					getList(true)
+				} else {
+					log(JSON.stringify(result))
+				}
+			});
+		}
+	})
+</script>
+</body>
+
+</html>

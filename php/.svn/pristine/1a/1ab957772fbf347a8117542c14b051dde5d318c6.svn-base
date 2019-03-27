@@ -1,0 +1,853 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css?t=2019322" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+			}
+			/*普通用户页头*/
+			.headerOne{
+				
+			}
+			.headerBoxOne {
+				height: 3.733rem;
+				overflow: hidden;
+				text-align: center;
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				width: 100%;
+			}
+			
+			.powerExplainOne {
+				font-size: 0.346rem;
+				color: #FFFFFF;
+				display: inline-block;
+				float: right;
+				margin-right: 0.4rem;
+				margin-top: 0.346rem;
+			}
+			
+			.headPortraitOne {
+				width: 1.44rem;
+				height: 1.44rem;
+				border-radius: 0.933rem;
+				background-size: 100%;
+				background-repeat: no-repeat;
+				margin: 0 auto;
+				margin-top: 0.64rem;
+				position: relative;
+			}
+			
+			.runLevelOne{
+				margin-top: 0.266rem;
+				font-size: 0.426rem;
+				color: #FFFFFF;
+				font-weight: bold;
+			}
+			
+			
+			/*非普通用户页头*/
+			.headerTwo,.content,#inviteFriends,#myBankCard,#realName,#CommunityLeader,#lewanActivity{		/*显隐部分东西区分会员等级*/
+				display: none;
+			}
+			.headerBox {
+				height: 4.64rem;
+				overflow: hidden;
+				text-align: center;
+				background-size: 100%;
+				background-repeat: no-repeat;
+				width: 100%;
+			}
+			
+			.powerExplain {
+				font-size: 0.346rem;
+				color: #FFFFFF;
+				display: inline-block;
+				float: right;
+				margin-right: 0.4rem;
+				margin-top: 0.346rem;
+			}
+			
+			.headPortrait {
+				width: 1.44rem;
+				height: 1.44rem;
+				border-radius: 0.933rem;
+				background-size: 100%;
+				background-repeat: no-repeat;
+				float: left;
+				margin-top: 0.373rem;
+				margin-left: 0.586rem;
+				position: relative;
+			}
+			
+			.runLevel{
+				margin-top: 0.9rem;
+				margin-right: 1.8rem;
+			}
+			.runLevel>div{
+				font-size: 0.4rem;
+				color: #FFFFFF;
+				margin-bottom: 0.1rem;
+				white-space:nowrap; 
+				overflow:hidden;
+				text-overflow: ellipsis;
+			}
+			.runLevel>span{
+				display: inline-block;
+				width: 1.973rem;
+				height: 0.693rem;
+				border-radius: 0.342rem;
+				line-height: 0.693rem;
+				text-align: center;
+				font-size: 0.32rem;
+				color: #FFFFFF;
+				background: linear-gradient(to bottom, #626262 0%, #333333 100%);
+			}
+			
+			.headerCardBox {
+				position: relative;
+				height: 1.666rem;
+				background-color: #FFFFFF;
+			}
+			.headerCard{
+				width: 8.24rem;
+				height: 3.333rem;
+				border: 1px solid #F2F2F2;
+				background-color: #FFFFFF;
+				border-radius: 0.2rem;
+				box-shadow: #F6D9A3 0px 0px 10px;
+				position: absolute;
+				top: -2rem;
+				left: 0;
+				right: 0;
+				margin: 0 auto;
+			}
+			.headerCardTwo{
+				margin-top: 0.453rem;
+				text-align: center;
+			}
+			.headerCardTwo>span:nth-child(1){
+				font-size: 0.426rem;
+				color: #C5A063;
+				font-weight: bold;
+			}
+			.headerCardTwo>span:nth-child(2){
+				font-size: 0.426rem;
+				color: #999999;
+				font-weight: 500;
+				margin-left: 0.533rem;
+			}
+			.headerCardOne {
+				display: flex;
+				display: -webkit-flex;
+				justify-content: space-around;
+				-webkit-justify-content: space-around;
+				align-items: center;
+				-webkit-align-items: center;
+				margin-top: 0.4rem;
+			}
+			
+			.headerCardOne>div:nth-child(2) {
+				padding: 0 0.4rem;
+				border-right: 1px solid #e7e7e7;
+				border-left: 1px solid #e7e7e7;
+			}
+			
+			.headerCardOne p {
+				font-size: 0.346rem;
+				color: #999999;
+				font-weight: 500;
+			}
+			
+			.headerCardOne>div>div {
+				font-size: 0.533rem;
+				color: #333333;
+				font-weight: bold;
+				margin-top: 0.266rem;
+			}
+			
+			.mui-badge {
+				background: #FFFFFF;
+				padding: 0;
+				position: relative;
+				right: 0;
+				top: -0.25rem;
+				font-weight: bold;
+			}
+			
+			/*增加客户*/
+			.addUser {
+				color: #FBD086;
+			}
+			/*减少客户*/
+			.removeUser {
+				color: #DDD4D4;
+			}
+			/*我的钱包*/
+			
+			.cardBox {
+				text-align: center;
+			}
+			
+			.content {
+				background-color: #FFFFFF;
+				margin-bottom: 0.266rem;
+			}
+			
+			.title {
+				font-size: 0.506rem;
+				color: #333333;
+				font-weight: bold;
+				padding-top: 0.533rem;
+				margin-left: 0.5rem;
+			}
+			
+			.cardBox1 {
+				display: inline-block;
+				margin-top: 0.533rem;
+				width: 9.04rem;
+				height: 4.16rem;
+				border-radius: 0.2rem;
+				background-color: #2C2C2C;
+				position: relative;
+			}
+			
+			.cardBoxOne {
+				overflow: hidden;
+				padding: 0.426rem 0.453rem 0 0.453rem;
+			}
+			
+			.cardBoxOne>span {
+				font-size: 0.373rem;
+				color: #666666;
+				font-weight: 500;
+				float: left;
+			}
+			
+			.gotoincomeDetail {
+				position: absolute;
+				top: 0;
+				right:0;
+				display: inline-block;
+				width: 2.266rem;
+				height: 0.693rem;
+				line-height: 0.693rem;
+				background: linear-gradient(to bottom, #FF8129 0%,#DC2609 100%);
+				border-top-right-radius: 0.2rem;
+				border-bottom-left-radius: 0.4rem;
+				font-size: 0.346rem;
+				color: #FFFFFF;
+				font-weight: 500;
+				text-align: right;
+			}
+			
+			.cardBoxTwo {
+				position: relative;
+				margin-top: 0.266rem;
+			}
+			
+			.cardBoxTwo>span {
+				font-size: 0.906rem;
+				color: #E1B872;
+				font-weight: normal;
+				float: left;
+				margin-left: 0.453rem;
+				display: inline-block;
+				height: 1.12rem;
+				line-height: 1.12rem;
+			}
+			
+			.cardBoxTwo>span:nth-child(2) {
+				font-size: 0.426rem;
+				font-weight: 500;
+				display: inline-block;
+				width: 2.853rem;
+				height: 1.12rem;
+				line-height: 1.12rem;
+				background-color: #5E5E5E;
+				color: #2C2C2C;
+				border-top-left-radius: 0.56rem;
+				border-bottom-left-radius: 0.56rem;
+				position: absolute;
+				top: 0;
+				right: -0.213rem;
+			}
+			
+			.cardBoxThree {
+				clear: both;
+				padding-top: 0.266rem;
+				display: flex;
+				display: -webkit-flex;
+				justify-content: space-around;
+				-webkit-justify-content: space-around;
+				align-items: center;
+				-webkit-align-items: center;
+			}
+			
+			.cardBoxThree p {
+				font-size: 0.32rem;
+				color: #CCCCCC;
+				font-weight: 500;
+			}
+			
+			.cardBoxThree>div>div {
+				font-size: 0.32rem;
+				color: #FFFFFF;
+				font-weight: 500;
+				margin-top: 0.1rem;
+			}
+			/*统计卡片*/
+			
+			.cardBox2 {
+				text-align: center;
+				margin-top: 0.533rem;
+			}
+			
+			.cardBox2>div {
+				display: inline-block;
+			}
+			
+			.cardBoxYiTwo {
+				width: 100%;
+				height: 0.6rem;
+				margin-bottom: 0.453rem;
+			}
+			
+			.cardBoxYiTwo>div {
+				float: right;
+				width: 2.266rem;
+				height: 0.693rem;
+				line-height: 0.693rem;
+				background: linear-gradient(to bottom, #FF8129 0%,#DC2609 100%);
+				border-top-right-radius: 0.2rem;
+				border-bottom-left-radius: 0.4rem;
+				font-size: 0.346rem;
+				color: #FFFFFF;
+				font-weight: 500;
+				text-align: right;
+			}
+			
+			.cardBoxEr {
+				border-radius: 0.2rem;
+				display: flex;
+				display: -webkit-flex;
+				justify-content: space-around;
+				-webkit-justify-content: space-around;
+				align-items: center;
+				-webkit-align-items: center;
+			}
+			
+			.cardBoxYi {
+				width: 9.04rem;
+				height: 3.413rem;
+				background-size: 100%;
+				background-repeat: no-repeat;
+				margin-bottom: 0.5rem;
+				border-radius: 0.2rem;
+				overflow: hidden;
+			}
+			
+			.cardBoxEr p {
+				color: #E1B872;
+				font-size: 0.426rem;
+				font-weight: bold;
+			}
+			
+			.cardBoxEr>div>div {
+				color: #999999;
+				font-size: 0.426rem;
+				font-weight: bold;
+				margin-top: 0.266rem;
+			}
+			/*导航列表*/
+			
+			.mui-table-view-cell {
+				padding: 0.4rem 0.5rem;
+				color: #333333;
+			}
+			
+			.mui-table-view:before {
+				height: 0;
+			}
+			
+			.menuList a {
+				font-size: 0.426rem;
+				font-weight: bold;
+				display: inline-block;
+				vertical-align: middle;
+			}
+			
+			.menuList i {
+				font-size: 0.75rem;
+				color: #E1B872;
+				margin-right: 0.293rem;
+				display: inline-block;
+				vertical-align: middle;
+			}
+			
+			.mui-navigate-right:after,
+			.mui-push-right:after {
+				font-size: 0.6rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--底部导航-->
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item" id="homePage">
+				<span class="mui-icon"><i class="iconfont icon-shouye"></i></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" id="everydayFaddish">
+				<span class="mui-icon"><i class="iconfont icon-huo"></i></span>
+				<span class="mui-tab-label">分享圈</span>
+			</a>
+			<a class="mui-tab-item" id="reservationCenter">
+				<span class="mui-icon"><i class="iconfont icon-chakantiezishijian"></i></span>
+				<span class="mui-tab-label">预约中心</span>
+			</a>
+			<a class="mui-tab-item mui-active">
+				<span class="mui-icon"><i class="iconfont icon-wode"></i></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		<!--普通用户页头-->
+		<div class="headerOne">
+			<div class="headerBoxOne" style="background-image: url(../../img/personalCenter/perCenter3.jpg);">
+				<div class="powerExplainOne">普通会员</div>
+				<div class="headPortraitOne headerImage" style="background-image: url(../../img/homePage/eightNav1.png);">
+					
+				</div>
+				<div class="runLevelOne userName">微信昵称</div>
+			</div>
+		</div>
+		<!--非普通用户页头-->
+		<div class="headerTwo">
+			<div class="headerBox" style="background-image: url(../../img/personalCenter/perCenter1.jpg);">
+				<div class="powerExplain" id="equityExplain">权益说明？</div>
+				<div class="headPortrait headerImage" style="background-image: url(../../img/homePage/eightNav1.png);">
+					
+				</div>
+				<div class="runLevel">
+					<div class="userName">微信昵称</div>
+					<span id="LevelName">普通会员</span>
+				</div>
+			</div>
+			<div class="headerCardBox">
+				<div class="headerCard">
+					<div class="headerCardTwo">
+						<span>邀请码：<span id="target">lewan88</span></span>
+						<span class="btn" onclick="">复制</span>
+					</div>
+					<div class="headerCardOne">
+						<div class="" id="myClient">
+							<p>我的客户</p>
+							<div><span class="myKehu">0</span><i class="mui-badge addUser myKehuBad">+0</i></div>
+						</div>
+						<div class="myFriend" id="relativeFriend" dataNum="0">
+							<p>直属好友</p>
+							<div><span class="zhiHaoyou">0</span><i class="mui-badge addUser zhiHaoyouBad">+0</i></div>
+						</div>
+						<div class="myFriend" id="allFriend" dataNum="1">
+							<p>全部好友</p>
+							<div><span class="allHaoyou">0</span><i class="mui-badge addUser allHaoyouBad">+0</i></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="title">我的钱包</div>
+			<div class="cardBox">
+				<div class="cardBox1">
+					<div class="cardBoxOne">
+						<span>累计收入</span>
+					</div>
+					<span class="gotoincomeDetail" id="incomeDetail">收入明细 <i class="iconfont icon-yousanjiao"></i></span>
+					<div class="cardBoxTwo">
+						<span id="accumulatedIncome">0.00</span>
+						<span id="toWithdraw">去提现</span>
+					</div>
+					<div class="cardBoxThree">
+						<div class="">
+							<p>待结算</p>
+							<div id="pending">0.00</div>
+						</div>
+						<div class="">
+							<p>累计结算</p>
+							<div id="grandtotal">0.00</div>
+						</div>
+						<div class="">
+							<p>可提现</p>
+							<div id="putforward">0.00</div>
+						</div>
+						<div class="">
+							<p>累计提现</p>
+							<div id="sumup">0.00</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="cardBox2">
+				<div class="">
+					<div class="cardBoxYi" style="background-image: url(../../img/personalCenter/perCenter2.jpg);">
+						<div class="cardBoxYiTwo">
+							<div id="incomeRank">收入排名<i class="iconfont icon-yousanjiao"></i></div>
+						</div>
+						<div class="cardBoxEr">
+							<div class="">
+								<p>今 日</p>
+								<div id="today">0.00</div>
+							</div>
+							<div class="">
+								<p>昨 日</p>
+								<div id="yesterday">0.00</div>
+							</div>
+							<div class="">
+								<p>本 月</p>
+								<div id="thismonth">0.00</div>
+							</div>
+							<div class="">
+								<p>上 月</p>
+								<div id="lastmonth">0.00</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="menuList">
+			<ul class="mui-table-view">
+				<!--区分普通用户 =邀请好友-->
+				<li class="mui-table-view-cell" id="inviteFriends">
+					<a class="mui-navigate-right"><i class="iconfont icon-yaoqingma"></i>邀请好友</a>
+				</li>
+				<!--区分普通用户 =乐玩活动-->
+				<li class="mui-table-view-cell" id="lewanActivity">
+					<a class="mui-navigate-right"><i class="iconfont icon-liwu"></i>乐玩活动</a>
+				</li>
+				<!--输入注册码-->
+				<li class="mui-table-view-cell" id="inputCode">
+					<a class="mui-navigate-right"><i class="iconfont icon-yaoqingma"></i>输入注册码</a>
+				</li>
+				<li class="mui-table-view-cell" id="newbieCourse">
+					<a class="mui-navigate-right"><i class="iconfont icon-shuoming"></i>新手教程</a>
+				</li>
+				<!--非普通用户-->
+				<li class="mui-table-view-cell" id="myBankCard">
+					<a class="mui-navigate-right"><i class="iconfont icon-yinxingqia001"></i>我的银行卡</a>
+				</li>
+				<li class="mui-table-view-cell" id="coupon">
+					<a class="mui-navigate-right"><i class="iconfont icon-youhuiquan"></i>优惠券</a>
+				</li>
+				<li class="mui-table-view-cell" id="myIndent">
+					<a class="mui-navigate-right"><i class="iconfont icon-shouye1"></i>我的订单</a>
+				</li>
+				<li class="mui-table-view-cell" id="shippingAddress">
+					<a class="mui-navigate-right"><i class="iconfont icon-bianji2"></i>收货地址</a>
+				</li>
+				<!--分享达人和运营达人才能展示-->
+				<li class="mui-table-view-cell" id="CommunityLeader">
+					<a class="mui-navigate-right"><i class="iconfont icon-paihang"></i>小区盟主</a>
+				</li>
+				<!--非普通用户-->
+				<li class="mui-table-view-cell" id="realName">
+					<a class="mui-navigate-right"><i class="iconfont icon-shimingrenzheng"></i>实名认证</a>
+				</li>
+				<li class="mui-table-view-cell" id="contactUs">
+					<a class="mui-navigate-right"><i class="iconfont icon-lianxiren"></i>联系我们</a>
+				</li>
+				<li class="mui-table-view-cell" id="clearStr">
+					<a class="mui-navigate"><i class="iconfont icon-bianji2"></i>清除缓存</a>
+				</li>
+
+			</ul>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/clipboard.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script src="../../plugins/getTokenCommon.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var token = localStorage.getItem("token");
+				
+				//第一步获取用户信息=》参数token
+				getUserMessage();
+				function getUserMessage(){
+					$.ajax({
+						url: API_SERVER + "User/UserPersonal",
+						data: {token: token},
+						async: false,
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								localStorage.setItem("level",data.data.level);
+								localStorage.setItem("auth",data.data.auth);
+								$(".headerImage").css({"background-image" : "url("+ data.data.avatar +")"});//用户头像
+								$(".userName").text(data.data.nickname);//用户昵称
+								$("#LevelName").text(data.data.username);	//等级名称
+								$("#target").text(data.data.recode);	//用户推荐码
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					}) 
+				}
+				//显隐个人中心页面
+				var level = localStorage.getItem("level"); 	//用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+				var auth = localStorage.getItem("auth"); 	//用户是否实名认证
+				if (level == 2 || level == 3 || level == 4 || level == 5){
+					$(".headerOne").hide();
+					$("#inviteFriends").show();
+					$("#lewanActivity").show();
+					$("#myBankCard").show();
+					$("#realName").show();
+					$("#inputCode").hide();
+					$(".headerTwo").show();
+					$(".content").show();
+					getMessage();
+				}
+				if(level == 3 || level == 4 || level == 5){
+					$("#CommunityLeader").show();
+				}
+				
+				function getMessage(){
+					//第二步获取注册会员我的好友=》参数token
+					$.ajax({
+						url: API_SERVER + "User/UserFriends",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$(".myKehu").text(data.data.customer);		//我的客户
+								$(".myKehuBad").text("+"+data.data.newcustomer);	//新增客户
+								$(".zhiHaoyou").text(data.data.directly);		//直属好友
+								$(".zhiHaoyouBad").text("+"+data.data.newdirectly);	//新增直属好友
+								$(".allHaoyou").text(data.data.whole);		//全部客户
+								$(".allHaoyouBad").text("+"+data.data.newwhole);	//新增全部客户
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					}) 
+					//第三步获取佣金详情=》参数token
+					$.ajax({
+						url: API_SERVER + "User/UserWallet",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								$("#putforward").text(data.data.reward.putforward);		//可提现佣金
+								$("#pending").text(data.data.reward.pending);	//待结算
+								$("#grandtotal").text(data.data.reward.grandtotal);		//累计结算
+								$("#sumup").text(data.data.reward.sumup);	//累计提现
+								$("#accumulatedIncome").text(data.data.reward.income); //累计收入
+								
+								$("#today").text(data.data.income.today);		//今日
+								$("#yesterday").text(data.data.income.yesterday);	//昨日
+								$("#thismonth").text(data.data.income.thismonth);		//本月
+								$("#lastmonth").text(data.data.income.lastmonth);	//上月
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					}) 
+				}
+				
+				//复制邀请码
+				var clipboard = new $.Clipboard('.btn', {
+			        text: function() {
+			            return $("#target").text();
+			        }
+			    });
+			    clipboard.on('success', function(e) {
+			        mui.toast("复制成功");
+			        log(e)
+			        e.clearSelection();
+			    });
+			    clipboard.on('error', function(e) {
+			        log(e);
+			    });
+				
+				mui('body').on('tap', '#equityExplain', function() { //权益说明
+					mui.openWindow({
+						url: "equityExplain.html",
+						id: "equityExplain.html"
+					})
+				})
+				mui('body').on('tap', '#myClient', function() { //我的客户
+					mui.openWindow({
+						url: "myClient.html",
+						id: "myClient.html"
+					})
+				})
+				mui('body').on('tap', '.myFriend', function() { //直属好友，全部好友
+					var dataNum = $(this).attr("dataNum"); //0为直属好友，1为全部好友
+					mui.openWindow({
+						url: "myFriend.html?dataNum=" + dataNum,
+						id: "myFriend.html"
+					})
+				})
+				mui('body').on('tap', '#incomeDetail', function() { //收入明细
+					mui.openWindow({
+						url: "incomeDetail.html",
+						id: "incomeDetail.html"
+					})
+				})
+				mui('body').on('tap', '#incomeRank', function() { //收入排名
+					mui.openWindow({
+						url: "incomeRank.html",
+						id: "incomeRank.html"
+					})
+				})
+				mui('body').on('tap', '#toWithdraw', function() { //去提现
+					if(auth == 2){
+						mui.openWindow({
+							url: "toWithdraw.html",
+							id: "toWithdraw.html"
+						})
+					}else{
+						mui.toast("请先到个人中心实名认证！", {duration: 'long',type: 'div'})
+					}
+				})
+				mui('body').on('tap', '#inviteFriends', function() { //海报好友
+					mui.openWindow({
+						url: "inviteFriends.html?t=" + new Date().getTime()
+					})
+				})
+				mui('body').on('tap', '#lewanActivity', function() { //乐玩活动
+					mui.openWindow({
+						url: "../lewanActivity/lewanActivity.html?t=" + new Date().getTime()
+					})
+				})
+				mui('body').on('tap', '#inputCode', function() { //输入注册码
+					mui.openWindow({
+						url: "../homePage/register.html?t=" + new Date().getTime()
+					})
+				})
+				mui('body').on('tap', '#newbieCourse', function() { //新手教程
+					mui.openWindow({
+						url: "newbieCourse.html",
+						id: "newbieCourse.html"
+					})
+				})
+				mui('body').on('tap', '#myBankCard', function() { //我的银行卡
+					if(auth == 2){
+						mui.openWindow({
+							url: "myBankCard.html",
+							id: "myBankCard.html"
+						})
+					}else{
+						mui.toast("请先到个人中心实名认证！", {duration: 'long',type: 'div'})
+					}
+				})
+				mui('body').on('tap', '#coupon', function() { //优惠券
+					mui.toast("正在开发中！")
+//					mui.openWindow({
+//						url: "coupon.html",
+//						id: "coupon.html"
+//					})
+				})
+				mui('body').on('tap', '#myIndent', function() { //我的订单
+					mui.openWindow({
+						url: "myIndent.html",
+						id: "myIndent.html"
+					})
+				})
+				mui('body').on('tap', '#shippingAddress', function() { //收货地址
+					mui.openWindow({
+						url: "shippingAddress.html",
+						id: "shippingAddress.html"
+					})
+				})
+				mui('body').on('tap', '#CommunityLeader', function() { //小区盟主
+					$.ajax({
+						url: API_SERVER + "Usercommunityleader/LeaderQuery",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								if(data.data.status == 3){	//未申请
+									mui.openWindow({	//申请
+										url: "CommunityLeaderApply.html",
+										id: "CommunityLeaderApply.html"
+									})
+								}else if(data.data.status == 0){	//申请中
+									mui.openWindow({
+										url: "CommunityLeaderStatus.html?status=" + 0
+									})
+								}else if(data.data.status == 2){	//申请成功
+									mui.openWindow({
+										url: "CommunityLeaderAlliance.html"
+									})
+								}else if(data.data.status == 1){	//申请失败
+									mui.openWindow({
+										url: "CommunityLeaderStatus.html?status=" + 1 + "&community_name=" + data.data.community_name + "&remark=" + data.data.remark
+									})
+								}
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
+				})
+				mui('body').on('tap', '#realName', function() { //实名认证
+					$.ajax({
+						url: API_SERVER + "Userauth/UserAuthData",
+						data: {token: token},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								if(data.data.status == 0){	//审核中
+									mui.toast("审核中，请耐心等待！")
+								}else if(data.data.status == 1){	//审核失败
+									mui.openWindow({
+										url: "realNameFailure.html"
+									})
+								}else if(data.data.status == 2){	//审核成功
+									mui.openWindow({
+										url: "realNameSuccess.html"
+									})
+								}else if(data.data.status == 3){	//未进行实名认证
+									mui.openWindow({
+										url: "realName.html"
+									})
+								}
+							} else {
+								mui.toast(data.message)
+							}
+						}
+					})
+				})
+				mui('body').on('tap', '#contactUs', function() { //联系我们
+					mui.openWindow({
+						url: "contactUs.html?t=" + new Date().getTime(),
+						id: "contactUs.html"
+					})
+				})
+				mui('body').on('tap', '#clearStr', function() { //清除缓存
+					window.localStorage.clear();
+					mui.toast("已清除缓存！")
+				})
+			})
+		</script>
+	</body>
+
+</html>
