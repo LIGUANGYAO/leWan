@@ -1,0 +1,500 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>拉新专题活动</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link href="../../css/mui.min.css" rel="stylesheet" />
+<link href="../../css/leWan.css" rel="stylesheet" />
+<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+<link href="../../fonts/iconfont.css" rel="stylesheet" />
+<style type="text/css">
+	body {
+		padding: 0;
+		margin: 0 !important;
+		min-height: 100vh;
+	}
+	.content_body{
+		width: 10rem;
+		height: 44.466rem;
+		background-image: url('http://oss.lewan6.ren/uploads/html/20190402/a390f13e14b561862f423b09d197762064905960jpeg');
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		position: relative;
+	}
+	.one{
+		position: absolute;
+		width: 1.8rem;
+		height: 1.8rem;
+		top: 5.24rem;
+		left: 4.12rem;
+		border-radius: 0.9rem;
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		border: 1px solid #CCCCCC;
+		box-shadow:0px 7px 14px 0px rgba(254,223,180,0.58);
+	}
+	.two{
+		position: absolute;
+		width: 100%;
+		height: 0.48rem;
+		top: 7.6rem;
+		left: 0;
+		font-size: 0.346rem;
+		font-weight: 600;
+		text-align: center;
+		line-height: 0.48rem;
+		color: #4A4A4A;
+	}
+	.three{
+		position: absolute;
+		width: 2.08rem;
+		height: 2.08rem;
+		border-radius: 1.04rem;
+		top: 12.653rem;
+		left: 3.96rem;
+		/*background-image: url('http://oss.lewan6.ren/uploads/idcard/20190402/d25310b6cf5c305fac1960401ce205cfc8cd3143.png');*/
+		/*金色
+		background-image: url('http://oss.lewan6.ren/uploads/idcard/20190402/7a7383a5f20c6bb8b1a1a26e38ebd1db90ed529f.png');*/
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+	}
+	.four{
+		position: absolute;
+		width: 100%;
+		height: 1rem;
+		border-radius: 1rem;
+		top: 17.973rem;
+		left: 0;
+		text-align: center;
+		font-size: 0.48rem;
+		color: #35394E;
+		font-weight: bold;
+	}
+	.five{
+		position: absolute;
+		width: 8rem;
+		top: 20rem;
+		left: 1rem;
+	}
+	.five_mingdan{
+		width: 100%;
+		text-align: center;
+		font-size: 0.426rem;
+		color: #F6C97B;
+		font-weight: 600;
+		margin: 0 0 0.3rem 0;
+	}
+	.five_title{
+		color: #E3B87F;
+		font-weight: bold;
+		font-size: 0.333rem;
+		width: 100%;
+		text-align: center;
+		height: 0.533rem;
+		line-height: 0.533rem;
+	}
+	.timeBox span{
+		font-family: 'wupan';
+		display: inline-block;
+		width: 0.48rem;
+		text-align: center;
+		height: 0.48rem;
+		line-height: 0.6rem;
+		background-color: #F6C97B;
+		border-radius: 0.05rem;
+		color: #FFFFFF;
+		font-size: 0.32rem;
+		font-weight: bold;
+	}
+	.five_list_box{
+		height: 7rem;
+		text-align: center;
+		margin-top: 0.3rem;
+	}
+	.five_list{
+		height: 0.533rem;
+		line-height: 0.533rem;
+		font-size: 0.24rem;
+		color: #35394E;
+		font-weight: 500;
+	}
+	.five_list_right{
+		margin-left: 0.15rem;
+		color: #FF8B30;
+	}
+	.six{
+		position: absolute;
+		width: 8rem;
+		height: 9rem;
+		overflow-y: scroll;
+		top: 32.786rem;
+		left: 1rem;
+	}
+	.seven,.eight{
+		position:absolute;
+		right: 0.81rem;
+		width: 1.933rem;
+		height: 1.013rem;
+		line-height: 1.013rem;
+		border-bottom-left-radius: 0.5rem;
+		border-top-left-radius: 0.5rem;
+		color: #FFFFFF;
+		font-size: 0.386rem;
+		text-align: center;
+	}
+	.seven{
+		top: 9.426rem;
+		background-color:rgba(53,57,78,1);
+	}
+	.isOver{
+		background: #DEDEDE !important;
+	}
+	.eight{
+		top: 11.213rem;
+		background-color: rgba(53,57,78,1);
+	}
+	.nine{
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		background: rgba(0,0,0,0.7);
+		text-align: center;
+	}
+	.nine_one{
+		width: 7.173rem;
+		height: 8.746rem;
+		margin: 0 auto;
+		margin-top: 3rem;
+		border-radius: 0.2rem;
+		overflow: hidden;
+		background-image: url('http://oss.lewan6.ren/uploads/html/20190402/568703d1730ee14facca3aa68cc8d3d646b019a9jpeg');
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		position: relative;
+	}
+	.nine_title{
+		width: 100%;
+		text-align: center;
+		font-size: 0.48rem;
+		color: #FFE294;
+		font-weight: 600;
+		margin-top: 0.706rem;
+	}
+	.nine_img{
+		background-image: url('http://oss.lewan6.ren/uploads/idcard/20190402/7a7383a5f20c6bb8b1a1a26e38ebd1db90ed529f.png');
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		margin: 0 auto;
+		margin-top: 0.68rem;
+		width: 2.08rem;
+		height: 2.08rem;
+		border-radius: 1.04rem;
+	}
+	.yongjinmingxi{
+		position: absolute;
+		left: 0;
+		bottom: 0.413rem;
+		width: 100%;
+		color: #FFE294;
+		text-align: center;
+		font-size: 0.386rem;
+		font-weight: 400;
+	}
+	.nine_two{
+		margin-top: 0.5rem;
+		width: 100%;
+		text-align: center;
+	}
+	.nine_two span{
+		font-size: 0.6rem;
+		color: #FFFFFF;
+	}
+</style>
+</head>
+
+<body>
+<div class="content_body" id="J_el" v-cloak>
+	<div class="one" :style="{backgroundImage: 'url(' + detail.avatar + ')'}"></div>
+	<div class="two">{{detail.nickname}}</div>
+	<div class="three" @tap="openRedBag()" :style="{backgroundImage: 'url(' + ((detail.info && detail.info.status != 1) ? 'http://oss.lewan6.ren/uploads/idcard/20190402/7a7383a5f20c6bb8b1a1a26e38ebd1db90ed529f.png':'http://oss.lewan6.ren/uploads/idcard/20190402/d25310b6cf5c305fac1960401ce205cfc8cd3143.png') + ')'}"></div>
+	<div class="four">{{isEnd == 1 ? '入围名单：' : isEnd == 2 ?'已完成名单：' : '-'}}</div>
+	<div class="five">
+		<div class="five_mingdan">{{isEnd == 1 ? '入围名单：' : isEnd == 2 ?'已完成名单：' : '-'}}</div>
+		<div class="five_title">{{isEnd == 1 ? '开奖时间：' : isEnd == 2 ?'下一次开奖时间：' : '-'}}<span class="timeBox" v-html="content"></span></div>
+		<marquee class="five_list_box" behavior="scroll" scrollamount="2" direction="up">
+			<div class="five_list" v-for="item in detail.list">
+				<span class="five_list_left">{{item.nickname}}*{{item.mobile}}</span>
+				<span class="five_list_right" v-if="item.amount && item.amount>0">获得{{item.amount}}元红包</span>
+			</div>
+		</marquee>
+	</div>
+	<div class="six">{{detail.rules}}</div>
+	<div class="seven" :class="{'isOver': detail.info}" @tap="jumpToHonepage()">{{ detail.info ? '已完成' : '去完成'}}</div>
+	<div class="eight" :class="{'isOver': detail.info && detail.info.status != 1}" @tap="jumpToInvite()">{{(detail.info && detail.info.status != 1) ? '已完成': '去邀请'}}</div>
+	<div class="nine" v-if="ishowModel">
+		<div class="nine_one">
+			<div class="nine_title" v-if="detail.info">{{ detail.info.status == 2 ? "新人直卖奖励":detail.info.status == 3 ? "恭喜你获得 "+amount+" 元":detail.info.status == 0 ? '该红包已超过24小时' : '新人直卖奖励'}}</div>
+			<div v-if="detail.info && (detail.info.status == 2 || detail.info.status == 4)" class="nine_img" @tap="openBag()"></div>
+			<div v-if="detail.info && detail.info.status == 3" class="yongjinmingxi" @tap="jumpTomingxi()">佣金明细 <span class="iconfont icon-arrow-right"></span></div>
+		</div>
+		<div class="nine_two" @tap="closeRedBag()">
+			<span class="iconfont icon-close_icon"></span>
+		</div>
+	</div>
+</div>
+<script src="../../plugins/flexible.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="../../plugins/jquery-2.1.4.js"></script>
+<script src="../../plugins/vue.js"></script>
+<script src="../../js/mui.min.js"></script>
+<script src="../../plugins/serverApi.js"></script>
+<!--<script src="../../plugins/getTokenCommon.js"></script>-->
+<script type="text/javascript">
+$(function() {
+	var token = getUrlParam("token") || localStorage.getItem("token");
+	var type = getUrlParam("type");
+	if(!token){
+		var code = getUrlParam("code");
+		if(token == 'undefined' || token == null || token == "") {
+			if(code == 'undefined' || code == null || code == "") {
+				var redirectUrl = location.href;
+				window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
+			} else {
+				$.ajax({
+					url: API_SERVER + "Wechat/WechatAuthorize",
+					async: false,
+					data: {
+						code: code + "&state",
+						recode: null,
+					},
+					success: function(data) {
+						log(data)
+						if(data.code == 200) {
+							localStorage.setItem("token", data.data.token); //token
+							token = data.data.token;
+						} else {
+							mui.toast(data.message)
+						}
+					}
+				})
+			}
+		}
+	}
+	getUserMessage();
+	if(localStorage.getItem("level") == 1){
+		mui.alert('您还未注册，暂无权限查看','提示','确定',function(){
+			wx.closeWindow();
+		})
+	}
+	var vueData = {
+		detail:{},
+		ishowModel: false,
+		isEnd: 0,
+		amount: 0,
+		content: '',
+	}
+	new Vue({
+		el: '#J_el',
+		data: vueData,
+		methods: {
+			jumpToHonepage: jumpToHonepage,
+			jumpToInvite: jumpToInvite,
+			openRedBag: openRedBag,
+			closeRedBag: closeRedBag,
+			openBag: openBag,
+			jumpTomingxi:jumpTomingxi,
+		},
+		created: function() {
+			getDetails();
+		}
+	});
+	
+	//获取新人直卖邀请
+	function getDetails(){
+		$.ajax({
+			url: API_SERVER + 'User/firstOrderDirectSelling',
+			async: false,
+			data:{
+				token: token,
+			},
+			success: function(data) {
+				if(data.code == 200) {
+					log(data)
+					vueData.detail = data.data;
+					if(data.data.info){
+						vueData.amount = data.data.info.amount || 0;
+					}
+					if(data.data.nowtime<data.data.endtime){
+						vueData.isEnd = 1;
+						countdown(data.data.nowtime,data.data.endtime);
+					}else{
+						vueData.isEnd = 2;
+						countdown(data.data.nowtime,data.data.endtime + 86400)
+					}
+					hideMenu();
+				}else{
+					mui.alert(data.message,'提示','确定',function(){
+						if(type == 'android'){
+							window.appWeb.invokeNative("close",'');
+						}else if(type == 'ios'){
+							goodsDetail(id)
+						}else{
+							mui.openWindow({
+								url: BASE_SERVER + "wechat_html/page/lewanActivity/lewanActivity.html"
+							})
+						}
+					})
+				}
+			}
+		});
+	}
+	//打开红包页面
+	function openRedBag(){
+		if(vueData.detail.info && (vueData.detail.info.status == 0 || vueData.detail.info.status == 3 || vueData.detail.info.status == 4)){
+			vueData.ishowModel = true;
+		}else if(vueData.detail.info && vueData.detail.info.status == 2){
+			if(vueData.detail.nowtime > vueData.detail.endtime){
+				vueData.ishowModel = true;
+			}else{
+				mui.toast("未到开奖时间，请耐心等待！")
+			}
+		}else{
+			mui.toast("条件不符合")
+		}
+	}
+	//关闭红包页面
+	function closeRedBag(){
+		vueData.ishowModel = false;
+	}
+	//打开红包
+	var isClick = false;
+	function openBag(){
+		if(isClick){
+			return
+		}
+		isClick = true;
+		$.ajax({
+			url: API_SERVER + 'User/getFirstOrderDirectSellingMoney',
+			data:{token: token},
+			success: function(data) {
+				if(data.code == 200) {
+					log(data)
+					vueData.amount = data.data.amount;
+					vueData.detail.info.status = 3;
+				}else{
+					mui.toast(data.message, {duration: 'long',type: 'div'});
+					isClick = false;
+				}
+			},
+			error: function(){
+				isClick = false;
+			}
+		});
+	}
+	//跳转活动首页
+	function jumpToHonepage(){
+		if(vueData.detail.info){
+			mui.toast('已完成本任务啦！')
+		}else{
+			if(type == 'android'){
+				window.appWeb.invokeNative("home",'');
+			}else if(type == 'ios'){
+				goodsDetail(id)
+			}else{
+				mui.openWindow({
+					url: BASE_SERVER + "wechat_html/page/homePage/homePage.html?comefrom=1"
+				})
+			}
+		}
+	}
+	//跳转佣金明细
+	function jumpTomingxi(){
+		if(type == 'android'){
+			window.appWeb.invokeNative("commission",'');
+		}else if(type == 'ios'){
+			goodsDetail(id)
+		}else{
+			mui.openWindow({
+				url: BASE_SERVER + "wechat_html/page/personalCenter/incomeDetail.html"
+			})
+		}
+	}
+	//倒计时
+	function countdown(nowtime,timestamp) {
+		var nowTime = nowtime*1000;
+		var timer = setInterval(function() {
+			nowTime = nowTime + 1000;
+			var endTime = timestamp * 1000;
+			var t = endTime - nowTime;
+			if(t > 0) {
+				var day = Math.floor(t / 86400000);
+				var hour = Math.floor((t / 3600000) % 24);
+				var min = Math.floor((t / 60000) % 60);
+				var sec = Math.floor((t / 1000) % 60);
+				hour = hour < 10 ? "0" + hour : hour;
+				min = min < 10 ? "0" + min : min;
+				sec = sec < 10 ? "0" + sec : sec;
+				var format = '';
+				format = "<span>" + hour + "</span> : <span>" + min + "</span> : <span>" + sec + "</span>";
+				vueData.content = format;
+			} else {
+				clearInterval(timer);
+				vueData.content = "已结束";
+				getDetails();
+			}
+		}, 1000);
+	}
+	//跳转邀请好友
+	function jumpToInvite(){
+		if(vueData.detail.info && vueData.detail.info.status != 1){
+			mui.toast('已完成本任务啦！')
+		}else{
+			if(type == 'android'){
+				window.appWeb.invokeNative("invite",'');
+			}else if(type == 'ios'){
+				goodsDetail(id)
+			}else{
+				mui.openWindow({
+					url: BASE_SERVER + "wechat_html/page/personalCenter/inviteFriends.html"
+				})
+			}
+		}
+	}
+	//隐藏菜单按钮
+	function hideMenu(){
+		getWechatSignature(location.href.split('#')[0])
+		wx.ready(function() {
+			wx.onMenuShareTimeline({
+				title: '【拉新专题活动】快来领取福利!!活动期间完成两项任务即可获得一个红包!',
+				link: BASE_SERVER + 'wechat_html/page/lewanActivity/inviteNewPerson.html',
+				imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
+				trigger: function(res) {
+					// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+				},
+				fail: function(res) {
+					mui.toast(res);
+				}
+			});
+			wx.onMenuShareAppMessage({
+				title: '【拉新专题活动】快来领取福利!!活动期间完成两项任务即可获得一个红包!',
+				desc: '快来领取福利!!活动期间完成两项任务即可获得一个红包!',
+				link: BASE_SERVER + 'wechat_html/page/lewanActivity/inviteNewPerson.html',
+				imgUrl: 'http://oss.lewan6.ren/uploads/logo/logo-w.png',
+				trigger: function(res) {
+					// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+				},
+				fail: function(res) {
+					mui.toast(res);
+				}
+			});
+		});
+	}
+})
+</script>
+</body>
+
+</html>

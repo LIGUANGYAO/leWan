@@ -45,43 +45,19 @@
                 <input type="text" name="actives[productids]" value="{$obj.productids}" placeholder="请填写商品编号多个商品以,关联如: 56,60,125" class="layui-input">
             </div>
         </div>
-
-        <div class="layui-form-item" id="areatype">
-            <label class="layui-form-label">选择省份</label>
-            <div class="layui-input-inline">
-                <select name="provence_id"  lay-filter="provence_ids" status="1">
-                    <option value="0">请选择省份</option>
-                    <volist name="$provence" id="val">
-                        <option value="{$val.code}"<if condition="$obj.provence eq $val.code">
-                        selected="selected"</if>>{$val.provence}
-                        </option>
-                    </volist>
-                </select>
-            </div>
-            <div class="layui-form-mid layui-word-aux">不选择活动城市代表全国都可参与</div>
-        </div>
-
-        <div class="layui-form-item col-sm-10">
-            <label class="layui-form-label">活动城市</label>
-            <div class="layui-input-block" id="citys">
-                <if condition="!empty($regioncity)">
-                    <volist name="regioncity" id="v">
-                        <input type="checkbox" class="cityids" id="cityids_{$v.pcode}_{$v.id}" name="cityids[]" value="{$v.pcode}_{$v.id}" <if condition="empty($result) or in_array($v.id,$result)">checked</if> lay-filter="cityids" lay-skin="primary" title="{$v.name}">
-                    </volist>
-                </if>
-            </div>
-        </div>
-
         <div class="layui-form-item">
-            <label class="layui-form-label">开始时间</label>
+            <label class="layui-form-label">活动城市</label>
+            <?php echo AreaLinkage(2,2,array($obj['provencecode'],$obj['citycode']))?>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开始日期</label>
             <div class="layui-input-inline" >
-                <input class="layui-input" name="actives[starttime]" value="{$obj.starttime|date2='Y-m-d H:i:s',###}" autocomplete="off" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                <input class="layui-input" name="actives[starttime]" value="{$starttime}"  onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
             </div>
             <label class="layui-form-label">结束日期</label>
             <div class="layui-input-inline" >
-                <input class="layui-input" name="actives[endtime]" value="{$obj.endtime|date2='Y-m-d H:i:s',###}" autocomplete="off" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                <input class="layui-input" name="actives[endtime]" value="{$endtime}"  onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
             </div>
-            <div class="layui-form-mid layui-word-aux">不选择时间代表活动永久,反之活动限时</div>
         </div>
         <div class="layui-form-item <if condition='empty($obj) or $obj.type neq 4'>hidden</if>" id="task">
             <div class="layui-form-item">
@@ -126,12 +102,6 @@
                     <input type="text" name="actives[rwnum3]" value="{$obj.rwnum3}"  placeholder="请填写入位数,只能是数字" class="layui-input">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"></label>
-
-            <div class="layui-form-mid layui-word-aux">任务可选择填写,最少填写一项任务,如填写任务不填写完整,系统不会通过</div>
-            </div>
-
         </div>
 
         <div class="layui-form-item">

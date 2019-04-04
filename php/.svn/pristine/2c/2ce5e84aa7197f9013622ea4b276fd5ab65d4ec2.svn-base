@@ -224,10 +224,10 @@ class TimerController extends BaseController
         foreach ($flist as $val){
             if($val){
                 if($val['status'] ==1 && $val['firsttime']+86400<=time()){  //仅第一步且超过24
-                    Db::table('view_xinrenzhimai')->where(['id'=>$val['id']])->update(['status'=>0,'uptime'=>time()]);
+                    Db::table('view_xinrenzhimai')->where($failure)->update(['status'=>0,'uptime'=>time()]);
                 }
                 if($val['status'] ==4 && $val['uptime']+86400<=time()){  //完成第二步且超过24没有进入活动领钱
-                    Db::table('view_xinrenzhimai')->where(['id'=>$val['id']])->update(['status'=>0,'uptime'=>time()]);
+                    Db::table('view_xinrenzhimai')->where($failure)->update(['status'=>0,'uptime'=>time()]);
                 }
             }
         }
@@ -267,8 +267,7 @@ class TimerController extends BaseController
                         $senddata['keyword1'] = $val['user_id'];
                         $senddata['keyword2'] = date("Y-m-d H:s");
                         $data['remark'] = '点击查看详情！！';
-                        $host = (isset($_SERVER['REQUEST_SCHEME'])?$_SERVER['REQUEST_SCHEME']:'http').'://'.$_SERVER['SERVER_NAME'];
-                        $url = $host.'/wechat_html/page/lewanActivity/inviteNewPerson.html';
+                        $url = '';
                         OpenTmModel::sendTplmsg12($userpush['openid'], $data, $accessToken,$url);
                     }
                 }

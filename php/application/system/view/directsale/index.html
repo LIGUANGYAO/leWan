@@ -1,0 +1,127 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+
+    <form class="layui-form" action="{:url('Directsale/DireCtsaleList')}">
+
+        <div class="layui-form-item ">
+            <div class="layui-input-block layui-col-sm3">
+                <input type="text" name="title"  placeholder="请输入用户/微信昵称/联系电话"  class="layui-input" value="{$query.title}">
+            </div>
+
+            <label class="layui-form-label">状态:</label>
+            <div class="layui-input-inline ">
+                <select name="status" lay-verify="require">
+                    <option value="0">全部用户</option>
+                    <option value="1" <if condition="$query.status eq 1"> selected="selected"</if>>已参与</option>
+                    <option value="2" <if condition="$query.status eq 2"> selected="selected"</if>>已入围</option>
+                    <option value="3" <if condition="$query.status eq 3"> selected="selected"</if>>已完成</option>
+                    <option value="4" <if condition="$query.status eq 4"> selected="selected"</if>>已通知</option>
+                    <option value="5" <if condition="$query.status eq 5"> selected="selected"</if>>已失效</option>
+                </select>
+            </div>
+
+            <label class="layui-form-label">直卖时间:</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="starttime" value="{$query.starttime|default=''}" placeholder="开始时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="endtime" value="{$query.endtime|default=''}" placeholder="结束时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+        </div>
+
+        <div class="layui-form-item ">
+
+            <label class="layui-form-label">入围时间:</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="finishstarttime" value="{$query.finishstarttime|default=''}" placeholder="开始时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="finishendtime" value="{$query.finishendtime|default=''}" placeholder="结束时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+            <label class="layui-form-label">更新时间:</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="upstarttime" value="{$query.upstarttime|default=''}" placeholder="开始时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="upendtime" value="{$query.upendtime|default=''}" placeholder="结束时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+
+            <span class="input-group-btn layui-input-block">
+                  &nbsp; &nbsp; &nbsp; &nbsp;
+                  <button type="reset"  class="layui-btn layui-btn-primary ">重置</button>
+                  <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+                <!--<button type="submit" class="layui-btn layui-btn-small" name="excel" value="1">导出excel</button>-->
+            </span>
+        </div>
+
+    </form>
+    <div class="clear"></div>
+    <div class="layui-field-title"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th nowrap="nowrap" >用户名</th>
+                <th nowrap="nowrap" >联系电话</th>
+                <th nowrap="nowrap">用户等级</th>
+                <th nowrap="nowrap">所得金额</th>
+                <th nowrap="nowrap">活动状态</th>
+                <th nowrap="nowrap">直卖时间</th>
+                <th nowrap="nowrap">入围时间</th>
+                <th nowrap="nowrap">更新时间</th>
+            </thead>
+            <tbody>
+            <volist name="data.list" id="val">
+                <tr>
+                    <td nowrap="nowrap" >{$val.nickname}</td>
+                    <td nowrap="nowrap" >{$val.mobile}</td>
+                    <td nowrap="nowrap" >
+                        <if condition="$val.level eq 1">
+                            <label class="layui-badge layui-bg-gray">普通用户</label>
+                            <elseif condition="$val['level'] eq 2"/>
+                            <label class="layui-badge layui-bg-black">超级会员</label>
+                            <elseif condition="$val['level'] eq 3"/>
+                            <label class="layui-badge layui-bg-blue">分享达人</label>
+                            <elseif condition="$val['level'] eq 4"/>
+                            <label class="layui-badge layui-bg-orange">运营达人</label>
+                            <elseif condition="$val['level'] eq 5" />
+                            <label class="layui-badge ">玩主</label>
+                        </if>
+                    </td>
+                    <td nowrap="nowrap">{$val.amount}</td>
+
+                    <td nowrap="nowrap">
+                        <if condition="$val.status eq 0">
+                            <label class="layui-badge layui-bg-gray">已失效</label>
+                            <elseif condition="$val.status eq 1"/>
+                            <label class="layui-badge layui-bg-orange">已参与</label>
+                            <elseif condition="$val.status eq 2"/>
+                            <label class="layui-badge layui-bg-blue">已入围</label>
+                            <elseif condition="$val.status eq 3"/>
+                            <label class="layui-badge layui-bg-green">已完成</label>
+                            <elseif condition="$val.status eq 4" />
+                            <label class="layui-badge ">已通知</label>
+                        </if>
+                    </td>
+
+                    <td nowrap="nowrap">{$val.firsttime|date="Y-m-d H:i:s",###}</td>
+                    <td nowrap="nowrap">
+                        <if condition="$val.finishtime">{$val.finishtime|date="Y-m-d H:i:s",###}</if>
+                    </td>
+                    <td nowrap="nowrap">
+                        <if condition="$val.uptime">{$val.uptime|date="Y-m-d H:i:s",###}</if>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+
+        <div class="tabletool">
+            <!-- 分页工具 -->
+            <div id="limitpage" class="l"></div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+</div>

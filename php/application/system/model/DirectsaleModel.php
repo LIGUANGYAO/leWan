@@ -1,0 +1,45 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admini
+ * Date: 2019/4/2
+ * Time: 9:39
+ * 直卖活动模型
+ * 肖亚子
+ */
+
+namespace app\system\model;
+use think\Db;
+
+class DirectsaleModel extends BaseModel{
+
+    public static function TableName(){
+        return Db::table("view_xinrenzhimai");
+    }
+
+    public static function DireList($Condition = array(),$Psize = 1,$PageSize = 50){
+        $Field = "d.*,u.mobile,u.nickname,u.level";
+        $Count  = self::TableName()
+                ->alias("d")
+                ->field($Field)
+                ->join("user u","u.user_id = d.user_id","left")
+                ->where($Condition)
+                ->order("d.status desc")
+                ->count();
+
+        $PageCount = ceil($Count/$PageSize);
+
+        $List      = self::TableName()
+                    ->alias("d")
+                    ->field($Field)
+                    ->join("user u","u.user_id = d.user_id","left")
+                    ->where($Condition)
+                    ->page($Psize, $PageSize)
+                    ->order("d.status desc")
+                    ->select();
+
+        $PaginaTion = parent::Paging($Count,$Psize,$PageCount,$List);
+
+        return $PaginaTion;
+    }
+}

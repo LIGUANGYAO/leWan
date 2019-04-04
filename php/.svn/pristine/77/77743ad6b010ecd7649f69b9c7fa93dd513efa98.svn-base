@@ -1369,17 +1369,14 @@ class UserController extends ApiBaseController{
      *活动列表
      */
     public function getActivesList(){
-        $Token    = input("post.token","","htmlspecialchars,strip_tags");
-        $paged    = intval(input("post.page",1));//分页默认第一页
-        $psize    = intval(input("post.psize",10));//分页条数默认10条
+        $Token = input("post.token","","htmlspecialchars,strip_tags");
+        $paged   = intval(input("post.page",1));//分页默认第一页
+        $psize  = intval(input("post.psize",10));//分页条数默认10条
         $citycode = $this->post('citycode', '510100');
-        $Punfu    = new PubfunController();
-
+        $Punfu = new PubfunController();
         $Punfu->UserLoginStatus($Token,$this->headerData);//用户判断
-
         $condition['status'] = 1;
-        $condition[] = array("exp","citycode = '' or find_in_set($citycode,citycode)");
-
+        $condition['citycode'] = [['=', $citycode], ['=', ''], 'or'];
         $list = Db::name('actives')->field('a_id,thumb,title,starttime,endtime,addtime,`type`')->where($condition)->page($paged, $psize)->order('sort asc')->select();
 
         $this->returnApiData("获取成功", 200,$list);
@@ -1431,7 +1428,6 @@ class UserController extends ApiBaseController{
         }
         $id = $this->post('id', 0);
         $data = Db::name('actives')->find($id);
-
         if(!$data){
             $this->returnApiData("没有数据", 400, $data);
         }
@@ -1506,15 +1502,6 @@ class UserController extends ApiBaseController{
             ->where($hasmap)->count();
         $xrcount = Db::table('view_xinrenzhimai')->where(['user_id'=> $user['user_id']])->count();
 
-        $map['user_id'] = $user['user_id'];
-        $info = Db::table('view_xinrenzhimai')->field('firsttime,finishtime,status,amount')->where($map)->order('uptime desc')->find();
-
-        if(!empty($info)){
-            if($info['finishtime']+86400<=time()){
-                $this->returnApiData('非常抱歉，你未在规定时间内完成邀请新人注册，已失去活动资格！',400);
-            }
-        }
-
         if($ocount && empty($xrcount)){
             $this->returnApiData('非常抱歉，你没有资格参与该活动,本次活动仅针对未直卖过的用户！',400);
         }
@@ -1524,11 +1511,12 @@ class UserController extends ApiBaseController{
             $endtime  = strtotime(date('Y-m-d').' 17:00:00');
             $where['x.uptime'] = array('gt',$endtime);
             $where['x.status'] = array('in','3,4');
+
         }else{ // 入围名单
             $startime = strtotime(date('Y-m-d',strtotime('-1 day')).' 17:00:00');
             $endtime  = strtotime(date('Y-m-d').' 17:00:00');
-            $where['x.status'] = array('in','2,3,4');
-            $where[] = array('exp',"(x.finishtime >{$startime} and x.finishtime < {$endtime})");
+            $where['x.status'] = array('in','2,4');
+            $where[] = array('exp',"(x.uptime >{$startime} and x.uptime < {$endtime})");
         }
         $list =Db::table('view_xinrenzhimai x')
             ->field('u.nickname,u.mobile,x.amount')
@@ -1540,6 +1528,8 @@ class UserController extends ApiBaseController{
             $val['nickname'] = '*'.mb_substr($val['nickname'],0,1,'utf-8').'~';
         }
 
+        $map['user_id'] = $user['user_id'];
+        $info = Db::table('view_xinrenzhimai')->field('firsttime,finishtime,status,amount')->where($map)->order('uptime desc')->find();
         $datas['info'] = $info;
         $datas['list'] = $list;
         $datas['rules'] = Db::name('actives')->where(['type'=>5])->value('content');
@@ -1568,7 +1558,7 @@ class UserController extends ApiBaseController{
             if($info['status']==1){
                 $this->returnApiData('请在完成直卖的24小时内完成邀请好友注册才能领取',400);
             }elseif($info['status']==2){
-                $this->returnApiData('未到开奖时间，请耐心等待',400);
+                $this->returnApiData('请在17点开奖后再领取',400);
             }elseif($info['status']==3){
                 $this->returnApiData('您已经领取过了并获得奖金:'.$info['amount'],200,['amount'=>$info['amount']]);
             }elseif($info['status']==4 && $info['uptime']+86400<=time() ){

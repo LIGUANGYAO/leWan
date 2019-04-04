@@ -1510,7 +1510,7 @@ class UserController extends ApiBaseController{
         $info = Db::table('view_xinrenzhimai')->field('firsttime,finishtime,status,amount')->where($map)->order('uptime desc')->find();
 
         if(!empty($info)){
-            if($info['finishtime']+86400<=time()){
+            if($info['finishtime']<1 && ($info['finishtime']+86400<=time())){
                 $this->returnApiData('非常抱歉，你未在规定时间内完成邀请新人注册，已失去活动资格！',400);
             }
         }
@@ -1528,7 +1528,7 @@ class UserController extends ApiBaseController{
             $startime = strtotime(date('Y-m-d',strtotime('-1 day')).' 17:00:00');
             $endtime  = strtotime(date('Y-m-d').' 17:00:00');
             $where['x.status'] = array('in','2,3,4');
-            $where[] = array('exp',"(x.finishtime >{$startime} and x.finishtime < {$endtime})");
+            $where[] = array('exp',"(x.uptime >{$startime} and x.uptime < {$endtime})");
         }
         $list =Db::table('view_xinrenzhimai x')
             ->field('u.nickname,u.mobile,x.amount')

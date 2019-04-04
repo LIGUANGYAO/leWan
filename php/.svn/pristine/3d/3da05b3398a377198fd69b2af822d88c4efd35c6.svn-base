@@ -580,20 +580,12 @@ class OrderModel{
     /**
      * 新人直卖第一单活动
      * @param $userid  直卖人UID
-     * @param $ulevel  下单用户等级
      * @return bool
      */
-    public static function firstOrderDirectSelling($userid,$ulevel){
+    public static function firstOrderDirectSelling($userid){
         if(!empty($userid)){
-            if($ulevel==1){
-                $hasmap['p.userid_first']=  $userid;
-            }else{
-                $hasmap['p.userid_second']=  $userid;
-            }
-            $hasmap['o.user_id'] = array('neq',$userid);
-            $ocount = Db::name('order_product p')->join('order o','o.order_id=p.order_id','left')
-                ->where($hasmap)->count();
-            if($ocount==1){ //直卖只有一单。
+            $count = Db::name('order_product')->where(['userid_first'=>$userid])->count();
+            if($count==1){ //直卖只有一单。
                 $data['user_id'] = $userid;
                 $data['uptime'] = time();
                 $data['firsttime'] = time();

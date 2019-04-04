@@ -119,7 +119,7 @@ class NotifyController extends BaseController
                         $puser_id = $user['reid'];
                     }
                     //购买人不是直卖人
-                    \app\api\model\OrderModel::firstOrderDirectSelling($puser_id,$user['level']);
+                    \app\api\model\OrderModel::firstOrderDirectSelling($puser_id);
 
                     if ($order["dboss_id"]==2){ //123门票(欢乐谷)网对接
                         $this->createOrderToHappyValley($order);

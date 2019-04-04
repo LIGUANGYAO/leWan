@@ -38,10 +38,10 @@
         <div class="layui-inline">
             <label class="layui-form-indexlabel">开始时间</label>
             <div class="layui-input-inline">
-                <input class="layui-input" name="starttime" value="{$query.starttime}" placeholder="开始时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: false, format: 'YYYY-MM-DD'})">
+                <input class="layui-input" name="starttime" value="{$query.starttime}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: false, format: 'YYYY-MM-DD'})">
             </div>
             <div class="layui-input-inline">
-                <input class="layui-input" name="endtime" value="{$query.endtime}" placeholder="结束时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: false, format: 'YYYY-MM-DD'})">
+                <input class="layui-input" name="endtime" value="{$query.endtime}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: false, format: 'YYYY-MM-DD'})">
             </div>
         </div>
         <button class="layui-btn layui-btn-small">搜 &nbsp; 索</button>
@@ -83,13 +83,7 @@
             <td nowrap="nowrap"><input type="checkbox" name="id[]" value="{$val.a_id}" lay-skin="primary" lay-filter="idchoose"></td>
             <td nowrap="nowrap"><img src="{$val.thumb}" width="150"></td>
             <td nowrap="nowrap">{$val.title}</td>
-            <td nowrap="nowrap">
-                <if condition="$val.fullname">
-                    {$val.fullname}
-                    <else />
-                    全国活动
-                </if>
-            </td>
+            <td nowrap="nowrap">{$val.fullname}</td>
             <td nowrap="nowrap">
                 <if condition="$val.type eq 1">
                     新人免单
@@ -112,12 +106,12 @@
             </td>
             <td nowrap="nowrap">
                 <if condition="$val.starttime">
-                    {$val.starttime|date="Y-m-d H:i:s",###}
+                    {$val.starttime|date="Y-m-d ",###}
                 </if>
             </td>
             <td nowrap="nowrap">
                 <if condition="$val.endtime">
-                    {$val.endtime|date="Y-m-d H:i:s",###}
+                    {$val.endtime|date="Y-m-d ",###}
                 </if>
             </td>
             <td nowrap="nowrap">{$val.addtime|date="Y-m-d H:i:s",###}</td>
