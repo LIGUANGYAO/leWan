@@ -1,0 +1,517 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="layui-input-block" >
+    <a href="{:url('Retailadminorder/AdminOrderList',array('status'=>$status))}" class="layui-btn"><i class="fa fa-mail-reply"></i> 返回列表</a>
+</div>
+<div class="site-site-content page">
+    <div class="site-text site-block">
+        <blockquote class="layui-elem-quote"> 订单信息</blockquote>
+
+        <form class="layui-form layui-input-block" action="{:url('Userauth/AuthData')}" method="post" enctype="multipart/form-data">
+            <input type='hidden'  name="id" value="{$data.order_id}">
+
+
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2">分销商信息：</label>
+                <div class='layui-form-mid form-control-static'>分销商公司名:{$data.company}/联系人: {$data.concat} / 手机号: {$data.fxmobile}</div>
+            </div>
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2">用户信息：</label>
+                <div class='layui-form-mid form-control-static'>昵称: {$data.nickname} / 手机号: {$data.mobile}</div>
+            </div>
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2">订单号：</label>
+                <div class='layui-form-mid form-control-static'>{$data.order_no}</div>
+            </div>
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">第三方订单号流水号：</label>
+                <div class='layui-form-mid form-control-static'>{$data.order_transaction}</div>
+            </div>
+
+            <if condition="$data.express_firm">
+                <div class="layui-form-item col-sm-6">
+                    <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2">快递公司：</label>
+                    <div class='layui-form-mid form-control-static'>{$data.express_firm}</div>
+                </div>
+                <div class="layui-form-item col-sm-6">
+                    <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">快递订单流水号：</label>
+                    <div class='layui-form-mid form-control-static'>{$data.express_no}</div>
+                </div>
+            </if>
+
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">价格：</label>
+                <div class='layui-form-mid form-control-static'>总金额: {$data.order_totalfee} / 实际金额: {$data.order_payfee}</div>
+            </div>
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">商品类型：</label>
+                <div class='layui-form-mid form-control-static'>
+                    <label class="layui-badge {$data.typename}"> {$data.typename}</label>
+                    <label class="layui-badge {$data.recss}"> {$data.rename}</label>
+                    <if condition="$data.order_isexpress eq 2 and $data.order_reservation eq 2">
+                        <label class="layui-badge {$data.plaindaycss}"> {$data.plaindayname}</label>
+                    </if>
+                </div>
+            </div>
+
+            <if condition="$data.order_isexpress eq 1">
+                <div class="layui-form-item col-sm-6">
+                    <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">预约信息：</label>
+                    <div class='layui-form-mid form-control-static'>预约人: {$data.order_fullname} / 联系电话: {$data.order_mobile}</div>
+                </div>
+            </if>
+
+            <if condition="$data.order_idcard">
+                <div class="layui-form-item col-sm-6">
+                    <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">特殊信息：</label>
+                    <div class='layui-form-mid form-control-static'>身份证号码: {$data.order_idcard} / 预约时间: {$data.order_plainday|date='Y-m-d',###}</div>
+                </div>
+            </if>
+
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">支付方式：</label>
+                <div class='layui-form-mid form-control-static'><label class="layui-badge {$data.paycss}"> {$data.payname}</label></div>
+            </div>
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">订单状态：</label>
+                <div class='layui-form-mid form-control-static'>
+                    <if condition="$data.order_status neq 6">
+                        <label class="layui-badge {$data.statuscss}"> {$data.statusname}</label>
+                    </if>
+                    <if condition="$data.order_refundstatus gt 0">
+                        <label class="layui-badge {$data.refundstatuscss}">{$data.refundstatusname}</label>
+                    </if>
+
+                    <if condition="$goods.distributiontag eq 1">
+                        <if condition="$data.distributionsendcode eq 0">
+                            <label class="layui-badge ">未发码</label>
+                            <else />
+                            <label class="layui-badge layui-bg-green">已发码</label>
+                        </if>
+                    </if>
+                </div>
+            </div>
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">订单备注：</label>
+                <div class='layui-form-mid form-control-static'>{$data.oredr_remark}</div>
+            </div>
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">付款时间：</label>
+                <div class='layui-form-mid form-control-static'>
+                    <if condition="$data.order_paytime">
+                        {$data.order_paytime|date='Y-m-d H:i',###}
+                    </if>
+                </div>
+            </div>
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">下单时间：</label>
+                <div class='layui-form-mid form-control-static'>{$data.order_addtime|date='Y-m-d H:i',###}</div>
+            </div>
+
+            <if condition="$data.order_isexpress eq 2 and $data.order_reservation eq 2 ">
+                <div class="layui-form-item col-sm-6">
+                    <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">发货时间：</label>
+                    <div class='layui-form-mid form-control-static'>{$data.order_plainday|date='Y-m-d',###}</div>
+                </div>
+            </if>
+
+            <div class="layui-form-item col-sm-6">
+                <label class="layui-form-label layui-col-xs12 layui-col-sm3 layui-col-md2 ">退款时间：</label>
+                <div class='layui-form-mid form-control-static'>
+                    <if condition="$data.refund_status eq 3">
+                        {$data.refund_uptime|date2='Y-m-d H:i',###}
+                    </if>
+                </div>
+            </div>
+
+            <!--<if condition="$data['status'] neq 2">-->
+                <!--<div class="layui-form-item">-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</if>-->
+        </form>
+    </div>
+
+    <blockquote class="layui-elem-quote"> 订单金额详情</blockquote>
+
+    <div class="layui-form col-sm-7">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th >现金币金额</th>
+                <th >积分数量</th>
+                <th >佣金数量</th>
+                <th >优惠券面额</th>
+                <th >第三方支付金额</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td >{$data.cash|default=0}</td>
+                    <td >{$data.points|default=0}</td>
+                    <td >{$data.commission|default=0}</td>
+                    <td >{$data.coupon|default=0}</td>
+                    <td >{$data.payamount|default=0}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <blockquote class="layui-elem-quote"> 商品信息</blockquote>
+
+    <div class="layui-form col-sm-12">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th >商家</th>
+                <th width="200">商品名称</th>
+                <th >购买数量</th>
+                <th >单价</th>
+                <th >开始使用时间</th>
+                <th >结束使用时间</th>
+                <th >新人免单</th>
+                <th >预约制</th>
+                <th >佣金总额</th>
+                <th >一级佣金</th>
+                <th >上级佣金</th>
+                <th >运营佣金</th>
+                <th >运营奖金</th>
+                <th >玩主奖金</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td >
+                    <if condition="$goods.distributiontag eq 0">
+                        <label class="layui-badge layui-bg-green">内部平台商品</label><br/>
+                        <else />
+                        <label class="layui-badge layui-bg-orange">外部平台商品</label><br/>
+                    </if>
+                    {$goods.merchant_name}
+                </td>
+                <td width="200">{$goods.product_name}</td>
+                <td >{$goods.num}</td>
+                <td >{$goods.price}</td>
+                <td >
+                    <if condition="!empty($goods.product_startusetime)">
+                        {$goods.product_startusetime|date='Y-m-d H:i',###}
+                    </if>
+                </td>
+                <td >
+                    <if condition="!empty($goods.product_endusetime)">
+                        {$goods.product_endusetime|date='Y-m-d H:i',###}
+                    </if>
+                </td>
+                <td >
+                    <if condition="$goods.product_returnall eq 1">新人免单<else />不免单</if>
+                </td>
+                <td >
+                    <if condition="$goods.price_type eq 1">普通商品<else />选日历</if>
+                </td>
+                <td >{$goods.commission}</td>
+                <td >{$goods.commis_first}</td>
+                <td >{$goods.commis_second}</td>
+                <td >{$goods.commis_operations}</td>
+                <td >{$goods.commis_operations_child}</td>
+                <td >{$goods.commis_playerhost_child}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <if condition="$ordercode">
+        <blockquote class="layui-elem-quote"> 订单消费码信息</blockquote>
+
+        <form class="layui-form" action="{:url('Order/OrderData')}" method="post" enctype="multipart/form-data">
+            <input type='hidden'  name="order_id" value="{$data.order_id}">
+            <input type='hidden'  name="user_id" value="{$data.user_id}">
+            <input type='hidden'  name="statuss" value="{$status}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">说明：</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid ">电子消费码,如未使用过可以冻结,冻结电子码可以恢复,注意如已使用恢复为未使用带来的问题,操作人自己承担相应的责任</div>
+                </div>
+            </div>
+            <volist name="$ordercode" id="val">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">消费码：</label>
+                    <div class="layui-input-block">
+                        <div class="layui-form-mid "> {$val.consume_code}</div>
+                        <div class="layui-form-mid" style="color: red">实际消费商家:
+                            <if condition="$val.merchant_name">
+                                {$val.merchant_name}
+                                <else />
+                                未去商家消费
+                            </if>
+                        </div>
+                        <if condition="$data['order_isexpress'] eq 1 && $data['order_reservation'] eq 1">
+                            <div class="layui-form-mid" >预约链接:{:createShortUrl($val.url)}</div>
+                        </if>
+
+                        <!--<if condition="$val.status eq 1">-->
+                            <!--<div class="layui-form-mid "><label class="layui-badge layui-bg-gray">未使用</label></div>-->
+                            <!--<input type="checkbox" name="status[{$val.consume_code_id}]" title="冻结" value="4">-->
+                            <!--<elseif condition="$val.status eq 2"/>-->
+                            <!--<div class="layui-form-mid "><label class="layui-badge layui-bg-green">已使用</label></div>-->
+                            <!--<input type="checkbox" name="status[{$val.consume_code_id}]" title="恢复" value="1">-->
+                            <!--<elseif condition="$val.status eq 4"/>-->
+                            <!--<div class="layui-form-mid "><label class="layui-badge ">已冻结</label></div>-->
+                            <!--<input type="checkbox" name="status[{$val.consume_code_id}]" title="恢复" value="1">-->
+                        <!--</if>-->
+
+                    </div>
+
+                </div>
+
+            </volist>
+
+            <!--<div class="layui-form-item">-->
+                <!--<div class="layui-input-block">-->
+                    <!--<button class="layui-btn" lay-submit lay-filter="formDemo">确认修改</button>-->
+                   <!--<a href="{:url('Order/downOrderConsumeCode',array('order_id'=>$data.order_id))}" class="layui-btn layui-btn-primary">导出电子码</a>-->
+                <!--</div>-->
+            <!--</div>-->
+        </form>
+
+    </if>
+
+
+    <if condition="$data.order_isexpress eq 1">
+        <if condition="$data.order_reservation eq 1">
+
+            <if condition="$reservation">
+                <blockquote class="layui-elem-quote"> 订单预约信息</blockquote>
+
+                <div class="layui-form col-sm-12">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th >消费码</th>
+                            <th >消费码状态</th>
+                            <th >消费码使用时间</th>
+                            <th >预约日期</th>
+                            <th >预约日价格</th>
+                            <th >周几</th>
+                            <th >预约状态</th>
+                            <th >更新时间</th>
+                            <th >添加时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="$reservation" id="val">
+                            <tr>
+                                <td >{$val.consume_code}</td>
+                                <td >
+                                    <if condition="$val.status eq 1">
+                                        未使用
+                                        <elseif condition="$val.status eq 2"/>
+                                        已使用
+                                        <elseif condition="$val.status eq 3" />
+                                        已过期
+                                        <elseif condition="$val.status eq 4" />
+                                        冻结
+                                    </if>
+                                </td>
+                                <td >
+                                    <if condition="!empty($val.uptime)">
+                                        {$val.uptime|date='Y-m-d H:i',###}
+                                    </if>
+                                </td>
+                                <td >{$val.calendar|date='Y-m-d',###}</td>
+                                <td >{$val.addprice}</td>
+                                <td >{$val.week}</td>
+                                <td >
+                                    <if condition="$val.reservation_status eq 0">
+                                        <if condition="$val.reservation_no">
+                                            未支付
+                                            <else />
+                                            未预约
+                                        </if>
+                                        <elseif condition="$val.reservation_status eq 1"/>
+                                        预约成功
+                                        <elseif condition="$val.reservation_status eq 2"/>
+                                        预约完成
+                                        <elseif condition="$val.reservation_status eq 3"/>
+                                        预约过期
+                                        <elseif condition="$val.reservation_status eq 4"/>
+                                        取消预约
+                                    </if>
+                                </td>
+                                <td >
+                                    <if condition="!empty($val.reservation_uptime)">
+                                        {$val.reservation_uptime|date='Y-m-d H:i',###}
+                                    </if>
+                                <td >
+                                    <if condition="!empty($val.reservation_addtime)">
+                                        {$val.reservation_uptime|date='Y-m-d H:i',###}
+                                    </if>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </if>
+
+
+            <if condition="!empty($ordermarkup)">
+                <blockquote class="layui-elem-quote"> 订单预约加价信息</blockquote>
+
+                <div class="layui-form col-sm-12">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th >消费码</th>
+                            <th >加价订单号</th>
+                            <th >第三方订单号</th>
+                            <th >支付方式</th>
+                            <th >加价价格</th>
+                            <th >支付状态</th>
+                            <th >加价支付时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="$ordermarkup" id="val">
+                                <tr>
+                                    <td >{$val.consume_code}</td>
+                                    <td >{$val.reservation_no}</td>
+                                    <td >{$val.reservation_transaction_id}</td>
+                                    <td ><label class="layui-badge {$data.paycss}"> {$data.payname}</label></td>
+                                    <td >{$val.reservation_addprice}</td>
+                                    <td >
+                                        <if condition="$val.reservation_status eq 0">
+                                            未支付
+                                        <else/>
+                                            已支付
+                                        </if>
+                                    </td>
+                                    <td >
+                                        <if condition="!empty($val.reservation_paytime)">
+                                            {$val.reservation_paytime|date='Y-m-d H:i',###}
+                                        </if>
+                                    </td>
+                                </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </if>
+        </if>
+
+        <if condition="$data.order_reservation eq 2">
+            <if condition="$goods.price_type eq 2">
+                <blockquote class="layui-elem-quote"> 商品日历价格信息</blockquote>
+
+                <div class="layui-form col-sm-7">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th >日期</th>
+                            <th >市场价</th>
+                            <th >销售价</th>
+                            <th >佣金总额</th>
+                            <th >库存数量</th>
+                            <th >已售数量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="$calendar" id="val">
+                            <tr>
+                                <td >{$val.ymd|date='Y-m-d',###}</td>
+                                <td >{$val.price_market}</td>
+                                <td >{$val.price_sale}</td>
+                                <td >{$val.price_commission}</td>
+                                <td >{$val.product_num}</td>
+                                <td >{$val.product_buynum}</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+
+                <blockquote class="layui-elem-quote"> 购买日历价格信息</blockquote>
+
+                <div class="layui-form col-sm-7">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th >日期</th>
+                            <th >价格</th>
+                            <th >佣金</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="$goods.pricecalendar" id="val">
+                            <tr>
+                                <td >{$val.name}</td>
+                                <td >{$val.price}</td>
+                                <td >{$val.commission}</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </if>
+        </if>
+
+    </if>
+
+
+    <if condition="$data.order_isexpress eq 2">
+        <if condition="$delivery">
+            <blockquote class="layui-elem-quote"> 预约发货信息</blockquote>
+
+            <div class="layui-form col-sm-12">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th >预约商家</th>
+                        <th >预约发货时间</th>
+                        <th >备注</th>
+                        <th >录入时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td >{$delivery.merchant_name}</td>
+                        <td >{$delivery.day|date='Y-m-d H:i',###}</td>
+                        <td >{$delivery.remark}</td>
+                        <td >{$delivery.addtime|date='Y-m-d H:i',###}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </if>
+
+        <if condition="$data.address_id">
+            <blockquote class="layui-elem-quote"> 收获地址</blockquote>
+
+            <div class="layui-form col-sm-12">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th >收获人</th>
+                        <th >联系电话</th>
+                        <th >地区</th>
+                        <th >详细地址</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td >{$data.contact}</td>
+                        <td >{$data.amobile}</td>
+                        <td >{$data.ssq}</td>
+                        <td >{$data.address}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </if>
+    </if>
+
+    <div class="layui-input-block" ></div>
+    <div class="layui-input-block" ></div>
+</div>
+<script>
+</script>

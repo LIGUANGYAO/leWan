@@ -1,0 +1,243 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page" >
+    <div class="layui-input-block">
+        <div class="layui-btn-group search">
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'sudtype',0))}">
+                <button class="layui-btn <if condition="$sudtype eq 0">layui-bg-orange<else />layui-btn-primary</if>">零售订单</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'sudtype',1))}">
+                <button class="layui-btn <if condition="$sudtype eq 1">layui-bg-orange<else />layui-btn-primary</if>">分销订单</button></a>
+        </div>
+        <div class="layui-btn-group search">
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',0))}">
+                <button class="layui-btn <if condition="$status eq 0">layui-btn-normal<else />layui-btn-primary</if>">全部订单 ({$count["whole"]})</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',1))}">
+                <button class="layui-btn <if condition="$status eq 1">layui-btn-normal<else />layui-btn-primary</if>">待付款 ({$count["unpaid"]})</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',2))}">
+                <button class="layui-btn <if condition="$status eq 2">layui-btn-normal<else />layui-btn-primary</if>">待发货 ({$count["hair"]})</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',3))}">
+                <button class="layui-btn <if condition="$status eq 3">layui-btn-normal<else />layui-btn-primary</if>">待收货 ({$count["collect"]})</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',4))}">
+                <button class="layui-btn <if condition="$status eq 4">layui-btn-normal<else />layui-btn-primary</if>">已完成 ({$count["fulfil"]})</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',5))}">
+                <button class="layui-btn <if condition="$status eq 5">layui-btn-normal<else />layui-btn-primary</if>">取消订单 ({$count["cancel"]})</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',6))}">
+                <button class="layui-btn <if condition="$status eq 6">layui-btn-normal<else />layui-btn-primary</if>">申请退款 ({$count["refund"]})</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',7))}">
+                <button class="layui-btn <if condition="$status eq 7">layui-btn-normal<else />layui-btn-primary</if>">申请换货 ({$count["barter"]})</button></a>
+            <a href="{:url('Branchorder/BranchOrderList',getArray($query,'status',8))}">
+                <button class="layui-btn <if condition="$status eq 8">layui-btn-normal<else />layui-btn-primary</if>">订单过期 ({$count["expire"]})</button></a>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+    <div class="layui-field-title"></div>
+
+    <form class="layui-form " action="{:url('Branchorder/BranchOrderList')}" method="get" >
+        <input type="text" name="status" value="{$status}" hidden="hidden">
+        <input type="text" name="sudid" value="{$query.sudid}" hidden="hidden">
+
+        <div class="layui-form-item ">
+            <div class="layui-input-block layui-col-sm4">
+                <input type="text" name="title"  placeholder="请输入/商户名/用户昵称/联系电话/平台订单号/分公司/分销商公司"  class="layui-input" value="{$query['title']}">
+            </div>
+            <label class="layui-form-label">下单时间:</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="starttime" value="{$query['starttime']|default=''}" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="endtime" value="{$query['endtime']|default=''}" placeholder="结束时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+            </div>
+
+            <label class="layui-form-label">所属平台:</label>
+            <div class="layui-input-inline w120">
+                <select name="dboss_id" lay-verify="require" >
+                    <option value="0">全部平台</option>
+                    <volist name="dbosslist" id="val">
+                        <option value="{$val.id}" <if condition="$val.id eq $query.dboss_id"> selected="selected"</if>>{$val.dboss_name} </option>
+                    </volist>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品类型:</label>
+            <div class="layui-input-inline ">
+                <select name="isexpress" lay-verify="require">
+                    <option value="0">全部类型</option>
+                    <option value="1" <if condition="$query['isexpress'] eq 1"> selected="selected"</if>>到店商品</option>
+                    <option value="2" <if condition="$query['isexpress'] eq 2"> selected="selected"</if>>快递商品</option>
+                </select>
+            </div>
+            <label class="layui-form-label">预约类型:</label>
+            <div class="layui-input-inline ">
+                <select name="reservation" lay-verify="require">
+                    <option value="0">全部类型</option>
+                    <option value="1" <if condition="$query['reservation'] eq 1"> selected="selected"</if>>预约制</option>
+                    <option value="2" <if condition="$query['reservation'] eq 2"> selected="selected"</if>>免预约</option>
+                    <option value="3" <if condition="$query['reservation'] eq 3"> selected="selected"</if>>电话预约</option>
+                </select>
+            </div>
+            <label class="layui-form-label">商品平台:</label>
+            <div class="layui-input-inline ">
+                <select name="distributiontag" lay-verify="require">
+                    <option value="0">全部商品</option>
+                    <option value="1" <if condition="$query.distributiontag eq 1"> selected="selected"</if>>外部商品</option>
+                    <option value="2" <if condition="$query.distributiontag eq 2"> selected="selected"</if>>内部商品</option>
+                </select>
+            </div>
+
+            <label class="layui-form-label">支付方式:</label>
+            <div class="layui-input-inline ">
+                <select name="payment" lay-verify="require">
+                    <option value="0">全部支付方式</option>
+                    <option value="1" <if condition="$query['payment'] eq 1"> selected="selected"</if>>微信公众号支付</option>
+                    <option value="2" <if condition="$query['payment'] eq 2"> selected="selected"</if>>支付宝支付</option>
+                    <option value="3" <if condition="$query['payment'] eq 3"> selected="selected"</if>>银行卡支付</option>
+                    <option value="4" <if condition="$query['payment'] eq 4"> selected="selected"</if>>微信APP支付</option>
+                    <option value="5" <if condition="$query['payment'] eq 5"> selected="selected"</if>>现金支付[后台下单]</option>
+                </select>
+            </div>
+            <span class="input-group-btn layui-input-block">
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                  <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+                  <button type="submit" class="layui-btn layui-btn-primary" name="excel" value="1">导出excel</button>
+            </span>
+        </div>
+    </form>
+
+    <div class="clear"></div>
+    <div class="layui-field-title"></div>
+    <span>订单金额总和：{$payfee.payfee}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <div class="clear"></div>
+    <div class="layui-form ">
+        <if condition="$data.list">
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th nowrap="nowrap">商户/分销商/分公司</th>
+                    <th nowrap="nowrap">平台订单号</th>
+                    <th nowrap="nowrap">商品规格</th>
+                    <th nowrap="nowrap">用户信息</th>
+                    <th nowrap="nowrap">金额</th>
+                    <th nowrap="nowrap">商品类型</th>
+                    <th nowrap="nowrap">订单状态</th>
+                    <th nowrap="nowrap">付款时间</th>
+                    <th nowrap="nowrap">下单时间</th>
+                    <th nowrap="nowrap">退款时间</th>
+                    <th nowrap="nowrap">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="$data.list" id="val">
+                    <tr>
+                        <td nowrap="nowrap">
+                            <if condition="$val.distributiontag eq 0">
+                                <label class="layui-badge layui-bg-green">内部平台商品</label><br/>
+                                <else />
+                                <label class="layui-badge layui-bg-orange">外部平台商品</label><br/>
+                            </if>
+                            <label class="layui-badge layui-bg-green">{$val.dboss_name}</label><br/>
+                            <label class="layui-badge layui-bg-blue">{$val.merchant_name}</label><br/>
+                            <if condition="$val.company">
+                                <label class="layui-badge ">{$val.company}</label><br/>
+                            </if>
+                            <label class="layui-badge layui-bg-cyan">{$val.sub_name}</label>
+                        </td>
+                        <td nowrap="nowrap">{$val.order_no}</br>
+                            <span style="color: red">{$val.oredr_remark}</span>
+                        </td>
+                        <td nowrap="nowrap">{$val.product_property}</td>
+                        <td nowrap="nowrap">
+                            微信昵称：{$val.nickname}<br>
+                            注册电话：{$val.mobile}<br>
+                            订单联系人：{$val.order_fullname}<br>
+                            订单联系电话：{$val.order_mobile}
+                        </td>
+                        <td nowrap="nowrap">
+                            单价:{$val.price}<br/>
+                            数量:{$val.num}<br/>
+                            总价:{$val.order_totalfee}<br/>
+                            实际支付:{$val.order_payfee}
+                        </td>
+                        <td nowrap="nowrap">
+                            <label class="layui-badge {$val.typecss}"> {$val.typename}</label><br/>
+                            <label class="layui-badge {$val.recss}"> {$val.rename}</label><br/>
+                            <if condition="$val.order_isexpress eq 2 and $val.order_reservation eq 2">
+                                <label class="layui-badge {$val.plaindaycss}"> {$val.plaindayname}</label>
+                            </if>
+                        </td>
+                        <td nowrap="nowrap">
+                            <label class="layui-badge {$val.paycss}"> {$val.payname}</label><br/>
+                            <if condition="$val.order_status neq 6">
+                                <label class="layui-badge {$val.statuscss}">{$val.statusname}</label><br/>
+                            </if>
+                            <if condition="$val.order_refundstatus gt 0">
+                                <label class="layui-badge {$val.refundstatuscss}">{$val.refundstatusname}</label><br/>
+                            </if>
+                            <if condition="$val.distributiontag gt 0">
+                                <if condition="$val.distributionsendcode eq 0">
+                                    <label class="layui-badge ">未发码</label>
+                                    <a href="javascript:resync('{$val.order_id}')" class="delIcon" title="同步订单" style="margin-top: 5px;">同步订单</a>
+                                    <else />
+                                    <label class="layui-badge layui-bg-green">已发码</label>
+                                </if>
+                            </if>
+                        </td>
+                        <td nowrap="nowrap">
+                            <if condition="!empty($val.order_paytime)">{$val.order_paytime|date='Y-m-d H:i',###}</if>
+                        </td>
+                        <td nowrap="nowrap">{$val.order_addtime|date='Y-m-d H:i',###}</td>
+                        <td nowrap="nowrap">
+                            <if condition="$val.refund_status eq 3">
+                                {$val.refund_uptime|date2='Y-m-d H:i',###}
+                            </if>
+                        </td>
+                        <td nowrap="nowrap" width="200">
+                            <div class="layui-btn-group">
+                                <a href="{:url('Branchorder/BranchOrderDetails', array('order_id'=>$val.order_id,'status'=>$status,'sudtype'=>$sudtype,'sudid'=>$query.sudid))}" class="layui-btn layui-btn-sm" title="订单详情" style="margin-top: 5px;">查看详情</a>
+                                <a href="{:url('Orderrefund/RefundList', array('title'=>$val['order_no']))}" class="layui-btn layui-btn-sm layui-bg-blue" title="退款管理" style="margin-top: 5px;">退款管理</a>
+                                <br>
+                                <a href="{:url('Orderconsumption/ConsumptionList', array('title'=>$val['order_no']))}" class="layui-btn layui-btn-sm layui-bg-blue" title="消单表" style="margin-top: 5px;">消单表</a>
+                                <a href="{:url('Orderconsumecodelog/ConsumeCodeLogList', array('title'=>$val['order_no']))}" class="layui-btn layui-btn-sm layui-bg-blue" title="消费码日志" style="margin-top: 5px;">消费码日志</a>
+                                <br>
+                                <a href="{:url('Orderreservation/ReservationList', array('title'=>$val['order_no']))}" class="layui-btn layui-btn-sm layui-bg-blue" title="消费码预约" style="margin-top: 5px;">消费码预约</a>
+                                <a href="{:url('Orderdetails/Orderdetail', array('number'=>$val['order_no']))}" class="layui-btn layui-btn-sm layui-bg-blue" title="订单核查" style="margin-top: 5px;">订单核查</a>
+                                <br>
+
+                                <!--<if condition="$val.order_status eq 2 or $val.order_status eq 3">-->
+                                <!--<if condition="$val.distributiontag eq 0">-->
+                                <!--<a href="javascript:reSendCodeSMS('{$val.order_id}')" class="delIcon" title="重发电子码短信" style="margin-top: 5px;">重发电子码短信</a>-->
+                                <!--</if><br>-->
+                                <!--</if>-->
+                                <!--<if condition="in_array($val.order_status,array(2,3,4))">-->
+                                <!--<a href="javascript:openWindow('订单退款', '{:url('system/Order/OrderRefund', array('id'=>$val.order_id))}', '30%', '40%')" class="delIcon" title="订单退款" style="margin-top: 5px;">点击退款</a>-->
+                                <!--</if>-->
+                            </div>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+            <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    暂无数据w(ﾟДﾟ)w
+                </div>
+            </div>
+        </if>
+    </div>
+    <div class="clear"></div>
+    <div class="tabletool">
+        <!-- 分页工具 -->
+        <div id="limitpage" class="l"></div>
+        <div class="clear"></div>
+    </div>
+    <div class="layui-input-block"></div>
+</div>
+</div>
+
+<script>
+</script>

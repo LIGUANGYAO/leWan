@@ -18,7 +18,7 @@
 				-webkit-user-select: text !important;
 			}
 			.downLoad{
-				background-image: url('http://oss.lewan6.ren/uploads/html/20190321/12e8ca09d3f1d7faa09517e6bb5dace5d16b50aepng');
+				background-image: url('http://oss.lewan6.ren/uploads/html/20190409/3ed80810c887c9e09a6c0ec309239d80c1b6e98bpng');
 				background-size: 100% 100%;
 				background-repeat: no-repeat;
 				width: 100%;
@@ -821,10 +821,10 @@
 	<body>
 		<div class="" id="J_el" v-cloak>
 			<div class="" v-if="showPage">
-				<!--<div class="downLoad">
+				<div class="downLoad">
 					<div class="goToDownLoad" @tap="goToDownLoad()"></div>
 					<div class="downLoad_close" @tap="closeDownLoad()"></div>
-				</div>-->
+				</div>
 				<div class="headerBox">
 					<div class="mui-slider">
 						<div class="mui-slider-group mui-slider-loop">
@@ -850,7 +850,7 @@
 					<div v-if="isNewPerson == 1" class="priceBox newPriceBox">
 						<span class="realityPrice">¥{{ proPrice[priceIndex].price_sale }}</span>
 						<span class="originalCost">¥{{ proPrice[priceIndex].price_market }}</span>
-						<span class="countDown" v-if="proDetail.sold_out == 0">限首次注册会员免费使用</span>
+						<span class="countDown" v-if="proDetail.sold_out == 0">限注册会员购买全返</span>
 						<span class="countDown" v-else-if="proDetail.sold_out == 1">商品已售罄</span>
 					</div>
 					<div v-else class="priceBox" :class="{'isNumNone': proDetail.sold_out == 1}">
@@ -1334,7 +1334,7 @@
 										url: "OrderPayment.html?productId="+productId+"&priceId="+priceId
 									})
 								} else if(vueData.freesheet == 2){  // 1未使用 2已使用
-									mui.toast("您已使用过免单机会，去邀请更多好友进行注册！免费送他一份吃喝玩乐，你省他也赚！")
+									mui.toast("该商品您已使用过免单机会，去邀请更多好友进行注册！免费送他一份吃喝玩乐，你省他也赚！")
 								}
 							} else{
 								mui.toast("您还未注册，暂不能享受免单机会，去找邀请码进行注册！")
@@ -1624,12 +1624,11 @@
 				//app下载
 				function goToDownLoad(){
 					if(browser.versions.android) {
-						alert('android下载')
-//						window.location.href = "https://imtt.dd.qq.com/16891/D7C889CEC3ACDAA246D0F662513EFEB8.apk?fsname=com.leiwan.zl_v1.0.2_2.apk&csr=1bbd"
-						window.location.href = "https://android.myapp.com/myapp/detail.htm?apkName=com.leiwan.zl&ADTAG=mobile"
+						window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.leiwan.zl"
 					} else if(browser.versions.ios || iPhone || iPad) {
-						alert('ios下载')
-						window.location.href = "https://android.myapp.com/myapp/detail.htm?apkName=com.leiwan.zl&ADTAG=mobile"
+						window.location.href = "https://itunes.apple.com/cn/app/%E4%B9%90%E7%8E%A9%E8%81%94%E7%9B%9F/id1454181347?mt=8"
+					}else{
+						window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.leiwan.zl"
 					}
 				}
 				//关闭app下载

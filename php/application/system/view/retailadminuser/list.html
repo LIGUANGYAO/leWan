@@ -1,0 +1,165 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+    <form class="layui-form" action="{:url('Retailadminuser/AdminUserList')}">
+
+        <div class="layui-form-item ">
+            <div class="layui-input-block layui-col-sm3">
+                <input type="text" name="title"  placeholder="公司名/管理员/联系人/联系电话"  class="layui-input" value="{$query.title}">
+            </div>
+            <label class="layui-form-label">付款方式:</label>
+            <div class="layui-input-inline ">
+                <select name="biztype" lay-verify="require">
+                    <option value="0">全部方式</option>
+                    <option value="1" <if condition="$query.biztype eq 1"> selected="selected"</if>>预充值</option>
+                    <option value="2" <if condition="$query.biztype eq 2"> selected="selected"</if>>售罄</option>
+                </select>
+            </div>
+
+            <label class="layui-form-label">分销状态:</label>
+            <div class="layui-input-inline ">
+                <select name="status" lay-verify="require">
+                    <option value="0">全部状态</option>
+                    <option value="1" <if condition="$query.status eq 1"> selected="selected"</if>>启用</option>
+                    <option value="2" <if condition="$query.status eq 2"> selected="selected"</if>>禁用</option>
+                </select>
+            </div>
+
+            <span class="input-group-btn layui-input-block">
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+            </span>
+            </span>
+        </div>
+    </form>
+
+    <div class="l">
+        <notempty name="addbtn">
+            <if condition="$addbtn.type eq '1'">
+                <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+                <else/>
+                <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+            </if>
+        </notempty>
+    </div>
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <if condition="!empty($data['list'])">
+            <table class="layui-table">
+                <!-- 必须，只有这里才真正控制宽度 -->
+                <thead>
+                <tr>
+                    <th nowrap="nowrap">公司名称</th>
+                    <th nowrap="nowrap">管理员</th>
+                    <th nowrap="nowrap">联系人</th>
+                    <th nowrap="nowrap">联系电话</th>
+                    <th nowrap="nowrap">付款方式</th>
+                    <th nowrap="nowrap">状态</th>
+                    <th nowrap="nowrap">支出总额</th>
+                    <th nowrap="nowrap">收入总额</th>
+                    <th nowrap="nowrap">剩余余额</th>
+                    <th nowrap="nowrap">添加时间</th>
+                    <th nowrap="nowrap" width="100">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <volist name="$data.list" id="val">
+                    <tr>
+                        <td style="font-weight: bold">
+                            <if condition="$val.type eq 2">
+                                {$val.company}
+                                <else />
+                                系统管理员
+                            </if>
+                        </td>
+                        <td>{$val.username}</td>
+                        <td>{$val.concat}</td>
+                        <td>{$val.mobile}</td>
+                        <td>
+                            <if condition="$val.type eq 2">
+                                <if condition="$val.biztype eq 1">
+                                    <span class="layui-badge layui-bg-green">预充值</span>
+                                    <else />
+                                    <span class="layui-badge ">售罄</span>
+                                </if>
+                            </if>
+                        </td>
+                        <td>
+                            <if condition="$val.status eq 1">
+                                <span class="layui-badge layui-bg-green">启用</span>
+                                <else />
+                                <span class="layui-badge layui-bg-green">禁用</span>
+                            </if>
+                        </td>
+                        <td>{$val.account_cash_expenditure}</td>
+                        <td>{$val.account_cash_income}</td>
+                        <td>{$val.account_cash_balance}</td>
+                        <td nowrap="nowrap">{$val.create_time|date="Y-m-d H:i:s",###}</td>
+                        <td nowrap="nowrap">
+                            <if condition="$val.type eq 2 and $val.pid eq 0">
+                                <a href="{:url('Retailadminuser/AdminUserCapitalFlowList', array('id'=>$val.id))}" class="layui-btn layui-btn-sm" title="用户详情">资金流水</a>
+                            </if>
+                            <a href="{:url('Retailadminorder/AdminOrderList', array('distrid'=>$val.id))}" target="_blank" class="layui-btn layui-btn-sm" title="我的订单">我的订单</a>
+                        </td>
+                    </tr>
+                </volist>
+
+                </tbody>
+            </table>
+            <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    暂无数据w(ﾟДﾟ)w
+                </div>
+            </div>
+        </if>
+
+    </div>
+
+    <div class="tabletool">
+
+        <!-- 分页工具 -->
+        <div id="limitpage" class="l"></div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+<script>
+    layui.use(['layer', 'form'], function() {
+        form = layui.form();
+
+        form.on('switch(status)', function(data){
+
+            itemid    = $(this).attr('itemid');
+            url       = "/system/Branch/switching";
+
+            if(itemid > 0){
+                values = (this.checked)?1:0;
+
+                post({value:values, id:itemid}, url, function(obj){
+
+                    if(obj.status == 1){
+                        layer.msg(obj.info, {icon: 1});
+                    }else if (obj.status == 2){
+                        layer.msg(obj.info, {icon: 1});
+                        location.reload();
+                    } else {
+                        if (values == 1){
+                            data.elem.checked = false;
+                        }else {
+                            data.elem.checked = true;
+                        }
+                        layer.msg(obj.info, {icon: 2});
+                        form.render()
+                    }
+                });
+            }
+        });
+
+    });
+
+</script>

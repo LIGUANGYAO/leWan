@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+    <form class="layui-form" action="{:url('Retailadminuser/AdminUserCapitalFlowList')}">
+
+        <div class="layui-form-item ">
+            <input type="hidden" name="id" value="{$id}"/>
+            <label class="layui-form-label">资金月份:</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="time" value="{$time}" placeholder="资金时间" autocomplete="off" onclick="layui.laydate({elem: this, istime: false, format: 'YYYY-MM-DD'})">
+            </div>
+
+
+            <span class="input-group-btn layui-input-block">
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+            </span>
+            </span>
+        </div>
+    </form>
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <if condition="!empty($data)">
+            <table class="layui-table">
+                <!-- 必须，只有这里才真正控制宽度 -->
+                <thead>
+                <tr>
+                    <th nowrap="nowrap">货币名称</th>
+                    <th nowrap="nowrap">操作类型</th>
+                    <th nowrap="nowrap">操作金额</th>
+                    <th nowrap="nowrap">剩余金额</th>
+                    <th nowrap="nowrap">操作说明</th>
+                    <th nowrap="nowrap">操作时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <volist name="$data" id="val">
+                        <tr>
+                            <td>
+                                {$val.record_currency}
+                            </td>
+                            <td>{$val.record_action}</td>
+                            <td>{$val.record_amount}</td>
+                            <td>{$val.record_balance}</td>
+                            <td>{$val.record_remark}</td>
+                            <td >{$val.record_addtime|date="Y-m-d H:i:s",###}</td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+            <else />
+            <div class="layui-field-title"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    暂无数据w(ﾟДﾟ)w
+                </div>
+            </div>
+        </if>
+
+    </div>
+
+    <div class="tabletool">
+
+        <!-- 分页工具 -->
+        <div id="limitpage" class="l"></div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+<script>
+</script>

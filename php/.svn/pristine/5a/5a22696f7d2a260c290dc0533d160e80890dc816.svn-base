@@ -1,0 +1,1642 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/leWan.css" rel="stylesheet" />
+		<link href="../../plugins/swiper-4.3.3.min.css" rel="stylesheet" />
+		<link href="../../fonts/iconfont.css?time=201901100952" rel="stylesheet" />
+		<style type="text/css">
+			body {
+				padding: 0;
+				margin: 0;
+			}
+			html,body,p,span,strong,pre,div{
+				-webkit-user-select: text !important;
+			}
+			.downLoad{
+				background-image: url('http://oss.lewan6.ren/uploads/html/20190321/12e8ca09d3f1d7faa09517e6bb5dace5d16b50aepng');
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				width: 100%;
+				height: 1.226rem;
+			}
+			.goToDownLoad{
+				width: 8.9rem;
+				height: 1.226rem;
+				float: left;
+			}
+			.downLoad_close{
+				width: 1.1rem;
+				height: 1.226rem;
+				float: right;
+			}
+			/*banner图*/
+			
+			.mui-slider-item {
+				height: 4.8rem !important;
+				overflow: hidden;
+			}
+			
+			.mui-slider img {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+			
+			.mui-slider-indicator {
+				bottom: 8px;
+			}
+			
+			.mui-slider-indicator .mui-indicator {
+				background-color: #FFFFFF;
+			}
+			
+			.mui-slider-indicator .mui-active.mui-indicator {
+				background: #E1B872;
+				box-shadow: none !important;
+			}
+			.mui-slider-indicator .mui-indicator{
+				box-shadow: none !important;
+			}
+			/*商品价格*/
+			
+			.priceBox {
+				color: #FFFFFF;
+				font-size: 0.32rem;
+				background-color: #F77917;
+				width: 100%;
+				height: 0.933rem;
+				line-height: 0.933rem;
+				padding: 0 0.32rem;
+			}
+			.newPriceBox{
+				background: linear-gradient(to right, #FE6901 0%,#EE0D73 100%) !important;
+			}
+			.isNumNone{
+				background-color: #999999;
+			}
+			.realityPrice {
+				font-size: 0.613rem;
+			}
+			
+			.originalCost {
+				text-decoration: line-through;
+				margin-left: 0.1rem;
+			}
+			
+			.countDown {
+				float: right;
+			}
+			.parDuctNumber{
+				height: 0.733rem;
+				line-height: 0.733rem;
+				font-weight: 400;
+				font-size: 0.32rem;
+				background-color: #FFFFFF;
+			}
+			.parKuncun{
+				float: left;
+				color: #333333;
+				margin-left: 0.32rem;
+			}
+			.parYishou{
+				float: right;
+				color: #333333;
+				margin-right: 0.32rem;
+			}
+			.textIntroduce {
+				min-height: 3.5rem;
+				background-color: #FFFFFF;
+				padding: 0.266rem 0.32rem;
+				position: relative;
+			}
+			
+			.textShowOne {
+				/*overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;*/
+				text-indent: 0.106rem;
+				font-size: 0.4rem;
+				font-weight: bold;
+				color: #333333;
+				letter-spacing: -1px;
+				line-height: 1.3;
+				padding-bottom: 1.5rem;
+			}
+			
+			.textShowOne strong {
+				font-size: 0.48rem;
+				letter-spacing: 0;
+			}
+			
+			.textLabel {
+				position: absolute;
+				bottom: 0.266rem;
+				left: 0;
+				width: 100%;
+			}
+			
+			.textLabel>span {
+				display: inline-block;
+				border: 1px solid #F7AE31;
+				border-radius: 0.15rem;
+				padding: 0.026rem 0.133rem;
+				color: #F7AE31;
+				font-size: 0.293rem;
+				font-weight: 500;
+				margin-right: 0.15rem;
+			}
+			
+			.textLabel>span:first-child {
+				margin-left: 0.2rem;
+			}
+			
+			.textLabel .commission {
+				margin-top: 0.15rem;
+				padding-left: 0.2rem;
+				border: none;
+				color: #999999;
+				font-size: 0.346rem;
+				font-weight: 500;
+			}
+			
+			.commission>span {
+				color: #F77917;
+				font-size: 0.48rem;
+				font-weight: 500;
+				letter-spacing: -0.02rem
+			}
+			/*商品规格*/
+			.secAddressBox{
+				height: 1.12rem;
+				line-height: 1.12rem;
+				border-bottom: 1px solid #F5F6FA;
+				border-top: 1px solid #F5F6FA;
+				background-color: #FFFFFF;
+				padding-left: 0.2rem;
+				color: #999999;
+				font-weight: bold;
+			}
+			.selSPEC{
+				color: #333333;
+				margin-left: 0.2rem;
+			}
+			.secAddressBox img{
+				width: 0.6rem;
+				float: right;
+				margin-right: 0.2rem;
+				margin-top: 0.5rem;
+			}
+			/*商家地址选择*/
+			.selAddressBox{
+				width: 100%;
+				background-color: #FFFFFF;
+				overflow: hidden;
+				padding-bottom: 0.2rem;
+			}
+			.selAddressLeft{
+				width: 10%;
+				float: left;
+				text-align: center;
+				color: #999999;
+				font-size: 0.32rem;
+				margin-top: 0.3rem;
+			}
+			.selAddressRight{
+				width: 90%;
+				float: left;
+			}
+			
+			
+			/*商家地址*/
+			
+			.BusinessAddress {
+				background-color: #FFFFFF;
+				font-weight: bold;
+				color: #999999;
+				height: 1.12rem;
+				line-height: 1.12rem;
+				overflow: hidden;
+				border: 1px solid #F2F2F2;
+			}
+			
+			.BusinessAddress img {
+				width: 0.4rem;
+				height: 0.45rem;
+				display: inline-block;
+				vertical-align: middle;
+				margin-left: 0.2rem;
+			}
+			
+			.addressLeft {
+				display: inline-block;
+				width: 90%;
+				float: left;
+				height: 1.12rem;
+				padding-left: 0.2rem;
+			}
+			
+			
+			.addressDetail {
+				display: inline-block;
+				vertical-align: middle;
+				width: 70%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				color: #333333;
+			}
+			
+			.addressRight {
+				display: inline-block;
+				width: 10%;
+				float: right;
+				text-align: center;
+			}
+			
+			/*商品详情*/
+			
+			.content {
+				background-color: #FFFFFF;
+				margin-top: 0.266rem;
+			}
+			.detailsBox{
+				height: 44px;
+			}
+			.details {
+				width: 100%;
+				height: 44px;
+				color: #333333;
+				font-size: 0.426rem;
+				padding: 0.346rem 0 0.1rem 0;
+				border-bottom: 1px solid #F2F2F2;
+				text-align: center;
+				background-color: #FFFFFF;
+			}
+			.details>span{
+				display: inline-block;
+				width: 49%;
+				text-align: center;
+				float: left;
+			}
+			
+			.detailsFixd{
+				position: fixed !important;
+				top: 0 !important;
+			}
+			.detailsActive {
+				/*选中时的状态*/
+				position: relative;
+			}
+			
+			.detailsActive:before {
+				content: "";
+				position: absolute;
+				left: 40%;
+				bottom: -0.24rem;
+				width: 20%;
+				height: 4px;
+				background-color: #F77917;
+			}
+			
+			.contentBox {
+				padding: 0.2rem 0.2rem;
+			}
+			
+			.contentBox img {
+				width: 100% !important;
+				height: auto;
+				vertical-align: bottom
+			}
+			
+			.contentBox span {
+				max-width: 100%;
+			}
+			.information{
+				overflow: hidden;
+			}
+			.purchaseNotes p {
+				font-size: 0.4rem;
+				color: #333333;
+				font-weight: bold;
+				margin: 0.266rem;
+			}
+			
+			.purchaseNotesText {
+				padding: 0 0.2rem;
+				font-size: 0.346rem;
+				color: #999999;
+			}
+			
+			.informationImg {
+				background-size: 100% 100%;
+				text-align: center;
+				width: 3.706rem;
+				height: 1.28rem;
+				line-height: 1.28rem;
+				font-size: 0.453rem;
+				color: #333333;
+				margin: 0.266rem auto;
+			}
+			/*底部栏*/
+			
+			.downBtn {
+				width: 100%;
+				height: 1.28rem;
+				z-index: 10;
+				position: fixed;
+				bottom: -1px;
+				font-size: 0.506rem;
+				font-weight: 500;
+				box-shadow: 0 -1px 10px 1px rgba(0, 0, 0, 0.3);
+			}
+			
+			.downBtn>div {
+				display: inline-block;
+				text-align: center;
+				float: left;
+			}
+			
+			.downBtnOne {
+				width: 17%;
+				font-size: 0.4rem;
+				color: #333333;
+				background-color: #FFFFFF;
+				height: 1.28rem;
+			}
+			.ContactMerchant{
+				width: 18%;
+				font-size: 0.4rem;
+				color: #333333;
+				background-color: #FFFFFF;
+				height: 1.28rem;
+				padding-right: 5%;
+			}
+			.downBtnOne>i{
+				font-size: 0.5rem;
+				display: inline-block;
+				height: 0.68rem;
+				line-height: 0.8rem;
+			}
+			.ContactMerchant>i{
+				font-size: 0.5rem;
+				display: inline-block;
+				height: 0.68rem;
+				line-height: 0.8rem;
+			}
+			.downBtnOne>div,.ContactMerchant>div{
+				height: 0.6rem;
+				line-height: 0.4rem;
+				font-size: 0.32rem;
+				font-weight: 400;
+				color: #333333;
+			}
+			.downBtnTwo {
+				width: 24%;
+				color: #FFFFFF;
+				background-color: #E1B872;
+				line-height: 1.28rem;
+			}
+			
+			.downBtnThree {
+				width: 41%;
+				color: #FFFFFF;
+				background-color: #F77917;
+				line-height: 1.28rem;
+			}
+			.downBtnThree a{
+				display: inline-block;
+				width: 100%;
+				color: #FFFFFF;
+				background-color: #F77917;
+			}
+			.downBtnFour {
+				width: 65%;
+				color: #FFFFFF;
+				background-color: #999999;
+				line-height: 1.28rem;
+			}
+			.downBtnFive{
+				width: 48%;
+				color: #FFFFFF;
+				background-color: #F77917;
+				font-size: 0.373rem;
+				line-height: 1.28rem;
+			}
+			.downBtnSix{
+				width: 17%;
+				color: #FFFFFF;
+				background-color: #E1B872;
+				line-height: 1.28rem;
+			}
+			/*推荐更多-轮播*/
+			
+			.footer {
+				background-color: #FFFFFF;
+				margin-top: 0.266rem;
+			}
+			
+			.footerHeader {
+				font-size: 0.453rem;
+				font-weight: bold;
+				color: #333333;
+				text-align: center;
+				padding: 0.8rem 0 0.5rem 0;
+			}
+			
+			.goodsBox {
+				display: flex;
+				display: -webkit-flex;
+				justify-content: center;
+				-webkit-justify-content: center;
+				flex-wrap: wrap;
+				-webkit-flex-wrap: wrap;
+			}
+			
+			.mui-card {
+				box-shadow: none;
+				margin: 0.15rem;
+			}
+			
+			.mui-card-header {
+				width: 4.4rem;
+				height: 2.666rem;
+				border-radius: 7px;
+			}
+			
+			.mui-card-footer:before,
+			.mui-card-header:after {
+				height: 0;
+			}
+			
+			.mui-card-header.mui-card-media {
+				padding: 0;
+				position: relative;
+			}
+			
+			.address {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				padding: 0 5px 0 2px;
+				background-color: #F77917;
+				color: #FFFFFF;
+				font-size: 0.266rem;
+				font-weight: 800;
+				border-bottom-left-radius: 7px;
+				border-bottom-right-radius: 10px;
+				border-top-right-radius: 10px;
+			}
+			
+			.mui-card-content {
+				width: 4.4rem;
+			}
+			
+			.mui-cardFooter {
+				width: 4.4rem;
+				padding: 0 0.2rem;
+			}
+			
+			.mui-card-content-inner {
+				padding: 0.2rem 0.15rem;
+			}
+			
+			.textShow {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 3;
+				-webkit-box-orient: vertical;
+				text-indent: 0.106rem;
+				font-size: 0.3rem;
+				font-weight: bold;
+				color: #666;
+				letter-spacing: -1px;
+				line-height: 1.3;
+			}
+			
+			.textShow strong {
+				font-size: 0.4rem;
+				letter-spacing: 0;
+				color: #333333;
+			}
+			
+			.mui-cardFooter p {
+				width: 100%;
+			}
+			
+			.cardTrue {
+				font-size: 0.426rem;
+				color: #F77917;
+				margin-right: 0.2rem;
+			}
+			
+			.cardFalse {
+				font-size: 0.4rem;
+				color: #999999;
+				text-decoration: line-through;
+			}
+			
+			.cardText {
+				font-size: 0.4rem;
+				color: #999999;
+				margin-right: 0.2rem;
+			}
+			
+			.cardMoney {
+				font-size: 0.4rem;
+				color: #EAC380;
+			}
+			
+			.swiper-container {
+				padding-bottom: 20px;
+			}
+			
+			.swiper-container-horizontal>.swiper-pagination-bullets {
+				bottom: 0;
+			}
+			
+			/*分享*/
+			.modalBox{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.4);
+				z-index: 15;
+			}
+			.modalCard{
+				position: absolute;
+				bottom: 0.2rem;
+				left: 0.32rem;
+				width: 9.36rem;
+				height: 3.306rem;
+				border-radius: 0.2rem;
+				background-color: #FFFFFF;
+				text-align: center;
+				font-size: 0.373rem;
+				color: #333333;
+				font-weight: 500;
+				display: flex;
+				display: -webkit-flex;
+				justify-content: space-around;
+				-webkit-justify-content: space-around;
+				align-items: center;
+				-webkit-align-items: center;
+				
+			}
+			.modalCard img{
+				width: 1.706rem;
+				height: 1.706rem;
+			}
+			
+			/*分享链接*/
+			.modalBox1{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.6);
+				z-index: 20;
+			}
+			.modalBox1 img{
+				width: 100vw;
+			}
+			
+			/*生成海报*/
+			.modalBox2{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100vw;
+				height: 100vh;
+				z-index: 20;
+				background-color: rgba(0,0,0,0.6);
+				text-align: center;
+			}
+			
+			.modalCard2{
+				display: inline-block;
+				margin-top: 4vh;
+				width: 7.84rem;
+				height: 13.92rem;
+				position: relative;
+			}
+			.modelImg{
+				width: 7.84rem;
+				height: 13.92rem;
+				border-radius: 0.18rem;
+			}
+			.modelClose{
+				position: absolute;
+				right: 0.1rem;
+				top: 0.2rem;
+				font-size: 0.8rem;
+				color: #FFFFFF;
+			}
+			/*规格*/
+			.mui-modal{
+				z-index: 5;
+				background-color: rgba(0,0,0,0.3);
+			}
+			.modalBox3{
+				width: 100%;
+				height: 8rem;
+				position: fixed;
+				bottom: 1.25rem;
+				background-color: #FFFFFF;
+				border-top-left-radius: 0.2rem;
+				border-top-right-radius: 0.2rem;
+				overflow: hidden;
+				padding: 0.2rem;
+				padding-bottom: 0;
+			}
+			.guigeBox{
+				overflow: hidden;
+				border-bottom: 1px solid #F2F2F2;
+			}
+			.closeModal3{
+				color: #999999;
+				position: absolute;
+				top: 0.2rem;
+				right: 0.2rem;
+			}
+			.leftImage {
+			    background-repeat: no-repeat;
+			    background-size: 100% 100%;
+			    width: 2.5rem;
+			    height: 2rem;
+			    border-radius: 0.2rem;
+			    float: left;
+			}
+			.rightPrice {
+			    width: 6.5rem;
+			    height: 2.4rem;
+			    float: right;
+			}
+			.shouJia{
+				font-size: 0.426rem;
+				color: #F77917;
+				font-weight: 500;
+			}
+			.proName{
+				font-size: 0.426rem;
+				color: #333333;
+				width: 6.5rem;
+				font-weight: 500;
+				margin-top: 0.15rem;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow:ellipsis;
+			}
+			.detailBox{
+				margin-top: 0.15rem;
+				font-size: 0.373rem;
+				color: #999999;
+				font-weight: 400;
+			}
+			.detailBox>span:nth-child(1){
+				float: left;
+			}
+			.detailBox>span:nth-child(2){
+				float: right;
+			}
+			.selGuigeBox{
+				height: 5.3rem;
+				overflow-y: scroll;
+			}
+			.mui-table-view-cell:after,.mui-table-view:after{
+				height: 0;
+			}
+			.mui-table-view-radio .mui-table-view-cell{
+				padding-right: 0.1rem;
+			}
+			.mui-table-view-cell{
+				display: inline-block;
+				font-size: 0.32rem;
+				color: #333333;
+				background-color: #F6F6F6;
+				padding: 0.1rem 0.3rem !important;
+				border-radius: 0.15rem;
+				margin-top: 0.3rem;
+				margin-left: 0.373rem;
+			}
+			.mui-selected{
+				color: #FFFFFF;
+				background-color: #FF8B30;
+			}
+			/*联系商家*/
+			.modalBox4{
+				display: none;
+				position: fixed;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.4);
+				z-index: 30;
+			}
+			.modalCard4{
+				width: 8.613rem;
+				height: 9.4rem;
+				margin: 0 auto;
+				margin-top: 3rem;
+				border-radius: 0.2rem;
+				overflow: hidden;
+				background-color: #FFFFFF;
+			}
+			.modalBox4Header{
+				height: 1.6rem;
+				background-size: 45% 45%;
+				background-position: center center;
+				background-repeat: no-repeat;
+			}
+			.modalBox4Content{
+				height: 7.4rem;
+				border-radius: 0.2rem;
+				overflow-y: scroll;
+			}
+			.modalBox4Content:after,.modalBox4Content:before{
+				height: 0;
+			}
+			.modalBox4List{
+				height: 1.84rem !important;
+			}
+			.listLeft{
+				float: left;
+				width: 75%;
+			}
+			.shopName4{
+				margin-left: 0.74rem;
+				margin-top: 0.266rem;
+				color: #999999;
+				font-size: 0.32rem;
+				font-weight: 500;
+			}
+			.shopNum4{
+				margin-top: 0.16rem;
+			}
+			.shopNum4>span:nth-child(1){
+				display: inline-block;
+				vertical-align: middle;
+				width: 0.1rem;
+				height: 0.1rem;
+				border-radius: 0.05rem;
+				background-color: #FF8B30;
+				margin-left: 0.3rem;
+			}
+			.shopNum4>span:nth-child(2){
+				display: inline-block;
+				vertical-align: middle;
+				color: #333333;
+				font-size: 0.34rem;
+				font-weight: 700;
+				margin-left: 0.25rem;
+			}
+			.listRight{
+				float: right;
+				height: 1.84rem;
+				text-align: center;
+				width: 25%;
+			}
+			.listRight>img{
+				width: 0.8rem;
+				height: 0.8rem;
+				margin-top: 0.502rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="" id="J_el" v-cloak>
+			<div class="" v-if="showPage">
+				<div class="downLoad">
+					<div class="goToDownLoad" @tap="goToDownLoad()"></div>
+					<div class="downLoad_close" @tap="closeDownLoad()"></div>
+				</div>
+				<div class="headerBox">
+					<div class="mui-slider">
+						<div class="mui-slider-group mui-slider-loop">
+							<div class="mui-slider-item zuihou" v-for="(items,index) in proDetail.product_carousel.slice(proDetail.product_carousel.length-1)">
+								<img :src="items" />
+							</div>
+							<div class="mui-slider-item" :class="{'mui-active': index == 0}" v-for="(items,index) in proDetail.product_carousel">
+								<img :src="items" />
+							</div>
+							<div class="mui-slider-item kaishi" v-for="(items,index) in proDetail.product_carousel.slice(0,1)">
+								<img :src="items" />
+							</div>
+							<!--<div class="mui-slider-item">
+								<img src="../../img/homePage/banner2.png" />
+							</div>-->
+						</div>
+						<!--轮播图图标小点-->
+						<div class="mui-slider-indicator">
+							<div class="mui-indicator" :class="{'mui-active': index == 0}" v-for="(items,index) in proDetail.product_carousel"></div>
+							<!--<div class="mui-indicator"></div>-->
+						</div>
+					</div>
+					<div v-if="isNewPerson == 1" class="priceBox newPriceBox">
+						<span class="realityPrice">¥{{ proPrice[priceIndex].price_sale }}</span>
+						<span class="originalCost">¥{{ proPrice[priceIndex].price_market }}</span>
+						<span class="countDown" v-if="proDetail.sold_out == 0">限首次注册会员免费使用</span>
+						<span class="countDown" v-else-if="proDetail.sold_out == 1">商品已售罄</span>
+					</div>
+					<div v-else class="priceBox" :class="{'isNumNone': proDetail.sold_out == 1}">
+						<span class="realityPrice">¥{{ proPrice[priceIndex].price_sale }}</span>
+						<span class="originalCost">¥{{ proPrice[priceIndex].price_market }}</span>
+						<span class="countDown countDownTimeShow" v-if="proDetail.product_timelimit == 1"></span>
+						<span class="countDown" v-else-if="proDetail.sold_out == 1">商品已售罄</span>
+					</div>
+					<div class="textIntroduce">
+						<div class="textShowOne"><strong>{{ proDetail.product_name }}</strong></div>
+						<div v-if="isNewPerson == 1" class="textLabel">
+							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
+							<div v-if="level == 2 || level == 3 || level == 4 || level == 5" class="commission">佣金：<span>￥{{ proPrice[priceIndex].price_sale }}</span></div>
+						</div>
+						<div v-else class="textLabel">
+							<span v-for="items in proDetail.product_tags">{{ items.tag_name }}</span>
+							<div v-if="level == 2" class="commission">佣金：<span>¥{{ proPrice[priceIndex].price_commission.zigou }}~{{ proPrice[priceIndex].price_commission.fenxiang }}</span></div>
+							<div v-else-if="level == 3 || level == 4 || level == 5" class="commission">佣金：<span>¥{{ proPrice[priceIndex].price_commission.zigou }}</span></div>
+						</div>
+					</div>
+					<div class="parDuctNumber">
+						<div class="parKuncun">剩余库存：{{ proPrice[priceIndex].product_totalnum || 0 }}</div>
+						<div class="parYishou">已售：{{ proPrice[priceIndex].product_buynum || 0 }}</div>
+					</div>
+				</div>
+				<a href="#modal">
+					<div class="secAddressBox">
+						<span>规格:</span>
+						<span class="selSPEC">{{proPrice[priceIndex].product_property}}</span>
+						<img class="secAddress" src="../../img/personalCenter/adressEdit.png" />
+					</div>
+				</a>
+				<div class="selAddressBox">
+					<div class="selAddressLeft">商家</div>
+					<div class="selAddressRight">
+						<ul class="mui-table-view mui-table-view-radio">
+							<li class="mui-table-view-cell" :class="{'mui-selected':index == 0}" @tap='selMerchant(item.merchant_lat,item.merchant_lng,item.merchant_ssq,item.merchant_address)' v-for="(item,index) in proDetail.shop">{{item.merchant_name}}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="BusinessAddress" @tap="getSignature()">
+					<div class="addressLeft">
+						<span>地址：</span>
+						<img src="../../img/homePage/address.jpg" />
+						<span class="addressDetail" :lat="proDetail.merchant_lat" :lng="proDetail.merchant_lng">{{ merchant_ssq }}{{ address }}</span>
+					</div>
+					<div class="addressRight"><i class="mui-icon mui-icon-forward"></i></div>
+				</div>
+				<div class="content">
+					<div class="detailsBox">
+						<div class="details">
+							<span class="detailsSec detailsActive" dataVal='2'>特色介绍</span>
+							<span class="detailsSec" dataVal="1">购买须知</span>
+						</div>
+					</div>
+					<div class="contentBox">
+						<!--特色介绍-->
+						<div class="information" id="information">
+							<div class="informationImg" style="background-image: url(../../img/homePage/productDetail1.png);">特色介绍</div>
+							<div class="informationText" id="informationText" v-lazy-container="{ selector: 'img'}" v-html="parDetailsImg"></div>
+						</div>
+						<!--购买须知-->
+						<div class="purchaseNotes" id="purchaseNotes">
+							<div class="">
+								<p>【产品详情】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_info"></div>
+							</div>
+							<div class="">
+								<p>【使用方法】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_useinfo"></div>
+							</div>
+							<div class="">
+								<p>【温馨提示】</p>
+								<div class="purchaseNotesText" v-html="proDetail.product_notice"></div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="footer" v-if="proHotpush.length">
+					<div class="footerHeader">更多推荐</div>
+					<div class="swiper-container swiper-container-horizontal swiper-container-ios">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide">
+								<div class="goodsBox">
+									<div class="mui-card" v-for="items in proHotpush.slice(0, 4)" @tap="jumpToDetails(items.product_id)">
+										<div class="mui-card-header mui-card-media" :style="{backgroundImage: 'url(' + items.product_pic + ')'}">
+											<div class="address"><i class="iconfont icon-dingwei"></i>{{ items.region }}</div>
+										</div>
+										<div class="mui-card-content">
+											<div class="mui-card-content-inner">
+												<p class="textShow"><strong>【{{ items.merchant_name }}】</strong>{{ items.product_name }}
+												</p>
+											</div>
+										</div>
+										<div class="mui-cardFooter">
+											<p><span class="cardTrue">¥{{items.temp_price}}</span><span class="cardFalse"></span></p>
+											<p v-if="level == 2 || level == 3 || level == 4 || level == 5"><span class="cardText">佣金：</span><span class="cardMoney">¥{{items.temp_commission.zigou}}</span></p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="swiper-slide">
+								<div class="goodsBox">
+								<div class="mui-card" v-if="proHotpush.length>4" v-for="items in proHotpush.slice(4, 8)" @tap="jumpToDetails(items.product_id)">
+									<div class="mui-card-header mui-card-media" :style="{backgroundImage: 'url(' + items.product_pic + ')'}">
+										<div class="address"><i class="iconfont icon-dingwei"></i>{{ items.region }}</div>
+									</div>
+									<div class="mui-card-content">
+										<div class="mui-card-content-inner">
+											<p class="textShow"><strong>【{{ items.merchant_name }}】</strong>{{ items.product_name }}
+											</p>
+										</div>
+									</div>
+									<div class="mui-cardFooter">
+										<p><span class="cardTrue">¥{{items.temp_price}}</span><span class="cardFalse"></span></p>
+										<p v-if="level == 2 || level == 3 || level == 4 || level == 5"><span class="cardText">佣金：</span><span class="cardMoney">¥{{items.temp_commission.zigou}}</span></p>
+									</div>
+								</div>
+								<!--空状态时-->
+								<div class="lw-empty" style="display: block;" v-else>
+									<div class="lw-empty-box">
+										<div class="lw-empty-flex">
+											<img src="../../img/personalCenter/nullList2.png" alt="" class="lw-empty-img" />
+											<div class="lw-empty-test">暂无更多产品！</div>
+										</div>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+						<!-- Add Pagination -->
+						<div class="swiper-pagination swiper-pagination-bullets">
+							<span class="swiper-pagination-bullet"></span>
+							<span v-if="proHotpush.length > 4" class="swiper-pagination-bullet"></span>
+						</div>
+						<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+					</div>
+				</div>
+				<div v-if="proDetail.product_timelimit==1&&(proDetail.product_starttime*1000>new Date().getTime()||proDetail.product_timelimit==1&&proDetail.product_endtime*1000<new Date().getTime())&&pageRefresh" class="downBtn">
+					<div class="downBtnOne" @tap="jumpToHomePage"><i class="iconfont icon-wode1"></i><div>首页</div></div>
+					<div class="ContactMerchant" @tap="ContactMerchant"><i class="iconfont icon-jinjilianxiren"></i><div>商家</div></div>
+					<div class="downBtnSix" @tap="shareProduct()">分享</div>
+					<div class="downBtnFive countDownTimeShow"></div>
+				</div>
+				<div v-else class="downBtn">
+					<div class="downBtnOne" @tap="jumpToHomePage"><i class="iconfont icon-wode1"></i><div>首页</div></div>
+					<div class="ContactMerchant" @tap="ContactMerchant"><i class="iconfont icon-jinjilianxiren"></i><div>商家</div></div>
+					<div v-if="proDetail.sold_out == 0" class="downBtnTwo" @tap="shareProduct()">分享</div>
+					<div v-if="proDetail.sold_out == 0" class="downBtnThree" @tap="BuyNow(proDetail.product_id,proPrice[priceIndex].price_id)"><a href="#modal">立即购买</a></div>
+					<div v-if="proDetail.sold_out == 1" class="downBtnFour">已售罄</div>
+				</div>
+				<!--规格选择-->
+				<div id="modal" class="mui-modal">
+					<div class="modalBox3">
+						<a class="mui-icon mui-icon-close mui-pull-right closeModal3" href="#modal"></a>
+						<div class="guigeBox">
+							<div class="leftImage" :style="{backgroundImage: 'url(' + proDetail.product_pic + ')'}"></div>
+							<div class="rightPrice">
+								<div class="shouJia"> ¥ {{ proPrice[priceIndex].price_sale }}</div>
+								<div class="proName">{{ proDetail.product_name }}</div>
+								<div class="detailBox">
+									<span>剩余库存 {{ proPrice[priceIndex].product_totalnum ||0 }}</span>
+									<span>已售 {{ proPrice[priceIndex].product_buynum || 0 }}</span>
+								</div>
+							</div>
+						</div>
+						<ul class="mui-table-view mui-table-view-radio selGuigeBox">
+							<li class="mui-table-view-cell" :class="{'mui-selected':index == 0}" @tap="selGuige(index)" v-for="(item,index) in proPrice">{{item.product_property}}</li>
+							
+						</ul>
+					</div>
+				</div>
+				<!--联系商家-->
+				<div class="modalBox4">
+					<div class="modalCard4">
+						<div class="modalBox4Header" style="background-image: url(../../img/homePage/productDetails4.png);"></div>
+						<div class="modalBox4Content mui-input-group">
+							<div class="mui-input-row modalBox4List" @tap="callPhone(item.merchant_400tel)" v-for="(item,index) in proDetail.shop">
+								<div class="listLeft">
+									<div class="shopName4">{{item.merchant_name}}</div>
+									<div class="shopNum4">
+										<span></span>
+										<span>{{item.merchant_400tel}}</span>
+									</div>
+								</div>
+								<div class="listRight">
+									<img src="../../img/homePage/productDetails5.png"/>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modalBox">
+			<div class="modalCard">
+				<div class="createImg">
+					<img src="../../img/homePage/productDetails2.png"/>
+					<div>生成海报</div>
+				</div>
+				<div class="createUrl">
+					<img src="../../img/homePage/productDetails1.png"/>
+					<div>生成链接</div>
+				</div>
+			</div>
+		</div>
+		<div class="modalBox1">
+			<img class="closeImg" src="../../img/homePage/productDetails3.png"/>
+		</div>
+		<div id="canbox" style="display: none;">
+		    <canvas id="myCanvas"></canvas>
+		</div>
+		<div class="modalBox2">
+			<div class="modalCard2">
+				<img id="avatar" class="modelImg" src="http://oss.lewan6.ren/uploads/logo/logo-w.png" />
+				<i class="modelClose iconfont icon-guanbi" id="closeModelBtn"></i>
+			</div>
+		</div>
+		<script src="../../plugins/flexible.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+		<script src="../../plugins/jquery-2.1.4.js"></script>
+		<script src="../../plugins/vue.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../plugins/swiper-4.3.3.min.js"></script>
+		<script src="../../plugins/serverApi.js"></script>
+		<script src="../../plugins/vue-lazyload.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				mui.init({
+				    gestureConfig: {
+				        longtap: true
+				    }
+				});
+				
+				var code = getUrlParam("code");
+				var token = localStorage.getItem("token");
+				var productId = getUrlParam("productId"); //商品id
+				if(getUrlParam("recode")) {
+					localStorage.setItem("recode", getUrlParam("recode"))
+				}
+				var recode = localStorage.getItem("recode");
+				
+				
+				var latitude = localStorage.getItem("latitude") || 30.65618; //纬度
+				var longitude = localStorage.getItem("longitude") || 104.08329; //经度
+				var provincecode = localStorage.getItem("provincecode") || 510000; //省code
+				var citycode = localStorage.getItem("citycode") || 510100; //市code
+				
+				
+				if(token){
+					$.ajax({
+						url: API_SERVER + 'Wechat/hasToken',
+						async: false,
+						data:{token:token},
+						success: function (data){
+							if(data.code == 200) {
+								log(data)
+								if(data.data.count == 0){
+									localStorage.setItem("token","")
+									window.location.href = location.href;
+								}
+							}
+						}
+					});
+				}
+				//获取code
+				if(token == 'undefined' || token == null || token == "") {
+					if(code == 'undefined' || code == null || code == "") {
+						var redirectUrl = location.href
+						window.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid='+APPID+'&redirect_uri=' + redirectUrl + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect')
+					} else {
+						//获取token
+						$.ajax({
+							url: API_SERVER + "Wechat/WechatAuthorize",
+							async: false,
+							data: {
+								code: code + "&state",
+								recode: localStorage.getItem("recode") || null,	//用户邀请码
+							},
+							success: function(data) {
+								log(data)
+								if(data.code == 200) {
+									token = data.data.token
+									localStorage.setItem("token", data.data.token);	//token
+									localStorage.setItem("level", data.data.level);	//用户等级==》1=普通用户；2超级达人；3营销达人；4=运营达人；5=玩主
+								} else {
+									mui.toast(data.message)
+								}
+							}
+						})
+					}
+				}
+				
+				
+				var floatWindowTop;	//选项距离顶部高度
+				/*======================================================*/
+				var vueData = {
+					showPage: false,
+					proDetail: {}, //商品详情
+					proPrice: [], //商品规格
+					lat: 30.65618,
+					lng: 104.08329, 
+					merchant_ssq: '四川省',
+					address: '琉璃路',
+					priceIndex: 0,	//默认选中第一个
+					proHotpush: [], //热推商品
+					level: 1,	//用户等级
+					isNewPerson: 2,	//是否是免单产品   1是    2不是
+					freesheet: 2,	//用户是否已使用免单 1未使用 2已使用
+					parDetailsImg:'',	//商品详情图文介绍
+					pageRefresh: true,	//页面数据变化
+				};
+				
+				var pageUpdate = 0;
+				new Vue({
+					el: '#J_el',
+					data: vueData,
+					methods: {
+						selMerchant: selMerchant,  //地图选择
+						getSignature: getSignature, //地图查看
+						jumpToHomePage: jumpToHomePage, //跳转首页
+						ContactMerchant: ContactMerchant, //联系商家
+						shareProduct: shareProduct, //分享商品
+						selGuige:selGuige,	//选中规格
+						callPhone: callPhone, //拨打电话
+						BuyNow: BuyNow, //立刻购买
+						countdown:countdown,	//倒计时
+						jumpToDetails: jumpToDetails,	//商品详情跳转
+						handleScroll: handleScroll,	//页面滚动
+						goToDownLoad: goToDownLoad,	//下载app
+						closeDownLoad: closeDownLoad, //关闭下载按钮
+					},
+					mounted: function() {
+						window.addEventListener('scroll', this.handleScroll); //页面滚动监听事件
+						var _that = this;
+						this.$watch("proDetail", function() {
+							_that.countdown(vueData.proDetail.product_starttime,vueData.proDetail.product_endtime);
+						})
+						this.$watch("pageRefresh", function() {
+							$('.downBtnTwo').html('分享');
+						})
+					},
+					updated: function() {
+						floatWindowTop = ($('.details').offset().top);
+						if(pageUpdate == 0){
+							/*初始化轮播*/
+							mui('.mui-slider').slider({
+								interval: 2000 //自动播放周期
+							});
+							//商品推荐更多
+							var swiper = new Swiper('.swiper-container', {
+								pagination: {
+									el: '.swiper-pagination',
+								},
+							});
+						}
+						pageUpdate++;
+					}
+				});
+				Vue.use(VueLazyload, {
+				  preLoad: 1.3,
+				  error: '../../img/vueLazyLoad.png',
+				  loading: '../../img/vueLazyLoad.png',
+				  attempt: 1,
+//				  listenEvents: ['scroll', 'wheel', 'mousewheel', 'resize', 'animationend', 'transitionend']
+				  listenEvents: ['scroll' , 'animationend', 'transitionend']
+				})
+				//规格变化
+				function selGuige(index){
+					vueData.priceIndex = index;
+				}
+				//获取个人信息
+				detailsGetUserMessage();
+				var myRecode;
+				function detailsGetUserMessage(){
+					$.ajax({
+						url: API_SERVER + 'User/UserPersonal',
+						async: false,
+						data:{token: token},
+						success: function(data) {
+							if(data.code == 200) {
+								log(data)
+								myRecode = data.data.recode;
+								vueData.level = data.data.level;
+							}
+						}
+					});
+				}
+				//锁粉
+				if(localStorage.getItem("recode") && token){
+					suofen()
+					function suofen(){
+						$.ajax({
+							url: API_SERVER + 'User/UserLockPowder',
+							async: false,
+							data:{
+								token: token,
+								recode: localStorage.getItem("recode")
+							},
+							success: function(data) {
+								log(data)
+							}
+						});
+					}
+				}
+				//获取商品详情
+				getProductDetails();
+				function getProductDetails() {
+					var data = {
+						token: token?token:null,
+						type: 2, // 1未定位 2已定位
+						pr_id: productId,
+						lat: latitude,
+						lng: longitude
+					};
+					$.ajax({
+						url: API_SERVER + 'Product/ProductDetails',
+						async: true,
+						headers: {
+							"product": "wechat",
+							"platform": browserType, //sreverApi里面设置了全局变量
+							"provincecode": provincecode,
+							"citycode": citycode
+						},
+						data: data,
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								vueData.proDetail = data.data.details;
+								vueData.proPrice = data.data.price;
+								vueData.proHotpush = data.data.hotpush;
+								vueData.isNewPerson = data.data.details.product_returnall || 2;
+								vueData.showPage = true;
+								
+								vueData.lat = data.data.details.shop[0].merchant_lat;
+								vueData.lng = data.data.details.shop[0].merchant_lng;
+								vueData.merchant_ssq = data.data.details.shop[0].merchant_ssq;
+								vueData.address = data.data.details.shop[0].merchant_address;
+								
+								vueData.freesheet = data.data.details.freesheet;
+								vueData.parDetailsImg = data.data.details.product_description.replace(/src/g,"data-src")
+								sharePYQ();
+							}
+						}
+					});
+				}
+
+				//首页
+				function jumpToHomePage() {
+					mui.openWindow({
+						url: "homePage.html"
+					})
+				}
+				//联系商家
+				function ContactMerchant(){
+					$('.modalBox4').show();
+				}
+				//拨打电话
+				function callPhone(phone){
+					window.location.href = 'tel://' + phone;
+				}
+				mui('body').on('tap', '.modalBox4', function() { //商家电话模态窗
+					$('.modalBox4').hide();
+				})
+				mui('body').on('tap', '.modalCard4', function(event) { //商家电话模态窗冒泡
+					event.stopPropagation();
+				})
+				//立刻购买
+				function BuyNow(productId,priceId) {
+					if ($('#modal').hasClass("mui-active")) {
+						if (vueData.isNewPerson == 2) {		  //新人免单产品   1是    2不是
+							mui.openWindow({
+								url: "OrderPayment.html?productId="+productId+"&priceId="+priceId
+							})
+						} else if(vueData.isNewPerson == 1){	//新人免单产品   1是    2不是
+							if (vueData.level != 1) {  //用户等级 1为普通用户
+								if (vueData.freesheet == 1) {  // 1未使用 2已使用
+									mui.openWindow({
+										url: "OrderPayment.html?productId="+productId+"&priceId="+priceId
+									})
+								} else if(vueData.freesheet == 2){  // 1未使用 2已使用
+									mui.toast("您已使用过免单机会，去邀请更多好友进行注册！免费送他一份吃喝玩乐，你省他也赚！")
+								}
+							} else{
+								mui.toast("您还未注册，暂不能享受免单机会，去找邀请码进行注册！")
+							}
+						}
+					} else{
+						log("弹起模态窗")
+					}
+				}
+				//分享商品
+				function shareProduct(title, url, imgUrl) {
+					$(".modalBox").css("display",'block');
+				}
+				//关闭模态窗
+				mui('body').on('tap',".modalBox",function(){
+					$(".modalBox").css("display",'none')
+				})
+				
+				//生成链接
+				mui('body').on('tap',".createUrl",function(){
+					$(".modalBox1").css("display",'block')
+				})
+				//生成海报
+				mui('body').on('tap',".createImg",function(){
+					$.ajax({
+						url: API_SERVER + 'Product/ProductShare',
+						async: true,
+						data: {
+							token: token,
+							pr_id: productId,
+							url: BASE_SERVER + "wechat_html/page/homePage/productDetails.html"
+						},
+						success: function(data) {
+							log(data)
+							if(data.code == 200) {
+								drawAndShareImage(data.data.poster+"?time="+new Date().getTime(),data.data.QRCode+"?time="+new Date().getTime(),20,1185,130,130)
+								$('.modelImg').load(function(){
+									$(".modalBox2").show();
+									$("#ajaxBox").remove();
+								    log("加载完成")// 加载完成    
+								    $(".modelImg").unbind();
+								});
+							} else {
+								mui.toast(data.message);
+								$("#ajaxBox").remove();
+							}
+						},
+						complete: function() {
+							
+						},
+						error: function(err){
+							$("#ajaxBox").remove();
+							mui.toast(err.message)
+						}
+					});
+				})
+				
+				//canvas合成图片
+				function drawAndShareImage(maxSrc,minSrc,x,y,width,height){
+				    var canvas = document.createElement("canvas");
+				    canvas.width = 750;
+				    canvas.height = 1334;
+				    var context = canvas.getContext("2d");
+				
+				    context.rect(0 , 0 , canvas.width , canvas.height);
+				    context.fillStyle = "#FFFFFF";
+				    context.fill();
+				
+				    var myImage = new Image();
+				    myImage.crossOrigin = 'Anonymous';
+				    myImage.src = maxSrc;    //背景图片  你自己本地的图片或者在线图片
+				    myImage.onload = function(){
+				        context.drawImage(myImage , 0 , 0 , 750 , 1334);
+				
+				        var myImage2 = new Image();
+				        myImage2.crossOrigin = 'Anonymous';
+				        myImage2.src = minSrc;   //你自己本地的图片或者在线图片
+				        myImage2.onload = function(){
+				            context.drawImage(myImage2 , x , y , width , height);
+				            var base64 = canvas.toDataURL("image/jpeg",0.6);  //"image/png" 这里注意一下
+				            var img = document.getElementById('avatar');
+				            img.setAttribute('src',base64);
+				        }
+				    }
+				}
+				
+				//关闭分享朋友圈
+				mui('body').on('tap',".closeImg",function(){
+					$(".modalBox").css("display",'none');
+					$(".modalBox1").css("display",'none');
+				})
+				//关闭图片
+				mui('body').on('tap',"#closeModelBtn",function(){
+					$(".modalBox").css("display",'none');
+					$(".modalBox2").css("display",'none');
+				})
+				
+				function sharePYQ() {
+					var shareUrl;
+					if(myRecode){
+						shareUrl = location.href.split('&')[0]+"&recode="+myRecode
+					}else{
+						shareUrl = location.href.split('&')[0]
+					}
+					getWechatSignature(location.href.split('#')[0]);
+					wx.ready(function() {
+						wx.onMenuShareTimeline({
+							title: vueData.proDetail.product_name,
+							link: shareUrl,
+							imgUrl: vueData.proDetail.product_pic,
+							trigger: function(res) {
+								// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+							},
+							success: function(res) {
+							},
+							cancel: function(res) {
+							},
+							fail: function(res) {
+								mui.toast(res);
+							}
+						});
+						wx.onMenuShareAppMessage({
+							title: vueData.proDetail.product_name,
+							desc: vueData.proDetail.share_desc,
+							link: shareUrl,
+							imgUrl: vueData.proDetail.product_pic,
+							trigger: function(res) {
+								// 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+							},
+							success: function(res) {
+							},
+							cancel: function(res) {
+							},
+							fail: function(res) {
+								mui.toast(res);
+							}
+						});
+					});
+				}
+				
+				//商家地址选择
+				function selMerchant(lat, lng, ssq,address){
+					vueData.lat = lat;
+					vueData.lng = lng;
+					vueData.merchant_ssq = ssq;
+					vueData.address = address;
+				}
+				//商家地址
+				var isClickMap = false;
+				function getSignature() {
+					var poi = bd2gcj(vueData.lng,vueData.lat)
+					log(poi.lat + "==" + poi.lng);
+					
+					if(isClickMap) return;
+					isClickMap = true;
+					
+					getWechatSignature(location.href.split('#')[0]);
+					wx.ready(function() {
+						wx.openLocation({
+							latitude: parseFloat(poi.lat),
+							longitude: parseFloat(poi.lng),
+							name: '商家地址',
+							address: vueData.address,
+							scale: 12,
+							infoUrl: '',
+							success: function(res) {
+								log('打开了微信地图');
+								isClickMap = false;
+							},
+							fail: function(res) {
+								isClickMap = false
+								alert(JSON.stringify(res));
+							}
+						})
+					});
+				}
+				
+				//百度转火星
+				function bd2gcj(lng,lat) {
+					var M_PI = 3.14159265358979324;
+					var x_pi = M_PI * 3000.0 / 180.0;
+					
+					var poi = {};
+					var x = lng - 0.0065, y = lat - 0.006;
+					var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
+					var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
+					poi.lng = z * Math.cos(theta);
+					poi.lat = z * Math.sin(theta);
+					return poi;
+				}
+				
+				//倒计时
+				function countdown(startTimeIn,endTimeIn){
+					var self = this;
+					var timer = setInterval(function(){
+						var nowTime = new Date().getTime();
+						var startTime = startTimeIn * 1000;
+						var endTime = endTimeIn * 1000;
+						
+						var t = endTime - nowTime;
+						var k = startTime - nowTime;
+						
+						if(k > 0){
+							var day = Math.floor(k / 86400000);
+							var hour = Math.floor((k / 3600000) % 24);
+							var min = Math.floor((k / 60000) % 60);
+							var sec = Math.floor((k / 1000) % 60);
+							hour = hour < 10 ? "0" + hour : hour;
+							min = min < 10 ? "0" + min : min;
+							sec = sec < 10 ? "0" + sec : sec;
+							var format = '';
+							format = "距开始："+day+"天"+hour+"时"+min+"分"+sec+"秒";
+							$('.countDownTimeShow').html(format)
+						}
+						
+						if(t > 0 && k < 0) {
+							var day = Math.floor(t / 86400000);
+							var hour = Math.floor((t / 3600000) % 24);
+							var min = Math.floor((t / 60000) % 60);
+							var sec = Math.floor((t / 1000) % 60);
+							hour = hour < 10 ? "0" + hour : hour;
+							min = min < 10 ? "0" + min : min;
+							sec = sec < 10 ? "0" + sec : sec;
+							var format = '';
+							format = "距结束："+day+"天"+hour+"时"+min+"分"+sec+"秒";
+							$('.countDownTimeShow').html(format);
+							vueData.pageRefresh = false;
+						} else if(t < 0){
+							clearInterval(timer);
+							$('.countDownTimeShow').html('已结束')
+						}
+					}, 1000);
+				}
+				
+				//点击滚动到指定位置
+				mui('body').on('tap','.detailsSec',function(){
+					$('.detailsSec').removeClass('detailsActive');
+					$(this).addClass('detailsActive');
+					if($(this).attr('dataVal') == 1){
+						$("html, body").animate({
+							scrollTop: $("#purchaseNotes").offset().top - 44
+						}, {
+							duration: 500,
+							easing: "swing"
+						});
+					}else if($(this).attr('dataVal') == 2){
+						$("html, body").animate({
+							scrollTop: $("#information").offset().top - 44
+						}, {
+							duration: 500,
+							easing: "swing"
+						});
+					}
+					return false;
+				})
+				
+				function handleScroll() {
+				var scrollTop = $(document).scrollTop();
+					if(scrollTop >= floatWindowTop) {
+						$(".details").addClass('detailsFixd');
+					} else {
+						$(".details").removeClass('detailsFixd');
+					}
+				}
+				
+				//点击跳转商品详情
+				function jumpToDetails(id){
+					mui.openWindow({
+						url: 'productDetails.html?productId='+id
+					})
+				}
+				//规格选择模态窗
+				mui('body').on('tap', '#modal',function(event) { //规格模态窗
+					$('#modal').removeClass('mui-active');
+					event.stopPropagation();
+				})
+				$('body').on('tap', '.closeModal3',function(event) { //规格模态窗关闭
+					$('#modal').removeClass('mui-active');
+				})
+				$('body').on('tap', '.selGuigeBox li',function(event) { //选择规格
+					$('.selGuigeBox li').removeClass('mui-selected');
+					$(this).addClass('mui-selected')
+				})
+				mui('body').on('tap', '.modalBox3', function(event) { //规格模态窗冒泡
+					event.stopPropagation();
+				})
+				//app下载
+				function goToDownLoad(){
+					if(browser.versions.android) {
+						window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.leiwan.zl"
+					} else if(browser.versions.ios || iPhone || iPad) {
+						window.location.href = "https://itunes.apple.com/cn/app/%E4%B9%90%E7%8E%A9%E8%81%94%E7%9B%9F/id1454181347?mt=8"
+					}else{
+						window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.leiwan.zl"
+					}
+				}
+				//关闭app下载
+				function closeDownLoad(){
+					$(".downLoad").css({'display': 'none'})
+				}
+			})
+		</script>
+	</body>
+
+</html>

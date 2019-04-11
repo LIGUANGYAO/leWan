@@ -1,0 +1,129 @@
+<link rel="stylesheet" href="/static/layui/css/layui2.0.css" type="text/css">
+<div class="page">
+    <form class="layui-form" action="{:url('Branch/index')}">
+
+        <div class="layui-form-item ">
+            <div class="layui-input-block layui-col-sm3">
+                <input type="text" name="title"  placeholder="公司名/登录账号"  class="layui-input" value="{$title}">
+            </div>
+            <label class="layui-form-label">选择城市:</label>
+            <?php echo AreaLinkage(2,2,array($query['provence'],$query['city']))?>
+
+            <label class="layui-form-label">管理状态:</label>
+            <div class="layui-input-inline ">
+                <select name="status" lay-verify="require">
+                    <option value="0">全部管理</option>
+                    <option value="1" <if condition="$query.status eq 1"> selected="selected"</if>>禁用</option>
+                    <option value="2" <if condition="$query.status eq 2"> selected="selected"</if>>启用</option>
+                </select>
+            </div>
+
+            <span class="input-group-btn layui-input-block">
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+              <button type="submit" class="layui-btn "><i class="fa fa-search"></i> 搜索</button>
+            </span>
+        </span>
+        </div>
+    </form>
+
+    <div class="l">
+        <notempty name="addbtn">
+            <if condition="$addbtn.type eq '1'">
+                <a href="javascript:openWindow('{$addbtn.name}', '{$addbtn.url}', '{$addbtn.width}', '{$addbtn.height}')" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+                <else/>
+                <a href="{$addbtn.url}" class="layui-btn"><i class="fa fa-plus"></i> {$addbtn.name}</a>
+            </if>
+        </notempty>
+    </div>
+
+    <div class="clear"></div>
+    <!-- 模板样式 -->
+    <div class="layui-form">
+        <table class="layui-table">
+            <!-- 必须，只有这里才真正控制宽度 -->
+            <thead>
+                <tr>
+                    <th nowrap="nowrap">分公司名</th>
+                    <th nowrap="nowrap">登录账号</th>
+                    <th nowrap="nowrap">经营城市</th>
+                    <th nowrap="nowrap">所属权限</th>
+                    <th nowrap="nowrap">状态</th>
+                    <th nowrap="nowrap">最后登录IP</th>
+                    <th nowrap="nowrap">最后登录时间</th>
+                    <th nowrap="nowrap">添加时间</th>
+                    <th nowrap="nowrap" width="100">操作</th>
+                </tr> 
+            </thead>
+            <tbody>
+
+            <volist name="$data.list" id="val">
+                <tr>
+                    <td>{$val.sub_name}</td>
+                    <td>{$val.username}</td>
+                    <td>{$val.regionname}</td>
+                    <td>{$val.title}</td>
+                    <td>
+                        <input type="checkbox" name="status" lay-skin="switch" lay-text="开启|关闭" lay-filter="status" <if condition="$val.status eq 1">checked="checked"</if>  itemid="{$val.id}"   >
+                    </td>
+                    <td nowrap="nowrap">{$val.last_login_ip}</td>
+                    <td nowrap="nowrap">{$val.last_login_time}</td>
+                    <td nowrap="nowrap">{$val.create_time}</td>
+                    <td nowrap="nowrap">
+                        <if condition="$val.pid eq 0">
+                            <a href="javascript:openWindow('添加子账号', '{:url('system/Branch/add', array('id'=>$val.id))}', '40%', '70%')" class="layui-btn layui-btn-sm " title="添加子账号"><i class="fa fa-plus"></i></a>
+                        </if>
+                        <a href="javascript:openWindow('修改', '{:url('system/Branch/edit', array('id'=>$val.id))}', '40%', '70%')" class="layui-btn layui-btn-sm layui-btn-normal" title="修改"><i class="fa fa-edit"></i></a>
+
+                        <a href="javascript:sure('确定删除此分公司管理员？', '{:url('system/Branch/delete', array('id'=>$val.id))}')" class="layui-btn layui-btn-sm layui-btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                </tr>
+            </volist>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tabletool">
+
+        <!-- 分页工具 -->
+        <div id="limitpage" class="l"></div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+<script>
+    layui.use(['layer', 'form'], function() {
+        form = layui.form();
+
+        form.on('switch(status)', function(data){
+
+            itemid    = $(this).attr('itemid');
+            url       = "/system/Branch/switching";
+
+            if(itemid > 0){
+                values = (this.checked)?1:0;
+
+                post({value:values, id:itemid}, url, function(obj){
+
+                    if(obj.status == 1){
+                        layer.msg(obj.info, {icon: 1});
+                    }else if (obj.status == 2){
+                        layer.msg(obj.info, {icon: 1});
+                        location.reload();
+                    } else {
+                        if (values == 1){
+                            data.elem.checked = false;
+                        }else {
+                            data.elem.checked = true;
+                        }
+                        layer.msg(obj.info, {icon: 2});
+                        form.render()
+                    }
+                });
+            }
+        });
+
+    });
+
+</script>
